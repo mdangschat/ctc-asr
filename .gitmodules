@@ -1,0 +1,3 @@
+[submodule "data/timit"]
+	path = data/timit
+	url = vcs@vcs.zwuenf.org:agct_data/timit.git
