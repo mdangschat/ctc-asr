@@ -1,0 +1,1680 @@
+TEST/DR1/FAKS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/FAKS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/FAKS0/SI1573.WAV His captain was thin and haggard and his beautiful boots were worn and shabby.
+TEST/DR1/FAKS0/SI2203.WAV The reasons for this dive seemed foolish now.
+TEST/DR1/FAKS0/SI943.WAV Production may fall far below expectations.
+TEST/DR1/FAKS0/SX133.WAV Pizzerias are convenient for a quick lunch.
+TEST/DR1/FAKS0/SX223.WAV Put the butcher block table in the garage.
+TEST/DR1/FAKS0/SX313.WAV Drop five forms in the box before you go out.
+TEST/DR1/FAKS0/SX403.WAV Her wardrobe consists of only skirts and blouses.
+TEST/DR1/FAKS0/SX43.WAV Elderly people are often excluded.
+TEST/DR1/FDAC1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/FDAC1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/FDAC1/SI1474.WAV Husky young man, he said with mock distaste.
+TEST/DR1/FDAC1/SI2104.WAV Ahah, he thought, a lush divorcee at last.
+TEST/DR1/FDAC1/SI844.WAV Thus technical efficiency is achieved at the expense of actual experience.
+TEST/DR1/FDAC1/SX124.WAV Objects made of pewter are beautiful.
+TEST/DR1/FDAC1/SX214.WAV The morning dew on the spider web glistened in the sun.
+TEST/DR1/FDAC1/SX304.WAV Cheap stockings run the first time they're worn.
+TEST/DR1/FDAC1/SX34.WAV Don't do Charlie's dirty dishes.
+TEST/DR1/FDAC1/SX394.WAV Calcium makes bones and teeth strong.
+TEST/DR1/FELC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/FELC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/FELC0/SI1386.WAV In wage negotiations, the industry bargains as a unit with a single union.
+TEST/DR1/FELC0/SI2016.WAV Heave on those ropes; the boat's come unstuck.
+TEST/DR1/FELC0/SI756.WAV Materials: ceramic modeling clay: red, white or buff.
+TEST/DR1/FELC0/SX126.WAV Artificial intelligence is for real.
+TEST/DR1/FELC0/SX216.WAV The small boy put the worm on the hook.
+TEST/DR1/FELC0/SX306.WAV A chosen few will become Generals.
+TEST/DR1/FELC0/SX36.WAV Only the most accomplished artists obtain popularity.
+TEST/DR1/FELC0/SX396.WAV The fish began to leap frantically on the surface of the small lake.
+TEST/DR1/FJEM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/FJEM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/FJEM0/SI1264.WAV Dances alternated with sung or spoken verses.
+TEST/DR1/FJEM0/SI1894.WAV My father ran him off here six years ago.
+TEST/DR1/FJEM0/SI634.WAV Here, he is, quite persuasively, the very embodiment of meanness and slyness.
+TEST/DR1/FJEM0/SX184.WAV The cat's meow always hurts my ears.
+TEST/DR1/FJEM0/SX274.WAV Cliff was soothed by the luxurious massage.
+TEST/DR1/FJEM0/SX364.WAV Each untimely income loss coincided with the breakdown of a heating system part.
+TEST/DR1/FJEM0/SX4.WAV Jane may earn more money by working hard.
+TEST/DR1/FJEM0/SX94.WAV Youngsters love common candy as treats.
+TEST/DR1/MDAB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/MDAB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/MDAB0/SI1039.WAV He has never, himself, done anything for which to be hated -- which of us has?
+TEST/DR1/MDAB0/SI1669.WAV Be excited and don't identify yourself.
+TEST/DR1/MDAB0/SI2299.WAV Sometimes, he coincided with my father's being at home.
+TEST/DR1/MDAB0/SX139.WAV The bungalow was pleasantly situated near the shore.
+TEST/DR1/MDAB0/SX229.WAV Are you looking for employment?
+TEST/DR1/MDAB0/SX319.WAV A big goat idly ambled through the farmyard.
+TEST/DR1/MDAB0/SX409.WAV Eating spinach nightly increases strength miraculously.
+TEST/DR1/MDAB0/SX49.WAV At twilight on the twelfth day we'll have Chablis.
+TEST/DR1/MJSW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/MJSW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/MJSW0/SI1010.WAV The so-called vegetable ivory is the hard endosperm of the egg-sized seed.
+TEST/DR1/MJSW0/SI1640.WAV How did one join them?
+TEST/DR1/MJSW0/SI2270.WAV Dogs did something to one's ego.
+TEST/DR1/MJSW0/SX110.WAV The best way to learn is to solve extra problems.
+TEST/DR1/MJSW0/SX200.WAV Ralph controlled the stopwatch from the bleachers.
+TEST/DR1/MJSW0/SX20.WAV She wore warm, fleecy, woolen overalls.
+TEST/DR1/MJSW0/SX290.WAV This brochure is particularly informative for a prospective buyer.
+TEST/DR1/MJSW0/SX380.WAV Why charge money for such garbage?
+TEST/DR1/MREB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/MREB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/MREB0/SI1375.WAV Often, dominant stress simply indicates a centering of attention or emotion.
+TEST/DR1/MREB0/SI2005.WAV He had left her inviolate, thinking familiarity would gentle her in time.
+TEST/DR1/MREB0/SI745.WAV Broil or toast as usual.
+TEST/DR1/MREB0/SX115.WAV The emblem depicts the Acropolis all aglow.
+TEST/DR1/MREB0/SX205.WAV Military personnel are expected to obey government orders.
+TEST/DR1/MREB0/SX25.WAV Only lawyers love millionaires.
+TEST/DR1/MREB0/SX295.WAV If Carol comes tomorrow, have her arrange for a meeting at two.
+TEST/DR1/MREB0/SX385.WAV His shoulder felt as if it were broken.
+TEST/DR1/MRJO0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/MRJO0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/MRJO0/SI1364.WAV But within that framework he allowed for as much flexibility as possible.
+TEST/DR1/MRJO0/SI1624.WAV We came on as soon as we could.
+TEST/DR1/MRJO0/SI734.WAV If necessary to replace both halves on grill, sear cuts and allot extra time.
+TEST/DR1/MRJO0/SX104.WAV He stole a dime from a beggar.
+TEST/DR1/MRJO0/SX14.WAV Before Thursday's exam, review every formula.
+TEST/DR1/MRJO0/SX194.WAV They enjoy it when I audition.
+TEST/DR1/MRJO0/SX284.WAV Jeff thought you argued in favor of a centrifuge purchase.
+TEST/DR1/MRJO0/SX374.WAV John cleans shellfish for a living.
+TEST/DR1/MSJS1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/MSJS1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/MSJS1/SI1899.WAV You took me by surprise.
+TEST/DR1/MSJS1/SI639.WAV The heavens refused to give up their weeping.
+TEST/DR1/MSJS1/SI869.WAV The idea of a central tank with lines to each house is not in itself a novelty.
+TEST/DR1/MSJS1/SX189.WAV Destroy every file related to my audits.
+TEST/DR1/MSJS1/SX279.WAV Alice's ability to work without supervision is noteworthy.
+TEST/DR1/MSJS1/SX369.WAV Bob papered over living room murals.
+TEST/DR1/MSJS1/SX99.WAV Medieval society was based on hierarchies.
+TEST/DR1/MSJS1/SX9.WAV Where were you while we were away?
+TEST/DR1/MSTK0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/MSTK0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/MSTK0/SI1024.WAV At the base of the rocky hillside, they left their horses and climbed on foot.
+TEST/DR1/MSTK0/SI2222.WAV You young men get to be my age, you won't take flu so lightly.
+TEST/DR1/MSTK0/SI2284.WAV A woman met a famous author at a literary tea.
+TEST/DR1/MSTK0/SX124.WAV Objects made of pewter are beautiful.
+TEST/DR1/MSTK0/SX214.WAV The morning dew on the spider web glistened in the sun.
+TEST/DR1/MSTK0/SX304.WAV Cheap stockings run the first time they're worn.
+TEST/DR1/MSTK0/SX34.WAV Don't do Charlie's dirty dishes.
+TEST/DR1/MSTK0/SX394.WAV Calcium makes bones and teeth strong.
+TEST/DR1/MWBT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR1/MWBT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR1/MWBT0/SI1553.WAV However, the litter remained, augmented by several dozen lunchroom suppers.
+TEST/DR1/MWBT0/SI2183.WAV Books are for schnooks.
+TEST/DR1/MWBT0/SI923.WAV To many experts, this trend was inevitable.
+TEST/DR1/MWBT0/SX113.WAV A muscular abdomen is good for your back.
+TEST/DR1/MWBT0/SX203.WAV The causeway ended abruptly at the shore.
+TEST/DR1/MWBT0/SX23.WAV Those musicians harmonize marvelously.
+TEST/DR1/MWBT0/SX293.WAV Please take this dirty table cloth to the cleaners for me.
+TEST/DR1/MWBT0/SX383.WAV The carpet cleaners shampooed our oriental rug.
+TEST/DR2/FCMR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FCMR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FCMR0/SI1105.WAV What obsessions had she picked up during these long nights of talk?
+TEST/DR2/FCMR0/SI1735.WAV And possessed himself -- how?
+TEST/DR2/FCMR0/SI475.WAV They will take a wedding trip later.
+TEST/DR2/FCMR0/SX115.WAV The emblem depicts the Acropolis all aglow.
+TEST/DR2/FCMR0/SX205.WAV Military personnel are expected to obey government orders.
+TEST/DR2/FCMR0/SX25.WAV Only lawyers love millionaires.
+TEST/DR2/FCMR0/SX295.WAV If Carol comes tomorrow, have her arrange for a meeting at two.
+TEST/DR2/FCMR0/SX385.WAV His shoulder felt as if it were broken.
+TEST/DR2/FDRD1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FDRD1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FDRD1/SI1544.WAV He had plunged into the dark woods beyond.
+TEST/DR2/FDRD1/SI1566.WAV One had to believe in final events or one was stranded in the abyss of nothing.
+TEST/DR2/FDRD1/SI2149.WAV Let's be fine superior people of great dignity, he said as if he were joking.
+TEST/DR2/FDRD1/SX104.WAV He stole a dime from a beggar.
+TEST/DR2/FDRD1/SX14.WAV Before Thursday's exam, review every formula.
+TEST/DR2/FDRD1/SX194.WAV They enjoy it when I audition.
+TEST/DR2/FDRD1/SX284.WAV Jeff thought you argued in favor of a centrifuge purchase.
+TEST/DR2/FDRD1/SX374.WAV John cleaned shellfish for a living.
+TEST/DR2/FJAS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FJAS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FJAS0/SI1400.WAV Now that this is at odds with our meaning may be shown as follows.
+TEST/DR2/FJAS0/SI2030.WAV Our boy didn't chicken out, no sir.
+TEST/DR2/FJAS0/SI770.WAV Vases: make same as salt and pepper shakers, leaving off top pieces.
+TEST/DR2/FJAS0/SX140.WAV Agricultural products are unevenly distributed.
+TEST/DR2/FJAS0/SX230.WAV Allow leeway here, but rationalize all errors.
+TEST/DR2/FJAS0/SX320.WAV The nearest synagogue may not be within walking distance.
+TEST/DR2/FJAS0/SX410.WAV Greg buys fresh milk each weekday morning.
+TEST/DR2/FJAS0/SX50.WAV Catastrophic economic cutbacks neglect the poor.
+TEST/DR2/FJRE0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FJRE0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FJRE0/SI1116.WAV Each is still glorified as a national hero.
+TEST/DR2/FJRE0/SI1587.WAV The jaded amorist conjured up pictures of the blasphemous rites with relish.
+TEST/DR2/FJRE0/SI1746.WAV His salary had reached the ten thousand mark.
+TEST/DR2/FJRE0/SX126.WAV Artificial intelligence is for real.
+TEST/DR2/FJRE0/SX216.WAV The small boy put the worm on the hook.
+TEST/DR2/FJRE0/SX306.WAV A chosen few will become Generals.
+TEST/DR2/FJRE0/SX36.WAV Only the most accomplished artists obtain popularity.
+TEST/DR2/FJRE0/SX396.WAV The fish began to leap frantically on the surface of the small lake.
+TEST/DR2/FJWB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FJWB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FJWB0/SI1265.WAV Ballets were used in opera from its beginning.
+TEST/DR2/FJWB0/SI635.WAV He is a man of major talent -- but a man of solitary, uncertain impulses.
+TEST/DR2/FJWB0/SI992.WAV They were a vagabond lot and considered to be shady and undesirable characters.
+TEST/DR2/FJWB0/SX185.WAV Did you buy any corduroy overalls?
+TEST/DR2/FJWB0/SX275.WAV Steve wore a bright red cashmere sweater.
+TEST/DR2/FJWB0/SX365.WAV The gunman kept his victim cornered at gunpoint for three hours.
+TEST/DR2/FJWB0/SX5.WAV She is thinner than I am.
+TEST/DR2/FJWB0/SX95.WAV Iguanas and alligators are tropical reptiles.
+TEST/DR2/FPAS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FPAS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FPAS0/SI1272.WAV Laboratory astrophysics.
+TEST/DR2/FPAS0/SI2204.WAV Pretty soon a woman came along carrying a folded umbrella as a walking stick.
+TEST/DR2/FPAS0/SI944.WAV If the farm is rented, the rent must be paid.
+TEST/DR2/FPAS0/SX134.WAV December and January are nice months to spend in Miami.
+TEST/DR2/FPAS0/SX224.WAV How good is your endurance?
+TEST/DR2/FPAS0/SX314.WAV If people were more generous, there would be no need for welfare.
+TEST/DR2/FPAS0/SX404.WAV Barb burned paper and leaves in a big bonfire.
+TEST/DR2/FPAS0/SX44.WAV Basketball can be an entertaining sport.
+TEST/DR2/FRAM1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FRAM1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FRAM1/SI1360.WAV It provides a frame for the sampling census.
+TEST/DR2/FRAM1/SI522.WAV Progress is being made, too, in improving motorists' access to many turnpikes.
+TEST/DR2/FRAM1/SI730.WAV Another memo for sightseers: bring your camera along to museums.
+TEST/DR2/FRAM1/SX100.WAV Project development was proceeding too slowly.
+TEST/DR2/FRAM1/SX10.WAV Are your grades higher or lower than Nancy's?
+TEST/DR2/FRAM1/SX190.WAV Serve the coleslaw after I add the oil.
+TEST/DR2/FRAM1/SX280.WAV The oasis was a mirage.
+TEST/DR2/FRAM1/SX370.WAV That noise problem grows more annoying each day.
+TEST/DR2/FSLB1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/FSLB1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/FSLB1/SI1904.WAV When suitably lighted, what would it look like?
+TEST/DR2/FSLB1/SI644.WAV All are well written and are overwritten.
+TEST/DR2/FSLB1/SI891.WAV It was applied with a compost shredder made from a converted manure spreader.
+TEST/DR2/FSLB1/SX104.WAV He stole a dime from a beggar.
+TEST/DR2/FSLB1/SX14.WAV Before Thursday's exam, review every formula.
+TEST/DR2/FSLB1/SX194.WAV They enjoy it when I audition.
+TEST/DR2/FSLB1/SX284.WAV Jeff thought you argued in favor of a centrifuge purchase.
+TEST/DR2/FSLB1/SX374.WAV John cleans shellfish for a living.
+TEST/DR2/MABW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MABW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MABW0/SI1230.WAV Princes and factions clashed in the open street and died on the open scaffold.
+TEST/DR2/MABW0/SI1664.WAV There were other farmhouses nearby.
+TEST/DR2/MABW0/SI2294.WAV Just long enough to make you feel important.
+TEST/DR2/MABW0/SX134.WAV December and January are nice months to spend in Miami.
+TEST/DR2/MABW0/SX224.WAV How good is your endurance?
+TEST/DR2/MABW0/SX314.WAV If people were more generous, there would be no need for welfare.
+TEST/DR2/MABW0/SX404.WAV Barb burned paper and leaves in a big bonfire.
+TEST/DR2/MABW0/SX44.WAV Basketball can be an entertaining sport.
+TEST/DR2/MBJK0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MBJK0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MBJK0/SI1175.WAV Diversity of perception, yes; diversity of fact, yes.
+TEST/DR2/MBJK0/SI2128.WAV Some of them ignored the text and had apparently memorized the words long ago.
+TEST/DR2/MBJK0/SI545.WAV But how little love we give him!
+TEST/DR2/MBJK0/SX185.WAV Did you buy any corduroy overalls?
+TEST/DR2/MBJK0/SX275.WAV Steve wore a bright red cashmere sweater.
+TEST/DR2/MBJK0/SX365.WAV The gunman kept his victim cornered at gunpoint for three hours.
+TEST/DR2/MBJK0/SX5.WAV She is thinner than I am.
+TEST/DR2/MBJK0/SX95.WAV Iguanas and alligators are tropical reptiles.
+TEST/DR2/MCCS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MCCS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MCCS0/SI1469.WAV This can be done to a high degree of accuracy by existing surveying techniques.
+TEST/DR2/MCCS0/SI2099.WAV But she suffered in her off-duty hours.
+TEST/DR2/MCCS0/SI839.WAV Practically all forecasts mention new and exciting products on the horizon.
+TEST/DR2/MCCS0/SX119.WAV The misquote was retracted with an apology.
+TEST/DR2/MCCS0/SX209.WAV Michael colored the bedroom wall with crayons.
+TEST/DR2/MCCS0/SX299.WAV Shaving cream is a popular item on Halloween.
+TEST/DR2/MCCS0/SX29.WAV Help Greg to pick a peck of potatoes.
+TEST/DR2/MCCS0/SX389.WAV They own a big house in the remote countryside.
+TEST/DR2/MCEM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MCEM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MCEM0/SI1398.WAV Do they make class-biased decisions?
+TEST/DR2/MCEM0/SI2028.WAV He took his mask from his forehead and threw it, unexpectedly, across the deck.
+TEST/DR2/MCEM0/SI768.WAV Make lid for sugar bowl the same as jar lids, omitting design disk.
+TEST/DR2/MCEM0/SX138.WAV The clumsy customer spilled some expensive perfume.
+TEST/DR2/MCEM0/SX228.WAV The viewpoint overlooked the ocean.
+TEST/DR2/MCEM0/SX318.WAV Please dig my potatoes up before frost.
+TEST/DR2/MCEM0/SX408.WAV I'd ride the subway, but I haven't enough change.
+TEST/DR2/MCEM0/SX48.WAV Grandmother outgrew her upbringing in petticoats.
+TEST/DR2/MDBB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MDBB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MDBB0/SI1195.WAV Passing dogs were greeted with a cordial bark.
+TEST/DR2/MDBB0/SI1825.WAV He wasn't likely to come down with hot chills and puzzling striped fever.
+TEST/DR2/MDBB0/SI565.WAV Stacked heels are also popular on dressy or tailored shoes.
+TEST/DR2/MDBB0/SX115.WAV The emblem depicts the Acropolis all aglow.
+TEST/DR2/MDBB0/SX205.WAV Military personnel are expected to obey government orders.
+TEST/DR2/MDBB0/SX25.WAV Only lawyers love millionaires.
+TEST/DR2/MDBB0/SX295.WAV If Carol comes tomorrow, have her arrange for a meeting at two.
+TEST/DR2/MDBB0/SX385.WAV His shoulder felt as if it were broken.
+TEST/DR2/MDLD0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MDLD0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MDLD0/SI1543.WAV Then he -- then what?
+TEST/DR2/MDLD0/SI2173.WAV He wadded his sweat shirt into a ball and stripped down to his swimming trunks.
+TEST/DR2/MDLD0/SI913.WAV Do you love to run up a hem, sew on buttons, make neat buttonholes?
+TEST/DR2/MDLD0/SX103.WAV Call an ambulance for medical assistance.
+TEST/DR2/MDLD0/SX13.WAV Swing your arm as high as you can.
+TEST/DR2/MDLD0/SX193.WAV Why buy oil when you always use mine?
+TEST/DR2/MDLD0/SX283.WAV Planned parenthood organizations promote birth control.
+TEST/DR2/MDLD0/SX373.WAV A boring novel is a superb sleeping pill.
+TEST/DR2/MGWT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MGWT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MGWT0/SI1539.WAV Fists pummeled him as he staggered forward.
+TEST/DR2/MGWT0/SI2169.WAV Upstairs, busy feet, showering like raindrops, pattered around her room.
+TEST/DR2/MGWT0/SI909.WAV Compulsory retirement at sixty-five looms on our horizon.
+TEST/DR2/MGWT0/SX189.WAV Destroy every file related to my audits.
+TEST/DR2/MGWT0/SX279.WAV Alice's ability to work without supervision is noteworthy.
+TEST/DR2/MGWT0/SX369.WAV Bob papered over the living room murals.
+TEST/DR2/MGWT0/SX99.WAV Medieval society was based on hierarchies.
+TEST/DR2/MGWT0/SX9.WAV Where were you while we were away?
+TEST/DR2/MJAR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MJAR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MJAR0/SI1988.WAV How's it strike you, foul or fair?
+TEST/DR2/MJAR0/SI2247.WAV Weakness in leadership.
+TEST/DR2/MJAR0/SI728.WAV Poach the apples in this syrup for twelve minutes, drain them, and cool.
+TEST/DR2/MJAR0/SX188.WAV Who authorized the unlimited expense account?
+TEST/DR2/MJAR0/SX278.WAV To further his prestige, he occasionally reads the Wall Street Journal.
+TEST/DR2/MJAR0/SX368.WAV Lori's costume needed black gloves to be completely elegant.
+TEST/DR2/MJAR0/SX8.WAV Why yell or worry over silly items?
+TEST/DR2/MJAR0/SX98.WAV Guess the question from the answer.
+TEST/DR2/MMDB1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MMDB1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MMDB1/SI1625.WAV He makes me uncomfortable.
+TEST/DR2/MMDB1/SI2255.WAV He swung around, eyes toward the bedroom, some fifteen feet away.
+TEST/DR2/MMDB1/SI995.WAV At different times he served as glee-club and choir leader and as organist.
+TEST/DR2/MMDB1/SX185.WAV Did you buy any corduroy overalls?
+TEST/DR2/MMDB1/SX275.WAV Steve wore a bright red cashmere sweater.
+TEST/DR2/MMDB1/SX365.WAV The gunman kept his victim cornered at gunpoint for three hours.
+TEST/DR2/MMDB1/SX5.WAV She is thinner than I am.
+TEST/DR2/MMDB1/SX95.WAV Iguanas and alligators are tropical reptiles.
+TEST/DR2/MMDM2/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MMDM2/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MMDM2/SI1452.WAV Poultry: results of irradiation tests with poultry have been quite successful.
+TEST/DR2/MMDM2/SI1555.WAV A sleepy voice answered.
+TEST/DR2/MMDM2/SI2082.WAV You're boiling milk, ain't you?
+TEST/DR2/MMDM2/SX102.WAV Special task forces rescue hostages from kidnappers.
+TEST/DR2/MMDM2/SX12.WAV Will Robin wear a yellow lily?
+TEST/DR2/MMDM2/SX192.WAV Straw hats are out of fashion this year.
+TEST/DR2/MMDM2/SX282.WAV The tooth fairy forgot to come when Roger's tooth fell out.
+TEST/DR2/MMDM2/SX372.WAV That diagram makes sense only after much study.
+TEST/DR2/MPDF0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MPDF0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MPDF0/SI1542.WAV The feet wore army shoes, in obvious disrepair.
+TEST/DR2/MPDF0/SI2172.WAV Strength began to zip up and down his chest.
+TEST/DR2/MPDF0/SI912.WAV You may amaze yourself and acquire a real knack for it.
+TEST/DR2/MPDF0/SX102.WAV Special task forces rescue hostages from kidnappers.
+TEST/DR2/MPDF0/SX12.WAV Will Robin wear a yellow lily?
+TEST/DR2/MPDF0/SX192.WAV Straw hats are out of fashion this year.
+TEST/DR2/MPDF0/SX282.WAV The tooth fairy forgot to come when Roger's tooth fell out.
+TEST/DR2/MPDF0/SX372.WAV That diagram makes sense only after much study.
+TEST/DR2/MPGL0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MPGL0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MPGL0/SI1099.WAV This does not allow the mystery to invade us.
+TEST/DR2/MPGL0/SI1729.WAV Shrugs met that, from room clerks, from bellhops.
+TEST/DR2/MPGL0/SI469.WAV In fact our whole defensive unit did a good job.
+TEST/DR2/MPGL0/SX109.WAV She slipped and sprained her ankle on the steep slope.
+TEST/DR2/MPGL0/SX199.WAV Young children should avoid exposure to contagious diseases.
+TEST/DR2/MPGL0/SX19.WAV Aluminum silverware can often be flimsy.
+TEST/DR2/MPGL0/SX289.WAV Weatherproof galoshes are very useful in Seattle.
+TEST/DR2/MPGL0/SX379.WAV Pam gives driving lessons on Thursdays.
+TEST/DR2/MRCZ0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MRCZ0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MRCZ0/SI1541.WAV It gave the rubberized fabric a dull gleam, like metal.
+TEST/DR2/MRCZ0/SI2171.WAV How long would it be occupied?
+TEST/DR2/MRCZ0/SI911.WAV This is followed by a boom in conferences.
+TEST/DR2/MRCZ0/SX101.WAV Kindergarten children decorate their classrooms for all holidays.
+TEST/DR2/MRCZ0/SX11.WAV He will allow a rare lie.
+TEST/DR2/MRCZ0/SX191.WAV Withdraw all phony accusations at once.
+TEST/DR2/MRCZ0/SX281.WAV Cory and Trish played tag with beach balls for hours.
+TEST/DR2/MRCZ0/SX371.WAV Right now may not be the best time for business mergers.
+TEST/DR2/MRGG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MRGG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MRGG0/SI1199.WAV They close sometime after eight.
+TEST/DR2/MRGG0/SI1829.WAV His body processes only slowed down enough for him to dispel fatigue poisons.
+TEST/DR2/MRGG0/SI569.WAV Most of us brush our teeth by hand.
+TEST/DR2/MRGG0/SX119.WAV The misquote was retracted with an apology.
+TEST/DR2/MRGG0/SX209.WAV Michael colored the bedroom wall with crayons.
+TEST/DR2/MRGG0/SX299.WAV Shaving cream is a popular item on Halloween.
+TEST/DR2/MRGG0/SX29.WAV Help Greg to pick a peck of potatoes.
+TEST/DR2/MRGG0/SX389.WAV They own a big house in the remote countryside.
+TEST/DR2/MTAS1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MTAS1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MTAS1/SI1473.WAV You don't eat enough, honey.
+TEST/DR2/MTAS1/SI2098.WAV He gave a short hard laugh and looked at her knowingly.
+TEST/DR2/MTAS1/SI838.WAV Increasing tempo of new product development.
+TEST/DR2/MTAS1/SX118.WAV Combine all the ingredients in a large bowl.
+TEST/DR2/MTAS1/SX208.WAV Rob sat by the pond and sketched the stray geese.
+TEST/DR2/MTAS1/SX28.WAV Beg that guard for one gallon of gas.
+TEST/DR2/MTAS1/SX298.WAV I'd rather not buy these shoes than be overcharged.
+TEST/DR2/MTAS1/SX388.WAV Her right hand aches whenever the barometric pressure changes.
+TEST/DR2/MTMR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MTMR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MTMR0/SI1303.WAV A detailed study of this latter phenomenon was not attempted in this paper.
+TEST/DR2/MTMR0/SI1933.WAV Beat me to death in front of a hundred people.
+TEST/DR2/MTMR0/SI673.WAV Psychologically the reception should be the climax, following the sermon.
+TEST/DR2/MTMR0/SX133.WAV Pizzerias are convenient for a quick lunch.
+TEST/DR2/MTMR0/SX223.WAV Put the butcher block table in the garage.
+TEST/DR2/MTMR0/SX313.WAV Drop five forms in the box before you go out.
+TEST/DR2/MTMR0/SX403.WAV Her wardrobe consists of only skirts and blouses.
+TEST/DR2/MTMR0/SX43.WAV Elderly people are often excluded.
+TEST/DR2/MWEW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MWEW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MWEW0/SI1361.WAV But in this one section we welcomed auditors.
+TEST/DR2/MWEW0/SI1991.WAV Lot of people will roam the streets in costumes and masks, and having a ball.
+TEST/DR2/MWEW0/SI731.WAV A few years later the dome fell in.
+TEST/DR2/MWEW0/SX101.WAV Kindergarten children decorate their classrooms for all holidays.
+TEST/DR2/MWEW0/SX11.WAV He will allow a rare lie.
+TEST/DR2/MWEW0/SX191.WAV Withdraw all phony accusations at once.
+TEST/DR2/MWEW0/SX281.WAV Cory and Trish played tag with beach balls for hours.
+TEST/DR2/MWEW0/SX371.WAV Right now may not be the best time for business mergers.
+TEST/DR2/MWVW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR2/MWVW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR2/MWVW0/SI1476.WAV Or: does he get exercise?
+TEST/DR2/MWVW0/SI2106.WAV Our key salesmen are in appliances and cosmetics.
+TEST/DR2/MWVW0/SI846.WAV This brings us to the question of accreditation of art schools in general.
+TEST/DR2/MWVW0/SX126.WAV Artificial intelligence is for real.
+TEST/DR2/MWVW0/SX216.WAV The small boy put the worm on the hook.
+TEST/DR2/MWVW0/SX306.WAV A chosen few will become Generals.
+TEST/DR2/MWVW0/SX36.WAV Only the most accomplished artists obtain popularity.
+TEST/DR2/MWVW0/SX396.WAV The fish began to leap frantically on the surface of the small lake.
+TEST/DR3/FCMH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/FCMH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/FCMH0/SI1454.WAV Originally, the main types used were various compositions of polyesters.
+TEST/DR3/FCMH0/SI2084.WAV What about a tea room, then?
+TEST/DR3/FCMH0/SI824.WAV Several firms are merchandising enzyme preparation through feed manufacturers.
+TEST/DR3/FCMH0/SX104.WAV He stole a dime from a beggar.
+TEST/DR3/FCMH0/SX14.WAV Before Thursday's exam, review every formula.
+TEST/DR3/FCMH0/SX194.WAV They enjoy it when I audition.
+TEST/DR3/FCMH0/SX284.WAV Jeff thought you argued in favor of a centrifuge purchase.
+TEST/DR3/FCMH0/SX374.WAV John cleans shellfish for a living.
+TEST/DR3/FKMS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/FKMS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/FKMS0/SI1490.WAV Perhaps it was right; perhaps it was just.
+TEST/DR3/FKMS0/SI2120.WAV He paused, then added: "Everything on a ship is a weapon."
+TEST/DR3/FKMS0/SI860.WAV These include: leaves of absences, illnesses, and layoffs.
+TEST/DR3/FKMS0/SX140.WAV Agricultural products are unevenly distributed.
+TEST/DR3/FKMS0/SX230.WAV Allow leeway here, but rationalize all errors.
+TEST/DR3/FKMS0/SX320.WAV The nearest synagogue may not be within walking distance.
+TEST/DR3/FKMS0/SX410.WAV Greg buys fresh milk each weekday morning.
+TEST/DR3/FKMS0/SX50.WAV Catastrophic economic cutbacks neglect the poor.
+TEST/DR3/FPKT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/FPKT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/FPKT0/SI1538.WAV A carriage crunched by, its dim lights filtering through the gloom.
+TEST/DR3/FPKT0/SI2168.WAV They make us conformists look good.
+TEST/DR3/FPKT0/SI908.WAV We always thought we would die with our boots on.
+TEST/DR3/FPKT0/SX188.WAV Who authorized the unlimited expense account?
+TEST/DR3/FPKT0/SX278.WAV To further his prestige, he occasionally reads the Wall Street Journal.
+TEST/DR3/FPKT0/SX368.WAV Lori's costume needed black gloves to be completely elegant.
+TEST/DR3/FPKT0/SX8.WAV Why yell or worry over silly items?
+TEST/DR3/FPKT0/SX98.WAV Guess the question from the answer.
+TEST/DR3/MBDG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MBDG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MBDG0/SI1463.WAV We can, however, maximize its expected value.
+TEST/DR3/MBDG0/SI2093.WAV He then offered his own estimate of the weather, which was unenthusiastic.
+TEST/DR3/MBDG0/SI833.WAV Less personal salesmanship.
+TEST/DR3/MBDG0/SX113.WAV A muscular abdomen is good for your back.
+TEST/DR3/MBDG0/SX203.WAV The causeway ended abruptly at the shore.
+TEST/DR3/MBDG0/SX23.WAV Those musicians harmonize marvelously.
+TEST/DR3/MBDG0/SX293.WAV Please take this dirty table cloth to the cleaners for me.
+TEST/DR3/MBDG0/SX383.WAV The carpet cleaners shampooed our oriental rug.
+TEST/DR3/MBWM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MBWM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MBWM0/SI1304.WAV It was exposed to a high velocity gas jet.
+TEST/DR3/MBWM0/SI1934.WAV Wait a little while.
+TEST/DR3/MBWM0/SI674.WAV This is no spectator-type experience; everyone is to be a participant.
+TEST/DR3/MBWM0/SX134.WAV December and January are nice months to spend in Miami.
+TEST/DR3/MBWM0/SX224.WAV How good is your endurance?
+TEST/DR3/MBWM0/SX314.WAV If people were more generous, there would be no need for welfare.
+TEST/DR3/MBWM0/SX404.WAV Barb burned paper and leaves in a big bonfire.
+TEST/DR3/MBWM0/SX44.WAV Basketball can be an entertaining sport.
+TEST/DR3/MCSH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MCSH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MCSH0/SI1549.WAV Y'all should have let me do it.
+TEST/DR3/MCSH0/SI2179.WAV My mother never wops me.
+TEST/DR3/MCSH0/SI919.WAV Obviously, the bridal pair has many adjustments to make to their new situation.
+TEST/DR3/MCSH0/SX109.WAV She slipped and sprained her ankle on the steep slope.
+TEST/DR3/MCSH0/SX199.WAV Young children should avoid exposure to contagious diseases.
+TEST/DR3/MCSH0/SX19.WAV Aluminum silverware can often be flimsy.
+TEST/DR3/MCSH0/SX289.WAV Weatherproof galoshes are very useful in Seattle.
+TEST/DR3/MCSH0/SX379.WAV Pam gives driving lessons on Thursdays.
+TEST/DR3/MCTW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MCTW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MCTW0/SI1373.WAV Each form represented by the dictionary is looked up in the text-form list.
+TEST/DR3/MCTW0/SI2003.WAV In a way, he couldn't blame her.
+TEST/DR3/MCTW0/SI743.WAV Do buy all-purpose mugs or cups.
+TEST/DR3/MCTW0/SX113.WAV A muscular abdomen is good for your back.
+TEST/DR3/MCTW0/SX203.WAV The causeway ended abruptly at the shore.
+TEST/DR3/MCTW0/SX23.WAV Those musicians harmonize marvelously.
+TEST/DR3/MCTW0/SX293.WAV Please take this dirty table cloth to the cleaners for me.
+TEST/DR3/MCTW0/SX383.WAV The carpet cleaners shampooed our oriental rug.
+TEST/DR3/MGJF0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MGJF0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MGJF0/SI1901.WAV A warm breeze played across it, moving it like waves.
+TEST/DR3/MGJF0/SI641.WAV Clever light songs were overly coy, tragic songs a little too melodramatic.
+TEST/DR3/MGJF0/SI776.WAV Do not draw yarn too tight.
+TEST/DR3/MGJF0/SX101.WAV Kindergarten children decorate their classrooms for all holidays.
+TEST/DR3/MGJF0/SX11.WAV He will allow a rare lie.
+TEST/DR3/MGJF0/SX191.WAV Withdraw all phony accusations at once.
+TEST/DR3/MGJF0/SX281.WAV Cory and Trish played tag with beach balls for hours.
+TEST/DR3/MGJF0/SX371.WAV Right now may not be the best time for business mergers.
+TEST/DR3/MGLB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MGLB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MGLB0/SI1534.WAV Is it because of my slovenliness that hair grows on my face?
+TEST/DR3/MGLB0/SI2164.WAV Take care of yourself then.
+TEST/DR3/MGLB0/SI904.WAV He peered ahead and grinned as the railroad tracks came into view again below.
+TEST/DR3/MGLB0/SX184.WAV The cat's meow always hurts my ears.
+TEST/DR3/MGLB0/SX274.WAV Cliff was soothed by the luxurious massage.
+TEST/DR3/MGLB0/SX364.WAV Each untimely income loss coincided with the breakdown of a heating system part.
+TEST/DR3/MGLB0/SX4.WAV Jane may earn more money by working hard.
+TEST/DR3/MGLB0/SX94.WAV Youngsters love common candy as treats.
+TEST/DR3/MHPG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MHPG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MHPG0/SI1090.WAV But a somewhat more detailed analysis of this process may be illuminating.
+TEST/DR3/MHPG0/SI1720.WAV They took it away, overalls or something.
+TEST/DR3/MHPG0/SI460.WAV Nothing has been done yet to take advantage of the enabling legislation.
+TEST/DR3/MHPG0/SX100.WAV Project development was proceeding too slowly.
+TEST/DR3/MHPG0/SX10.WAV Are your grades higher or lower than Nancy's?
+TEST/DR3/MHPG0/SX190.WAV Serve the coleslaw after I add the oil.
+TEST/DR3/MHPG0/SX280.WAV The oasis was a mirage.
+TEST/DR3/MHPG0/SX370.WAV That noise problem grows more annoying each day.
+TEST/DR3/MJBR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MJBR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MJBR0/SI1001.WAV Oh, he'll be a plumber, came the answer.
+TEST/DR3/MJBR0/SI1631.WAV Her legs hung down long and thin as she sat on the high stool.
+TEST/DR3/MJBR0/SI2261.WAV We're here to transact business.
+TEST/DR3/MJBR0/SX101.WAV Kindergarten children decorate their classrooms for all holidays.
+TEST/DR3/MJBR0/SX11.WAV He will allow a rare lie.
+TEST/DR3/MJBR0/SX191.WAV Withdraw all phony accusations at once.
+TEST/DR3/MJBR0/SX281.WAV Cory and Trish played tag with beach balls for hours.
+TEST/DR3/MJBR0/SX371.WAV Right now may not be the best time for business mergers.
+TEST/DR3/MJES0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MJES0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MJES0/SI1384.WAV There need be no squeamishness about admitting this.
+TEST/DR3/MJES0/SI2014.WAV Sulphur, oil, and copra make the kind of tinder any firebug dreams of.
+TEST/DR3/MJES0/SI754.WAV Instructions for preparing clay, drying, glazing and firing are not given.
+TEST/DR3/MJES0/SX124.WAV Objects made of pewter are beautiful.
+TEST/DR3/MJES0/SX214.WAV The morning dew on the spider web glistened in the sun.
+TEST/DR3/MJES0/SX304.WAV Cheap stockings run the first time they're worn.
+TEST/DR3/MJES0/SX34.WAV Don't do Charlie's dirty dishes.
+TEST/DR3/MJES0/SX394.WAV Calcium makes bones and teeth strong.
+TEST/DR3/MJJG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MJJG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MJJG0/SI1003.WAV Seeds of soybean, cotton, corn, sesame, and rape yield semidrying oils.
+TEST/DR3/MJJG0/SI1633.WAV Said you wore yourself out, cleaning all these empty rooms.
+TEST/DR3/MJJG0/SI2263.WAV Nobody else showed pleasure.
+TEST/DR3/MJJG0/SX103.WAV Call an ambulance for medical assistance.
+TEST/DR3/MJJG0/SX13.WAV Swing your arm as high as you can.
+TEST/DR3/MJJG0/SX193.WAV Why buy oil when you always use mine?
+TEST/DR3/MJJG0/SX283.WAV Planned parenthood organizations promote birth control.
+TEST/DR3/MJJG0/SX373.WAV A boring novel is a superb sleeping pill.
+TEST/DR3/MJMP0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MJMP0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MJMP0/SI1535.WAV He trembled lest his piece should fail.
+TEST/DR3/MJMP0/SI1791.WAV No, the man was not drunk; he wondered how he got tied up with this stranger.
+TEST/DR3/MJMP0/SI905.WAV His work began just six days after the flood.
+TEST/DR3/MJMP0/SX185.WAV Did you buy any corduroy overalls?
+TEST/DR3/MJMP0/SX275.WAV Steve wore a bright red cashmere sweater.
+TEST/DR3/MJMP0/SX365.WAV The gunman kept his victim cornered at gunpoint for three hours.
+TEST/DR3/MJMP0/SX5.WAV She is thinner than I am.
+TEST/DR3/MJMP0/SX95.WAV Iguanas and alligators are tropical reptiles.
+TEST/DR3/MJVW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MJVW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MJVW0/SI1733.WAV He also reminded himself that he had an unusual number of possibilities.
+TEST/DR3/MJVW0/SI1758.WAV Widow, nice sort of woman.
+TEST/DR3/MJVW0/SI473.WAV Yet he remains the fiercest of competitors.
+TEST/DR3/MJVW0/SX113.WAV Muscular abdomen is good for your back.
+TEST/DR3/MJVW0/SX203.WAV The causeway ended abruptly at the shore.
+TEST/DR3/MJVW0/SX23.WAV Those musicians harmonize marvelously.
+TEST/DR3/MJVW0/SX293.WAV Please take this dirty table cloth to the cleaners for me.
+TEST/DR3/MJVW0/SX383.WAV The carpet cleaners shampooed our oriental rug.
+TEST/DR3/MKCH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MKCH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MKCH0/SI1378.WAV Morphophonemic rules may be thought of as joining certain points in the system.
+TEST/DR3/MKCH0/SI1425.WAV They were both very fluent.
+TEST/DR3/MKCH0/SI2008.WAV He swung up over the wheel.
+TEST/DR3/MKCH0/SX118.WAV Combine all the ingredients in a large bowl.
+TEST/DR3/MKCH0/SX208.WAV Rob sat by the pond and sketched the stray geese.
+TEST/DR3/MKCH0/SX28.WAV Beg that guard for one gallon of gas.
+TEST/DR3/MKCH0/SX298.WAV I'd rather not buy these shoes than be overcharged.
+TEST/DR3/MKCH0/SX388.WAV Her right hand aches whenever the barometric pressure changes.
+TEST/DR3/MLNT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MLNT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MLNT0/SI1574.WAV Flies swarmed around the bowl of lentils in which he mopped thick black bread.
+TEST/DR3/MLNT0/SI1902.WAV The pulsing glow of a cigarette.
+TEST/DR3/MLNT0/SI642.WAV Their props were two stepladders, a chair and a palm fan.
+TEST/DR3/MLNT0/SX102.WAV Special task forces rescue hostages from kidnappers.
+TEST/DR3/MLNT0/SX12.WAV Will Robin wear a yellow lily?
+TEST/DR3/MLNT0/SX192.WAV Straw hats are out of fashion this year.
+TEST/DR3/MLNT0/SX282.WAV The tooth fairy forgot to come when Roger's tooth fell out.
+TEST/DR3/MLNT0/SX372.WAV That diagram makes sense only after much study.
+TEST/DR3/MMAB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MMAB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MMAB0/SI1362.WAV After that, we began to get visitors to class.
+TEST/DR3/MMAB0/SI1992.WAV Or, more rhythmically, the swarthy witches are laughing?
+TEST/DR3/MMAB0/SI732.WAV Do line barbecue fire bowl with heavy foil to reflect heat.
+TEST/DR3/MMAB0/SX102.WAV Special task forces rescue hostages from kidnappers.
+TEST/DR3/MMAB0/SX12.WAV Will Robin wear a yellow lily?
+TEST/DR3/MMAB0/SX192.WAV Straw hats are out of fashion this year.
+TEST/DR3/MMAB0/SX282.WAV The tooth fairy forgot to come when Roger's tooth fell out.
+TEST/DR3/MMAB0/SX372.WAV That diagram makes sense only after much study.
+TEST/DR3/MMDH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MMDH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MMDH0/SI1656.WAV She blew her nose on a tissue and opened the coke bottle.
+TEST/DR3/MMDH0/SI2118.WAV There is not space to hold or force to guard any increased number of prisoners.
+TEST/DR3/MMDH0/SI2286.WAV Yes, sir, she said, is that definite?
+TEST/DR3/MMDH0/SX126.WAV Artificial intelligence is for real.
+TEST/DR3/MMDH0/SX216.WAV The small boy put the worm on the hook.
+TEST/DR3/MMDH0/SX306.WAV A chosen few will become Generals.
+TEST/DR3/MMDH0/SX36.WAV Only the most accomplished artists obtain popularity.
+TEST/DR3/MMDH0/SX396.WAV The fish began to leap frantically on the surface of the small lake.
+TEST/DR3/MMJR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MMJR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MMJR0/SI1648.WAV It was a fairly modern motel with quite a bit of electrical display in front.
+TEST/DR3/MMJR0/SI2166.WAV Look, sweetheart, some fool was.
+TEST/DR3/MMJR0/SI2278.WAV View takes in five counties, two bedrooms.
+TEST/DR3/MMJR0/SX118.WAV Combine all the ingredients in a large bowl.
+TEST/DR3/MMJR0/SX208.WAV Rob sat by the pond and sketched the stray geese.
+TEST/DR3/MMJR0/SX28.WAV Beg that guard for one gallon of gas.
+TEST/DR3/MMJR0/SX298.WAV I'd rather not buy these shoes than be overcharged.
+TEST/DR3/MMJR0/SX388.WAV Her right hand aches whenever the barometric pressure changes.
+TEST/DR3/MMWH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MMWH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MMWH0/SI1089.WAV Perhaps things were even worse then.
+TEST/DR3/MMWH0/SI1301.WAV Deans can form an important bridge between the president and the faculty.
+TEST/DR3/MMWH0/SI459.WAV He further proposed grants of an unspecified sum for experimental hospitals.
+TEST/DR3/MMWH0/SX189.WAV Destroy every file related to my audits.
+TEST/DR3/MMWH0/SX279.WAV Alice's ability to work without supervision is noteworthy.
+TEST/DR3/MMWH0/SX369.WAV Bob papered over the living room murals.
+TEST/DR3/MMWH0/SX99.WAV Medieval society was based on hierarchies.
+TEST/DR3/MMWH0/SX9.WAV Where were you while we were away?
+TEST/DR3/MRTK0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MRTK0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MRTK0/SI1093.WAV What elements of our behavior are decisive?
+TEST/DR3/MRTK0/SI1723.WAV A new idea drifted in from nowhere.
+TEST/DR3/MRTK0/SI1750.WAV Could the ambassador himself be the man on this side the prime minister feared?
+TEST/DR3/MRTK0/SX103.WAV Call an ambulance for medical assistance.
+TEST/DR3/MRTK0/SX13.WAV Swing your arm as high as you can.
+TEST/DR3/MRTK0/SX193.WAV Why buy oil when you always use mine?
+TEST/DR3/MRTK0/SX283.WAV Planned parenthood organizations promote birth control.
+TEST/DR3/MRTK0/SX373.WAV A boring novel is a superb sleeping pill.
+TEST/DR3/MTAA0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MTAA0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MTAA0/SI1285.WAV Family rationing probably will be necessary.
+TEST/DR3/MTAA0/SI1915.WAV It was there that she would have to enact her renunciation, beg forgiveness.
+TEST/DR3/MTAA0/SI596.WAV On these they feel they can rely.
+TEST/DR3/MTAA0/SX115.WAV The emblem depicts the Acropolis all aglow.
+TEST/DR3/MTAA0/SX205.WAV Military personnel are expected to obey government orders.
+TEST/DR3/MTAA0/SX25.WAV Only lawyers love millionaires.
+TEST/DR3/MTAA0/SX295.WAV If Carol comes tomorrow, have her arrange for a meeting at two.
+TEST/DR3/MTAA0/SX385.WAV His shoulder felt as if it were broken.
+TEST/DR3/MTDT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MTDT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MTDT0/SI1994.WAV So if all these beers was to get me in bed, man, you just spent a lot of money.
+TEST/DR3/MTDT0/SI2254.WAV Quietly he determined to foil her.
+TEST/DR3/MTDT0/SI994.WAV Her study of history was persistently pursued.
+TEST/DR3/MTDT0/SX184.WAV The cat's meow always hurts my ears.
+TEST/DR3/MTDT0/SX274.WAV Cliff was soothed by the luxurious massage.
+TEST/DR3/MTDT0/SX364.WAV Each untimely income loss coincided with the breakdown of a heating system part.
+TEST/DR3/MTDT0/SX4.WAV Jane may earn more money by working hard.
+TEST/DR3/MTDT0/SX94.WAV Youngsters love common candy as treats.
+TEST/DR3/MTHC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MTHC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MTHC0/SI1015.WAV Hay and pasture are the other chief sources of livestock feed.
+TEST/DR3/MTHC0/SI1645.WAV Such optimism was completely unjustified.
+TEST/DR3/MTHC0/SI2275.WAV It all did look very efficient and shipshape.
+TEST/DR3/MTHC0/SX115.WAV The emblem depicts the Acropolis all aglow.
+TEST/DR3/MTHC0/SX205.WAV Military personnel are expected to obey government orders.
+TEST/DR3/MTHC0/SX25.WAV Only lawyers love millionaires.
+TEST/DR3/MTHC0/SX295.WAV If Carol comes tomorrow, have her arrange for a meeting at two.
+TEST/DR3/MTHC0/SX385.WAV His shoulder felt as if it were broken.
+TEST/DR3/MWJG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR3/MWJG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR3/MWJG0/SI1124.WAV Let me quote him even more fully, for his analysis is important to my theme.
+TEST/DR3/MWJG0/SI1754.WAV He said: the crazy fool, half aloud.
+TEST/DR3/MWJG0/SI494.WAV Bake slowly at least one-half hour longer.
+TEST/DR3/MWJG0/SX134.WAV December and January are nice months to spend in Miami.
+TEST/DR3/MWJG0/SX224.WAV How good is your endurance?
+TEST/DR3/MWJG0/SX314.WAV If people were more generous, there would be no need for welfare.
+TEST/DR3/MWJG0/SX404.WAV Barb burned paper and leaves in a big bonfire.
+TEST/DR3/MWJG0/SX44.WAV Basketball can be an entertaining sport.
+TEST/DR4/FADG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FADG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FADG0/SI1279.WAV Bricks are an alternative.
+TEST/DR4/FADG0/SI1909.WAV Fat showed in loose rolls beneath the shirt.
+TEST/DR4/FADG0/SI649.WAV It suffers from a lack of unity of purpose and respect for heroic leadership.
+TEST/DR4/FADG0/SX109.WAV She slipped and sprained her ankle on the steep slope.
+TEST/DR4/FADG0/SX199.WAV Young children should avoid exposure to contagious diseases.
+TEST/DR4/FADG0/SX19.WAV Aluminum silverware can often be flimsy.
+TEST/DR4/FADG0/SX289.WAV Weatherproof galoshes are very useful in Seattle.
+TEST/DR4/FADG0/SX379.WAV Pam gives driving lessons on Thursdays.
+TEST/DR4/FCFT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FCFT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FCFT0/SI1178.WAV Many selections are themselves convincing contributions to this appraisal.
+TEST/DR4/FCFT0/SI1808.WAV They went downstairs, loaded a tray lavishly.
+TEST/DR4/FCFT0/SI548.WAV Never happier in my life.
+TEST/DR4/FCFT0/SX188.WAV Who authorized the unlimited expense account?
+TEST/DR4/FCFT0/SX278.WAV To further his prestige, he occasionally reads the Wall Street Journal.
+TEST/DR4/FCFT0/SX368.WAV Lori's costume needed black gloves to be completely elegant.
+TEST/DR4/FCFT0/SX8.WAV Why yell or worry over silly items?
+TEST/DR4/FCFT0/SX98.WAV Guess the question from the answer.
+TEST/DR4/FCRH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FCRH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FCRH0/SI1088.WAV One wonders about its applicability to people.
+TEST/DR4/FCRH0/SI1718.WAV Do you know what they think of me?
+TEST/DR4/FCRH0/SI458.WAV This is not a program of socialized medicine.
+TEST/DR4/FCRH0/SX188.WAV Who authorized the unlimited expense account?
+TEST/DR4/FCRH0/SX278.WAV To further his prestige, he occasionally reads the Wall Street Journal.
+TEST/DR4/FCRH0/SX368.WAV Lori's costume needed black gloves to be completely elegant.
+TEST/DR4/FCRH0/SX8.WAV Why yell or worry over silly items?
+TEST/DR4/FCRH0/SX98.WAV Guess the question from the answer.
+TEST/DR4/FDMS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FDMS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FDMS0/SI1218.WAV Poets, moreover, dwell on human passions.
+TEST/DR4/FDMS0/SI1502.WAV It was not exactly panic they gave way to, but they could not just sit there.
+TEST/DR4/FDMS0/SI1848.WAV We can die, too, we can die like real people.
+TEST/DR4/FDMS0/SX138.WAV The clumsy customer spilled some expensive perfume.
+TEST/DR4/FDMS0/SX228.WAV The viewpoint overlooked the ocean.
+TEST/DR4/FDMS0/SX318.WAV Please dig my potatoes up before frost.
+TEST/DR4/FDMS0/SX408.WAV I'd ride the subway, but I haven't enough change.
+TEST/DR4/FDMS0/SX48.WAV Grandmother outgrew her upbringing in petticoats.
+TEST/DR4/FEDW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FEDW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FEDW0/SI1084.WAV The theme may be the formation of a shape from which other shapes evolve.
+TEST/DR4/FEDW0/SI1653.WAV He spoke soothingly.
+TEST/DR4/FEDW0/SI1714.WAV Here's where luck would normally step in.
+TEST/DR4/FEDW0/SX184.WAV The cat's meow always hurts my ears.
+TEST/DR4/FEDW0/SX274.WAV Cliff was soothed by the luxurious massage.
+TEST/DR4/FEDW0/SX364.WAV Each untimely income loss coincided with the breakdown of a heating system part.
+TEST/DR4/FEDW0/SX4.WAV Jane may earn more money by working hard.
+TEST/DR4/FEDW0/SX94.WAV Youngsters love common candy as treats.
+TEST/DR4/FGJD0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FGJD0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FGJD0/SI1179.WAV What shall these effects be?
+TEST/DR4/FGJD0/SI549.WAV These programs emphasize the acceptance of biracial classrooms peacefully.
+TEST/DR4/FGJD0/SI818.WAV Bones and cartilage transmit poorly and tend to reflect the ultrasonic signals.
+TEST/DR4/FGJD0/SX189.WAV Destroy every file related to my audits.
+TEST/DR4/FGJD0/SX279.WAV Alice's ability to work without supervision is noteworthy.
+TEST/DR4/FGJD0/SX369.WAV Bob papered over the living room murals.
+TEST/DR4/FGJD0/SX99.WAV Medieval society was based on hierarchies.
+TEST/DR4/FGJD0/SX9.WAV Where were you while we were away?
+TEST/DR4/FJLM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FJLM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FJLM0/SI1043.WAV Not surprisingly, this approach did not work.
+TEST/DR4/FJLM0/SI1673.WAV One thing, he thought, nobody knows about it yet.
+TEST/DR4/FJLM0/SI2303.WAV In short, and to borrow an arboreal phrase, slash timber.
+TEST/DR4/FJLM0/SX143.WAV The sound of Jennifer's bugle scared the antelope.
+TEST/DR4/FJLM0/SX233.WAV Highway and freeway mean the same thing.
+TEST/DR4/FJLM0/SX323.WAV The fog prevented them from arriving on time.
+TEST/DR4/FJLM0/SX413.WAV Daphne's Swedish needlepoint scarf matched her skirt.
+TEST/DR4/FJLM0/SX53.WAV Even a simple vocabulary contains symbols.
+TEST/DR4/FJMG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FJMG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FJMG0/SI1181.WAV Properly used, the present book is an excellent instrument of enlightenment.
+TEST/DR4/FJMG0/SI1811.WAV "Presently", his water brother said breathlessly.
+TEST/DR4/FJMG0/SI551.WAV Is the mother of an autistic child at fault?
+TEST/DR4/FJMG0/SX101.WAV Kindergarten children decorate their classrooms for all holidays.
+TEST/DR4/FJMG0/SX11.WAV He will allow a rare lie.
+TEST/DR4/FJMG0/SX191.WAV Withdraw all phony accusations at once.
+TEST/DR4/FJMG0/SX281.WAV Cory and Trish played tag with beach balls for hours.
+TEST/DR4/FJMG0/SX371.WAV Right now may not be the best time for business mergers.
+TEST/DR4/FLBW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FLBW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FLBW0/SI1219.WAV Students' choices of ideal educational goals are not arbitrary or whimsical.
+TEST/DR4/FLBW0/SI1849.WAV He remembered them well from his happy period.
+TEST/DR4/FLBW0/SI2253.WAV More, he could take at leisure.
+TEST/DR4/FLBW0/SX139.WAV The bungalow was pleasantly situated near the shore.
+TEST/DR4/FLBW0/SX229.WAV Are you looking for employment?
+TEST/DR4/FLBW0/SX319.WAV A big goat idly ambled through the farmyard.
+TEST/DR4/FLBW0/SX409.WAV Eating spinach nightly increases strength miraculously.
+TEST/DR4/FLBW0/SX49.WAV At twilight on the twelfth day we'll have Chablis.
+TEST/DR4/FLKD0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FLKD0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FLKD0/SI1369.WAV He admitted his behavior, and defended it.
+TEST/DR4/FLKD0/SI739.WAV Keep the desserts simple; fruit does nicely.
+TEST/DR4/FLKD0/SI894.WAV New ideas for improving nutrition came with the study of soil treatment.
+TEST/DR4/FLKD0/SX109.WAV She slipped and sprained her ankle on the steep slope.
+TEST/DR4/FLKD0/SX199.WAV Young children should avoid exposure to contagious diseases.
+TEST/DR4/FLKD0/SX19.WAV Aluminum silverware can often be flimsy.
+TEST/DR4/FLKD0/SX289.WAV Weatherproof galoshes are very useful in Seattle.
+TEST/DR4/FLKD0/SX379.WAV Pam gives driving lessons on Thursdays.
+TEST/DR4/FMAF0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FMAF0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FMAF0/SI1459.WAV This is especially true for knitted fabrics.
+TEST/DR4/FMAF0/SI2089.WAV If he ever did such a thing again she'd die of shame.
+TEST/DR4/FMAF0/SI829.WAV What it does: stimulates rumen activity.
+TEST/DR4/FMAF0/SX109.WAV She slipped and sprained her ankle on the steep slope.
+TEST/DR4/FMAF0/SX199.WAV Young children should avoid exposure to contagious diseases.
+TEST/DR4/FMAF0/SX19.WAV Aluminum silverware can often be flimsy.
+TEST/DR4/FMAF0/SX289.WAV Weatherproof galoshes are very useful in Seattle.
+TEST/DR4/FMAF0/SX379.WAV Pam gives driving lessons on Thursdays.
+TEST/DR4/FMCM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FMCM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FMCM0/SI1180.WAV What factors condition the degree of realization at various times and places?
+TEST/DR4/FMCM0/SI1810.WAV That'll be plenty to eat by.
+TEST/DR4/FMCM0/SI550.WAV You certainly can't expect the infield to do any better than it did last year.
+TEST/DR4/FMCM0/SX100.WAV Project development was proceeding too slowly.
+TEST/DR4/FMCM0/SX10.WAV Are your grades higher or lower than Nancy's?
+TEST/DR4/FMCM0/SX190.WAV Serve the coleslaw after I add the oil.
+TEST/DR4/FMCM0/SX280.WAV The oasis was a mirage.
+TEST/DR4/FMCM0/SX370.WAV That noise problem grows more annoying each day.
+TEST/DR4/FNMR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FNMR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FNMR0/SI1399.WAV Does society really exist as an entity over and above the agglomeration of man?
+TEST/DR4/FNMR0/SI2029.WAV A note of awe came into his voice.
+TEST/DR4/FNMR0/SI769.WAV Set aside to dry with lid on sugar bowl.
+TEST/DR4/FNMR0/SX139.WAV The bungalow was pleasantly situated near the shore.
+TEST/DR4/FNMR0/SX229.WAV Are you looking for employment?
+TEST/DR4/FNMR0/SX319.WAV A big goat idly ambled through the farmyard.
+TEST/DR4/FNMR0/SX409.WAV Eating spinach nightly increases strength miraculously.
+TEST/DR4/FNMR0/SX49.WAV At twilight on the twelfth day we'll have Chablis.
+TEST/DR4/FREW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FREW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FREW0/SI1030.WAV Bring me the firecrackers.
+TEST/DR4/FREW0/SI1280.WAV The shelter shown would provide almost absolute fallout protection.
+TEST/DR4/FREW0/SI1910.WAV He lived and breathed for the mining company.
+TEST/DR4/FREW0/SX110.WAV The best way to learn is to solve extra problems.
+TEST/DR4/FREW0/SX200.WAV Ralph controlled the stopwatch from the bleachers.
+TEST/DR4/FREW0/SX20.WAV She wore warm, fleecy, woolen overalls.
+TEST/DR4/FREW0/SX290.WAV This brochure is particularly informative for a prospective buyer.
+TEST/DR4/FREW0/SX380.WAV Why charge money for such garbage?
+TEST/DR4/FRNG0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FRNG0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FRNG0/SI1355.WAV Regulative norms governing subgroups and roles.
+TEST/DR4/FRNG0/SI1985.WAV Eyes like hot honey, eyes that sizzled.
+TEST/DR4/FRNG0/SI725.WAV A spring trap for solid mounting and a regular hand trap are also available.
+TEST/DR4/FRNG0/SX185.WAV Did you buy any corduroy overalls?
+TEST/DR4/FRNG0/SX275.WAV Steve wore a bright red cashmere sweater.
+TEST/DR4/FRNG0/SX365.WAV The gunman kept his victim cornered at gunpoint for three hours.
+TEST/DR4/FRNG0/SX5.WAV She is thinner than I am.
+TEST/DR4/FRNG0/SX95.WAV Iguanas and alligators are tropical reptiles.
+TEST/DR4/FSEM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/FSEM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/FSEM0/SI1198.WAV It is awe-inspiring.
+TEST/DR4/FSEM0/SI1828.WAV Actually, they said, he did sleep, but so shortly and fitfully that he forgot.
+TEST/DR4/FSEM0/SI568.WAV At right is a casual style in a crushed unlined white leather.
+TEST/DR4/FSEM0/SX118.WAV Combine all the ingredients in a large bowl.
+TEST/DR4/FSEM0/SX208.WAV Rob sat by the pond and sketched the stray geese.
+TEST/DR4/FSEM0/SX28.WAV Beg that guard for one gallon of gas.
+TEST/DR4/FSEM0/SX298.WAV I'd rather not buy these shoes than be overcharged.
+TEST/DR4/FSEM0/SX388.WAV Her right hand aches whenever the barometric pressure changes.
+TEST/DR4/MBNS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MBNS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MBNS0/SI1220.WAV They also want money, prestige, and security.
+TEST/DR4/MBNS0/SI1850.WAV A good morrow to you, my boy.
+TEST/DR4/MBNS0/SI590.WAV Bridges, tunnels and ferries are the most common methods of river crossings.
+TEST/DR4/MBNS0/SX140.WAV Agricultural products are unevenly distributed.
+TEST/DR4/MBNS0/SX230.WAV Allow leeway here, but rationalize all errors.
+TEST/DR4/MBNS0/SX320.WAV The nearest synagogue may not be within walking distance.
+TEST/DR4/MBNS0/SX410.WAV Greg buys fresh milk each weekday morning.
+TEST/DR4/MBNS0/SX50.WAV Catastrophic economic cutbacks neglect the poor.
+TEST/DR4/MDLS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MDLS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MDLS0/SI1628.WAV This is my hen ledger, he informed him in an absorbed way.
+TEST/DR4/MDLS0/SI2258.WAV You were in a hurry, weren't you?
+TEST/DR4/MDLS0/SI998.WAV Yet they thrived on it.
+TEST/DR4/MDLS0/SX188.WAV Who authorized the unlimited expense account?
+TEST/DR4/MDLS0/SX278.WAV To further his prestige, he occasionally reads the Wall Street Journal.
+TEST/DR4/MDLS0/SX368.WAV Lori's costume needed black gloves to be completely elegant.
+TEST/DR4/MDLS0/SX8.WAV Why yell or worry over silly items?
+TEST/DR4/MDLS0/SX98.WAV Guess the question from the answer.
+TEST/DR4/MDRM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MDRM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MDRM0/SI1013.WAV Cereal grains have been used for centuries to prepare fermented beverages.
+TEST/DR4/MDRM0/SI1643.WAV Nurses' training here doesn't cost anything.
+TEST/DR4/MDRM0/SI2273.WAV It all seemed rather hopeless.
+TEST/DR4/MDRM0/SX113.WAV A muscular abdomen is good for your back.
+TEST/DR4/MDRM0/SX203.WAV The causeway ended abruptly at the shore.
+TEST/DR4/MDRM0/SX23.WAV Those musicians harmonize marvelously.
+TEST/DR4/MDRM0/SX293.WAV Please take this dirty table cloth to the cleaners for me.
+TEST/DR4/MDRM0/SX383.WAV The carpet cleaners shampooed our oriental rug.
+TEST/DR4/MGMM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MGMM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MGMM0/SI1129.WAV This group is secularist and their program tends to be technological.
+TEST/DR4/MGMM0/SI1759.WAV Got a heck of a buy on this, dirt cheap.
+TEST/DR4/MGMM0/SI499.WAV The scalloped edge is particularly appealing.
+TEST/DR4/MGMM0/SX139.WAV The bungalow was pleasantly situated near the shore.
+TEST/DR4/MGMM0/SX229.WAV Are you looking for employment?
+TEST/DR4/MGMM0/SX319.WAV A big goat idly ambled through the farmyard.
+TEST/DR4/MGMM0/SX409.WAV Eating spinach nightly increases strength miraculously.
+TEST/DR4/MGMM0/SX49.WAV At twilight on the twelfth day we'll have Chablis.
+TEST/DR4/MJDM1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MJDM1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MJDM1/SI1085.WAV He may toss coins; he may take slips paper from a grab bag.
+TEST/DR4/MJDM1/SI1715.WAV Within this framework, what followed was strained, even macabre.
+TEST/DR4/MJDM1/SI455.WAV One validated acts of school districts.
+TEST/DR4/MJDM1/SX185.WAV Did you buy any corduroy overalls?
+TEST/DR4/MJDM1/SX275.WAV Steve wore a bright red cashmere sweater.
+TEST/DR4/MJDM1/SX365.WAV The gunman kept his victim cornered at gunpoint for three hours.
+TEST/DR4/MJDM1/SX5.WAV She is thinner than I am.
+TEST/DR4/MJDM1/SX95.WAV Iguanas and alligators are tropical reptiles.
+TEST/DR4/MJRF0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MJRF0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MJRF0/SI1114.WAV Why should this be so?
+TEST/DR4/MJRF0/SI2081.WAV All the while she sat there, her sinewy arms swirled before her chest.
+TEST/DR4/MJRF0/SI821.WAV The target chart quickly and briefly tells you which additives do what.
+TEST/DR4/MJRF0/SX101.WAV Kindergarten children decorate their classrooms for all holidays.
+TEST/DR4/MJRF0/SX11.WAV He will allow a rare lie.
+TEST/DR4/MJRF0/SX191.WAV Withdraw all phony accusations at once.
+TEST/DR4/MJRF0/SX281.WAV Cory and Trish played tag with beach balls for hours.
+TEST/DR4/MJRF0/SX371.WAV Right now may not be the best time for business mergers.
+TEST/DR4/MKCL0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MKCL0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MKCL0/SI1091.WAV Solar activities could presumably bring long periods of flood or drought.
+TEST/DR4/MKCL0/SI1721.WAV Come home right away.
+TEST/DR4/MKCL0/SI461.WAV Day after day some new episode is reported.
+TEST/DR4/MKCL0/SX101.WAV Kindergarten children decorate their classrooms for all holidays.
+TEST/DR4/MKCL0/SX11.WAV He will allow a rare lie.
+TEST/DR4/MKCL0/SX191.WAV Withdraw all phony accusations at once.
+TEST/DR4/MKCL0/SX281.WAV Cory and Trish played tag with beach balls for hours.
+TEST/DR4/MKCL0/SX371.WAV Right now may not be the best time for business mergers.
+TEST/DR4/MLJB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MLJB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MLJB0/SI1310.WAV Many scouring powders now also contain phosphates.
+TEST/DR4/MLJB0/SI1940.WAV He was only vaguely aware of the sluicing rain.
+TEST/DR4/MLJB0/SI680.WAV No political order or economic system is so clearly contrary to nature.
+TEST/DR4/MLJB0/SX140.WAV Agricultural products are unevenly distributed.
+TEST/DR4/MLJB0/SX230.WAV Allow leeway here, but rationalize all errors.
+TEST/DR4/MLJB0/SX320.WAV The nearest synagogue may not be within walking distance.
+TEST/DR4/MLJB0/SX410.WAV Greg buys fresh milk each weekday morning.
+TEST/DR4/MLJB0/SX50.WAV Catastrophic economic cutbacks neglect the poor.
+TEST/DR4/MLLL0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MLLL0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MLLL0/SI1363.WAV Some of these speculations may have some merit, others are somewhat ambiguous.
+TEST/DR4/MLLL0/SI1993.WAV Should she wake him?
+TEST/DR4/MLLL0/SI733.WAV Do avoid puncturing or cutting into meats test them.
+TEST/DR4/MLLL0/SX103.WAV Call an ambulance for medical assistance.
+TEST/DR4/MLLL0/SX13.WAV Swing your arm as high as you can.
+TEST/DR4/MLLL0/SX193.WAV Why buy oil when you always use mine?
+TEST/DR4/MLLL0/SX283.WAV Planned parenthood organizations promote birth control.
+TEST/DR4/MLLL0/SX373.WAV A boring novel is a superb sleeping pill.
+TEST/DR4/MPCS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MPCS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MPCS0/SI1359.WAV In short, scientific sampling was introduced in place of subjective sampling.
+TEST/DR4/MPCS0/SI1989.WAV Accident, murder, suicide -- take your pick.
+TEST/DR4/MPCS0/SI729.WAV Best solution is to find an area that is predominantly sunlight or shade.
+TEST/DR4/MPCS0/SX189.WAV Destroy every file related to my audits.
+TEST/DR4/MPCS0/SX279.WAV Alice's ability to work without supervision is noteworthy.
+TEST/DR4/MPCS0/SX369.WAV Bob papered over the living room murals.
+TEST/DR4/MPCS0/SX99.WAV Medieval society was based on hierarchies.
+TEST/DR4/MPCS0/SX9.WAV Where were you while we were away?
+TEST/DR4/MPLB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MPLB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MPLB0/SI1394.WAV The ramifications of the issue are enormous.
+TEST/DR4/MPLB0/SI2024.WAV They don't go for bull-like muscle, as a rule.
+TEST/DR4/MPLB0/SI764.WAV Trim excess clay from around lip of mold and set aside while assembling lid.
+TEST/DR4/MPLB0/SX134.WAV December and January are nice months to spend in Miami.
+TEST/DR4/MPLB0/SX224.WAV How good is your endurance?
+TEST/DR4/MPLB0/SX314.WAV If people were more generous, there would be no need for welfare.
+TEST/DR4/MPLB0/SX404.WAV Barb burned paper and leaves in a big bonfire.
+TEST/DR4/MPLB0/SX44.WAV Basketball can be an entertaining sport.
+TEST/DR4/MPWM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MPWM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MPWM0/SI1127.WAV We of the liberal-led world got all set for peace and rehabilitation.
+TEST/DR4/MPWM0/SI1757.WAV His sarcasm was followed by a stupid grin of his thick mouth and bad teeth.
+TEST/DR4/MPWM0/SI2279.WAV Officials meet on rubbish.
+TEST/DR4/MPWM0/SX137.WAV Tradition requires parental approval for under-age marriage.
+TEST/DR4/MPWM0/SX227.WAV It's healthier to cook without sugar.
+TEST/DR4/MPWM0/SX317.WAV The cranberry bog gets very pretty in Autumn.
+TEST/DR4/MPWM0/SX407.WAV Laugh, dance, and sing if fortune smiles upon you.
+TEST/DR4/MPWM0/SX47.WAV Mom strongly dislikes appetizers.
+TEST/DR4/MRKO0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MRKO0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MRKO0/SI1397.WAV The plaintiff in school desegregation cases.
+TEST/DR4/MRKO0/SI2027.WAV They came upon cheetal deer at woodland pools.
+TEST/DR4/MRKO0/SI767.WAV Trim away excess clay; reinforce seam with a coil of clay.
+TEST/DR4/MRKO0/SX137.WAV Tradition requires parental approval for under-age marriage.
+TEST/DR4/MRKO0/SX227.WAV It's healthier to cook without sugar.
+TEST/DR4/MRKO0/SX317.WAV The cranberry bog gets very pretty in Autumn.
+TEST/DR4/MRKO0/SX407.WAV Laugh, dance, and sing if fortune smiles upon you.
+TEST/DR4/MRKO0/SX47.WAV Mom strongly dislikes appetizers.
+TEST/DR4/MROA0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MROA0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MROA0/SI1307.WAV This is known as conformational entropy.
+TEST/DR4/MROA0/SI1970.WAV The clearly identifiable enemy continued on as if no one else were around.
+TEST/DR4/MROA0/SI677.WAV Comparable trends can be noted elsewhere.
+TEST/DR4/MROA0/SX137.WAV Tradition requires parental approval for under-age marriage.
+TEST/DR4/MROA0/SX227.WAV It's healthier to cook without sugar.
+TEST/DR4/MROA0/SX317.WAV The cranberry bog gets very pretty in Autumn.
+TEST/DR4/MROA0/SX407.WAV Laugh, dance, and sing if fortune smiles upon you.
+TEST/DR4/MROA0/SX47.WAV Mom strongly dislikes appetizers.
+TEST/DR4/MTEB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MTEB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MTEB0/SI1133.WAV It can project long-range goals for itself.
+TEST/DR4/MTEB0/SI2064.WAV He was gifted with animal magnetism and a potent allure for women of any race.
+TEST/DR4/MTEB0/SI503.WAV Very austere yet racy.
+TEST/DR4/MTEB0/SX143.WAV The sound of Jennifer's bugle scared the antelope.
+TEST/DR4/MTEB0/SX233.WAV Highway and freeway mean the same thing.
+TEST/DR4/MTEB0/SX323.WAV The fog prevented them from arriving on time.
+TEST/DR4/MTEB0/SX413.WAV Daphne's Swedish needlepoint scarf matched her skirt.
+TEST/DR4/MTEB0/SX53.WAV Even a simple vocabulary contains symbols.
+TEST/DR4/MTLS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR4/MTLS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR4/MTLS0/SI1370.WAV We may say that his problem was diagnosed but that he refused treatment.
+TEST/DR4/MTLS0/SI2000.WAV We can get it if we dig, he said patiently.
+TEST/DR4/MTLS0/SI740.WAV Do without fancy tablecloths.
+TEST/DR4/MTLS0/SX110.WAV The best way to learn is to solve extra problems.
+TEST/DR4/MTLS0/SX200.WAV Ralph controlled the stopwatch from the bleachers.
+TEST/DR4/MTLS0/SX20.WAV She wore warm, fleecy, woolen overalls.
+TEST/DR4/MTLS0/SX290.WAV This brochure is particularly informative for prospective buyer.
+TEST/DR4/MTLS0/SX380.WAV Why charge money for such garbage?
+TEST/DR5/FASW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FASW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FASW0/SI1550.WAV Maybe today'll be a good-news day.
+TEST/DR5/FASW0/SI2180.WAV She spouted a mouthful of water into the air.
+TEST/DR5/FASW0/SI920.WAV Too many new things are happening for it to be a complete erotic fulfillment.
+TEST/DR5/FASW0/SX110.WAV The best way to learn is to solve extra problems.
+TEST/DR5/FASW0/SX200.WAV Ralph controlled the stopwatch from the bleachers.
+TEST/DR5/FASW0/SX20.WAV She wore warm, fleecy, woolen overalls.
+TEST/DR5/FASW0/SX290.WAV This brochure is particularly informative for a prospective buyer.
+TEST/DR5/FASW0/SX380.WAV Why charge money for such garbage?
+TEST/DR5/FAWF0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FAWF0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FAWF0/SI1000.WAV Soon the office work claimed all her time.
+TEST/DR5/FAWF0/SI1630.WAV Next, the hen was nested and all seemed well.
+TEST/DR5/FAWF0/SI2260.WAV Heavy industry, slanted toward inexhaustible government coffers, attracted him.
+TEST/DR5/FAWF0/SX100.WAV Project development was proceeding too slowly.
+TEST/DR5/FAWF0/SX10.WAV Are your grades higher or lower than Nancy's?
+TEST/DR5/FAWF0/SX190.WAV Serve the coleslaw after I add the oil.
+TEST/DR5/FAWF0/SX280.WAV The oasis was a mirage.
+TEST/DR5/FAWF0/SX370.WAV That noise problem grows more annoying each day.
+TEST/DR5/FCAL1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FCAL1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FCAL1/SI1403.WAV In what ways, then, did the patient's psychical blindness manifest itself?
+TEST/DR5/FCAL1/SI2033.WAV It would be a colossal shame to throw away a story like this.
+TEST/DR5/FCAL1/SI773.WAV Let all projects dry slowly for several days.
+TEST/DR5/FCAL1/SX143.WAV The sound of Jennifer's bugle scared the antelope.
+TEST/DR5/FCAL1/SX233.WAV Highway and freeway mean the same thing.
+TEST/DR5/FCAL1/SX323.WAV The fog prevented them from arriving on time.
+TEST/DR5/FCAL1/SX413.WAV Daphne's Swedish needlepoint scarf matched her skirt.
+TEST/DR5/FCAL1/SX53.WAV Even a simple vocabulary contains symbols.
+TEST/DR5/FGMD0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FGMD0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FGMD0/SI1943.WAV For the unseen, ghostlike rifleman aimed a little higher the third time.
+TEST/DR5/FGMD0/SI2107.WAV It sounded silly; why go on?
+TEST/DR5/FGMD0/SI683.WAV An octillion atoms -- now let us see where this power comes from.
+TEST/DR5/FGMD0/SX143.WAV The sound of Jennifer's bugle scared the antelope.
+TEST/DR5/FGMD0/SX233.WAV Highway and freeway mean the same thing.
+TEST/DR5/FGMD0/SX323.WAV The fog prevented them from arriving on time.
+TEST/DR5/FGMD0/SX413.WAV Daphne's Swedish needlepoint scarf matched her skirt.
+TEST/DR5/FGMD0/SX53.WAV Even a simple vocabulary contains symbols.
+TEST/DR5/FHES0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FHES0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FHES0/SI1109.WAV A wheel squeaked on a hub, was still, and squeaked again.
+TEST/DR5/FHES0/SI1739.WAV Oh, the time of death.
+TEST/DR5/FHES0/SI479.WAV The structures housing the apartments are of masonry and frame construction.
+TEST/DR5/FHES0/SX119.WAV The misquote was retracted with an apology.
+TEST/DR5/FHES0/SX209.WAV Michael colored the bedroom wall with crayons.
+TEST/DR5/FHES0/SX299.WAV Shaving cream is a popular item on Halloween.
+TEST/DR5/FHES0/SX29.WAV Help Greg to pick a peck of potatoes.
+TEST/DR5/FHES0/SX389.WAV They own a big house in the remote countryside.
+TEST/DR5/FHEW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FHEW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FHEW0/SI2023.WAV Nowadays, we talk as though the blitz were just a short skirmish.
+TEST/DR5/FHEW0/SI690.WAV Propriety was synonymous with ritual observance, the mark of a true gentleman.
+TEST/DR5/FHEW0/SI763.WAV Jars are assembled in bowl of butter mold.
+TEST/DR5/FHEW0/SX133.WAV Pizzerias are convenient for a quick lunch.
+TEST/DR5/FHEW0/SX223.WAV Put the butcher block table in the garage.
+TEST/DR5/FHEW0/SX313.WAV Drop five forms in the box before you go out.
+TEST/DR5/FHEW0/SX403.WAV Her wardrobe consists of only skirts and blouses.
+TEST/DR5/FHEW0/SX43.WAV Elderly people are often excluded.
+TEST/DR5/FJCS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FJCS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FJCS0/SI1309.WAV The better quality products in both of these lines contain phosphate builders.
+TEST/DR5/FJCS0/SI1833.WAV Why pick me for your patsy?
+TEST/DR5/FJCS0/SI1939.WAV Put on his old brown corduroy coat and it was already soaked.
+TEST/DR5/FJCS0/SX139.WAV The bungalow was pleasantly situated near the shore.
+TEST/DR5/FJCS0/SX229.WAV Are you looking for employment?
+TEST/DR5/FJCS0/SX319.WAV A big goat idly ambled through the farmyard.
+TEST/DR5/FJCS0/SX409.WAV Eating spinach nightly increases strength miraculously.
+TEST/DR5/FJCS0/SX49.WAV At twilight on the twelfth day we'll have Chablis.
+TEST/DR5/FJSA0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FJSA0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FJSA0/SI1379.WAV You would drive us into shame, he declared.
+TEST/DR5/FJSA0/SI2009.WAV The clouds bulged downward and burst suddenly into a great black funnel.
+TEST/DR5/FJSA0/SI749.WAV Fold into whipped cream and add a dash of salt and sprinkling of paprika.
+TEST/DR5/FJSA0/SX119.WAV The misquote was retracted with an apology.
+TEST/DR5/FJSA0/SX209.WAV Michael colored the bedroom wall with crayons.
+TEST/DR5/FJSA0/SX299.WAV Shaving cream is a popular item on Halloween.
+TEST/DR5/FJSA0/SX29.WAV Help Greg to pick a peck of potatoes.
+TEST/DR5/FJSA0/SX389.WAV They own a big house in the remote countryside.
+TEST/DR5/FMAH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FMAH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FMAH0/SI1289.WAV A flame would use up air.
+TEST/DR5/FMAH0/SI1919.WAV Every movement she made seemed unnecessarily noisy.
+TEST/DR5/FMAH0/SI659.WAV His history is his alone, yet each man must recognize his own history in it.
+TEST/DR5/FMAH0/SX119.WAV The misquote was retracted with an apology.
+TEST/DR5/FMAH0/SX209.WAV Michael colored the bedroom wall with crayons.
+TEST/DR5/FMAH0/SX299.WAV Shaving cream is a popular item on Halloween.
+TEST/DR5/FMAH0/SX29.WAV Help Greg to pick a peck of potatoes.
+TEST/DR5/FMAH0/SX389.WAV They own a big house in the remote countryside.
+TEST/DR5/FNLP0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FNLP0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FNLP0/SI1308.WAV Indeed it is possible to separate electron paramagnetic from nuclear effects.
+TEST/DR5/FNLP0/SI1938.WAV Lighted windows glowed jewel-bright through the downpour.
+TEST/DR5/FNLP0/SI678.WAV Salvation reconsidered.
+TEST/DR5/FNLP0/SX138.WAV The clumsy customer spilled some expensive perfume.
+TEST/DR5/FNLP0/SX228.WAV The viewpoint overlooked the ocean.
+TEST/DR5/FNLP0/SX318.WAV Please dig my potatoes up before frost.
+TEST/DR5/FNLP0/SX408.WAV I'd ride the subway, but I haven't enough change.
+TEST/DR5/FNLP0/SX48.WAV Grandmother outgrew her upbringing in petticoats.
+TEST/DR5/FUTB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/FUTB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/FUTB0/SI1204.WAV The purchasers rejected the order in two letters written in vigorous terms.
+TEST/DR5/FUTB0/SI1330.WAV The lower portion provides a rating at any stage between infancy and adulthood.
+TEST/DR5/FUTB0/SI1834.WAV Why accuse a shipmate of being behind this?
+TEST/DR5/FUTB0/SX124.WAV Objects made of pewter are beautiful.
+TEST/DR5/FUTB0/SX214.WAV The morning dew on the spider web glistened in the sun.
+TEST/DR5/FUTB0/SX304.WAV Cheap stockings run the first time they're worn.
+TEST/DR5/FUTB0/SX34.WAV Don't do Charlie's dirty dishes.
+TEST/DR5/FUTB0/SX394.WAV Calcium makes bones and teeth strong.
+TEST/DR5/MAHH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MAHH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MAHH0/SI1294.WAV If you are a life tenant, you deduct allowable depreciation and depletion.
+TEST/DR5/MAHH0/SI1924.WAV Getting the boss rattlesnake to help you?
+TEST/DR5/MAHH0/SI664.WAV Look at the things we do to escape our fears and to forget our worries.
+TEST/DR5/MAHH0/SX124.WAV Objects made of pewter are beautiful.
+TEST/DR5/MAHH0/SX214.WAV The morning dew on the spider web glistened in the sun.
+TEST/DR5/MAHH0/SX304.WAV Cheap stockings run the first time they're worn.
+TEST/DR5/MAHH0/SX34.WAV Don't do Charlie's dirty dishes.
+TEST/DR5/MAHH0/SX394.WAV Calcium makes bones and teeth strong.
+TEST/DR5/MBPM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MBPM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MBPM0/SI1577.WAV Brown eyes, eyebrow mustache.
+TEST/DR5/MBPM0/SI1584.WAV Rector was often curious; often tempted to ask questions but he never did.
+TEST/DR5/MBPM0/SI947.WAV Few rural areas are protected by zoning.
+TEST/DR5/MBPM0/SX137.WAV Tradition requires parental approval for under-age marriage.
+TEST/DR5/MBPM0/SX227.WAV It's healthier to cook without sugar.
+TEST/DR5/MBPM0/SX317.WAV The cranberry bog gets very pretty in Autumn.
+TEST/DR5/MBPM0/SX407.WAV Laugh, dance, and sing if fortune smiles upon you.
+TEST/DR5/MBPM0/SX47.WAV Mom strongly dislikes appetizers.
+TEST/DR5/MCMB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MCMB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MCMB0/SI1268.WAV The shutter consists of two parts: a fast-opening part and a fast-closing part.
+TEST/DR5/MCMB0/SI1898.WAV You've got no business up here.
+TEST/DR5/MCMB0/SI638.WAV This theory eventually proved inexact.
+TEST/DR5/MCMB0/SX188.WAV Who authorized the unlimited expense account?
+TEST/DR5/MCMB0/SX278.WAV To further his prestige, he occasionally reads the Wall Street Journal.
+TEST/DR5/MCMB0/SX368.WAV Lori's costume needed black gloves to be completely elegant.
+TEST/DR5/MCMB0/SX8.WAV Why yell or worry over silly items?
+TEST/DR5/MCMB0/SX98.WAV Guess the question from the answer.
+TEST/DR5/MCRC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MCRC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MCRC0/SI1092.WAV Yet we no longer feel uneasy.
+TEST/DR5/MCRC0/SI1722.WAV He drove, and the road wobbled, familiar scenes crept past on either side.
+TEST/DR5/MCRC0/SI462.WAV It also provides for funds to clear slums and help colleges build dormitories.
+TEST/DR5/MCRC0/SX102.WAV Special task forces rescue hostages from kidnappers.
+TEST/DR5/MCRC0/SX12.WAV Will Robin wear a yellow lily?
+TEST/DR5/MCRC0/SX192.WAV Straw hats are out of fashion this year.
+TEST/DR5/MCRC0/SX282.WAV The tooth fairy forgot to come when Roger's tooth fell out.
+TEST/DR5/MCRC0/SX372.WAV That diagram makes sense only after much study.
+TEST/DR5/MCTT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MCTT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MCTT0/SI1144.WAV We would establish no censorship.
+TEST/DR5/MCTT0/SI2188.WAV He says he'll be here on the one-o'clock plane.
+TEST/DR5/MCTT0/SI928.WAV Asked why, he replied primly: because that's no activity for a gentleman.
+TEST/DR5/MCTT0/SX118.WAV Combine all the ingredients in a large bowl.
+TEST/DR5/MCTT0/SX208.WAV Rob sat by the pond and sketched the stray geese.
+TEST/DR5/MCTT0/SX28.WAV Beg that guard for one gallon of gas.
+TEST/DR5/MCTT0/SX298.WAV I'd rather not buy these shoes than be overcharged.
+TEST/DR5/MCTT0/SX388.WAV Her right hand aches whenever the barometric pressure changes.
+TEST/DR5/MDAC2/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MDAC2/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MDAC2/SI2259.WAV The tale, he thought, would become less gay.
+TEST/DR5/MDAC2/SI560.WAV Where only one club existed before, he says, two will flourish henceforth.
+TEST/DR5/MDAC2/SI999.WAV Now the school was indeed bereft.
+TEST/DR5/MDAC2/SX189.WAV Destroy every file related to my audits.
+TEST/DR5/MDAC2/SX279.WAV Alice's ability to work without supervision is noteworthy.
+TEST/DR5/MDAC2/SX369.WAV Bob papered over the living room murals.
+TEST/DR5/MDAC2/SX99.WAV Medieval society was based on hierarchies.
+TEST/DR5/MDAC2/SX9.WAV Where were you while we were away?
+TEST/DR5/MDRB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MDRB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MDRB0/SI1174.WAV It had a teeny envelope tied to its wrist.
+TEST/DR5/MDRB0/SI2109.WAV She looked crestfallen, as if he had somehow disappointed the whole human race.
+TEST/DR5/MDRB0/SI544.WAV Theirs is a sacrificial life by earthly standards.
+TEST/DR5/MDRB0/SX184.WAV The cat's meow always hurts my ears.
+TEST/DR5/MDRB0/SX274.WAV Cliff was soothed by the luxurious massage.
+TEST/DR5/MDRB0/SX364.WAV Each untimely income loss coincided with the breakdown of a heating system part.
+TEST/DR5/MDRB0/SX4.WAV Jane may earn more money by working hard.
+TEST/DR5/MDRB0/SX94.WAV Youngsters love common candy as treats.
+TEST/DR5/MDWA0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MDWA0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MDWA0/SI1146.WAV We knew that it was, as reassurance, the ironic fruit of a deeply moral nature.
+TEST/DR5/MDWA0/SI1445.WAV Coverage of primary literature will follow.
+TEST/DR5/MDWA0/SI519.WAV That added traffic means rising streams of dimes and quarters at toll gates.
+TEST/DR5/MDWA0/SX185.WAV Did you buy any corduroy overalls?
+TEST/DR5/MDWA0/SX275.WAV Steve wore a bright red cashmere sweater.
+TEST/DR5/MDWA0/SX365.WAV The gunman kept his victim cornered at gunpoint for three hours.
+TEST/DR5/MDWA0/SX5.WAV She is thinner than I am.
+TEST/DR5/MDWA0/SX95.WAV Iguanas and alligators are tropical reptiles.
+TEST/DR5/MDWK0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MDWK0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MDWK0/SI1540.WAV He wondered if it wore the old anxiety, or the old, taut stoicism.
+TEST/DR5/MDWK0/SI2170.WAV His dark brows, which had been lowered in anger, smoothed.
+TEST/DR5/MDWK0/SI910.WAV To put it bluntly, you are getting out-moded.
+TEST/DR5/MDWK0/SX100.WAV Project development was proceeding too slowly.
+TEST/DR5/MDWK0/SX10.WAV Are your grades higher or lower than Nancy's?
+TEST/DR5/MDWK0/SX190.WAV Serve the coleslaw after I add the oil.
+TEST/DR5/MDWK0/SX280.WAV The oasis was a mirage.
+TEST/DR5/MDWK0/SX370.WAV That noise problem grows more annoying each day.
+TEST/DR5/MFGK0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MFGK0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MFGK0/SI1451.WAV To date, the one meat showing favorable results at sterilization doses is pork.
+TEST/DR5/MFGK0/SI1744.WAV Old people have their idiosyncrasies.
+TEST/DR5/MFGK0/SI484.WAV The family requests that flowers be omitted.
+TEST/DR5/MFGK0/SX124.WAV Objects made of pewter are beautiful.
+TEST/DR5/MFGK0/SX214.WAV The morning dew on the spider web glistened in the sun.
+TEST/DR5/MFGK0/SX304.WAV Cheap stockings run the first time they're worn.
+TEST/DR5/MFGK0/SX34.WAV Don't do Charlie's dirty dishes.
+TEST/DR5/MFGK0/SX394.WAV Calcium makes bones and teeth strong.
+TEST/DR5/MKLT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MKLT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MKLT0/SI1213.WAV My own experience has followed simpler lines.
+TEST/DR5/MKLT0/SI1843.WAV She was ready for her great adventures and the arrival of her mobile partner.
+TEST/DR5/MKLT0/SI583.WAV This we can sympathetically understand.
+TEST/DR5/MKLT0/SX133.WAV Pizzerias are convenient for quick lunch.
+TEST/DR5/MKLT0/SX223.WAV Put the butcher block table in the garage.
+TEST/DR5/MKLT0/SX313.WAV Drop five forms in the box before you go out.
+TEST/DR5/MKLT0/SX403.WAV Her wardrobe consists of only skirts and blouses.
+TEST/DR5/MKLT0/SX43.WAV Elderly people are often excluded.
+TEST/DR5/MLIH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MLIH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MLIH0/SI1183.WAV It is the obverse of triviality, shallowness, emotional anaesthesia.
+TEST/DR5/MLIH0/SI1813.WAV You too were a stupid jackass until you poisoned me.
+TEST/DR5/MLIH0/SI553.WAV As a rule, the autistic child doesn't enjoy physical contact with others.
+TEST/DR5/MLIH0/SX103.WAV Call an ambulance for a medical assistance.
+TEST/DR5/MLIH0/SX13.WAV Swing your arm as high as you can.
+TEST/DR5/MLIH0/SX193.WAV Why buy oil when you always use mine?
+TEST/DR5/MLIH0/SX283.WAV Planned parenthood organizations promote birth control.
+TEST/DR5/MLIH0/SX373.WAV A boring novel is a superb sleeping pill.
+TEST/DR5/MRJM3/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MRJM3/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MRJM3/SI1448.WAV It will, however, inhibit the sprouting of potatoes and other root vegetables.
+TEST/DR5/MRJM3/SI1809.WAV Okay, take the tray.
+TEST/DR5/MRJM3/SI2078.WAV Or the bay of female dogs in heat.
+TEST/DR5/MRJM3/SX188.WAV Who authorized the unlimited expense account?
+TEST/DR5/MRJM3/SX278.WAV To further his prestige, he occasionally reads the Wall Street Journal.
+TEST/DR5/MRJM3/SX368.WAV Lori's costume needed black gloves to be completely elegant.
+TEST/DR5/MRJM3/SX8.WAV Why yell or worry over silly items?
+TEST/DR5/MRJM3/SX98.WAV Guess the question from the answer.
+TEST/DR5/MRPP0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MRPP0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MRPP0/SI1184.WAV There results a study of literature freed from the tyranny of the contemporary.
+TEST/DR5/MRPP0/SI1814.WAV Afterwards you did well enough.
+TEST/DR5/MRPP0/SI554.WAV Or certain words or rituals that child and adult go through may do the trick.
+TEST/DR5/MRPP0/SX104.WAV He stole a dime from a beggar.
+TEST/DR5/MRPP0/SX14.WAV Before Thursday's exam, review every formula.
+TEST/DR5/MRPP0/SX194.WAV They enjoy it when I audition.
+TEST/DR5/MRPP0/SX284.WAV Jeff thought you argued in favor of a centrifuge purchase.
+TEST/DR5/MRPP0/SX374.WAV John cleaned shellfish for a living.
+TEST/DR5/MRRK0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MRRK0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MRRK0/SI1288.WAV A portable electric heater is advisable for shelters in cold climates.
+TEST/DR5/MRRK0/SI1716.WAV He drew a deep breath.
+TEST/DR5/MRRK0/SI1918.WAV It circled her thighs, exploring with its icy tentacles.
+TEST/DR5/MRRK0/SX118.WAV Combine all the ingredients in a large bowl.
+TEST/DR5/MRRK0/SX208.WAV Rob sat by the pond and sketched the stray geese.
+TEST/DR5/MRRK0/SX28.WAV Beg that guard for one gallon of gas.
+TEST/DR5/MRRK0/SX298.WAV I'd rather not buy these shoes than be overcharged.
+TEST/DR5/MRRK0/SX388.WAV Her right hand aches whenever the barometric pressure changes.
+TEST/DR5/MRWS1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MRWS1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MRWS1/SI1130.WAV Should the accelerating growth of technology then warn us?
+TEST/DR5/MRWS1/SI1496.WAV After that, violence was exultantly easy.
+TEST/DR5/MRWS1/SI500.WAV There are more obvious nymphomaniacs on any private-eye series.
+TEST/DR5/MRWS1/SX140.WAV Agricultural products are unevenly distributed.
+TEST/DR5/MRWS1/SX230.WAV Allow leeway here, but rationalize all errors.
+TEST/DR5/MRWS1/SX320.WAV The nearest synagogue may not be within walking distance.
+TEST/DR5/MRWS1/SX410.WAV Greg buys fresh milk each weekday morning.
+TEST/DR5/MRWS1/SX50.WAV Catastrophic economic cutbacks neglect the poor.
+TEST/DR5/MSFH1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR5/MSFH1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR5/MSFH1/SI1270.WAV Vapor pressure method.
+TEST/DR5/MSFH1/SI1900.WAV There would still be plenty of moments of regret and sadness and guilty relief.
+TEST/DR5/MSFH1/SI640.WAV But what has been happening recently might be described as creeping mannerism.
+TEST/DR5/MSFH1/SX100.WAV Project development was proceeding too slowly.
+TEST/DR5/MSFH1/SX10.WAV Are your grades higher or lower than Nancy's?
+TEST/DR5/MSFH1/SX190.WAV Serve the coleslaw after I add the oil.
+TEST/DR5/MSFH1/SX280.WAV The oasis was a mirage.
+TEST/DR5/MSFH1/SX370.WAV That noise problem grows more annoying each day.
+TEST/DR6/FDRW0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/FDRW0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/FDRW0/SI1283.WAV Living in a shelter the radioactivity of fallout decays rapidly at first.
+TEST/DR6/FDRW0/SI1423.WAV About dawn he got up to blow.
+TEST/DR6/FDRW0/SI653.WAV Surely this is a reality we all acknowledge.
+TEST/DR6/FDRW0/SX113.WAV A muscular abdomen is good for your back.
+TEST/DR6/FDRW0/SX203.WAV The causeway ended abruptly at the shore.
+TEST/DR6/FDRW0/SX23.WAV Those musicians harmonize marvelously.
+TEST/DR6/FDRW0/SX293.WAV Please take this dirty table cloth to the cleaners for me.
+TEST/DR6/FDRW0/SX383.WAV The carpet cleaners shampooed our oriental rug.
+TEST/DR6/FLNH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/FLNH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/FLNH0/SI1214.WAV Religion thus becomes integrated with life.
+TEST/DR6/FLNH0/SI584.WAV This is taxation without representation.
+TEST/DR6/FLNH0/SI941.WAV The farmer's life must be arranged to meet the demands of crops and livestock.
+TEST/DR6/FLNH0/SX134.WAV December and January are nice months to spend in Miami.
+TEST/DR6/FLNH0/SX224.WAV How good is your endurance?
+TEST/DR6/FLNH0/SX314.WAV If people were more generous, there would be no need for welfare.
+TEST/DR6/FLNH0/SX404.WAV Barb burned paper and leaves in a big bonfire.
+TEST/DR6/FLNH0/SX44.WAV Basketball can be an entertaining sport.
+TEST/DR6/FMGD0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/FMGD0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/FMGD0/SI1564.WAV Husbandry was bounded by snake-rail fences, and there were grazing cattle.
+TEST/DR6/FMGD0/SI2194.WAV He had fallen into a soft job, and now the job was gone and he was stranded.
+TEST/DR6/FMGD0/SI934.WAV Authorities say that oldsters are a prime target.
+TEST/DR6/FMGD0/SX124.WAV Objects made of pewter are beautiful.
+TEST/DR6/FMGD0/SX214.WAV The morning dew on the spider web glistened in the sun.
+TEST/DR6/FMGD0/SX304.WAV Cheap stockings run the first time they're worn.
+TEST/DR6/FMGD0/SX34.WAV Don't do Charlie's dirty dishes.
+TEST/DR6/FMGD0/SX394.WAV Calcium makes bones and teeth strong.
+TEST/DR6/MCMJ0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MCMJ0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MCMJ0/SI1094.WAV American newspaper reviewers like to call his plays nihilistic.
+TEST/DR6/MCMJ0/SI464.WAV The prospect of cutting back spending is an unpleasant one for any governor.
+TEST/DR6/MCMJ0/SI602.WAV But the ships are very slow now, and we don't get so many sailors any more.
+TEST/DR6/MCMJ0/SX104.WAV He stole a dime from a beggar.
+TEST/DR6/MCMJ0/SX14.WAV Before Thursday's exam, review every formula.
+TEST/DR6/MCMJ0/SX194.WAV They enjoy it when I audition.
+TEST/DR6/MCMJ0/SX284.WAV Jeff thought you argued in favor of a centrifuge purchase.
+TEST/DR6/MCMJ0/SX374.WAV John cleans shellfish for a living.
+TEST/DR6/MDSC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MDSC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MDSC0/SI1038.WAV The courtyard is magnificently decorated.
+TEST/DR6/MDSC0/SI2298.WAV As a result, he was persuaded out to dinner.
+TEST/DR6/MDSC0/SI967.WAV He not only knew soldiering, but mathematics, history and literature as well.
+TEST/DR6/MDSC0/SX138.WAV The clumsy customer spilled some expensive perfume.
+TEST/DR6/MDSC0/SX228.WAV The viewpoint overlooked the ocean.
+TEST/DR6/MDSC0/SX318.WAV Please dig my potatoes up before frost.
+TEST/DR6/MDSC0/SX408.WAV I'd ride the subway, but I haven't enough change.
+TEST/DR6/MDSC0/SX48.WAV Grandmother outgrew her upbringing in petticoats.
+TEST/DR6/MESD0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MESD0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MESD0/SI1002.WAV We produce peanut oil, but to a much greater extent we eat the entire seed.
+TEST/DR6/MESD0/SI1632.WAV Fuss, fuss, old man.
+TEST/DR6/MESD0/SI2262.WAV We've all been rich and spoiled long enough to hate the machine age.
+TEST/DR6/MESD0/SX102.WAV Special task forces rescue hostages from kidnappers.
+TEST/DR6/MESD0/SX12.WAV Will Robin wear a yellow lily?
+TEST/DR6/MESD0/SX192.WAV Straw hats are out of fashion this year.
+TEST/DR6/MESD0/SX282.WAV The tooth fairy forgot to come when Roger's tooth fell out.
+TEST/DR6/MESD0/SX372.WAV That diagram makes sense only after much study.
+TEST/DR6/MJDH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MJDH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MJDH0/SI1354.WAV Within the larger social system are the structural and functional subsystems.
+TEST/DR6/MJDH0/SI1984.WAV And what eyes they were.
+TEST/DR6/MJDH0/SI724.WAV It's a streamlined rifle, fast and well-made.
+TEST/DR6/MJDH0/SX184.WAV The cat's meow always hurts my ears.
+TEST/DR6/MJDH0/SX274.WAV Cliff was soothed by the luxurious massage.
+TEST/DR6/MJDH0/SX364.WAV Each untimely income loss coincided with the breakdown of a heating system part.
+TEST/DR6/MJDH0/SX4.WAV Jane may earn more money by working hard.
+TEST/DR6/MJDH0/SX94.WAV Youngsters love common candy as treats.
+TEST/DR6/MJFC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MJFC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MJFC0/SI1033.WAV If dark came they would lose her.
+TEST/DR6/MJFC0/SI1663.WAV He thought he saw a pale face at a window.
+TEST/DR6/MJFC0/SI2293.WAV Those were especially the ones that all other grownups laughed at loudest.
+TEST/DR6/MJFC0/SX133.WAV Pizzerias are convenient for quick lunch.
+TEST/DR6/MJFC0/SX223.WAV Put the butcher block table in the garage.
+TEST/DR6/MJFC0/SX313.WAV Drop five forms in the box before you go out.
+TEST/DR6/MJFC0/SX403.WAV Her wardrobe consists of only skirts and blouses.
+TEST/DR6/MJFC0/SX43.WAV Elderly people are often excluded.
+TEST/DR6/MPAM1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MPAM1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MPAM1/SI1029.WAV Her tail no longer lashed.
+TEST/DR6/MPAM1/SI1836.WAV There's still such a thing as mental illness.
+TEST/DR6/MPAM1/SI576.WAV But even mother's loving attitude will not always prevent misbehavior.
+TEST/DR6/MPAM1/SX126.WAV Artificial intelligence is for real.
+TEST/DR6/MPAM1/SX216.WAV The small boy put the worm on the hook.
+TEST/DR6/MPAM1/SX306.WAV A chosen few will become Generals.
+TEST/DR6/MPAM1/SX36.WAV Only the most accomplished artists obtain popularity.
+TEST/DR6/MPAM1/SX396.WAV The fish began to leap frantically on the surface of the small lake.
+TEST/DR6/MRJR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MRJR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MRJR0/SI1182.WAV Let us differentiate a few of these ideas.
+TEST/DR6/MRJR0/SI1812.WAV Eternity is no time for recriminations.
+TEST/DR6/MRJR0/SI2313.WAV Well, Junior, didn't he eat only one and Mr. Henry didn't even do that well.
+TEST/DR6/MRJR0/SX102.WAV Special task forces rescue hostages from kidnappers.
+TEST/DR6/MRJR0/SX12.WAV Will Robin wear a yellow lily?
+TEST/DR6/MRJR0/SX192.WAV Straw hats are out of fashion this year.
+TEST/DR6/MRJR0/SX282.WAV The tooth fairy forgot to come when Roger's tooth fell out.
+TEST/DR6/MRJR0/SX372.WAV That diagram makes sense only after much study.
+TEST/DR6/MRJS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR6/MRJS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR6/MRJS0/SI1444.WAV Substances: all crystalline substances and other solid-state materials.
+TEST/DR6/MRJS0/SI1523.WAV Thoroughly wised up.
+TEST/DR6/MRJS0/SI2074.WAV How come you're riding the rods, kids like you?
+TEST/DR6/MRJS0/SX184.WAV The cat's meow always hurts my ears.
+TEST/DR6/MRJS0/SX274.WAV Cliff was soothed by the luxurious massage.
+TEST/DR6/MRJS0/SX364.WAV Each untimely income loss coincided with the breakdown of a heating system part.
+TEST/DR6/MRJS0/SX4.WAV Jane may earn more money by working hard.
+TEST/DR6/MRJS0/SX94.WAV Youngsters love common candy as treats.
+TEST/DR7/FCAU0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FCAU0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FCAU0/SI1037.WAV The revised procedure was acclaimed as a long-overdue reform.
+TEST/DR7/FCAU0/SI1667.WAV He held his arms close to his sides and made himself as small as possible.
+TEST/DR7/FCAU0/SI2297.WAV One could hear a very faint, ladylike sigh of relief.
+TEST/DR7/FCAU0/SX137.WAV Tradition requires parental approval for under-age marriage.
+TEST/DR7/FCAU0/SX227.WAV It's healthier to cook without sugar.
+TEST/DR7/FCAU0/SX317.WAV The cranberry bog gets very pretty in Autumn.
+TEST/DR7/FCAU0/SX407.WAV Laugh, dance, and sing if fortune smiles upon you.
+TEST/DR7/FCAU0/SX47.WAV Mom strongly dislikes appetizers.
+TEST/DR7/FDHC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FDHC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FDHC0/SI1559.WAV Visually, these approximated what he was feeling within himself.
+TEST/DR7/FDHC0/SI2189.WAV You saw them always together those years.
+TEST/DR7/FDHC0/SI929.WAV But such cases were, in the past, unusual.
+TEST/DR7/FDHC0/SX119.WAV The misquote was retracted with an apology.
+TEST/DR7/FDHC0/SX209.WAV Michael colored the bedroom wall with crayons.
+TEST/DR7/FDHC0/SX299.WAV Shaving cream is a popular item on Halloween.
+TEST/DR7/FDHC0/SX29.WAV Help Greg to pick a peck of potatoes.
+TEST/DR7/FDHC0/SX389.WAV They own a big house in the remote countryside.
+TEST/DR7/FGWR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FGWR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FGWR0/SI1578.WAV Oval face without an expression in the world.
+TEST/DR7/FGWR0/SI2208.WAV Yes, because you didn't run off to use that new toothbrush.
+TEST/DR7/FGWR0/SI948.WAV How much will it cost to do any necessary modernizing and redecorating?
+TEST/DR7/FGWR0/SX138.WAV The clumsy customer spilled some expensive perfume.
+TEST/DR7/FGWR0/SX228.WAV The viewpoint overlooked the ocean.
+TEST/DR7/FGWR0/SX318.WAV Please dig my potatoes up before frost.
+TEST/DR7/FGWR0/SX408.WAV I'd ride the subway, but I haven't enough change.
+TEST/DR7/FGWR0/SX48.WAV Grandmother outgrew her upbringing in petticoats.
+TEST/DR7/FISB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FISB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FISB0/SI1579.WAV Exboyfriend meet exhusband.
+TEST/DR7/FISB0/SI2209.WAV A bullet, she answered.
+TEST/DR7/FISB0/SI949.WAV It may be hard to decide what this labor is worth, but charge something for it.
+TEST/DR7/FISB0/SX139.WAV The bungalow was pleasantly situated near the shore.
+TEST/DR7/FISB0/SX229.WAV Are you looking for employment?
+TEST/DR7/FISB0/SX319.WAV A big goat idly ambled through the farmyard.
+TEST/DR7/FISB0/SX409.WAV Eating spinach nightly increases strength miraculously.
+TEST/DR7/FISB0/SX49.WAV At twilight on the twelfth day we'll have Chablis.
+TEST/DR7/FLAS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FLAS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FLAS0/SI1026.WAV Careful, don't disturb her.
+TEST/DR7/FLAS0/SI1488.WAV Poverty imposes a kind of chastity on the ambitious.
+TEST/DR7/FLAS0/SI858.WAV Choose carefully between contributory or non-contributory pension plans.
+TEST/DR7/FLAS0/SX138.WAV The clumsy customer spilled some expensive perfume.
+TEST/DR7/FLAS0/SX228.WAV The viewpoint overlooked the ocean.
+TEST/DR7/FLAS0/SX318.WAV Please dig my potatoes up before frost.
+TEST/DR7/FLAS0/SX408.WAV I'd ride the subway, but I haven't enough change.
+TEST/DR7/FLAS0/SX48.WAV Grandmother outgrew her upbringing in petticoats.
+TEST/DR7/FMML0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FMML0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FMML0/SI1040.WAV Northerners indulge in an extremely dangerous luxury.
+TEST/DR7/FMML0/SI1670.WAV Got no business over here on a stake-out anyway.
+TEST/DR7/FMML0/SI2300.WAV My mother was beside herself with curiosity.
+TEST/DR7/FMML0/SX140.WAV Agricultural products are unevenly distributed.
+TEST/DR7/FMML0/SX230.WAV Allow leeway here, but rationalize all errors.
+TEST/DR7/FMML0/SX320.WAV The nearest synagogue may not be within walking distance.
+TEST/DR7/FMML0/SX410.WAV Greg buys fresh milk each weekday morning.
+TEST/DR7/FMML0/SX50.WAV Catastrophic economic cutbacks neglect the poor.
+TEST/DR7/FSXA0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FSXA0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FSXA0/SI1108.WAV One looked down on a sea of leaves, a breaking wave of flower.
+TEST/DR7/FSXA0/SI1846.WAV The many-bodied girl lay near him.
+TEST/DR7/FSXA0/SI478.WAV The job also covers a number of other items.
+TEST/DR7/FSXA0/SX118.WAV Combine all the ingredients in a large bowl.
+TEST/DR7/FSXA0/SX208.WAV Rob sat by the pond and sketched the stray geese.
+TEST/DR7/FSXA0/SX28.WAV Beg that guard for one gallon of gas.
+TEST/DR7/FSXA0/SX298.WAV I'd rather not buy these shoes than be overcharged.
+TEST/DR7/FSXA0/SX388.WAV Her right hand aches whenever the barometric pressure changes.
+TEST/DR7/FTLH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/FTLH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/FTLH0/SI1009.WAV All nut kernels are rich in protein.
+TEST/DR7/FTLH0/SI1390.WAV It is not a pleasant or easy position, but one we have endeavored to maintain.
+TEST/DR7/FTLH0/SI1639.WAV Lovie, you make me feel naked.
+TEST/DR7/FTLH0/SX109.WAV She slipped and sprained her ankle on the steep slope.
+TEST/DR7/FTLH0/SX199.WAV Young children should avoid exposure to contagious diseases.
+TEST/DR7/FTLH0/SX19.WAV Aluminum silverware can often be flimsy.
+TEST/DR7/FTLH0/SX289.WAV Weatherproof galoshes are very useful in Seattle.
+TEST/DR7/FTLH0/SX379.WAV Pam gives driving lessons on Thursdays.
+TEST/DR7/MCHH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MCHH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MCHH0/SI1004.WAV Palm oil protects the surfaces of steel sheets before they are plated with tin.
+TEST/DR7/MCHH0/SI1634.WAV She sounded as though they already existed.
+TEST/DR7/MCHH0/SI530.WAV His election, on the other hand, would unquestionably strengthen the regulars.
+TEST/DR7/MCHH0/SX104.WAV He stole a dime from a beggar.
+TEST/DR7/MCHH0/SX14.WAV Before Thursday's exam, review every formula.
+TEST/DR7/MCHH0/SX194.WAV They enjoy it when I audition.
+TEST/DR7/MCHH0/SX284.WAV Jeff thought you argued in favor of a centrifuge purchase.
+TEST/DR7/MCHH0/SX374.WAV John cleans shellfish for a living.
+TEST/DR7/MDLF0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MDLF0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MDLF0/SI1583.WAV For once radicalism was a recommendation.
+TEST/DR7/MDLF0/SI2213.WAV Somebody with no vices.
+TEST/DR7/MDLF0/SI953.WAV Historians have had two reasons for persisting so long in their investigations.
+TEST/DR7/MDLF0/SX143.WAV The sound of Jennifer's bugle scared the antelope.
+TEST/DR7/MDLF0/SX233.WAV Highway and freeway mean the same thing.
+TEST/DR7/MDLF0/SX323.WAV The fog prevented them from arriving on time.
+TEST/DR7/MDLF0/SX413.WAV Daphne's Swedish needlepoint scarf matched her skirt.
+TEST/DR7/MDLF0/SX53.WAV Even a simple vocabulary contains symbols.
+TEST/DR7/MDVC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MDVC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MDVC0/SI2174.WAV Aw, shut up, he said.
+TEST/DR7/MDVC0/SI2196.WAV A profession that brought me as good an income as mine wasn't to be sneezed at.
+TEST/DR7/MDVC0/SI936.WAV Aligning all the teeth may take a year or more.
+TEST/DR7/MDVC0/SX126.WAV Artificial intelligence is for real.
+TEST/DR7/MDVC0/SX216.WAV The small boy put the worm on the hook.
+TEST/DR7/MDVC0/SX306.WAV A chosen few will become Generals.
+TEST/DR7/MDVC0/SX36.WAV Only the most accomplished artists obtain popularity.
+TEST/DR7/MDVC0/SX396.WAV The fish began to leap frantically on the surface of the small lake.
+TEST/DR7/MERS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MERS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MERS0/SI1019.WAV Them new to the country were referred to as pilgrims.
+TEST/DR7/MERS0/SI1649.WAV It's a formality, you know.
+TEST/DR7/MERS0/SI497.WAV Displayed as lamps, the puppets delight the children and are decorative accent.
+TEST/DR7/MERS0/SX119.WAV The misquote was retracted with an apology.
+TEST/DR7/MERS0/SX209.WAV Michael colored the bedroom wall with crayons.
+TEST/DR7/MERS0/SX299.WAV Shaving cream is a popular item on Halloween.
+TEST/DR7/MERS0/SX29.WAV Help Greg to pick a peck of potatoes.
+TEST/DR7/MERS0/SX389.WAV They own a big house in the remote countryside.
+TEST/DR7/MGRT0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MGRT0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MGRT0/SI1450.WAV Meats: the radiation processing of meat has received extensive investigation.
+TEST/DR7/MGRT0/SI2080.WAV He would not carry a brief case.
+TEST/DR7/MGRT0/SI820.WAV By that, one feels that magnetic forces are as general as electrical forces.
+TEST/DR7/MGRT0/SX100.WAV Project development was proceeding too slowly.
+TEST/DR7/MGRT0/SX10.WAV Are your grades higher or lower than Nancy's?
+TEST/DR7/MGRT0/SX190.WAV Serve the coleslaw after I add the oil.
+TEST/DR7/MGRT0/SX280.WAV The oasis was a mirage.
+TEST/DR7/MGRT0/SX370.WAV That noise problem grows more annoying each day.
+TEST/DR7/MKDR0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MKDR0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MKDR0/SI1273.WAV Selected bibliographies and tables of available data are now in preparation.
+TEST/DR7/MKDR0/SI1903.WAV When he saw me coming he turned his radio off.
+TEST/DR7/MKDR0/SI643.WAV The armchair traveler preserves his illusions.
+TEST/DR7/MKDR0/SX103.WAV Call an ambulance for medical assistance.
+TEST/DR7/MKDR0/SX13.WAV Swing your arm as high as you can.
+TEST/DR7/MKDR0/SX193.WAV Why buy oil when you always use mine?
+TEST/DR7/MKDR0/SX283.WAV Planned parenthood organizations promote birth control.
+TEST/DR7/MKDR0/SX373.WAV A boring novel is a superb sleeping pill.
+TEST/DR7/MKJL0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MKJL0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MKJL0/SI1100.WAV As she goes, she herself will be illuminated.
+TEST/DR7/MKJL0/SI1730.WAV Nobody in his right mind punishes a quarter-century-old dereliction.
+TEST/DR7/MKJL0/SI470.WAV A quick touchdown resulted.
+TEST/DR7/MKJL0/SX110.WAV The best way to learn is to solve extra problems.
+TEST/DR7/MKJL0/SX200.WAV Ralph controlled the stopwatch from the bleachers.
+TEST/DR7/MKJL0/SX20.WAV She wore warm, fleecy, woolen overalls.
+TEST/DR7/MKJL0/SX290.WAV This brochure is particularly informative for a prospective buyer.
+TEST/DR7/MKJL0/SX380.WAV Why charge money for such garbage?
+TEST/DR7/MNJM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MNJM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MNJM0/SI1580.WAV He always seemed to have money in his pocket.
+TEST/DR7/MNJM0/SI2210.WAV No return address whatsoever.
+TEST/DR7/MNJM0/SI950.WAV As such, it was beyond politics and had no need of justification by a message.
+TEST/DR7/MNJM0/SX140.WAV Agricultural products are unevenly distributed.
+TEST/DR7/MNJM0/SX230.WAV Allow leeway here, but rationalize all errors.
+TEST/DR7/MNJM0/SX320.WAV The nearest synagogue may not be within walking distance.
+TEST/DR7/MNJM0/SX410.WAV Greg buys fresh milk each weekday morning.
+TEST/DR7/MNJM0/SX50.WAV Catastrophic economic cutbacks neglect the poor.
+TEST/DR7/MNLS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MNLS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MNLS0/SI1483.WAV Give me your machine gun ammo.
+TEST/DR7/MNLS0/SI1610.WAV For an instant the old aunt felt something indefinable flash through her smile.
+TEST/DR7/MNLS0/SI853.WAV Aim to balance your employee benefit package.
+TEST/DR7/MNLS0/SX133.WAV Pizzerias are convenient for a quick lunch.
+TEST/DR7/MNLS0/SX223.WAV Put the butcher block table in the garage.
+TEST/DR7/MNLS0/SX313.WAV Drop five forms in the box before you go out.
+TEST/DR7/MNLS0/SX403.WAV Her wardrobe consists of only skirts and blouses.
+TEST/DR7/MNLS0/SX43.WAV Elderly people are often excluded.
+TEST/DR7/MPAB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MPAB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MPAB0/SI1103.WAV Their work mirrors the mentality of the psychopath, rootless and irresponsible.
+TEST/DR7/MPAB0/SI1128.WAV Others invoked technology and common sense.
+TEST/DR7/MPAB0/SI498.WAV To create such a lamp, order a wired pedestal from any lamp shop.
+TEST/DR7/MPAB0/SX138.WAV The clumsy customer spilled some expensive perfume.
+TEST/DR7/MPAB0/SX228.WAV The viewpoint overlooked the ocean.
+TEST/DR7/MPAB0/SX318.WAV Please dig my potatoes up before frost.
+TEST/DR7/MPAB0/SX408.WAV I'd ride the subway, but I haven't enough change.
+TEST/DR7/MPAB0/SX48.WAV Grandmother outgrew her upbringing in petticoats.
+TEST/DR7/MRCS0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MRCS0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MRCS0/SI1223.WAV The redcoats ran like rabbits.
+TEST/DR7/MRCS0/SI1853.WAV Thus events occurred, and victims changed in appearance, and new ones arrived.
+TEST/DR7/MRCS0/SI593.WAV The gallant half-city is dying on its feet.
+TEST/DR7/MRCS0/SX143.WAV The sound of Jennifer's bugle scared the antelope.
+TEST/DR7/MRCS0/SX233.WAV Highway and freeway mean the same thing.
+TEST/DR7/MRCS0/SX323.WAV The fog prevented them from arriving on time.
+TEST/DR7/MRCS0/SX413.WAV Daphne's Swedish needlepoint scarf matched her skirt.
+TEST/DR7/MRCS0/SX53.WAV Even a simple vocabulary contains symbols.
+TEST/DR7/MRJM4/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MRJM4/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MRJM4/SI1489.WAV At law school, the same.
+TEST/DR7/MRJM4/SI2119.WAV The instinct to discipline has been lost.
+TEST/DR7/MRJM4/SI859.WAV A non-contributory plan usually won't pay off for the worker until he retires.
+TEST/DR7/MRJM4/SX139.WAV The bungalow was pleasantly situated near the shore.
+TEST/DR7/MRJM4/SX229.WAV Are you looking for employment?
+TEST/DR7/MRJM4/SX319.WAV A big goat idly ambled through the farmyard.
+TEST/DR7/MRJM4/SX409.WAV Eating spinach nightly increases strength miraculously.
+TEST/DR7/MRJM4/SX49.WAV At twilight on the twelfth day we'll have Chablis.
+TEST/DR7/MRMS1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MRMS1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MRMS1/SI1487.WAV These were heroes nine feet tall to him.
+TEST/DR7/MRMS1/SI2117.WAV He saw the dangers, not the glories of being identified as a mutineer.
+TEST/DR7/MRMS1/SI857.WAV Otherwise, you may be saddled with a good-size milk bill by milk drinkers.
+TEST/DR7/MRMS1/SX137.WAV Tradition requires parental approval for under-age marriage.
+TEST/DR7/MRMS1/SX227.WAV It's healthier to cook without sugar.
+TEST/DR7/MRMS1/SX317.WAV The cranberry bog gets very pretty in Autumn.
+TEST/DR7/MRMS1/SX407.WAV Laugh, dance, and sing if fortune smiles upon you.
+TEST/DR7/MRMS1/SX47.WAV Mom strongly dislikes appetizers.
+TEST/DR7/MRPC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MRPC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MRPC0/SI1753.WAV He could pick up another pack on his way home, if he were going home.
+TEST/DR7/MRPC0/SI493.WAV Unfortunately, there is still little demand for broccoli and cauliflower.
+TEST/DR7/MRPC0/SI933.WAV That's where device quackery can lead.
+TEST/DR7/MRPC0/SX133.WAV Pizzerias are convenient for a quick lunch.
+TEST/DR7/MRPC0/SX223.WAV Put the butcher block table in the garage.
+TEST/DR7/MRPC0/SX313.WAV Drop five forms in the box before you go out.
+TEST/DR7/MRPC0/SX403.WAV Her wardrobe consists of only skirts and blouses.
+TEST/DR7/MRPC0/SX43.WAV Elderly people are often excluded.
+TEST/DR7/MTWH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR7/MTWH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR7/MTWH0/SI1190.WAV Next best to destroying an army is to deprive it of its freedom of action.
+TEST/DR7/MTWH0/SI1629.WAV Have you got our keys handy?
+TEST/DR7/MTWH0/SI1820.WAV A range of bluffs hugged the horizon, the color of decaying moss.
+TEST/DR7/MTWH0/SX110.WAV The best way to learn is to solve extra problems.
+TEST/DR7/MTWH0/SX200.WAV Ralph controlled the stopwatch from the bleachers.
+TEST/DR7/MTWH0/SX20.WAV She wore warm, fleecy, woolen overalls.
+TEST/DR7/MTWH0/SX290.WAV This brochure is particularly informative for a prospective buyer.
+TEST/DR7/MTWH0/SX380.WAV Why charge money for such garbage?
+TEST/DR8/FCMH1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/FCMH1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/FCMH1/SI1493.WAV By that time, perhaps something better can be done.
+TEST/DR8/FCMH1/SI2123.WAV This tragic lad had forged his own shackles.
+TEST/DR8/FCMH1/SI863.WAV Check your cafeteria location to make sure it's convenient for most employees.
+TEST/DR8/FCMH1/SX143.WAV The sound of Jennifer's bugle scared the antelope.
+TEST/DR8/FCMH1/SX233.WAV Highway and freeway mean the same thing.
+TEST/DR8/FCMH1/SX323.WAV The fog prevented them from arriving on time.
+TEST/DR8/FCMH1/SX413.WAV Daphne's Swedish needlepoint scarf matched her skirt.
+TEST/DR8/FCMH1/SX53.WAV Even a simple vocabulary contains symbols.
+TEST/DR8/FJSJ0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/FJSJ0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/FJSJ0/SI1484.WAV There are also honest seekers after truth.
+TEST/DR8/FJSJ0/SI2114.WAV Stake me, she said, and let me at those dice.
+TEST/DR8/FJSJ0/SI854.WAV Encourage them to exercise their benefits.
+TEST/DR8/FJSJ0/SX134.WAV December and January are nice months to spend in Miami.
+TEST/DR8/FJSJ0/SX224.WAV How good is your endurance?
+TEST/DR8/FJSJ0/SX314.WAV If people were more generous, there would be no need for welfare.
+TEST/DR8/FJSJ0/SX404.WAV Barb burned paper and leaves in a big bonfire.
+TEST/DR8/FJSJ0/SX44.WAV Basketball can be an entertaining sport.
+TEST/DR8/FMLD0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/FMLD0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/FMLD0/SI2185.WAV  She said sharks have no bones and shrimp swam backward.
+TEST/DR8/FMLD0/SI822.WAV Milk production may be increased by the anti-infective properties of this drug.
+TEST/DR8/FMLD0/SI925.WAV While he was in custody his wife divorced him.
+TEST/DR8/FMLD0/SX115.WAV The emblem depicts the Acropolis all aglow.
+TEST/DR8/FMLD0/SX205.WAV Military personnel are expected to obey government orders.
+TEST/DR8/FMLD0/SX25.WAV Only lawyers love millionaires.
+TEST/DR8/FMLD0/SX295.WAV If Carol comes tomorrow, have her arrange for a meeting at two.
+TEST/DR8/FMLD0/SX385.WAV His shoulder felt as if it were broken.
+TEST/DR8/MAJC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MAJC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MAJC0/SI1946.WAV The rustling problem was by no means solved.
+TEST/DR8/MAJC0/SI2095.WAV My dad did it, and he lived to a great age.
+TEST/DR8/MAJC0/SI835.WAV Salesmanship is still necessary, but it's a different brand of salesmanship.
+TEST/DR8/MAJC0/SX115.WAV The emblem depicts the Acropolis all aglow.
+TEST/DR8/MAJC0/SX205.WAV Military personnel are expected to obey government orders.
+TEST/DR8/MAJC0/SX25.WAV Only lawyers love millionaires.
+TEST/DR8/MAJC0/SX295.WAV If Carol comes tomorrow, have her arrange for a meeting at two.
+TEST/DR8/MAJC0/SX385.WAV His shoulder felt as if it were broken.
+TEST/DR8/MDAW1/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MDAW1/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MDAW1/SI1453.WAV Urethane foam as an insulator is also coming in for a good deal of attention.
+TEST/DR8/MDAW1/SI2083.WAV Above him slid the evasive shadow of a storm cloud.
+TEST/DR8/MDAW1/SI823.WAV The drug is also incorporated in supplements.
+TEST/DR8/MDAW1/SX103.WAV Call an ambulance for medical assistance.
+TEST/DR8/MDAW1/SX13.WAV Swing your arm as high as you can.
+TEST/DR8/MDAW1/SX193.WAV Why buy oil when you always use mine?
+TEST/DR8/MDAW1/SX283.WAV Planned parenthood organizations promote birth control.
+TEST/DR8/MDAW1/SX373.WAV A boring novel is a superb sleeping pill.
+TEST/DR8/MJLN0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MJLN0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MJLN0/SI1449.WAV Chief interest in radiosterilization resides in the military services.
+TEST/DR8/MJLN0/SI2079.WAV They had slapped their thighs.
+TEST/DR8/MJLN0/SI819.WAV There, forces are more latent than in electricity, and less than in magnetism.
+TEST/DR8/MJLN0/SX189.WAV Destroy every file related to my audits.
+TEST/DR8/MJLN0/SX279.WAV Alice's ability to work without supervision is noteworthy.
+TEST/DR8/MJLN0/SX369.WAV Bob papered over the living room murals.
+TEST/DR8/MJLN0/SX99.WAV Medieval society was based on hierarchies.
+TEST/DR8/MJLN0/SX9.WAV Where were you while we were away?
+TEST/DR8/MJTC0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MJTC0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MJTC0/SI1460.WAV The electron optical system may be either a magnetic or electrostatic one.
+TEST/DR8/MJTC0/SI2090.WAV He swung in through his own wide gateway.
+TEST/DR8/MJTC0/SI830.WAV No one material is best for all situations.
+TEST/DR8/MJTC0/SX110.WAV The best way to learn is to solve extra problems.
+TEST/DR8/MJTC0/SX200.WAV Ralph controlled the stopwatch from the bleachers.
+TEST/DR8/MJTC0/SX20.WAV She wore warm, fleecy, woolen overalls.
+TEST/DR8/MJTC0/SX290.WAV This brochure is particularly informative for a prospective buyer.
+TEST/DR8/MJTC0/SX380.WAV Why charge money for such garbage?
+TEST/DR8/MJTH0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MJTH0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MJTH0/SI1296.WAV Further research, we believe, will develop important commercial applications.
+TEST/DR8/MJTH0/SI1926.WAV Why single me out on this permit deal?
+TEST/DR8/MJTH0/SI666.WAV Our enemy is also threatening to devour us.
+TEST/DR8/MJTH0/SX126.WAV Artificial intelligence is for real.
+TEST/DR8/MJTH0/SX216.WAV The small boy put the worm on the hook.
+TEST/DR8/MJTH0/SX306.WAV A chosen few will become Generals.
+TEST/DR8/MJTH0/SX36.WAV Only the most accomplished artists obtain popularity.
+TEST/DR8/MJTH0/SX396.WAV The fish began to leap frantically on the surface of the small lake.
+TEST/DR8/MPAM0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MPAM0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MPAM0/SI1189.WAV Eight field guns were captured in position.
+TEST/DR8/MPAM0/SI1819.WAV He rubbed his eyes sleepily with one huge paw.
+TEST/DR8/MPAM0/SI1961.WAV A second twitched his shirtsleeve, and he felt a brief burn on his upper arm.
+TEST/DR8/MPAM0/SX109.WAV She slipped and sprained her ankle on the steep slope.
+TEST/DR8/MPAM0/SX199.WAV Young children should avoid exposure to contagious diseases.
+TEST/DR8/MPAM0/SX19.WAV Aluminum silverware can often be flimsy.
+TEST/DR8/MPAM0/SX289.WAV Weatherproof galoshes are very useful in Seattle.
+TEST/DR8/MPAM0/SX379.WAV Pam gives driving lessons on Thursdays.
+TEST/DR8/MRES0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MRES0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MRES0/SI1217.WAV Only those story tellers will remain who can imitate the style of the virtuous.
+TEST/DR8/MRES0/SI1847.WAV She radiated warmth and good fellowship.
+TEST/DR8/MRES0/SI587.WAV Maybe he will help to turn our fair city into a ghost town.
+TEST/DR8/MRES0/SX137.WAV Tradition requires parental approval for under-age marriage.
+TEST/DR8/MRES0/SX227.WAV It's healthier to cook without sugar.
+TEST/DR8/MRES0/SX317.WAV The cranberry bog gets very pretty in Autumn.
+TEST/DR8/MRES0/SX407.WAV Laugh, dance, and sing if fortune smiles upon you.
+TEST/DR8/MRES0/SX47.WAV Mom strongly dislikes appetizers.
+TEST/DR8/MSLB0/SA1.WAV She had your dark suit in greasy wash water all year.
+TEST/DR8/MSLB0/SA2.WAV Don't ask me to carry an oily rag like that.
+TEST/DR8/MSLB0/SI1193.WAV He'd collared one of his generals in public.
+TEST/DR8/MSLB0/SI1823.WAV Sonic, electronic, galvanic -- all blank.
+TEST/DR8/MSLB0/SI563.WAV Heels place emphasis on the long legged silhouette.
+TEST/DR8/MSLB0/SX113.WAV A muscular abdomen is good for your back.
+TEST/DR8/MSLB0/SX203.WAV The causeway ended abruptly at the shore.
+TEST/DR8/MSLB0/SX23.WAV Those musicians harmonize marvelously.
+TEST/DR8/MSLB0/SX293.WAV Please take this dirty table cloth to the cleaners for me.
+TEST/DR8/MSLB0/SX383.WAV The carpet cleaners shampooed our oriental rug.
