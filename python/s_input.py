@@ -19,7 +19,7 @@ INPUT_SHAPE = (64, 64, 3)
 NUMBER_CLASSES = 62
 NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 4575
 NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 2520
-DATA_PATH = "/home/marc/workspace/tensorflow-tutorials/traffic_signs/data"
+DATA_PATH = '/home/marc/workspace/speech/data'  # review
 
 FLAGS = tf.app.flags.FLAGS
 

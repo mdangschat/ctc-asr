@@ -1,21 +1,13 @@
 """Training the model.
 
 Tested with Python 3.6+. The Code should work with 3.4+.
-
-On GTX 970 with 96*96*3 input images:
-    430.4 examples/sec (0.037 sec/batch)
-    Precision @ 1 = 0.844
-
-OnGTX 970 with 64*64*3 input images:
-    985.7 examples/sec (0.016 sec/batch)
-    Precision @ 1 = 0.847
 """
 
 import time
 from datetime import datetime
 import tensorflow as tf
 
-import traffic_signs.ts_model as ts_model
+import s_model
 
 
 # General TensorFlow settings and setup.
@@ -23,9 +15,9 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1234)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string('train_dir', '/tmp/ts_train',
+tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
                            """Directory where to write event logs and checkpoints.""")
-tf.app.flags.DEFINE_integer('max_steps', 10001,
+tf.app.flags.DEFINE_integer('max_steps', 1001,
                             """Number of batches to run.""")
 tf.app.flags.DEFINE_integer('log_frequency', 50,
                             """How often (every x steps) to log results to the console.""")
@@ -42,16 +34,16 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            images, labels = ts_model.inputs_train()
+            images, labels = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
-        logits = ts_model.inference(images)
+        logits = s_model.inference(images)
 
         # Calculate loss.
-        loss = ts_model.loss(logits, labels)
+        loss = s_model.loss(logits, labels)
 
         # Build the training graph, that updates the model parameters after each batch.
-        train_op = ts_model.train(loss, global_step)
+        train_op = s_model.train(loss, global_step)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):

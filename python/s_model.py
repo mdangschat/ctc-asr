@@ -2,16 +2,16 @@
 
 import tensorflow as tf
 
-import traffic_signs.ts_input as ts_input
+import s_input
 
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_integer('batch_size', 16,
                             """Number of images to process in a batch.""")
 
 # Global constants describing the data set.
-NUM_CLASSES = ts_input.NUMBER_CLASSES
-INPUT_SHAPE = ts_input.INPUT_SHAPE
-NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = ts_input.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
+NUM_CLASSES = s_input.NUMBER_CLASSES
+INPUT_SHAPE = s_input.INPUT_SHAPE
+NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
 
 # Constants describing the training process.
 MOVING_AVERAGE_DECAY = 0.9999       # The decay to use for the moving average.
@@ -27,7 +27,7 @@ def inference(images):
         images: The images returned from inputs_train() or inputs().
 
     Returns:
-        logits: Softmax layer pre activation function, e.g. layer(XW + b)
+        logits: Softmax layer pre activation function, i.e. layer(XW + b)
     """
     # conv1
     with tf.variable_scope('conv1') as scope:
@@ -51,33 +51,11 @@ def inference(images):
         # norm1
         norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
 
-    # conv2
-    with tf.variable_scope('conv2') as scope:
-        kernel = _variable_with_weight_decay('weights',
-                                             shape=[5, 5, 64, 64],
-                                             stddev=5e-2,
-                                             weight_decay=None)
-        conv = tf.nn.conv2d(norm1, kernel, [1, 1, 1, 1], padding='VALID')
-        biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.1))
-        pre_activation = tf.nn.bias_add(conv, biases)
-        conv2 = tf.nn.relu(pre_activation, name=scope.name)
-        _activation_summary(conv2)
-
-        # norm2
-        norm2 = tf.nn.lrn(conv2, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
-
-        # pool2
-        pool2 = tf.nn.max_pool(norm2,
-                               ksize=[1, 3, 3, 1],
-                               strides=[1, 2, 2, 1],
-                               padding='VALID',
-                               name='pool2')
-
     # Dense 1
     with tf.variable_scope('dense1') as scope:
         # Flatten input.
         # <=> tf.reshape(images, [-1, np.prod(INPUT_SHAPE)])
-        flattened_input = tf.layers.flatten(pool2)
+        flattened_input = tf.layers.flatten(norm1)
 
         dim = flattened_input.get_shape()[1].value
         weights = _variable_with_weight_decay('weights', [dim, 128], 0.04, 0.004)
@@ -186,8 +164,7 @@ def inputs_train():
         images: Image 4D tensor of [batch_size, width, height, channels] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    images, labels = ts_input.inputs_train(ts_input.DATA_PATH, ts_input.INPUT_SHAPE,
-                                           FLAGS.batch_size)
+    images, labels = s_input.inputs_train(s_input.DATA_PATH, s_input.INPUT_SHAPE, FLAGS.batch_size)
     return images, labels
 
 
@@ -201,8 +178,8 @@ def inputs(eval_data):
         images: Image 4D tensor of [batch_size, width, height, channels] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    images, labels = ts_input.inputs(eval_data, ts_input.DATA_PATH, ts_input.INPUT_SHAPE,
-                                     FLAGS.batch_size)
+    images, labels = s_input.inputs(eval_data, s_input.DATA_PATH, s_input.INPUT_SHAPE,
+                                    FLAGS.batch_size)
     return images, labels
 
 

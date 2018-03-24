@@ -9,13 +9,14 @@ from datetime import datetime
 import numpy as np
 import tensorflow as tf
 
-from traffic_signs import ts_input, ts_model
+import s_input
+import s_model
 
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string('eval_dir', '/tmp/ts_eval',
+tf.app.flags.DEFINE_string('eval_dir', '/tmp/s_eval',
                            """Directory where to write the evaluation logs into.""")
-tf.app.flags.DEFINE_string('checkpoint_dir', '/tmp/ts_train',
+tf.app.flags.DEFINE_string('checkpoint_dir', '/tmp/s_train',
                            """Points to the directory in which the training checkpoints are 
                            stored.""")
 
@@ -52,7 +53,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
             for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
-            num_iter = int(math.ceil(ts_input.NUM_EXAMPLES_PER_EPOCH_FOR_EVAL / FLAGS.batch_size))
+            num_iter = int(math.ceil(s_input.NUM_EXAMPLES_PER_EPOCH_FOR_EVAL / FLAGS.batch_size))
             true_count = 0  # Counts the number of correct predictions.
             total_sample_count = num_iter * FLAGS.batch_size
             step = 0
@@ -84,16 +85,16 @@ def evaluate():
     top_k = 1
     with tf.Graph().as_default() as g:
         # Get images and labels.
-        images, labels = ts_model.inputs(True)
+        images, labels = s_model.inputs(True)
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits = ts_model.inference(images)
+        logits = s_model.inference(images)
 
         # Calculate predictions.
         top_k_op = tf.nn.in_top_k(logits, labels, top_k)
 
         # Restore the moving average version of the learned variables for eval.
-        variable_averages = tf.train.ExponentialMovingAverage(ts_model.MOVING_AVERAGE_DECAY)
+        variable_averages = tf.train.ExponentialMovingAverage(s_model.MOVING_AVERAGE_DECAY)
         variables_to_restore = variable_averages.variables_to_restore()
         saver = tf.train.Saver(variables_to_restore)
 
