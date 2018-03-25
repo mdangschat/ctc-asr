@@ -1,17 +1,27 @@
 """L8ER: Documentation
 
+For the `TIMIT`_ data set.
+
 Data format:
     path/to/sample.wav Transcription of the sample wave file.
+
+.. _TIMIT:
+    https://vcs.zwuenf.org/agct_data/timit
 """
 
 import os
 
 
-DATA_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'     # Base path to the TIMIT data set.
-TARGET_PATH = '/home/marc/workspace/speech/python/loader/'       # Where to generate the files.
+DATA_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'     # Path to the TIMIT data set base.
+TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to generate the files.
 
 
 def _gen_list(target):
+    # l8er: Documentation
+
+    if target is not 'test' and target is not 'train':
+        raise ValueError('"{}" is not a valid target.'.format(target))
+
     master_path = os.path.join(DATA_PATH, '{}_all.txt'.format(target))
 
     if not os.path.isfile(master_path):
@@ -47,6 +57,14 @@ def _gen_list(target):
 
 
 def _delete_file_if_exists(path):
+    """Delete the file for the given path, if it exists.
+
+    Args:
+        path (str): File path.
+
+    Returns:
+        Nothing.
+    """
     if os.path.exists(path) and os.path.isfile(path):
         os.remove(path)
 
@@ -54,5 +72,4 @@ def _delete_file_if_exists(path):
 if __name__ == '__main__':
     _gen_list('train')
     _gen_list('test')
-    print('Training and evaluation file lists created.')
-
+    print('Training (train.txt) and evaluation (test.txt) file lists created.')
