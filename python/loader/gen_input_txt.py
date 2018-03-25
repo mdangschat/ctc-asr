@@ -19,7 +19,7 @@ TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to gener
 def _gen_list(target):
     # l8er: Documentation
 
-    if target is not 'test' and target is not 'train':
+    if target != 'test' and target != 'train':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
     master_path = os.path.join(DATA_PATH, '{}_all.txt'.format(target))
