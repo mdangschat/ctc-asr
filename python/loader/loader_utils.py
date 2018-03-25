@@ -19,97 +19,90 @@ def _load_sample(file_path, label=''):
     hop_length = 512
 
     # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
-    wav_raw, sampling_rate = rosa.load(file_path, sr=None, mono=True)
+    # y, sr = rosa.load(file_path, sr=None, mono=True)
+    y, sr = rosa.load(file_path, mono=True)
 
-    duration = rosa.get_duration(y=wav_raw, sr=sampling_rate)
-    print('Label="{}"\nPath={}\nDuration={:.1f}s\nSampling Rate={:,d}Hz'
-          .format(label, file_path, duration, sampling_rate))
+    # Create info string.
+    num_samples = y.shape[0]
+    duration = rosa.get_duration(y=y, sr=sr)
+    info_str = 'Label="{}"\nPath={}\nDuration={:.1f}s with {:,d} Samples\n' \
+               'Sampling Rate={:,d}Hz\nMin Max=[{:.2f}, {:.2f}]'\
+        .format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
+
+    print(info_str)
 
     plt.figure()
     plt.subplot(3, 1, 1)
-    display.waveplot(wav_raw, sr=sampling_rate)
+    display.waveplot(y, sr=sr)
     plt.title('Monophonic')
 
-    y_harm, y_perc = rosa.effects.hpss(wav_raw)
+    # Plot waveforms.
+    y_harm, y_perc = rosa.effects.hpss(y)
     plt.subplot(3, 1, 2)
-    display.waveplot(y_harm, sr=sampling_rate, alpha=0.25)
-    display.waveplot(y_perc, sr=sampling_rate, color='r', alpha=0.5)
+    display.waveplot(y_harm, sr=sr, alpha=0.33)
+    display.waveplot(y_perc, sr=sr, color='r', alpha=0.40)
     plt.title('Harmonic + Percussive')
 
+    # Add file information.
     plt.subplot(3, 1, 3)
     plt.axis('off')
-    plt.text(0.0, 1.0,
-             'Label="{}"\nPath={}\nDuration={:.1f}s\nSampling Rate={:,d}Hz'
-             .format(label, file_path, duration, sampling_rate),
-             color='black', verticalalignment='top')
+    plt.text(0.0, 1.0, info_str, color='black', verticalalignment='top')
     plt.tight_layout()
 
     # Compute MFCC features from the raw signal.
-    # https://librosa.github.io/librosa/generated/librosa.core.stft.html
-    mfcc = rosa.feature.mfcc(y=wav_raw, sr=sampling_rate, hop_length=hop_length, n_mfcc=13)
-    print('MFCC', mfcc.shape)
+    mfcc = rosa.feature.mfcc(y=y, sr=sr, hop_length=hop_length, n_mfcc=32)
+
+    plt.figure(figsize=(9, 6))
+    plt.subplot(1, 2, 1)
+    display.specshow(mfcc, sr=sr, x_axis='time', y_axis='mel')
+    plt.xticks(rotation=295)
+    plt.title('MFCC')
 
     # And the first-order differences (delta features).
     mfcc_delta = rosa.feature.delta(mfcc)
-    print('MFCC Delta:', mfcc_delta.shape)
-
-    plt.figure(figsize=(8, 6))
-    plt.subplot(1, 2, 1)
-    display.specshow(mfcc, sr=sampling_rate, x_axis='time', y_axis='linear')
-    plt.title('MFCC (log)')
 
     plt.subplot(1, 2, 2)
-    display.specshow(mfcc, sr=sampling_rate, x_axis='time', y_axis='linear')
-    plt.title('MFCC Delta')
+    display.specshow(mfcc_delta, sr=sr, x_axis='time', y_axis='mel')
+    plt.xticks(rotation=295)
+    plt.title(r'$\Delta$ MFCC')
     plt.tight_layout()
 
     # STFT (Short-time Fourier Transform)
-    #
-    plt.figure(figsize=(12, 8))
-    db = rosa.amplitude_to_db(rosa.magphase(rosa.stft(wav_raw))[0], ref=np.max)
-    plt.subplot(4, 2, 1)
-    display.specshow(db, sr=sampling_rate, x_axis='time', y_axis='linear')
+    # https://librosa.github.io/librosa/generated/librosa.core.stft.html
+    plt.figure(figsize=(12, 10))
+    db = rosa.amplitude_to_db(rosa.magphase(rosa.stft(y))[0], ref=np.max)
+    plt.subplot(3, 2, 1)
+    display.specshow(db, sr=sr, x_axis='time', y_axis='linear')
     plt.colorbar(format='%+2.0f dB')
     plt.title('Linear-frequency power spectrogram')
 
-    plt.subplot(4, 2, 2)
-    display.specshow(db, sr=sampling_rate, x_axis='time', y_axis='log')
+    plt.subplot(3, 2, 2)
+    display.specshow(db, sr=sr, x_axis='time', y_axis='log')
     plt.colorbar(format='%+2.0f dB')
     plt.title('Log-frequency power spectrogram')
 
     # CQT (Constant-T Transform)
     # https://librosa.github.io/librosa/generated/librosa.core.cqt.html
-    cqt = rosa.amplitude_to_db(rosa.magphase(rosa.cqt(wav_raw, sr=sampling_rate))[0], ref=np.max)
-    plt.subplot(4, 2, 3)
-    display.specshow(cqt, sr=sampling_rate, x_axis='time', y_axis='cqt_note')
+    cqt = rosa.amplitude_to_db(rosa.magphase(rosa.cqt(y, sr=sr))[0], ref=np.max)
+    plt.subplot(3, 2, 3)
+    display.specshow(cqt, sr=sr, x_axis='time', y_axis='cqt_note')
     plt.colorbar(format='%+2.0f dB')
     plt.title('Constant-Q power spectrogram (note)')
 
-    plt.subplot(4, 2, 4)
-    display.specshow(cqt, sr=sampling_rate, x_axis='time', y_axis='cqt_hz')
+    plt.subplot(3, 2, 4)
+    display.specshow(cqt, sr=sr, x_axis='time', y_axis='cqt_hz')
     plt.colorbar(format='%+2.0f dB')
     plt.title('Constant-Q power spectrogram (Hz)')
 
-    # Chromagram
-    chroma = rosa.feature.chroma_cqt(y=wav_raw, sr=sampling_rate)
-    plt.subplot(4, 2, 5)
-    display.specshow(chroma, sr=sampling_rate, x_axis='time', y_axis='chroma')
-    plt.colorbar()
-    plt.title('Chromagram')
-
-    plt.subplot(4, 2, 6)
-    display.specshow(chroma, cmap='gray_r', sr=sampling_rate, x_axis='time', y_axis='linear')
-    plt.colorbar(format='%+2.0f dB')
-    plt.title('Linear power spectrogram (grayscale)')
-
-    plt.subplot(4, 2, 7)
-    display.specshow(db, sr=sampling_rate, x_axis='time', y_axis='log')
+    plt.subplot(3, 2, 5)
+    display.specshow(db, sr=sr, x_axis='time', y_axis='log')
     plt.colorbar(format='%+2.0f dB')
     plt.title('Log power spectrogram')
 
-    plt.subplot(4, 2, 8)
-    t_gram = rosa.feature.tempogram(y=wav_raw, sr=sampling_rate)
-    display.specshow(t_gram, sr=sampling_rate, x_axis='time', y_axis='tempo')
+    # Tempogram
+    plt.subplot(3, 2, 6)
+    t_gram = rosa.feature.tempogram(y=y, sr=sr)
+    display.specshow(t_gram, sr=sr, x_axis='time', y_axis='tempo')
     plt.colorbar()
     plt.title('Tempogram')
     plt.tight_layout()
@@ -119,13 +112,13 @@ def _load_sample(file_path, label=''):
 
 if __name__ == '__main__':
     _timit_base_path = '/home/marc/workspace/speech/data/'
-    _test_txt_path = os.path.join(_timit_base_path, 'test.txt')
+    _test_txt_path = os.path.join(_timit_base_path, 'train.txt')
     with open(_test_txt_path, 'r') as f:
         lines = f.readlines()
         line = lines[0]
         wav_path, txt = line.split(' ', 1)
+        txt = txt.strip()
         wav_path = os.path.join(_timit_base_path, 'timit/TIMIT', wav_path)
-        print(wav_path, txt)
 
-    _load_sample(rosa.util.example_audio_file(), label='librosa.utils.example_audio_file()')
-    # _load_sample(wav_path, label=txt)
+    # _load_sample(rosa.util.example_audio_file(), label='librosa.utils.example_audio_file()')
+    _load_sample(wav_path, label=txt)
