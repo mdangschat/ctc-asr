@@ -6,6 +6,10 @@
   * Base network i.e. TS network
   * git init
   * Project documentation files (e.g. this one, README.md, ...)
+* Mel Features
+  * MFCC
+  * Mel Spectrogram
+  * ...
 * CTC Loss
   * Read up on CTC theory
   * Check other implementation
