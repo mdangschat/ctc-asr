@@ -7,26 +7,26 @@ from librosa import display
 from matplotlib import pyplot as plt
 
 
-def _load_sample(file_path, label=''):
+def sample_info(file_path, label=''):
     # L8ER Documentation
-    # TODO Plot x-axis labels.
+
     if not os.path.isfile(file_path):
         raise ValueError('{} does not exist.'.format(file_path))
 
     # Set the hop length.
     # At 22050 Hz, 512 samples ~= 23ms
     # At 16000 Hz, 512 samples ~= review ms
-    hop_length = 512
+    hop_length = 200
 
     # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
     # y, sr = rosa.load(file_path, sr=None, mono=True)
-    y, sr = rosa.load(file_path, mono=True)
+    y, sr = rosa.load(file_path, sr=None, mono=True)
 
     # Create info string.
     num_samples = y.shape[0]
     duration = rosa.get_duration(y=y, sr=sr)
     info_str = 'Label="{}"\nPath={}\nDuration={:.1f}s with {:,d} Samples\n' \
-               'Sampling Rate={:,d}Hz\nMin Max=[{:.2f}, {:.2f}]'\
+               'Sampling Rate={:,d}Hz\nMin, Max=[{:.2f}, {:.2f}]'\
         .format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
 
     print(info_str)
@@ -49,21 +49,29 @@ def _load_sample(file_path, label=''):
     plt.text(0.0, 1.0, info_str, color='black', verticalalignment='top')
     plt.tight_layout()
 
-    # Compute MFCC features from the raw signal.
-    mfcc = rosa.feature.mfcc(y=y, sr=sr, hop_length=hop_length, n_mfcc=32)
+    db_pow = np.abs(rosa.stft(y=y, n_fft=1024, hop_length=hop_length, win_length=400)) ** 2
+    mel_spect = rosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
+                                            fmax=sr / 2., fmin=64., n_mels=80)
+    mel_spect = rosa.power_to_db(mel_spect, ref=np.max)
 
-    plt.figure(figsize=(9, 6))
+    # Compute MFCC features from the raw signal.
+    mfcc = rosa.feature.mfcc(S=mel_spect, sr=sr, n_mfcc=13)
+
+    plt.figure(figsize=(12, 6))
     plt.subplot(1, 2, 1)
-    display.specshow(mfcc, sr=sr, x_axis='time', y_axis='mel')
+    display.specshow(mfcc, sr=sr, x_axis='time', y_axis='linear', hop_length=hop_length)
+    plt.set_cmap('magma')
     plt.xticks(rotation=295)
+    plt.colorbar(format='%+2.0f')
     plt.title('MFCC')
 
     # And the first-order differences (delta features).
-    mfcc_delta = rosa.feature.delta(mfcc)
+    mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
 
     plt.subplot(1, 2, 2)
-    display.specshow(mfcc_delta, sr=sr, x_axis='time', y_axis='mel')
+    display.specshow(mfcc_delta, sr=sr, x_axis='time', y_axis='linear', hop_length=hop_length)
     plt.xticks(rotation=295)
+    plt.colorbar(format='%+2.0f')
     plt.title(r'$\Delta$ MFCC')
     plt.tight_layout()
 
@@ -99,14 +107,12 @@ def _load_sample(file_path, label=''):
     plt.colorbar(format='%+2.0f dB')
     plt.title('Log power spectrogram')
 
-    # Tempogram
     plt.subplot(3, 2, 6)
-    t_gram = rosa.feature.tempogram(y=y, sr=sr)
-    display.specshow(t_gram, sr=sr, x_axis='time', y_axis='tempo')
-    plt.colorbar()
-    plt.title('Tempogram')
-    plt.tight_layout()
+    display.specshow(mel_spect, x_axis='time', y_axis='mel', hop_length=hop_length)
+    plt.colorbar(format='%+2.0f dB')
+    plt.title('Mel spectrogram')
 
+    plt.tight_layout()
     plt.show()
 
 
@@ -120,5 +126,5 @@ if __name__ == '__main__':
         txt = txt.strip()
         wav_path = os.path.join(_timit_base_path, 'timit/TIMIT', wav_path)
 
-    # _load_sample(rosa.util.example_audio_file(), label='librosa.utils.example_audio_file()')
-    _load_sample(wav_path, label=txt)
+    # _sample_info(rosa.util.example_audio_file(), label='librosa.utils.example_audio_file()')
+    sample_info(wav_path, label=txt)

@@ -10,6 +10,7 @@ Data format:
 """
 
 import os
+import re
 
 
 DATA_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'     # Path to the TIMIT data set base.
@@ -31,6 +32,9 @@ def _gen_list(target):
         master_data = f.readlines()
 
     result = []
+    word_set = set()
+    char_set = set()
+    pattern = re.compile(r'[^a-zA-Z ]+')
 
     for line in master_data:
         wav_path, txt_path, _, _ = line.split(',')
@@ -38,9 +42,13 @@ def _gen_list(target):
 
         with open(txt_path, 'r') as f:
             txt = f.readlines()
-            assert len(txt) == 1, 'Text file contains to many lines.'
-            txt = txt[0].strip()
-            txt = txt.split(' ', 2)[2]
+            assert len(txt) == 1, 'Text file contains to many lines. ({})'.format(txt_path)
+            txt = txt[0].split(' ', 2)[2]
+
+            txt = re.sub(pattern, '', txt).strip()
+            txt = txt.lower()
+            char_set.update(set(list(txt)))
+            word_set.update(set(txt.split(' ')))
 
         output_line = '{} {}\n'.format(wav_path, txt)
         result.append(output_line)
@@ -54,6 +62,20 @@ def _gen_list(target):
     with open(target_path, 'w') as f:
         print('Writing {} lines of {} files to {}'.format(len(result), target, target_path))
         f.writelines(result)
+
+    # Remove unwanted elements from set.
+    char_set.discard('')
+    char_set.discard(' ')
+    word_set.discard('')
+    word_set.discard(' ')
+
+    # Print some information about the labels.
+    print('#char_set={}:'.format(len(char_set)))
+    print(char_set)
+    print('#word_set={}:'.format(len(word_set)))
+    print(word_set)
+
+    return char_set, word_set, len(result)
 
 
 def _delete_file_if_exists(path):
@@ -70,6 +92,10 @@ def _delete_file_if_exists(path):
 
 
 if __name__ == '__main__':
-    _gen_list('train')
-    _gen_list('test')
-    print('Training (train.txt) and evaluation (test.txt) file lists created.')
+    train_char_s, train_word_s, train_len = _gen_list('train')
+    test_char_s, test_word_s, test_len = _gen_list('test')
+    print('#test_word_set \\ train_word_set={}:'.format(len(test_word_s - train_word_s)))
+    print(test_word_s - train_word_s)
+
+    print('Training (train.txt : {}) and evaluation (test.txt : {}) file lists created.'
+          .format(train_len, test_len))

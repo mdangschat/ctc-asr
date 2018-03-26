@@ -7,30 +7,27 @@ and transform the images into an usable format.
 """
 
 import os
-
 import numpy as np
-from matplotlib import pyplot as plt
-from skimage import data, transform
 import tensorflow as tf
-from tensorflow.python.ops.image_ops_impl import ResizeMethod
+
+from loader import load_input
 
 
-INPUT_SHAPE = (64, 64, 3)
-NUMBER_CLASSES = 62
-NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 4575
-NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 2520
+INPUT_SHAPE = (64, 64, 3)   # review
+NUMBER_CLASSES = 62     # review
+NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 4895
+NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 1680
 DATA_PATH = '/home/marc/workspace/speech/data'  # review
 
 FLAGS = tf.app.flags.FLAGS
 
 
-def inputs_train(data_dir, image_shape, batch_size):
+def inputs_train(data_dir, batch_size):
     """Construct input for TS training.
+    review Documentation
 
     Args:
         data_dir: Path to the data directory.
-        image_shape: Numpy like shape with 3 elements. For example:
-                     [32, 32, 3] for colored images and [32, 32, 1] for monochrome images.
         batch_size (int): Number of images per batch.
 
     Returns:
@@ -46,9 +43,12 @@ def inputs_train(data_dir, image_shape, batch_size):
         file_names = tf.convert_to_tensor(image_list, dtype=tf.string)
         labels = tf.convert_to_tensor(labels_list, dtype=tf.int32)
 
-        # Create an input queue that produces the file names to read.
-        input_queue = tf.train.slice_input_producer([file_names, labels],
-                                                    num_epochs=None, shuffle=False)
+        # Create an input queue that produces the file names to read.       # review capacity calc
+        sample_queue, label_queue = tf.train.slice_input_producer(
+            [file_names, labels], capacity=batch_size * 3, num_epochs=None, shuffle=False)
+
+        # TODO write read_sample()
+        sample = tf.py_func(_read_sample, [sample_queue], [tf.float32])
 
         # Load the raw data.
         raw_images, raw_labels = _read_data(input_queue, image_shape)
