@@ -70,10 +70,8 @@ def _gen_list(target):
     word_set.discard(' ')
 
     # Print some information about the labels.
-    print('#char_set={}:'.format(len(char_set)))
-    print(char_set)
-    print('#word_set={}:'.format(len(word_set)))
-    print(word_set)
+    print('#char_set={}:'.format(len(char_set)), char_set)
+    print('#word_set={}:'.format(len(word_set)), word_set)
 
     return char_set, word_set, len(result)
 
@@ -94,8 +92,8 @@ def _delete_file_if_exists(path):
 if __name__ == '__main__':
     train_char_s, train_word_s, train_len = _gen_list('train')
     test_char_s, test_word_s, test_len = _gen_list('test')
-    print('#test_word_set \\ train_word_set={}:'.format(len(test_word_s - train_word_s)))
-    print(test_word_s - train_word_s)
+    print('#(TEST_WORD\\TRAIN_WORD)={}:'
+          .format(len(test_word_s - train_word_s)), test_word_s - train_word_s)
 
     print('Training (train.txt : {}) and evaluation (test.txt : {}) file lists created.'
           .format(train_len, test_len))
