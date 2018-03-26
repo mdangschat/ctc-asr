@@ -53,7 +53,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
             for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
-            num_iter = int(math.ceil(s_input.NUM_EXAMPLES_PER_EPOCH_FOR_EVAL / FLAGS.batch_size))
+            num_iter = int(math.ceil(s_input.NUM_EXAMPLES_PER_EPOCH_EVAL / FLAGS.batch_size))
             true_count = 0  # Counts the number of correct predictions.
             total_sample_count = num_iter * FLAGS.batch_size
             step = 0

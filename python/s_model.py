@@ -5,13 +5,13 @@ import tensorflow as tf
 import s_input
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 16,
+tf.app.flags.DEFINE_integer('batch_size', 1,
                             """Number of images to process in a batch.""")
 
 # Global constants describing the data set.
 NUM_CLASSES = s_input.NUMBER_CLASSES
 INPUT_SHAPE = s_input.INPUT_SHAPE
-NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
+NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
 MOVING_AVERAGE_DECAY = 0.9999       # The decay to use for the moving average.
@@ -48,14 +48,11 @@ def inference(images):
                                padding='VALID',
                                name='pool1')
 
-        # norm1
-        norm1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm1')
-
     # Dense 1
     with tf.variable_scope('dense1') as scope:
         # Flatten input.
         # <=> tf.reshape(images, [-1, np.prod(INPUT_SHAPE)])
-        flattened_input = tf.layers.flatten(norm1)
+        flattened_input = tf.layers.flatten(pool1)
 
         dim = flattened_input.get_shape()[1].value
         weights = _variable_with_weight_decay('weights', [dim, 128], 0.04, 0.004)
@@ -159,17 +156,19 @@ def train(total_loss, global_step):
 
 def inputs_train():
     """Construct modified input for the TS training.
+    review Documentation
 
     Returns:
-        images: Image 4D tensor of [batch_size, width, height, channels] size.
+        samples: Image 4D tensor of [batch_size, width, height, channels] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    images, labels = s_input.inputs_train(s_input.DATA_PATH, s_input.INPUT_SHAPE, FLAGS.batch_size)
-    return images, labels
+    samples, labels = s_input.inputs_train(s_input.DATA_PATH, FLAGS.batch_size)
+    return samples, labels
 
 
 def inputs(eval_data):
     """Construct input for the TS evaluation.
+    L8ER: Adjust to audio data.
 
     Args:
         eval_data (bool): Indicating if one should use the train or eval data set.
@@ -178,9 +177,10 @@ def inputs(eval_data):
         images: Image 4D tensor of [batch_size, width, height, channels] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    images, labels = s_input.inputs(eval_data, s_input.DATA_PATH, s_input.INPUT_SHAPE,
-                                    FLAGS.batch_size)
-    return images, labels
+    # images, labels = s_input.inputs(eval_data, s_input.DATA_PATH, s_input.INPUT_SHAPE,
+    #                                 FLAGS.batch_size)
+    # return images, labels
+    raise NotImplementedError
 
 
 def _add_loss_summaries(total_loss):
