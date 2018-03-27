@@ -7,6 +7,7 @@ and transform the images into an usable format.
 """
 
 import os
+import numpy as np
 import tensorflow as tf
 
 from loader import load_input
@@ -61,8 +62,12 @@ def inputs_train(data_dir, batch_size):
         # restore it in a different environment.
         sample, label = tf.py_func(_read_sample,
                                    [sample_queue, label_queue],
-                                   [tf.string, tf.string])
+                                   [tf.float32, tf.int32])
 
+        # todo: Restore shape
+        # https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
+        sample.set_shape([1])
+        label.set_shape([1])
         print('py_func:', sample, label)
 
         print('Filling the queue with {} images before starting to train. '
@@ -120,7 +125,9 @@ def _read_sample(sample_queue, label_queue):
     print('Reshaped sample tensor:', sample, type(sample))
     print('Label:', label, type(label))
 
-    return sample, label
+    a, b = np.zeros([1], np.float32), np.ones([1], np.int32)
+    print('a, b:', a, b)
+    return a, b   # todo sample, label
 
 
 def _read_file_list(path):
@@ -191,3 +198,26 @@ def _generate_batch(sample, label, min_queue_examples, batch_size, shuffle):
     # tf.summary.image('images', image_batch, max_outputs=10)    # TODO: Summay options for audio?
 
     return image_batch, label_batch
+
+
+class LabelMaps(object):
+    # L8ER Documentation
+
+    def __init__(self):
+        self._map = 'abcdefghijklmnopqrstuvwxyz'
+        self._ctoi = {}
+        self._itoc = {}
+
+        for i, c in enumerate(self._map):
+            self._ctoi.update({c: i})
+            self._itoc.update({i: c})
+
+    def ctoi(self, char):
+        # L8ER Documentation
+        # review No if exists validation
+        return self._ctoi[char.lower()]
+
+    def itoc(self, integer):
+        # L8ER Documentation
+        # review No if exists validation
+        return self._itoc[integer]
