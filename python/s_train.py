@@ -103,7 +103,7 @@ def main(argv=None):
     """TensorFlow starting routine."""
     # Delete old training data.
     if tf.gfile.Exists(FLAGS.train_dir):
-        print('Deleting old checkpoint data from: "{}".'.format(FLAGS.train_dir))
+        print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
         tf.gfile.DeleteRecursively(FLAGS.train_dir)
     tf.gfile.MakeDirs(FLAGS.train_dir)
 

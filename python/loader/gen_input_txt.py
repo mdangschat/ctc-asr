@@ -34,6 +34,8 @@ def _gen_list(target):
     result = []
     word_set = set()
     char_set = set()
+    longest = 0
+    shortest = 10000000
     pattern = re.compile(r'[^a-zA-Z ]+')
 
     for line in master_data:
@@ -47,6 +49,8 @@ def _gen_list(target):
 
             txt = re.sub(pattern, '', txt).strip()
             txt = txt.lower()
+            longest = len(txt) if len(txt) > longest else longest
+            shortest = len(txt) if len(txt) < shortest else shortest
             char_set.update(set(list(txt)))
             word_set.update(set(txt.split(' ')))
 
@@ -72,6 +76,7 @@ def _gen_list(target):
     # Print some information about the labels.
     print('#char_set={}:'.format(len(char_set)), char_set)
     print('#word_set={}:'.format(len(word_set)), word_set)
+    print('Longest sentence was {} and the shortest was {} characters.'.format(longest, shortest))
 
     return char_set, word_set, len(result)
 

@@ -11,10 +11,11 @@ import numpy as np
 import tensorflow as tf
 
 from loader import load_input
+import s_utils
 
 
-NUMBER_CLASSES = 62     # TODO
-INPUT_SHAPE = ()        # TODO
+NUMBER_CLASSES = 26     # review
+MAX_INPUT_LEN = 80      # review needed?
 SAMPLING_RATE = 16000
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
@@ -37,12 +38,15 @@ def inputs_train(data_dir, batch_size):
         labels: Labels a 1D tensor of [batch_size] size.
     """
     train_txt_path = os.path.join(data_dir, 'train.txt')
+    # Longest label list in train/test is 79 characters.
     sample_list, label_list = _read_file_list(train_txt_path)
+
+    print('label_list:', label_list)
 
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
-        labels = tf.convert_to_tensor(label_list, dtype=tf.string)
+        labels = tf.convert_to_tensor(label_list, dtype=tf.int32)
         print('train_input:', file_names, labels)
 
         # Ensure that the random shuffling has good mixing properties.
@@ -56,19 +60,16 @@ def inputs_train(data_dir, batch_size):
 
         print('queues:', sample_queue, label_queue)
 
-        # TODO write read_sample()
         # review: The body of the function (i.e. func) will not be serialized in a GraphDef.
-        # Therefore, you should not use this function if you need to serialize your model and
-        # restore it in a different environment.
-        sample, label = tf.py_func(_read_sample,
-                                   [sample_queue, label_queue],
-                                   [tf.float32, tf.int32])
+        # py_func: You should not use this function if you need to serialize your model
+        # and restore it in a different environment.
+        sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
+        label = label_queue
+        print('py_func:', sample, type(sample), label)
 
-        # todo: Restore shape
-        # https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([1])
-        label.set_shape([1])
-        print('py_func:', sample, label)
+        # Restore shape. See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
+        sample.set_shape([100, 13])    # review both shapes
+        print('reset shape:', sample, label)
 
         print('Filling the queue with {} images before starting to train. '
               'Queue capacity is {}. '
@@ -78,7 +79,7 @@ def inputs_train(data_dir, batch_size):
     return _generate_batch(sample, label, min_queue_examples, batch_size, shuffle=True)
 
 
-def inputs(eval_data, data_dir, image_shape, batch_size):
+def inputs():
     # TODO: Rewrite this function to match inputs_train().
     """Construct fitting input for the evaluation process.
 
@@ -94,25 +95,16 @@ def inputs(eval_data, data_dir, image_shape, batch_size):
                 size.
         labels: Labels a 1D tensor of [batch_size] size.
     """
-    if not eval_data:   # review Is this really needed? Makes everything more complicated.
-        data_path = os.path.join(data_dir, 'Training')
-        num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_TRAIN
-    else:
-        data_path = os.path.join(data_dir, 'Testing')
-        num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_EVAL
-
     raise NotImplementedError
 
 
-def _read_sample(sample_queue, label_queue):
-    """Reads and converts the TS data files.
+def _read_sample(sample_queue):
+    """Reads the wave file and converts it into an MFCC.
     review Documentation
 
     Args:
         sample_queue: A TensorFlow queue of tuples with the file names to read from and labels.
-                     Compare: tf.train.slice_input_producer
-        label_queue: Numpy like shape with 3 elements. For example:
-                     [32, 32, 3] for colored images and [32, 32, 1] for monochrome images.
+                      Compare: tf.train.slice_input_producer
 
     Returns:
         reshaped_image: A single example.
@@ -120,32 +112,27 @@ def _read_sample(sample_queue, label_queue):
     """
     sample = load_input.load_sample(sample_queue, expected_sr=SAMPLING_RATE)
 
-    label = label_queue
-
-    print('Reshaped sample tensor:', sample, type(sample))
-    print('Label:', label, type(label))
-
-    a, b = np.zeros([1], np.float32), np.ones([1], np.int32)
-    print('a, b:', a, b)
-    return a, b   # todo sample, label
+    print('_read_sample:', sample, type(sample))  # review Debug msg
+    return sample
 
 
-def _read_file_list(path):
+def _read_file_list(path, label_manager=s_utils.LabelManager()):
     """Generate two synchronous lists of all image samples and their respective labels
     within the provided path.
     review Documentation
+    review: Labels are converted from characters to integers. See: Labels.
 
     Args:
         path (str): Path to the training or testing folder of the TS data set.
 
     Returns:
         file_names ([str]): A list of file name strings.
-        labels ([int]): A list of labels as integer.
+        labels ([[int]]): A list of labels as integer.
 
     .. _StackOverflow:
        https://stackoverflow.com/questions/34340489/tensorflow-read-images-with-labels
     """
-    print('Opening ', path)     # todo remove
+    print('Opening: {}'.format(path))     # todo remove
     with open(path) as f:
         lines = f.readlines()
 
@@ -154,9 +141,11 @@ def _read_file_list(path):
         for line in lines:
             sample, label = line.split(' ', 1)
             samples.append(os.path.join(DATA_PATH, 'timit', sample))
-            labels.append(label.strip())
+            label = [label_manager.ctoi(c) for c in label.strip()]
+            pad_len = MAX_INPUT_LEN - len(label)
+            labels.append(np.pad(np.array(label, dtype=np.int32), (0, pad_len), 'constant'))
 
-        return samples, labels
+        return samples, np.array(labels)
 
 
 def _generate_batch(sample, label, min_queue_examples, batch_size, shuffle):
@@ -195,29 +184,6 @@ def _generate_batch(sample, label, min_queue_examples, batch_size, shuffle):
         )
 
     # Display the training images in the visualizer.
-    # tf.summary.image('images', image_batch, max_outputs=10)    # TODO: Summay options for audio?
+    # tf.summary.image('images', image_batch, max_outputs=10)    # L8ER: Summay options for audio?
 
     return image_batch, label_batch
-
-
-class LabelMaps(object):
-    # L8ER Documentation
-
-    def __init__(self):
-        self._map = 'abcdefghijklmnopqrstuvwxyz'
-        self._ctoi = {}
-        self._itoc = {}
-
-        for i, c in enumerate(self._map):
-            self._ctoi.update({c: i})
-            self._itoc.update({i: c})
-
-    def ctoi(self, char):
-        # L8ER Documentation
-        # review No if exists validation
-        return self._ctoi[char.lower()]
-
-    def itoc(self, integer):
-        # L8ER Documentation
-        # review No if exists validation
-        return self._itoc[integer]

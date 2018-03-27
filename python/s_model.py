@@ -10,7 +10,6 @@ tf.app.flags.DEFINE_integer('batch_size', 1,
 
 # Global constants describing the data set.
 NUM_CLASSES = s_input.NUMBER_CLASSES
-INPUT_SHAPE = s_input.INPUT_SHAPE
 NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
@@ -20,11 +19,12 @@ LEARNING_RATE_DECAY_FACTOR = 0.6    # Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.1         # Initial learning rate.
 
 
-def inference(images):
+def inference(sample):
     """Build the TS model.
+    # review Documentation
 
     Args:
-        images: The images returned from inputs_train() or inputs().
+        sample: The images returned from inputs_train() or inputs().
 
     Returns:
         logits: Softmax layer pre activation function, i.e. layer(XW + b)
@@ -32,27 +32,20 @@ def inference(images):
     # conv1
     with tf.variable_scope('conv1') as scope:
         kernel = _variable_with_weight_decay('weights',
-                                             shape=[5, 5, 3, 64],
+                                             shape=[5, 13, 64],
                                              stddev=5e-2,
                                              weight_decay=None)
-        conv = tf.nn.conv2d(images, kernel, [1, 1, 1, 1], padding='VALID')
+        conv = tf.nn.conv1d(sample, kernel, 1, padding='VALID')
         biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.0))
         pre_activation = tf.nn.bias_add(conv, biases)
         conv1 = tf.nn.relu(pre_activation, name=scope.name)
         _activation_summary(conv1)
 
-        # pool1
-        pool1 = tf.nn.max_pool(conv1,
-                               ksize=[1, 3, 3, 1],
-                               strides=[1, 2, 2, 1],
-                               padding='VALID',
-                               name='pool1')
-
     # Dense 1
     with tf.variable_scope('dense1') as scope:
         # Flatten input.
         # <=> tf.reshape(images, [-1, np.prod(INPUT_SHAPE)])
-        flattened_input = tf.layers.flatten(pool1)
+        flattened_input = tf.layers.flatten(conv1)
 
         dim = flattened_input.get_shape()[1].value
         weights = _variable_with_weight_decay('weights', [dim, 128], 0.04, 0.004)

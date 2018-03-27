@@ -22,6 +22,7 @@ def load_sample(file_path, expected_sr=None):
     hop_length = 200
     f_max = sr / 2.
     f_min = 64.
+    n_mfcc = 13
 
     if expected_sr is not None:
         assert sr == expected_sr, 'Sample rate of {:,d} does not match the required rate of {:,d}.'\
@@ -35,7 +36,7 @@ def load_sample(file_path, expected_sr=None):
     s_mel = rosa.power_to_db(s_mel, ref=np.max)
 
     # Compute MFCC features from the mel spectrogram.
-    mfcc = rosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=13)
+    mfcc = rosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
 
     # And the first-order differences (delta features).
     # mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
