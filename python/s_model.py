@@ -6,7 +6,7 @@ import s_input
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 16,
+tf.app.flags.DEFINE_integer('batch_size', 1,
                             """Number of images to process in a batch.""")
 
 # Global constants describing the data set.
@@ -163,20 +163,8 @@ def inputs_train():
     return samples, labels
 
 
-def inputs(eval_data):
-    """Construct input for the TS evaluation.
-    L8ER: Adjust to audio data.
-
-    Args:
-        eval_data (bool): Indicating if one should use the train or eval data set.
-
-    Returns:
-        images: Image 4D tensor of [batch_size, width, height, channels] size.
-        labels: Labels 1D tensor of [batch_size] size.
-    """
-    # images, labels = s_input.inputs(eval_data, s_input.DATA_PATH, s_input.INPUT_SHAPE,
-    #                                 FLAGS.batch_size)
-    # return images, labels
+def inputs():
+    # L8ER: Write according to `inputs_train`.
     raise NotImplementedError
 
 

@@ -11,6 +11,7 @@ import os
 import numpy as np
 import librosa
 import tensorflow as tf
+import tensorflow.contrib as tfc
 
 import s_utils
 
@@ -27,7 +28,7 @@ FLAGS = tf.app.flags.FLAGS
 
 
 def inputs_train(data_dir, batch_size):
-    """Construct input for TS training.
+    """Construct input for speech training.
     review Documentation
 
     Args:
@@ -41,13 +42,14 @@ def inputs_train(data_dir, batch_size):
     """
     train_txt_path = os.path.join(data_dir, 'train.txt')
     # Longest label list in train/test is 79 characters.
-    sample_list, label_list = _read_file_list(train_txt_path)
+    sample_list, label_list, label_len_list = _read_file_list(train_txt_path)
 
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.int32)
-        print('train_input:', file_names, labels)
+        label_lens = tf.convert_to_tensor(label_len_list, dtype=tf.int32)
+        print('train_input:', file_names, labels, label_lens)
 
         # Ensure that the random shuffling has good mixing properties.
         min_fraction_of_examples_in_queue = 0.33
@@ -66,17 +68,17 @@ def inputs_train(data_dir, batch_size):
         sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
         label = label_queue
         label = np.array(1, dtype=np.int32)   # TODO: Remove this, this is only for testing!
+        label_len = np.array(1, dtype=np.int32)
         print('py_func:', sample, sample.shape, label)
+        sample = tf.Print(sample, [sample], message='sample')
 
-        # Restore shape. See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([MAX_INPUT_LEN, 13])    # review shape
-        print('reset shape:', sample, sample.shape)
+        # Restore shape, since `py_func` forgets it.
+        # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
+        sample.set_shape([None, 13])    # review shape, use []
+        print('set_shape:', sample, sample.shape)
 
-        print('Filling the queue with {} images before starting to train. '
-              'Queue capacity is {}. This will take a few minutes.'
-              .format(min_queue_examples, capacity))
-
-    return _generate_batch(sample, label, min_queue_examples, batch_size, shuffle=False)
+        print('Generating training batches.')
+        return _generate_batch(sample, label, label_len, batch_size)
 
 
 def inputs():
@@ -128,11 +130,11 @@ def _read_sample(sample_queue):
     # TODO Remove prints
     sample = mfcc.astype(np.float32)
     assert sample.shape[1] <= MAX_INPUT_LEN, 'MAX_INPUT_LEN to low: %d' % sample.shape[1]
-    # print('sample:', sample.shape)
-    sample = np.pad(sample, [[0, 0], [0, MAX_INPUT_LEN - sample.shape[1]]], 'constant')
+    print('sample:', sample.shape)
+    # sample = np.pad(sample, [[0, 0], [0, MAX_INPUT_LEN - sample.shape[1]]], 'constant')
     # print('sample pad:', sample.shape)
     sample = np.swapaxes(sample, 0, 1)
-    # print('sample pad swap:', sample.shape)
+    print('sample pad swap:', sample.shape)
     return sample
 
 
@@ -157,53 +159,49 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
 
         samples = []
         labels = []
+        label_lens = []
         for line in lines:
             sample, label = line.split(' ', 1)
             samples.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample))
             label = [label_manager.ctoi(c) for c in label.strip()]
             pad_len = MAX_LABEL_LEN - len(label)
-            labels.append(np.pad(np.array(label, dtype=np.int32), [0, pad_len], 'constant'))
+            label = np.pad(np.array(label, dtype=np.int32), [0, pad_len], 'constant')
+            labels.append(label)
+            label_lens.append(len(label))
 
-        return samples, np.array(labels)
+        return samples, np.array(labels), np.array(label_lens)
 
 
-def _generate_batch(sample, label, min_queue_examples, batch_size, shuffle):
+def _generate_batch(sample, label, label_len, batch_size):
     """Construct a queued batch of images and labels.
     review Documentation
 
     Args:
         sample: 3D tensor of [height, width, 1] of type float32.
         label: 1D tensor of type int32.
-        min_queue_examples (int): Minimum number of samples to retain in the queue that
-                                  provides the example batches.
+        label_len: 1D tensor of type int32.
         batch_size (int): Number of images per batch.
-        shuffle (boolean): Indicating whether to use shuffling queue or not.
 
     Returns:
         images: Images 4D tensor of [batch_size, height, width, 1] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
     num_pre_process_threads = 12
-    capacity = min_queue_examples + 3 * batch_size
+    capacity = 10 + 3 * batch_size
 
-    if shuffle:
-        image_batch, label_batch = tf.train.shuffle_batch(
-            [sample, label],
-            batch_size=batch_size,
-            num_threads=num_pre_process_threads,
-            capacity=capacity,
-            min_after_dequeue=min_queue_examples
-        )
-    else:
-        image_batch, label_batch = tf.train.batch(
-            [sample, label],
-            batch_size=batch_size,
-            num_threads=num_pre_process_threads,
-            capacity=capacity
-        )
+    batch_sequence_length, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(
+        input_length=label_len,
+        tensors=[sample, label],
+        batch_size=batch_size,
+        bucket_boundaries=[l for l in range(10, MAX_INPUT_LEN)],
+        num_threads=num_pre_process_threads,
+        capacity=capacity,
+        dynamic_pad=True,
+        allow_smaller_final_batch=False
+    )
 
     # Display the training images in the visualizer.
-    summary_batch = tf.reshape(sample, [1, MAX_INPUT_LEN, 13, 1])     # TODO: batch size ignored.
-    tf.summary.image('input_data', summary_batch, max_outputs=1)
+    #summary_batch = tf.reshape(sample, [1, None, 13, 1])     # TODO: batch size ignored.
+    #tf.summary.image('input_data', summary_batch, max_outputs=1)
 
-    return image_batch, label_batch
+    return sample_batch, label_batch
