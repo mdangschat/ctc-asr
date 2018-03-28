@@ -4,6 +4,7 @@ import tensorflow as tf
 
 import s_input
 
+
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_integer('batch_size', 1,
                             """Number of images to process in a batch.""")

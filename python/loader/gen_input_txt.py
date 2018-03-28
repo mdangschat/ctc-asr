@@ -18,7 +18,7 @@ TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to gener
 
 
 def _gen_list(target):
-    # l8er: Documentation
+    # L8ER: Documentation
 
     if target != 'test' and target != 'train':
         raise ValueError('"{}" is not a valid target.'.format(target))
@@ -35,7 +35,7 @@ def _gen_list(target):
     word_set = set()
     char_set = set()
     longest = 0
-    shortest = 10000000
+    shortest = (2 ** 31) - 1
     pattern = re.compile(r'[^a-zA-Z ]+')
 
     for line in master_data:

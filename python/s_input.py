@@ -1,4 +1,5 @@
-"""Routines to load the traffic sign (TS) corpus [BelgiumTS (cropped images)]
+"""L8ER Documentation
+Routines to load the traffic sign (TS) corpus [BelgiumTS (cropped images)]
 and transform the images into an usable format.
 
 .. _BelgiumTS:
@@ -8,6 +9,7 @@ and transform the images into an usable format.
 
 import os
 import numpy as np
+import librosa
 import tensorflow as tf
 
 from loader import load_input
@@ -41,8 +43,6 @@ def inputs_train(data_dir, batch_size):
     # Longest label list in train/test is 79 characters.
     sample_list, label_list = _read_file_list(train_txt_path)
 
-    print('label_list:', label_list)
-
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
@@ -65,6 +65,7 @@ def inputs_train(data_dir, batch_size):
         # and restore it in a different environment.
         sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
         label = label_queue
+        label = label[10]   # TODO: Remove this, this is only for testing!
         print('py_func:', sample, type(sample), label)
 
         # Restore shape. See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
@@ -98,7 +99,7 @@ def inputs():
     raise NotImplementedError
 
 
-def _read_sample(sample_queue):
+def _read_sample(sample_queue, expected_sr=None):
     """Reads the wave file and converts it into an MFCC.
     review Documentation
 
@@ -110,10 +111,41 @@ def _read_sample(sample_queue):
         reshaped_image: A single example.
         label: The corresponding label.
     """
-    sample = load_input.load_sample(sample_queue, expected_sr=SAMPLING_RATE)
+    file_path = str(sample_queue, 'utf-8')
 
-    print('_read_sample:', sample, type(sample))  # review Debug msg
-    return sample
+    if not os.path.isfile(file_path):
+        raise ValueError('"{}" does not exist.'.format(file_path))
+
+    # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
+    # y, sr = rosa.load(file_path, sr=None, mono=True)
+    y, sr = librosa.load(file_path, sr=None, mono=True)
+
+    # Set generally used variables. TODO: Document their purpose.
+    # At 22050 Hz, 512 samples ~= 23ms. At 16000 Hz, 512 samples ~= TODO ms.
+    hop_length = 200
+    f_max = sr / 2.
+    f_min = 64.
+    n_mfcc = 13
+
+    if expected_sr is not None:
+        if not sr == expected_sr:
+            raise ValueError('Sample rate of {:,d} does not match the required rate of {:,d}.'
+                             .format(sr, expected_sr))
+
+    db_pow = np.abs(librosa.stft(y=y, n_fft=1024, hop_length=hop_length, win_length=400)) ** 2
+
+    s_mel = librosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
+                                           fmax=f_max, fmin=f_min, n_mels=80)
+
+    s_mel = librosa.power_to_db(s_mel, ref=np.max)
+
+    # Compute MFCC features from the mel spectrogram.
+    mfcc = librosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
+
+    # And the first-order differences (delta features).
+    # mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
+
+    return mfcc
 
 
 def _read_file_list(path, label_manager=s_utils.LabelManager()):
@@ -140,7 +172,7 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
         labels = []
         for line in lines:
             sample, label = line.split(' ', 1)
-            samples.append(os.path.join(DATA_PATH, 'timit', sample))
+            samples.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample))
             label = [label_manager.ctoi(c) for c in label.strip()]
             pad_len = MAX_INPUT_LEN - len(label)
             labels.append(np.pad(np.array(label, dtype=np.int32), (0, pad_len), 'constant'))
