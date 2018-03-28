@@ -12,12 +12,12 @@ import numpy as np
 import librosa
 import tensorflow as tf
 
-from loader import load_input
 import s_utils
 
 
-NUMBER_CLASSES = 26     # review
-MAX_INPUT_LEN = 80      # review needed?
+NUMBER_CLASSES = 26         # review
+MAX_LABEL_LEN = 80          # review
+MAX_INPUT_LEN = 512         # review
 SAMPLING_RATE = 16000
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
@@ -66,18 +66,17 @@ def inputs_train(data_dir, batch_size):
         sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
         label = label_queue
         label = label[10]   # TODO: Remove this, this is only for testing!
-        print('py_func:', sample, type(sample), label)
+        print('py_func:', sample, sample.shape, label)
 
         # Restore shape. See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([100, 13])    # review both shapes
-        print('reset shape:', sample, label)
+        sample.set_shape([MAX_INPUT_LEN, 13])    # review shape
+        print('reset shape:', sample, sample.shape)
 
         print('Filling the queue with {} images before starting to train. '
-              'Queue capacity is {}. '
-              'This will take a few minutes.'
+              'Queue capacity is {}. This will take a few minutes.'
               .format(min_queue_examples, capacity))
 
-    return _generate_batch(sample, label, min_queue_examples, batch_size, shuffle=True)
+    return _generate_batch(sample, label, min_queue_examples, batch_size, shuffle=False)
 
 
 def inputs():
@@ -99,7 +98,7 @@ def inputs():
     raise NotImplementedError
 
 
-def _read_sample(sample_queue, expected_sr=None):
+def _read_sample(sample_queue):
     """Reads the wave file and converts it into an MFCC.
     review Documentation
 
@@ -127,11 +126,6 @@ def _read_sample(sample_queue, expected_sr=None):
     f_min = 64.
     n_mfcc = 13
 
-    if expected_sr is not None:
-        if not sr == expected_sr:
-            raise ValueError('Sample rate of {:,d} does not match the required rate of {:,d}.'
-                             .format(sr, expected_sr))
-
     db_pow = np.abs(librosa.stft(y=y, n_fft=1024, hop_length=hop_length, win_length=400)) ** 2
 
     s_mel = librosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
@@ -145,7 +139,15 @@ def _read_sample(sample_queue, expected_sr=None):
     # And the first-order differences (delta features).
     # mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
 
-    return mfcc
+    # TODO Remove prints
+    sample = mfcc.astype(np.float32)
+    assert sample.shape[1] <= MAX_INPUT_LEN, 'MAX_INPUT_LEN to low: %d' % sample.shape[1]
+    # print('sample:', sample.shape)
+    sample = np.pad(sample, [[0, 0], [0, MAX_INPUT_LEN - sample.shape[1]]], 'constant')
+    # print('sample pad:', sample.shape)
+    sample = np.swapaxes(sample, 0, 1)
+    # print('sample pad swap:', sample.shape)
+    return sample
 
 
 def _read_file_list(path, label_manager=s_utils.LabelManager()):
@@ -174,8 +176,8 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
             sample, label = line.split(' ', 1)
             samples.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample))
             label = [label_manager.ctoi(c) for c in label.strip()]
-            pad_len = MAX_INPUT_LEN - len(label)
-            labels.append(np.pad(np.array(label, dtype=np.int32), (0, pad_len), 'constant'))
+            pad_len = MAX_LABEL_LEN - len(label)
+            labels.append(np.pad(np.array(label, dtype=np.int32), [0, pad_len], 'constant'))
 
         return samples, np.array(labels)
 

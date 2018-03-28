@@ -3,8 +3,8 @@
 
 class LabelManager(object):
     """Convert characters (chr) to integer (int) labels and vice versa."""
-    # L8ER: <blank label>, <space>
     # TODO: Map from 1 to x, not from 0 to x-1
+    # TODO: <blank label>, <space>
 
     def __init__(self):
         self._map = 'abcdefghijklmnopqrstuvwxyz '

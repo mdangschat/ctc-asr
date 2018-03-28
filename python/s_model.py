@@ -40,7 +40,7 @@ def inference(sample):
         biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.0))
         pre_activation = tf.nn.bias_add(conv, biases)
         conv1 = tf.nn.relu(pre_activation, name=scope.name)
-        _activation_summary(conv1)
+        # _activation_summary(conv1)
 
     # Dense 1
     with tf.variable_scope('dense1') as scope:
@@ -53,7 +53,7 @@ def inference(sample):
         biases = _variable_on_cpu('biases', [128], tf.constant_initializer(0.0))
         dense1_linear = tf.add(tf.matmul(flattened_input, weights), biases)
         dense1 = tf.nn.sigmoid(dense1_linear, name=scope.name)
-        _activation_summary(dense1)
+        # _activation_summary(dense1)
 
     # linear layer(XW + b),
     # We don't apply softmax here because
@@ -63,7 +63,7 @@ def inference(sample):
         weights = _variable_with_weight_decay('weights', [128, NUM_CLASSES], 0.04, 0.004)
         biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
         softmax_linear = tf.add(tf.matmul(dense1, weights), biases, name=scope.name)
-        _activation_summary(softmax_linear)
+        # _activation_summary(softmax_linear)
 
     return softmax_linear
 
@@ -129,14 +129,17 @@ def train(total_loss, global_step):
     # Apply gradients.
     apply_gradients_op = optimizer.apply_gradients(grads, global_step=global_step)
 
+    # L8ER Disabled summaries.
     # Add histograms for trainable variables.
     for var in tf.trainable_variables():
-        tf.summary.histogram(var.op.name, var)
+        # tf.summary.histogram(var.op.name, var)
+        pass
 
     # Add histograms for gradients.
     for grad, var in grads:
         if grad is not None:
-            tf.summary.histogram(var.op.name + '/gradients', grad)
+            # tf.summary.histogram(var.op.name + '/gradients', grad)
+            pass
 
     # Track the moving averages of all trainable variables.
     variable_averages = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
