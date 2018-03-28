@@ -17,7 +17,7 @@ import s_utils
 
 NUMBER_CLASSES = 26         # review
 MAX_LABEL_LEN = 80          # review
-MAX_INPUT_LEN = 512         # review
+MAX_INPUT_LEN = 666         # review
 SAMPLING_RATE = 16000
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
@@ -65,7 +65,7 @@ def inputs_train(data_dir, batch_size):
         # and restore it in a different environment.
         sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
         label = label_queue
-        label = label[10]   # TODO: Remove this, this is only for testing!
+        label = np.array(1, dtype=np.int32)   # TODO: Remove this, this is only for testing!
         print('py_func:', sample, sample.shape, label)
 
         # Restore shape. See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
@@ -80,21 +80,7 @@ def inputs_train(data_dir, batch_size):
 
 
 def inputs():
-    # TODO: Rewrite this function to match inputs_train().
-    """Construct fitting input for the evaluation process.
-
-    Args:
-        eval_data (boolean): Indicating if one should use the train or eval data set.
-        data_dir (str): Path to the data directory.
-        image_shape ([int]): Three element shape array.
-                     E.g. [32, 32, 3] for colored images and [32, 32, 1] for monochrome images.
-        batch_size (int): Number of images per batch.
-
-    Returns:
-        images: Images a 4D tensor of [batch_size, IMAGE_SHAPE[0], IMAGE_SHAPE[1], INPUT_SHAPE[2]]
-                size.
-        labels: Labels a 1D tensor of [batch_size] size.
-    """
+    # L8ER: Rewrite this function to match inputs_train().
     raise NotImplementedError
 
 
@@ -166,7 +152,6 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
     .. _StackOverflow:
        https://stackoverflow.com/questions/34340489/tensorflow-read-images-with-labels
     """
-    print('Opening: {}'.format(path))     # todo remove
     with open(path) as f:
         lines = f.readlines()
 
@@ -218,7 +203,7 @@ def _generate_batch(sample, label, min_queue_examples, batch_size, shuffle):
         )
 
     # Display the training images in the visualizer.
-    summary_batch = tf.reshape(sample, [1, 512, 13, 1])
-    tf.summary.image('input_data', summary_batch, max_outputs=1)  # L8ER: Summary options for audio?
+    summary_batch = tf.reshape(sample, [1, MAX_INPUT_LEN, 13, 1])     # TODO: batch size ignored.
+    tf.summary.image('input_data', summary_batch, max_outputs=1)
 
     return image_batch, label_batch

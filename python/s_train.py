@@ -17,9 +17,9 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
                            """Directory where to write event logs and checkpoints.""")
-tf.app.flags.DEFINE_integer('max_steps', 10,
+tf.app.flags.DEFINE_integer('max_steps', 1001,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 1,
+tf.app.flags.DEFINE_integer('log_frequency', 10,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
@@ -95,7 +95,11 @@ def train():
             )
         ) as mon_sess:
             while not mon_sess.should_stop():
-                mon_sess.run(train_op)
+                try:
+                    mon_sess.run(train_op)
+                except tf.errors.OutOfRangeError:
+                    print('All batches fed.')
+                    break
 
 
 # noinspection PyUnusedLocal
