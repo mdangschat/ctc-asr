@@ -1,9 +1,8 @@
-"""L8ER: Documentation
+"""Generate `train.txt` and `test.txt` for the `TIMIT`_ data set.
+Additionally some information about the data set is being printed out.
 
-For the `TIMIT`_ data set.
-
-Data format:
-    path/to/sample.wav Transcription of the sample wave file.
+Generated data format:
+    path/to/sample.wav Transcription of the sample wave file.<new_line>
 
 .. _TIMIT:
     https://vcs.zwuenf.org/agct_data/timit
@@ -18,7 +17,17 @@ TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to gener
 
 
 def _gen_list(target):
-    # L8ER: Documentation
+    """Generate .txt files containing the audio path and the corresponding sentence.
+    Return additional data set information, see below.
+
+    Args:
+        target (str): 'train' or 'test'
+
+    Returns:
+        char_set: Set containing each character within the data set.
+        word_set: Set containing each word within the data set.
+        num_samples (int): The number of samples in the data set.
+    """
 
     if target != 'test' and target != 'train':
         raise ValueError('"{}" is not a valid target.'.format(target))
