@@ -218,6 +218,7 @@ def _generate_batch(sample, label, min_queue_examples, batch_size, shuffle):
         )
 
     # Display the training images in the visualizer.
-    # tf.summary.image('images', image_batch, max_outputs=10)    # L8ER: Summay options for audio?
+    summary_batch = tf.reshape(sample, [1, 512, 13, 1])
+    tf.summary.image('input_data', summary_batch, max_outputs=1)  # L8ER: Summary options for audio?
 
     return image_batch, label_batch
