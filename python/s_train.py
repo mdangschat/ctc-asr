@@ -17,7 +17,7 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
                            """Directory where to write event logs and checkpoints.""")
-tf.app.flags.DEFINE_integer('max_steps', 101,
+tf.app.flags.DEFINE_integer('max_steps', 11,
                             """Number of batches to run.""")
 tf.app.flags.DEFINE_integer('log_frequency', 1,
                             """How often (every x steps) to log results to the console.""")
@@ -34,10 +34,10 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            images, labels = s_model.inputs_train()
+            sequences, seq_len, labels = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
-        logits = s_model.inference(images)
+        logits = s_model.inference(sequences, seq_len)
 
         # Calculate loss.
         loss = s_model.loss(logits, labels)

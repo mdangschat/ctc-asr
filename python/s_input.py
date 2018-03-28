@@ -66,7 +66,7 @@ def inputs_train(data_dir, batch_size):
         # py_func: You should not use this function if you need to serialize your model
         # and restore it in a different environment.
         sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
-        label = label_queue
+        # label = label_queue       # TODO Reactivate
         label = np.array(1, dtype=np.int32)   # TODO: Remove this, this is only for testing!
         label_len = np.array(1, dtype=np.int32)
         print('py_func:', sample, sample.shape, label)
@@ -130,11 +130,11 @@ def _read_sample(sample_queue):
     # TODO Remove prints
     sample = mfcc.astype(np.float32)
     assert sample.shape[1] <= MAX_INPUT_LEN, 'MAX_INPUT_LEN to low: %d' % sample.shape[1]
-    print('sample:', sample.shape)
+    # print('sample:', sample.shape)
     # sample = np.pad(sample, [[0, 0], [0, MAX_INPUT_LEN - sample.shape[1]]], 'constant')
     # print('sample pad:', sample.shape)
     sample = np.swapaxes(sample, 0, 1)
-    print('sample pad swap:', sample.shape)
+    # print('sample pad swap:', sample.shape)
     return sample
 
 
@@ -189,6 +189,7 @@ def _generate_batch(sample, label, label_len, batch_size):
     num_pre_process_threads = 12
     capacity = 10 + 3 * batch_size
 
+    # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     batch_sequence_length, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(
         input_length=label_len,
         tensors=[sample, label],
@@ -201,7 +202,7 @@ def _generate_batch(sample, label, label_len, batch_size):
     )
 
     # Display the training images in the visualizer.
-    #summary_batch = tf.reshape(sample, [1, None, 13, 1])     # TODO: batch size ignored.
-    #tf.summary.image('input_data', summary_batch, max_outputs=1)
+    # summary_batch = tf.reshape(sample, [1, None, 13, 1])     # L8ER: Use correct shape.
+    # tf.summary.image('input_data', summary_batch, max_outputs=1)
 
-    return sample_batch, label_batch
+    return sample_batch, batch_sequence_length, label_batch
