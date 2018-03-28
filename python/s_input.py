@@ -19,12 +19,13 @@ import s_utils
 NUMBER_CLASSES = 26         # review
 MAX_LABEL_LEN = 80          # review
 MAX_INPUT_LEN = 666         # review
-SAMPLING_RATE = 16000
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
 DATA_PATH = '/home/marc/workspace/speech/data'
 
 FLAGS = tf.app.flags.FLAGS
+tf.app.flags.DEFINE_integer('sampling_rate', 16000,
+                            """The sampling rate of the audio files (2 * Hz).""")
 
 
 def inputs_train(data_dir, batch_size):
@@ -70,14 +71,13 @@ def inputs_train(data_dir, batch_size):
         label = np.array(1, dtype=np.int32)   # TODO: Remove this, this is only for testing!
         label_len = np.array(1, dtype=np.int32)
         print('py_func:', sample, sample.shape, label)
-        sample = tf.Print(sample, [sample], message='sample')
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
         sample.set_shape([None, 13])    # review shape, use []
         print('set_shape:', sample, sample.shape)
 
-        print('Generating training batches.')
+        print('Generating training batches. This may take some time.')
         return _generate_batch(sample, label, label_len, batch_size)
 
 
@@ -106,6 +106,9 @@ def _read_sample(sample_queue):
     # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
     # y, sr = rosa.load(file_path, sr=None, mono=True)
     y, sr = librosa.load(file_path, sr=None, mono=True)
+
+    if not sr == FLAGS.sampling_rate:
+        raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
     # Set generally used variables. TODO: Document their purpose.
     # At 22050 Hz, 512 samples ~= 23ms. At 16000 Hz, 512 samples ~= TODO ms.
