@@ -4,7 +4,6 @@ and transform the images into an usable format.
 
 .. _BelgiumTS:
    http://btsd.ethz.ch/shareddata/
-
 """
 
 import os
@@ -17,7 +16,6 @@ import s_utils
 
 
 NUMBER_CLASSES = 26         # review
-MAX_LABEL_LEN = 80          # review
 MAX_INPUT_LEN = 666         # review
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
@@ -25,15 +23,14 @@ DATA_PATH = '/home/marc/workspace/speech/data'
 
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_integer('sampling_rate', 16000,
-                            """The sampling rate of the audio files (2 * Hz).""")
+                            """The sampling rate of the audio files (2 * 8kHz).""")
 
 
-def inputs_train(data_dir, batch_size):
+def inputs_train(batch_size):
     """Construct input for speech training.
     review Documentation
 
     Args:
-        data_dir: Path to the data directory.
         batch_size (int): Number of images per batch.
 
     Returns:
@@ -41,8 +38,8 @@ def inputs_train(data_dir, batch_size):
                 [batch_size, IMAGE_SHAPE[0], IMAGE_SHAPE[1], INPUT_SHAPE[2]] size.
         labels: Labels a 1D tensor of [batch_size] size.
     """
-    train_txt_path = os.path.join(data_dir, 'train.txt')
-    # Longest label list in train/test is 79 characters.
+    # Info: Longest label list in TIMIT train/test is 79 characters long.
+    train_txt_path = os.path.join(DATA_PATH, 'train.txt')
     sample_list, label_list, label_len_list = _read_file_list(train_txt_path)
 
     with tf.name_scope('train_input'):
@@ -145,10 +142,11 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
     """Generate two synchronous lists of all image samples and their respective labels
     within the provided path.
     review Documentation
-    review: Labels are converted from characters to integers. See: Labels.
+    review: Labels are converted from characters to integers. See: `s_utils.Labels`.
 
     Args:
         path (str): Path to the training or testing folder of the TS data set.
+        label_manager (s_utils.LabelManager):
 
     Returns:
         file_names ([str]): A list of file name strings.
@@ -160,19 +158,20 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
     with open(path) as f:
         lines = f.readlines()
 
-        samples = []
+        sample_paths = []
         labels = []
         label_lens = []
         for line in lines:
-            sample, label = line.split(' ', 1)
-            samples.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample))
+            sample_path, label = line.split(' ', 1)
+            sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
             label = [label_manager.ctoi(c) for c in label.strip()]
-            pad_len = MAX_LABEL_LEN - len(label)
+            # Pad labels to a multiple of 2.
+            pad_len = 0 if len(label) % 2 == 0 else 1
             label = np.pad(np.array(label, dtype=np.int32), [0, pad_len], 'constant')
             labels.append(label)
             label_lens.append(len(label))
 
-        return samples, np.array(labels), np.array(label_lens)
+        return sample_paths, np.array(labels), np.array(label_lens)
 
 
 def _generate_batch(sample, label, label_len, batch_size):
