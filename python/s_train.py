@@ -17,7 +17,7 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
                            """Directory where to write event logs and checkpoints.""")
-tf.app.flags.DEFINE_integer('max_steps', 10,
+tf.app.flags.DEFINE_integer('max_steps', 11,
                             """Number of batches to run.""")
 tf.app.flags.DEFINE_integer('log_frequency', 1,
                             """How often (every x steps) to log results to the console.""")
@@ -34,10 +34,10 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            images, labels = s_model.inputs_train()
+            sequences, seq_len, labels = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
-        logits = s_model.inference(images)
+        logits = s_model.inference(sequences, seq_len)
 
         # Calculate loss.
         loss = s_model.loss(logits, labels)
@@ -95,7 +95,11 @@ def train():
             )
         ) as mon_sess:
             while not mon_sess.should_stop():
-                mon_sess.run(train_op)
+                try:
+                    mon_sess.run(train_op)
+                except tf.errors.OutOfRangeError:
+                    print('All batches fed.')
+                    break
 
 
 # noinspection PyUnusedLocal
@@ -103,7 +107,7 @@ def main(argv=None):
     """TensorFlow starting routine."""
     # Delete old training data.
     if tf.gfile.Exists(FLAGS.train_dir):
-        print('Deleting old checkpoint data from: "{}".'.format(FLAGS.train_dir))
+        print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
         tf.gfile.DeleteRecursively(FLAGS.train_dir)
     tf.gfile.MakeDirs(FLAGS.train_dir)
 

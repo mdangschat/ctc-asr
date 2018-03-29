@@ -1,8 +1,10 @@
 """Contains the TS model definition."""
 
 import tensorflow as tf
+import tensorflow.contrib as tfc
 
 import s_input
+
 
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_integer('batch_size', 1,
@@ -10,7 +12,6 @@ tf.app.flags.DEFINE_integer('batch_size', 1,
 
 # Global constants describing the data set.
 NUM_CLASSES = s_input.NUMBER_CLASSES
-INPUT_SHAPE = s_input.INPUT_SHAPE
 NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
@@ -20,56 +21,42 @@ LEARNING_RATE_DECAY_FACTOR = 0.6    # Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.1         # Initial learning rate.
 
 
-def inference(images):
+def inference(sequence, seq_len):
     """Build the TS model.
+    # review Documentation
 
     Args:
-        images: The images returned from inputs_train() or inputs().
+        seq_len ():
+        sequence ():
 
     Returns:
         logits: Softmax layer pre activation function, i.e. layer(XW + b)
     """
-    # conv1
-    with tf.variable_scope('conv1') as scope:
-        kernel = _variable_with_weight_decay('weights',
-                                             shape=[5, 5, 3, 64],
-                                             stddev=5e-2,
-                                             weight_decay=None)
-        conv = tf.nn.conv2d(images, kernel, [1, 1, 1, 1], padding='VALID')
-        biases = _variable_on_cpu('biases', [64], tf.constant_initializer(0.0))
-        pre_activation = tf.nn.bias_add(conv, biases)
-        conv1 = tf.nn.relu(pre_activation, name=scope.name)
-        _activation_summary(conv1)
+    num_hidden = 128
+    print('inference:', sequence, seq_len)
+    # LSTM cells
+    with tf.variable_scope('lstm'):
+        # cell = tf.nn.rnn_cell.LSTMCell(num_units=128, state_is_tuple=True)    # review: test this
+        cell = tfc.rnn.LSTMCell(num_units=num_hidden, state_is_tuple=True)
+        num_layers = 1
+        # stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)  # review
+        stack = tfc.rnn.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
+        # The second output is the last hidden state, it's not required anymore.
+        cell_out, _ = tf.nn.dynamic_rnn(stack, sequence, seq_len, dtype=tf.float32)
 
-        # pool1
-        pool1 = tf.nn.max_pool(conv1,
-                               ksize=[1, 3, 3, 1],
-                               strides=[1, 2, 2, 1],
-                               padding='VALID',
-                               name='pool1')
-
-    # Dense 1
-    with tf.variable_scope('dense1') as scope:
-        # Flatten input.
-        # <=> tf.reshape(images, [-1, np.prod(INPUT_SHAPE)])
-        flattened_input = tf.layers.flatten(pool1)
-
-        dim = flattened_input.get_shape()[1].value
-        weights = _variable_with_weight_decay('weights', [dim, 128], 0.04, 0.004)
-        biases = _variable_on_cpu('biases', [128], tf.constant_initializer(0.0))
-        dense1_linear = tf.add(tf.matmul(flattened_input, weights), biases)
-        dense1 = tf.nn.sigmoid(dense1_linear, name=scope.name)
-        _activation_summary(dense1)
+        print('cell_out:', cell_out)
+        cell_out = tf.reshape(cell_out, [-1, num_hidden])
+        print('cell_out.reshape:', cell_out)
 
     # linear layer(XW + b),
     # We don't apply softmax here because
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
     with tf.variable_scope('softmax_linear') as scope:
-        weights = _variable_with_weight_decay('weights', [128, NUM_CLASSES], 0.04, 0.004)
+        weights = _variable_with_weight_decay('weights', [num_hidden, NUM_CLASSES], 0.04, 0.004)
         biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
-        softmax_linear = tf.add(tf.matmul(dense1, weights), biases, name=scope.name)
-        _activation_summary(softmax_linear)
+        softmax_linear = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
+        # _activation_summary(softmax_linear)
 
     return softmax_linear
 
@@ -135,14 +122,17 @@ def train(total_loss, global_step):
     # Apply gradients.
     apply_gradients_op = optimizer.apply_gradients(grads, global_step=global_step)
 
+    # L8ER Disabled summaries.
     # Add histograms for trainable variables.
     for var in tf.trainable_variables():
-        tf.summary.histogram(var.op.name, var)
+        # tf.summary.histogram(var.op.name, var)
+        pass
 
     # Add histograms for gradients.
     for grad, var in grads:
         if grad is not None:
-            tf.summary.histogram(var.op.name + '/gradients', grad)
+            # tf.summary.histogram(var.op.name + '/gradients', grad)
+            pass
 
     # Track the moving averages of all trainable variables.
     variable_averages = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
@@ -162,24 +152,12 @@ def inputs_train():
         samples: Image 4D tensor of [batch_size, width, height, channels] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    samples, labels = s_input.inputs_train(s_input.DATA_PATH, FLAGS.batch_size)
-    return samples, labels
+    sequences, seq_len, labels = s_input.inputs_train(s_input.DATA_PATH, FLAGS.batch_size)
+    return sequences, seq_len, labels
 
 
-def inputs(eval_data):
-    """Construct input for the TS evaluation.
-    L8ER: Adjust to audio data.
-
-    Args:
-        eval_data (bool): Indicating if one should use the train or eval data set.
-
-    Returns:
-        images: Image 4D tensor of [batch_size, width, height, channels] size.
-        labels: Labels 1D tensor of [batch_size] size.
-    """
-    # images, labels = s_input.inputs(eval_data, s_input.DATA_PATH, s_input.INPUT_SHAPE,
-    #                                 FLAGS.batch_size)
-    # return images, labels
+def inputs():
+    # L8ER: Write according to `inputs_train`.
     raise NotImplementedError
 
 

@@ -1,9 +1,8 @@
-"""L8ER: Documentation
+"""Generate `train.txt` and `test.txt` for the `TIMIT`_ data set.
+Additionally some information about the data set is being printed out.
 
-For the `TIMIT`_ data set.
-
-Data format:
-    path/to/sample.wav Transcription of the sample wave file.
+Generated data format:
+    path/to/sample.wav Transcription of the sample wave file.<new_line>
 
 .. _TIMIT:
     https://vcs.zwuenf.org/agct_data/timit
@@ -18,7 +17,17 @@ TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to gener
 
 
 def _gen_list(target):
-    # l8er: Documentation
+    """Generate .txt files containing the audio path and the corresponding sentence.
+    Return additional data set information, see below.
+
+    Args:
+        target (str): 'train' or 'test'
+
+    Returns:
+        char_set: Set containing each character within the data set.
+        word_set: Set containing each word within the data set.
+        num_samples (int): The number of samples in the data set.
+    """
 
     if target != 'test' and target != 'train':
         raise ValueError('"{}" is not a valid target.'.format(target))
@@ -34,6 +43,8 @@ def _gen_list(target):
     result = []
     word_set = set()
     char_set = set()
+    longest = 0
+    shortest = (2 ** 31) - 1
     pattern = re.compile(r'[^a-zA-Z ]+')
 
     for line in master_data:
@@ -47,6 +58,8 @@ def _gen_list(target):
 
             txt = re.sub(pattern, '', txt).strip()
             txt = txt.lower()
+            longest = len(txt) if len(txt) > longest else longest
+            shortest = len(txt) if len(txt) < shortest else shortest
             char_set.update(set(list(txt)))
             word_set.update(set(txt.split(' ')))
 
@@ -72,6 +85,7 @@ def _gen_list(target):
     # Print some information about the labels.
     print('#char_set={}:'.format(len(char_set)), char_set)
     print('#word_set={}:'.format(len(word_set)), word_set)
+    print('Longest sentence was {} and the shortest was {} characters.'.format(longest, shortest))
 
     return char_set, word_set, len(result)
 
