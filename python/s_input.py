@@ -17,6 +17,7 @@ import s_utils
 
 NUMBER_CLASSES = 26         # review
 MAX_INPUT_LEN = 666         # review
+INPUT_PAD_LEN = 8           # review
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
 DATA_PATH = '/home/marc/workspace/speech/data'
@@ -45,7 +46,7 @@ def inputs_train(batch_size):
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
-        labels = tf.convert_to_tensor(label_list, dtype=tf.int32)
+        labels = tf.convert_to_tensor(label_list, dtype=tf.string)
         label_lens = tf.convert_to_tensor(label_len_list, dtype=tf.int32)
         print('train_input:', file_names, labels, label_lens)
 
@@ -59,6 +60,7 @@ def inputs_train(batch_size):
             [file_names, labels], capacity=capacity, num_epochs=None, shuffle=False)
 
         print('queues:', sample_queue, label_queue)
+        label_queue = tf.decode_raw(label_queue, tf.int32)
 
         # review: The body of the function (i.e. func) will not be serialized in a GraphDef.
         # py_func: You should not use this function if you need to serialize your model
@@ -165,13 +167,11 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
             sample_path, label = line.split(' ', 1)
             sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
             label = [label_manager.ctoi(c) for c in label.strip()]
-            # Pad labels to a multiple of 2.
-            pad_len = 0 if len(label) % 2 == 0 else 1
-            label = np.pad(np.array(label, dtype=np.int32), [0, pad_len], 'constant')
-            labels.append(label)
             label_lens.append(len(label))
+            label = np.array(label, dtype=np.int32).tostring()
+            labels.append(label)
 
-        return sample_paths, np.array(labels), np.array(label_lens)
+        return sample_paths, labels, label_lens
 
 
 def _generate_batch(sample, label, label_len, batch_size):
@@ -196,15 +196,18 @@ def _generate_batch(sample, label, label_len, batch_size):
         input_length=label_len,
         tensors=[sample, label],
         batch_size=batch_size,
-        bucket_boundaries=[l for l in range(10, MAX_INPUT_LEN)],
+        bucket_boundaries=[l for l in
+                           range(4 * INPUT_PAD_LEN, 50 * INPUT_PAD_LEN + 1, INPUT_PAD_LEN)],
         num_threads=num_pre_process_threads,
         capacity=capacity,
         dynamic_pad=True,
-        allow_smaller_final_batch=False
+        allow_smaller_final_batch=False     # review Test if it works?
     )
 
     # Display the training images in the visualizer.
-    # summary_batch = tf.reshape(sample, [1, None, 13, 1])     # L8ER: Use correct shape.
-    # tf.summary.image('input_data', summary_batch, max_outputs=1)
+    batch_size_t = tf.shape(sample_batch)[0]
+    # review If this doesn't work, try tf.expand_dims().
+    summary_batch = tf.reshape(sample_batch, [batch_size_t, -1, 13, 1])   # L8ER: Use correct shape.
+    tf.summary.image('input_data', summary_batch, max_outputs=batch_size)
 
     return sample_batch, batch_sequence_length, label_batch

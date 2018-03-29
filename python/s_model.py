@@ -152,7 +152,7 @@ def inputs_train():
         samples: Image 4D tensor of [batch_size, width, height, channels] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    sequences, seq_len, labels = s_input.inputs_train(s_input.DATA_PATH, FLAGS.batch_size)
+    sequences, seq_len, labels = s_input.inputs_train(FLAGS.batch_size)
     return sequences, seq_len, labels
 
 
