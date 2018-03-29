@@ -40,10 +40,10 @@ def train():
         logits = s_model.inference(sequences, seq_len)
 
         # Calculate loss.
-        loss = s_model.loss(logits, labels)
+        loss = s_model.loss(logits, labels, seq_len)
 
         # Build the training graph, that updates the model parameters after each batch.
-        train_op = s_model.train(loss, global_step)
+        optimizer = s_model.train(loss, global_step)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):
@@ -96,7 +96,7 @@ def train():
         ) as mon_sess:
             while not mon_sess.should_stop():
                 try:
-                    mon_sess.run(train_op)
+                    mon_sess.run(loss, optimizer)
                 except tf.errors.OutOfRangeError:
                     print('All batches fed.')
                     break

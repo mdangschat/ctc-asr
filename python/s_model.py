@@ -11,14 +11,13 @@ tf.app.flags.DEFINE_integer('batch_size', 1,
                             """Number of images to process in a batch.""")
 
 # Global constants describing the data set.
-NUM_CLASSES = s_input.NUMBER_CLASSES
-NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
+NUM_CLASSES = s_input.NUM_CLASSES
+NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-MOVING_AVERAGE_DECAY = 0.9999       # The decay to use for the moving average.
-NUM_EPOCHS_PER_DECAY = 9.0          # Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.6    # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.1         # Initial learning rate.
+NUM_EPOCHS_PER_DECAY = 9.0          # review Number of epochs after which learning rate decays.
+LEARNING_RATE_DECAY_FACTOR = 0.6    # review Learning rate decay factor.
+INITIAL_LEARNING_RATE = 0.1         # review Initial learning rate.
 
 
 def inference(sequence, seq_len):
@@ -61,33 +60,31 @@ def inference(sequence, seq_len):
     return softmax_linear
 
 
-def loss(logits, labels):
-    """Add L2Loss to all the trainable variables.
+def loss(logits, labels, seq_len):
+    """L8ER Documentation
 
     Args:
-        logits: Logits from inference().
-        labels: Labels from inputs_train or inputs().
-                A 1D tensor of shape [batch_size].
+        logits (tf.Tensor):
+            3-D float Tensor. If time_major == False, this will be a Tensor shaped:
+            [batch_size, max_time, num_classes]. If time_major == True (default), this will be a
+            Tensor shaped: [max_time, batch_size, num_classes]. The logits.
+
+        labels (tf.SparseTensor):
+            An int32 SparseTensor. labels.indices[i, :] == [b, t] means labels.values[i] stores the
+            id for (batch b, time t). labels.values[i] must take on values in [0, num_labels).
+
+        seq_len (tf.Tensor):
+            1-D int32 vector, size [batch_size]. The sequence lengths.
 
     Returns:
-        Loss tensor of tf.float32 type.
+        A 1-D float Tensor, size [batch], containing the negative log probabilities.
     """
-    # Calculate the average cross entropy loss across the batch.
-    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(
-        labels=labels, logits=logits, name='cross_entropy_per_example')
-    cross_entropy_mean = tf.reduce_mean(cross_entropy, name='cross_entropy')
-    tf.add_to_collection('losses', cross_entropy_mean)
-
-    # The total loss is defined as the cross entropy loss plus all of the weight
-    # decay terms (L2 loss).
-    total_loss = tf.add_n(tf.get_collection('losses'), name='total_loss')
-    # total_loss = tf.Print(total_loss, [total_loss], message="total_loss_print")
-
-    return total_loss
+    return tf.nn.ctc_loss(labels=labels, inputs=logits, sequence_length=seq_len)
 
 
 def train(total_loss, global_step):
     """Train the TS model.
+    L8ER documentation
 
     Create an optimizer and apply to all trainable variables. Add moving
     average for all trainable variables.
@@ -97,10 +94,11 @@ def train(total_loss, global_step):
         global_step: Variable counting the number of training steps processed.
 
     Returns:
-        train_op: Operator for training.
+        tf.Tensor:
+            Optimizer operator for training.
     """
     # Variables that affect learning rate.
-    num_batches_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN / FLAGS.batch_size
+    num_batches_per_epoch = NUM_EXAMPLES_PER_EPOCH_TRAIN / FLAGS.batch_size
     decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)
 
     # Decay the learning rate exponentially based on the number of steps.
@@ -111,37 +109,9 @@ def train(total_loss, global_step):
                                     staircase=True)
     tf.summary.scalar('learning_rate', lr)
 
-    # Generate moving averages of all losses and associated summaries.
-    loss_averages_op = _add_loss_summaries(total_loss)
-
     # Compute gradients.
-    with tf.control_dependencies([loss_averages_op]):
-        optimizer = tf.train.GradientDescentOptimizer(lr)
-        grads = optimizer.compute_gradients(total_loss)
-
-    # Apply gradients.
-    apply_gradients_op = optimizer.apply_gradients(grads, global_step=global_step)
-
-    # L8ER Disabled summaries.
-    # Add histograms for trainable variables.
-    for var in tf.trainable_variables():
-        # tf.summary.histogram(var.op.name, var)
-        pass
-
-    # Add histograms for gradients.
-    for grad, var in grads:
-        if grad is not None:
-            # tf.summary.histogram(var.op.name + '/gradients', grad)
-            pass
-
-    # Track the moving averages of all trainable variables.
-    variable_averages = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
-    variables_averages_op = variable_averages.apply(tf.trainable_variables())
-
-    with tf.control_dependencies([apply_gradients_op, variables_averages_op]):
-        train_op = tf.no_op(name='train')
-
-    return train_op
+    optimizer = tf.train.GradientDescentOptimizer(lr)
+    return optimizer.minimize(total_loss)
 
 
 def inputs_train():
@@ -149,8 +119,8 @@ def inputs_train():
     review Documentation
 
     Returns:
-        samples: Image 4D tensor of [batch_size, width, height, channels] size.
-        labels: Labels 1D tensor of [batch_size] size.
+        samples: Image 4D tf.Tensor of [batch_size, width, height, channels] size.
+        labels: Labels 1D tf.Tensor of [batch_size] size.
     """
     sequences, seq_len, labels = s_input.inputs_train(FLAGS.batch_size)
     return sequences, seq_len, labels
@@ -159,34 +129,6 @@ def inputs_train():
 def inputs():
     # L8ER: Write according to `inputs_train`.
     raise NotImplementedError
-
-
-def _add_loss_summaries(total_loss):
-    """Add summaries for losses in the TS model.
-
-    Generates moving average for all losses and associated summaries for
-    visualizing the performance of the network.
-
-    Args:
-        total_loss: Total loss from the loss() function.
-
-    Returns:
-        loss_average_op: Op for generating moving averages of losses.
-    """
-    # Compute the moving average of all individual losses and the total loss.
-    loss_averages = tf.train.ExponentialMovingAverage(0.9, name='avg')
-    losses = tf.get_collection('losses')
-    loss_averages_op = loss_averages.apply(losses + [total_loss])
-
-    # Attach a scalar summary to all individual losses and the total loss;
-    # do the same for the averaged version of the losses.
-    for l in losses + [total_loss]:
-        # Name each loss as '__raw_' and name the moving average version of the
-        # loss as the original loss name.
-        tf.summary.scalar(l.op.name + '__raw_', l)
-        tf.summary.scalar(l.op.name, loss_averages.average(l))
-
-    return loss_averages_op
 
 
 def _activation_summary(x):

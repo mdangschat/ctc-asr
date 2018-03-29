@@ -3,7 +3,8 @@
 
 class LabelManager(object):
     """Convert characters (chr) to integer (int) labels and vice versa."""
-    # TODO: Map from 1 to x, not from 0 to x-1
+    # TODO: Map from 0=a, ... to 25=z, 26=<space>, 27=<blank>
+    # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
     # TODO: <blank label>, <space>
 
     def __init__(self):
@@ -34,3 +35,11 @@ class LabelManager(object):
             (int) Number of classes.
         """
         return len(self._map)
+
+
+######################################################################
+# CTC Helper
+######################################################################
+def ctc_sparse_tensor():
+    # TODO Documentation
+    pass

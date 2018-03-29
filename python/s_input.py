@@ -15,7 +15,8 @@ import tensorflow.contrib as tfc
 import s_utils
 
 
-NUMBER_CLASSES = 26         # review
+_label_manager = s_utils.LabelManager()
+NUM_CLASSES = _label_manager.num_classes()   # review
 MAX_INPUT_LEN = 666         # review
 INPUT_PAD_LEN = 8           # review
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
@@ -46,7 +47,7 @@ def inputs_train(batch_size):
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
-        labels = tf.convert_to_tensor(label_list, dtype=tf.string)
+        labels = tf.convert_to_tensor(label_list, dtype=tf.string)  # TODO Sprase tensor
         label_lens = tf.convert_to_tensor(label_len_list, dtype=tf.int32)
         print('train_input:', file_names, labels, label_lens)
 
@@ -60,6 +61,7 @@ def inputs_train(batch_size):
             [file_names, labels], capacity=capacity, num_epochs=None, shuffle=False)
 
         print('queues:', sample_queue, label_queue)
+        # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
 
         # review: The body of the function (i.e. func) will not be serialized in a GraphDef.
