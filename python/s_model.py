@@ -15,9 +15,9 @@ NUM_CLASSES = s_input.NUM_CLASSES
 NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 0.5          # review Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.6    # review Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.0001       # review Initial learning rate.
+NUM_EPOCHS_PER_DECAY = 0.33          # review Number of epochs after which learning rate decays.
+LEARNING_RATE_DECAY_FACTOR = 0.75    # review Learning rate decay factor.
+INITIAL_LEARNING_RATE = 0.01         # review Initial learning rate.
 
 
 def inference(sample_batch, length_batch):
@@ -30,17 +30,17 @@ def inference(sample_batch, length_batch):
 
     Returns:
         tf.Tensor:
-            Softmax layer pre activation function, i.e. layer(XW + b)
+            Softmax layer pre activation function, i.e. layer(X*W + b)
     """
     num_hidden = 128
     print('inference:', sample_batch, length_batch)
     # LSTM cells
     with tf.variable_scope('lstm'):
-        # cell = tf.nn.rnn_cell.LSTMCell(num_units=128, state_is_tuple=True)    # review: test this
-        cell = tfc.rnn.LSTMCell(num_units=num_hidden, state_is_tuple=True)
+        cell = tf.nn.rnn_cell.LSTMCell(num_units=128, state_is_tuple=True)    # review: test this
+        # cell = tfc.rnn.LSTMCell(num_units=num_hidden, state_is_tuple=True)
         num_layers = 1
-        # stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)  # review
-        stack = tfc.rnn.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
+        stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)  # review
+        # stack = tfc.rnn.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
         # The second output is the last hidden state, it's not required anymore.
         cell_out, _ = tf.nn.dynamic_rnn(stack, sample_batch, sequence_length=length_batch, dtype=tf.float32)
 
