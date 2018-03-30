@@ -47,7 +47,7 @@ def inputs_train(batch_size):
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
-        labels = tf.convert_to_tensor(label_list, dtype=tf.string)  # TODO Sprase tensor
+        labels = tf.convert_to_tensor(label_list, dtype=tf.string)
         label_lens = tf.convert_to_tensor(label_len_list, dtype=tf.int32)
         print('train_input:', file_names, labels, label_lens)
 
@@ -57,29 +57,25 @@ def inputs_train(batch_size):
         capacity = min_queue_examples + 3 * batch_size
 
         # Create an input queue that produces the file names to read.
-        sample_queue, label_queue = tf.train.slice_input_producer(
-            [file_names, labels], capacity=capacity, num_epochs=None, shuffle=False)
+        sample_queue, label_queue, label_len_queue = tf.train.slice_input_producer(
+            [file_names, labels, label_lens], capacity=capacity, num_epochs=None, shuffle=False)
+        print('queues:', sample_queue, label_queue, label_len_queue)
 
-        print('queues:', sample_queue, label_queue)
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
+        print('label_queue decode_raw:', label_queue)
 
-        # review: The body of the function (i.e. func) will not be serialized in a GraphDef.
-        # py_func: You should not use this function if you need to serialize your model
-        # and restore it in a different environment.
+        # Read the sample from disk and extract it's features.
         sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
-        # label = label_queue       # TODO Reactivate
-        label = np.array(1, dtype=np.int32)   # TODO: Remove this, this is only for testing!
-        label_len = np.array(1, dtype=np.int32)
-        print('py_func:', sample, sample.shape, label)
+        print('py_func:', sample, labels, label_len_queue)
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([None, 13])    # review shape, use []
+        sample.set_shape([None, 13])
         print('set_shape:', sample, sample.shape)
 
         print('Generating training batches. This may take some time.')
-        return _generate_batch(sample, label, label_len, batch_size)
+        return _generate_batch(sample, label_queue, label_len_queue, batch_size, capacity)
 
 
 def inputs():
@@ -176,7 +172,7 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
         return sample_paths, labels, label_lens
 
 
-def _generate_batch(sample, label, label_len, batch_size):
+def _generate_batch(sample, label, label_len, batch_size, capacity):
     """Construct a queued batch of images and labels.
     review Documentation
 
@@ -191,7 +187,6 @@ def _generate_batch(sample, label, label_len, batch_size):
         labels: Labels 1D tensor of [batch_size] size.
     """
     num_pre_process_threads = 12
-    capacity = 10 + 3 * batch_size
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     batch_sequence_length, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(

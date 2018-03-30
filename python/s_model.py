@@ -4,6 +4,7 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 import s_input
+import s_utils
 
 
 FLAGS = tf.app.flags.FLAGS
