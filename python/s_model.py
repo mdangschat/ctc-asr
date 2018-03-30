@@ -21,19 +21,20 @@ LEARNING_RATE_DECAY_FACTOR = 0.6    # review Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.1         # review Initial learning rate.
 
 
-def inference(sequence, seq_len):
+def inference(sample_batch, length_batch):
     """Build the TS model.
     # review Documentation
 
     Args:
-        seq_len ():
-        sequence ():
+        length_batch ():
+        sample_batch ():
 
     Returns:
-        logits: Softmax layer pre activation function, i.e. layer(XW + b)
+        tf.Tensor:
+            Softmax layer pre activation function, i.e. layer(XW + b)
     """
     num_hidden = 128
-    print('inference:', sequence, seq_len)
+    print('inference:', sample_batch, length_batch)
     # LSTM cells
     with tf.variable_scope('lstm'):
         # cell = tf.nn.rnn_cell.LSTMCell(num_units=128, state_is_tuple=True)    # review: test this
@@ -42,7 +43,7 @@ def inference(sequence, seq_len):
         # stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)  # review
         stack = tfc.rnn.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
         # The second output is the last hidden state, it's not required anymore.
-        cell_out, _ = tf.nn.dynamic_rnn(stack, sequence, seq_len, dtype=tf.float32)
+        cell_out, _ = tf.nn.dynamic_rnn(stack, sample_batch, length_batch, dtype=tf.float32)
 
         print('cell_out:', cell_out)
         cell_out = tf.reshape(cell_out, [-1, num_hidden])
@@ -52,16 +53,21 @@ def inference(sequence, seq_len):
     # We don't apply softmax here because
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
-    with tf.variable_scope('softmax_linear') as scope:
+    with tf.variable_scope('logits') as scope:
         weights = _variable_with_weight_decay('weights', [num_hidden, NUM_CLASSES], 0.04, 0.004)
         biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
-        softmax_linear = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
-        # _activation_summary(softmax_linear)
+        logits = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
 
-    return softmax_linear
+        batch_size = tf.shape(sample_batch)[0]
+        print('logits:', logits, ', batch_size:', batch_size)
+        logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
+        logits = tf.transpose(logits, [1, 0, 2])
+        # _activation_summary(logits)
+
+    return logits
 
 
-def loss(logits, labels, seq_len):
+def loss(logits, label_batch, length_batch):
     """L8ER Documentation
 
     Args:
@@ -70,20 +76,24 @@ def loss(logits, labels, seq_len):
             [batch_size, max_time, num_classes]. If time_major == True (default), this will be a
             Tensor shaped: [max_time, batch_size, num_classes]. The logits.
 
-        labels (tf.SparseTensor):
+        label_batch (tf.SparseTensor):
             An int32 SparseTensor. labels.indices[i, :] == [b, t] means labels.values[i] stores the
             id for (batch b, time t). labels.values[i] must take on values in [0, num_labels).
 
-        seq_len (tf.Tensor):
+        length_batch (tf.Tensor):
             1-D int32 vector, size [batch_size]. The sequence lengths.
 
     Returns:
         A 1-D float Tensor, size [batch], containing the negative log probabilities.
     """
-    return tf.nn.ctc_loss(labels=labels, inputs=logits, sequence_length=seq_len)
+    print('ctc_loss:', label_batch, logits, length_batch)
+    print('shape1:', tf.shape(label_batch), label_batch)
+    label_batch = tfc.layers.dense_to_sparse(label_batch)
+    print('shape2:', tf.shape(label_batch), label_batch)
+    return tf.nn.ctc_loss(labels=label_batch, inputs=logits, sequence_length=length_batch)
 
 
-def train(total_loss, global_step):
+def train(loss, global_step):
     """Train the TS model.
     L8ER documentation
 
@@ -91,7 +101,7 @@ def train(total_loss, global_step):
     average for all trainable variables.
 
     Args:
-        total_loss: Total loss from the loss() function.
+        loss: Total loss from the loss() function.
         global_step: Variable counting the number of training steps processed.
 
     Returns:
@@ -112,7 +122,7 @@ def train(total_loss, global_step):
 
     # Compute gradients.
     optimizer = tf.train.GradientDescentOptimizer(lr)
-    return optimizer.minimize(total_loss)
+    return optimizer.minimize(loss, global_step=global_step)
 
 
 def inputs_train():
@@ -121,10 +131,10 @@ def inputs_train():
 
     Returns:
         samples: Image 4D tf.Tensor of [batch_size, width, height, channels] size.
-        labels: Labels 1D tf.Tensor of [batch_size] size.
+        label_batch: Labels 1D tf.Tensor of [batch_size] size.
     """
-    sequences, seq_len, labels = s_input.inputs_train(FLAGS.batch_size)
-    return sequences, seq_len, labels
+    sample_batch, label_batch, length_batch = s_input.inputs_train(FLAGS.batch_size)
+    return sample_batch, label_batch, length_batch
 
 
 def inputs():

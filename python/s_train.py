@@ -1,6 +1,6 @@
 """Training the model.
 
-Tested with Python 3.6+. The Code should work with 3.4+.
+Tested with Python 3.6.4. The Code should work with 3.4+. Python 2.x compatibility isn't provided.
 """
 
 import time
@@ -34,16 +34,16 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sequences, seq_len, labels = s_model.inputs_train()
+            sample_batch, label_batch, length_batch = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
-        logits = s_model.inference(sequences, seq_len)
+        logits = s_model.inference(sample_batch, length_batch)
 
         # Calculate loss.
-        loss = s_model.loss(logits, labels, seq_len)
+        loss = s_model.loss(logits, label_batch, length_batch)
 
         # Build the training graph, that updates the model parameters after each batch.
-        optimizer = s_model.train(loss, global_step)
+        train_op = s_model.train(loss, global_step)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):
@@ -86,8 +86,7 @@ def train():
                 # Requests stop at a specified step.
                 tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                 # Monitors the loss tensor and stops training if loss is NaN.
-                tf.train.NanTensorHook(loss),
-                _LoggerHook()
+                tf.train.NanTensorHook(loss)
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
@@ -96,7 +95,7 @@ def train():
         ) as mon_sess:
             while not mon_sess.should_stop():
                 try:
-                    mon_sess.run(loss, optimizer)
+                    mon_sess.run([train_op])
                 except tf.errors.OutOfRangeError:
                     print('All batches fed.')
                     break

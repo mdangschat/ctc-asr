@@ -186,10 +186,10 @@ def _generate_batch(sample, label, label_len, batch_size, capacity):
         images: Images 4D tensor of [batch_size, height, width, 1] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    num_pre_process_threads = 12
+    num_pre_process_threads = 1     # 12
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
-    batch_sequence_length, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(
+    length_batch, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(
         input_length=label_len,
         tensors=[sample, label],
         batch_size=batch_size,
@@ -198,7 +198,7 @@ def _generate_batch(sample, label, label_len, batch_size, capacity):
         num_threads=num_pre_process_threads,
         capacity=capacity,
         dynamic_pad=True,
-        allow_smaller_final_batch=False     # review Test if it works?
+        allow_smaller_final_batch=True     # review Test if it works?
     )
 
     # Display the training images in the visualizer.
@@ -207,4 +207,6 @@ def _generate_batch(sample, label, label_len, batch_size, capacity):
     summary_batch = tf.reshape(sample_batch, [batch_size_t, -1, 13, 1])   # L8ER: Use correct shape.
     tf.summary.image('input_data', summary_batch, max_outputs=batch_size)
 
-    return sample_batch, batch_sequence_length, label_batch
+    length_batch = tf.Print(length_batch, [length_batch], message='Batch_sequence_length')
+    print('batch_sequence_length:', length_batch)
+    return sample_batch, label_batch, length_batch

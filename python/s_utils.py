@@ -11,13 +11,13 @@ class LabelManager(object):
     # TODO: <blank label>, <space>
 
     def __init__(self):
-        self._map = ' abcdefghijklmnopqrstuvwxyz '
+        self._map = r'abcdefghijklmnopqrstuvwxyz '
         self._ctoi = dict()
         self._itoc = dict()
 
         for i, c in enumerate(self._map):
-            self._ctoi.update({c: i})
-            self._itoc.update({i: c})
+            self._ctoi.update({c: i + 1})
+            self._itoc.update({i + 1: c})
 
     def ctoi(self, char):
         # L8ER Documentation
@@ -37,7 +37,7 @@ class LabelManager(object):
         Returns:
             int: Number of classes.
         """
-        return len(self._map)
+        return len(self._map) + 2
 
 
 ######################################################################
@@ -57,26 +57,3 @@ def convert_to_sparse_tensor(labels):
     shape = np.asarray([len(labels), np.asarray(indices).max(0)[1] + 1], dtype=np.int32)
 
     return indices, values, shape
-
-
-def dense_tensor_to_sparse(dense):
-    """Takes in a dense Tensor and returns a SparseTensor.
-
-    # review Unused?
-
-    Args:
-        dense (tf.Tensor): A dense Tensor.
-
-    Returns:
-        tf.SparseTensor:
-            Spare representation of the dense Tensor.
-    """
-    print('DEBUG:', dense.shape, tf.shape(dense, out_type=tf.int32))
-    print('DEBUG2:', dense)
-    dense_t = tf.constant(dense)
-    idx = tf.where(tf.not_equal(dense_t, 0))
-    dense_shape = tf.shape(dense_t, out_type=tf.int32)
-    sparse_t = tf.SparseTensor(idx, tf.gather_nd(dense_t, idx), dense_shape)
-
-    assert np.all(dense == tf.sparse_tensor_to_dense(sparse_t))     # L8ER validation, remove this
-    return sparse_t
