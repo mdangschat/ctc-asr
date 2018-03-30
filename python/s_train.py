@@ -17,9 +17,9 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
                            """Directory where to write event logs and checkpoints.""")
-tf.app.flags.DEFINE_integer('max_steps', 11,
+tf.app.flags.DEFINE_integer('max_steps', 1001,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 1,
+tf.app.flags.DEFINE_integer('log_frequency', 50,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
@@ -67,13 +67,12 @@ def train():
                     duration = current_time - self._start_time
                     self._start_time = current_time
 
-                    loss_value = run_values.results
+                    loss_value = run_values.results[0]
                     examples_per_sec = FLAGS.log_frequency * FLAGS.batch_size / duration
-                    sec_per_batch = float(duration / FLAGS.log_frequency)
+                    sec_per_batch = duration / float(FLAGS.log_frequency)
 
                     print('{}: step {}, loss = {:.4f}, {:.1f} examples/sec ({:.3f} sec/batch)'
-                          .format(datetime.now(), self._step, loss_value, examples_per_sec,
-                                  sec_per_batch))
+                          .format(datetime.now(), self._step, loss_value, examples_per_sec, sec_per_batch))
 
         with tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
@@ -86,7 +85,8 @@ def train():
                 # Requests stop at a specified step.
                 tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                 # Monitors the loss tensor and stops training if loss is NaN.
-                tf.train.NanTensorHook(loss)
+                tf.train.NanTensorHook(loss),
+                _LoggerHook()
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
@@ -95,7 +95,7 @@ def train():
         ) as mon_sess:
             while not mon_sess.should_stop():
                 try:
-                    mon_sess.run([train_op])
+                    mon_sess.run(train_op)
                 except tf.errors.OutOfRangeError:
                     print('All batches fed.')
                     break
