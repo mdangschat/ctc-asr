@@ -4,7 +4,6 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 import s_input
-import s_utils
 
 
 FLAGS = tf.app.flags.FLAGS
@@ -16,9 +15,9 @@ NUM_CLASSES = s_input.NUM_CLASSES
 NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 9.0          # review Number of epochs after which learning rate decays.
+NUM_EPOCHS_PER_DECAY = 0.5          # review Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.6    # review Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.1         # review Initial learning rate.
+INITIAL_LEARNING_RATE = 0.0001       # review Initial learning rate.
 
 
 def inference(sample_batch, length_batch):
@@ -43,7 +42,7 @@ def inference(sample_batch, length_batch):
         # stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)  # review
         stack = tfc.rnn.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
         # The second output is the last hidden state, it's not required anymore.
-        cell_out, _ = tf.nn.dynamic_rnn(stack, sample_batch, length_batch, dtype=tf.float32)
+        cell_out, _ = tf.nn.dynamic_rnn(stack, sample_batch, sequence_length=length_batch, dtype=tf.float32)
 
         print('cell_out:', cell_out)
         cell_out = tf.reshape(cell_out, [-1, num_hidden])
@@ -67,7 +66,7 @@ def inference(sample_batch, length_batch):
     return logits
 
 
-def loss(logits, label_batch, length_batch):
+def loss(logits, label_batch, length_batch, batch_size=FLAGS.batch_size):
     """L8ER Documentation
 
     Args:
@@ -83,17 +82,33 @@ def loss(logits, label_batch, length_batch):
         length_batch (tf.Tensor):
             1-D int32 vector, size [batch_size]. The sequence lengths.
 
+        batch_size (int): TODO: FLAGS.batch_size could be wrong, since we allow smaller final batches.
+            Batch size.
+
     Returns:
         A 1-D float Tensor, size [batch], containing the negative log probabilities.
     """
-    print('ctc_loss:', label_batch, logits, length_batch)
     print('shape1:', tf.shape(label_batch), label_batch)
+    # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
     label_batch = tfc.layers.dense_to_sparse(label_batch)
     print('shape2:', tf.shape(label_batch), label_batch)
-    return tf.nn.ctc_loss(labels=label_batch, inputs=logits, sequence_length=length_batch)
+
+    # Reshape logits for CTC loss.
+    logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
+    # Logits time major.
+    logits = tf.transpose(logits, [1, 0, 2])
+
+    print('ctc_loss:', label_batch, logits, length_batch)
+
+    # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
+    losses = tf.nn.ctc_loss(labels=label_batch, inputs=logits, sequence_length=length_batch)
+    tf.summary.histogram('losses', losses)
+    mean_loss = tf.reduce_mean(losses, name='mean_loss')
+    tf.summary.scalar('mean_loss', mean_loss)
+    return losses
 
 
-def train(loss, global_step):
+def train(total_loss, global_step):
     """Train the TS model.
     L8ER documentation
 
@@ -101,7 +116,7 @@ def train(loss, global_step):
     average for all trainable variables.
 
     Args:
-        loss: Total loss from the loss() function.
+        total_loss: Total loss from the loss() function.
         global_step: Variable counting the number of training steps processed.
 
     Returns:
@@ -122,7 +137,7 @@ def train(loss, global_step):
 
     # Compute gradients.
     optimizer = tf.train.GradientDescentOptimizer(lr)
-    return optimizer.minimize(loss, global_step=global_step)
+    return optimizer.minimize(total_loss, global_step=global_step)
 
 
 def inputs_train():

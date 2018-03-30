@@ -19,6 +19,7 @@ _label_manager = s_utils.LabelManager()
 NUM_CLASSES = _label_manager.num_classes()   # review
 MAX_INPUT_LEN = 666         # review
 INPUT_PAD_LEN = 8           # review
+NUM_MFCC = 13
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
 DATA_PATH = '/home/marc/workspace/speech/data'
@@ -66,16 +67,17 @@ def inputs_train(batch_size):
         print('label_queue decode_raw:', label_queue)
 
         # Read the sample from disk and extract it's features.
-        sample = tf.py_func(_read_sample, [sample_queue], tf.float32)
-        print('py_func:', sample, labels, label_len_queue)
+        sample, sample_len = tf.py_func(_read_sample, [sample_queue], [tf.float32, tf.int32])
+        print('py_func:', sample, sample_len, labels, label_len_queue)
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([None, 13])
-        print('set_shape:', sample, sample.shape)
+        sample.set_shape([None, NUM_MFCC])
+        sample_len.set_shape([])    # Shape for scalar is [].
+        print('set_shape:', sample, sample.shape, sample_len, sample_len.shape)
 
         print('Generating training batches. This may take some time.')
-        return _generate_batch(sample, label_queue, label_len_queue, batch_size, capacity)
+        return _generate_batch(sample, label_queue, sample_len, batch_size, capacity)
 
 
 def inputs():
@@ -112,7 +114,7 @@ def _read_sample(sample_queue):
     hop_length = 200
     f_max = sr / 2.
     f_min = 64.
-    n_mfcc = 13
+    n_mfcc = NUM_MFCC
 
     db_pow = np.abs(librosa.stft(y=y, n_fft=1024, hop_length=hop_length, win_length=400)) ** 2
 
@@ -132,10 +134,11 @@ def _read_sample(sample_queue):
     assert sample.shape[1] <= MAX_INPUT_LEN, 'MAX_INPUT_LEN to low: %d' % sample.shape[1]
     # print('sample:', sample.shape)
     # sample = np.pad(sample, [[0, 0], [0, MAX_INPUT_LEN - sample.shape[1]]], 'constant')
-    # print('sample pad:', sample.shape)
+
     sample = np.swapaxes(sample, 0, 1)
-    # print('sample pad swap:', sample.shape)
-    return sample
+    sample_len = np.array(sample.shape[0], dtype=np.int32)      # TODO Not sure if np.array is needed here.
+    #print('sample:', sample.shape, sample_len)
+    return sample, sample_len
 
 
 def _read_file_list(path, label_manager=s_utils.LabelManager()):
@@ -172,14 +175,14 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
         return sample_paths, labels, label_lens
 
 
-def _generate_batch(sample, label, label_len, batch_size, capacity):
+def _generate_batch(sequence, label, seq_len, batch_size, capacity):
     """Construct a queued batch of images and labels.
     review Documentation
 
     Args:
-        sample: 3D tensor of [height, width, 1] of type float32.
-        label: 1D tensor of type int32.
-        label_len: 1D tensor of type int32.
+        sequence (): 3D tensor of [height, width, 1] of type float32.
+        seq_len (): 1D tensor of type int32.
+        label (): 1D tensor of type int32.
         batch_size (int): Number of images per batch.
 
     Returns:
@@ -189,24 +192,28 @@ def _generate_batch(sample, label, label_len, batch_size, capacity):
     num_pre_process_threads = 1     # 12
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
-    length_batch, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(
-        input_length=label_len,
-        tensors=[sample, label],
+    sequence_length, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(
+        input_length=seq_len,
+        tensors=[sequence, label],
         batch_size=batch_size,
-        bucket_boundaries=[l for l in
-                           range(4 * INPUT_PAD_LEN, 50 * INPUT_PAD_LEN + 1, INPUT_PAD_LEN)],
+        bucket_boundaries=[50, 100, 150, 200, 250],
+        # bucket_boundaries=[l for l in         TODO test above
+        #                    range(4 * INPUT_PAD_LEN, 50 * INPUT_PAD_LEN + 1, INPUT_PAD_LEN)],
         num_threads=num_pre_process_threads,
         capacity=capacity,
         dynamic_pad=True,
         allow_smaller_final_batch=True     # review Test if it works?
     )
 
-    # Display the training images in the visualizer.
+    # Display the training images in the visualizer.    TODO re-enable
     batch_size_t = tf.shape(sample_batch)[0]
-    # review If this doesn't work, try tf.expand_dims().
-    summary_batch = tf.reshape(sample_batch, [batch_size_t, -1, 13, 1])   # L8ER: Use correct shape.
-    tf.summary.image('input_data', summary_batch, max_outputs=batch_size)
+    summary_batch = tf.reshape(sample_batch, [batch_size_t, -1, NUM_MFCC, 1])
+    tf.summary.image('sample', summary_batch, max_outputs=batch_size)
+    tf.summary.histogram('labels_hist', label_batch)
 
-    length_batch = tf.Print(length_batch, [length_batch], message='Batch_sequence_length')
-    print('batch_sequence_length:', length_batch)
-    return sample_batch, label_batch, length_batch
+    # sequence_length = tf.Print(sequence_length, [tf.shape(sequence_length), sequence_length],
+    #                            message='Batch_sequence_length:')
+    # label_batch = tf.Print(label_batch, [tf.shape(label_batch)], message='Label_batch:')
+    # sample_batch = tf.Print(sample_batch, [tf.shape(sample_batch)], message='Sample_batch:')
+    print('batch_sequence_length:', sequence_length)
+    return sample_batch, label_batch, sequence_length

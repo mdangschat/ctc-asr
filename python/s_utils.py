@@ -1,7 +1,6 @@
 """Provides utility functions for the speech recognition network."""
 
 import numpy as np
-import tensorflow as tf
 
 
 class LabelManager(object):
@@ -45,6 +44,7 @@ class LabelManager(object):
 ######################################################################
 def convert_to_sparse_tensor(labels):
     # TODO Documentation
+    # Review Unused?
     indices = list()
     values = list()
 
