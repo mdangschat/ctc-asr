@@ -73,7 +73,8 @@ def train():
                     sec_per_batch = duration / float(FLAGS.log_frequency)
 
                     print('{}: step {}, loss={:.4f}, {:.1f} examples/sec ({:.3f} sec/batch)'
-                          .format(datetime.now(), self._step, loss_value, examples_per_sec, sec_per_batch))
+                          .format(datetime.now(), self._step, loss_value,
+                                  examples_per_sec, sec_per_batch))
 
         with tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,

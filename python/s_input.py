@@ -34,12 +34,13 @@ def inputs_train(batch_size):
     review Documentation
 
     Args:
-        batch_size (int): Number of images per batch.
+        batch_size (int): Number of samples per batch.
 
     Returns:
-        images: Images a 4D tensor of
-                [batch_size, IMAGE_SHAPE[0], IMAGE_SHAPE[1], INPUT_SHAPE[2]] size.
-        labels: Labels a 1D tensor of [batch_size] size.
+        tf.Tensor:
+            4D tensor of [batch_size, IMAGE_SHAPE[0], IMAGE_SHAPE[1], INPUT_SHAPE[2]] shape.
+        tf.Tensor:
+            1D labels tensor of [batch_size] shape.
     """
     # Info: Longest label list in TIMIT train/test is 79 characters long.
     train_txt_path = os.path.join(DATA_PATH, 'train.txt')
@@ -67,7 +68,7 @@ def inputs_train(batch_size):
         print('label_queue decode_raw:', label_queue)
 
         # Read the sample from disk and extract it's features.
-        sample, sample_len = tf.py_func(_read_sample, [sample_queue], [tf.float32, tf.int32])
+        sample, sample_len = tf.py_func(_load_sample, [sample_queue], [tf.float32, tf.int32])
         print('py_func:', sample, sample_len, labels, label_len_queue)
 
         # Restore shape, since `py_func` forgets it.
@@ -85,7 +86,7 @@ def inputs():
     raise NotImplementedError
 
 
-def _read_sample(sample_queue):
+def _load_sample(sample_queue):
     """Reads the wave file and converts it into an MFCC.
     review Documentation
 
@@ -94,8 +95,10 @@ def _read_sample(sample_queue):
                       Compare: tf.train.slice_input_producer
 
     Returns:
-        reshaped_image: A single example.
-        label: The corresponding label.
+        np.ndarray:
+            A single sample.
+        np.ndarray:
+            Sample length.
     """
     file_path = str(sample_queue, 'utf-8')
 
@@ -109,14 +112,15 @@ def _read_sample(sample_queue):
     if not sr == FLAGS.sampling_rate:
         raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
-    # Set generally used variables. TODO: Document their purpose.
-    # At 22050 Hz, 512 samples ~= 23ms. At 16000 Hz, 512 samples ~= TODO ms.
-    hop_length = 200
-    f_max = sr / 2.
-    f_min = 64.
-    n_mfcc = NUM_MFCC
+    # Set generally used variables.
+    # At 22050 Hz, 512 samples ~= 23ms. At 16000 Hz, 512 samples = 32ms.
+    hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
+    f_max = sr / 2.     # Maximum frequency (Nyquist rate).
+    f_min = 64.         # Minimum frequency.
+    n_fft = 1024        # Number of samples in a frame.
+    n_mfcc = NUM_MFCC   # Number of Mel cepstral coefficients to extract.
 
-    db_pow = np.abs(librosa.stft(y=y, n_fft=1024, hop_length=hop_length, win_length=400)) ** 2
+    db_pow = np.abs(librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=400)) ** 2
 
     s_mel = librosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
                                            fmax=f_max, fmin=f_min, n_mels=80)
@@ -129,14 +133,15 @@ def _read_sample(sample_queue):
     # And the first-order differences (delta features).
     # mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
 
-    # TODO Remove prints
+    # L8ER Remove prints
     sample = mfcc.astype(np.float32)
     assert sample.shape[1] <= MAX_INPUT_LEN, 'MAX_INPUT_LEN to low: %d' % sample.shape[1]
     # print('sample:', sample.shape)
     # sample = np.pad(sample, [[0, 0], [0, MAX_INPUT_LEN - sample.shape[1]]], 'constant')
 
     sample = np.swapaxes(sample, 0, 1)
-    sample_len = np.array(sample.shape[0], dtype=np.int32)      # TODO Not sure if np.array is needed here.
+    # review Not sure if np.array is needed here.
+    sample_len = np.array(sample.shape[0], dtype=np.int32)
     print('sample:', sample.shape, sample_len)
     return sample, sample_len
 

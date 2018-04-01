@@ -42,7 +42,8 @@ def inference(sample_batch, length_batch):
         stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)  # review
         # stack = tfc.rnn.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
         # The second output is the last hidden state, it's not required anymore.
-        cell_out, _ = tf.nn.dynamic_rnn(stack, sample_batch, sequence_length=length_batch, dtype=tf.float32)
+        cell_out, _ = tf.nn.dynamic_rnn(stack, sample_batch, sequence_length=length_batch,
+                                        dtype=tf.float32)
 
         print('cell_out:', cell_out)
         cell_out = tf.reshape(cell_out, [-1, num_hidden])
@@ -82,7 +83,7 @@ def loss(logits, label_batch, length_batch, batch_size=FLAGS.batch_size):
         length_batch (tf.Tensor):
             1-D int32 vector, size [batch_size]. The sequence lengths.
 
-        batch_size (int): TODO: FLAGS.batch_size could be wrong, since we allow smaller final batches.
+        batch_size (int): TODO: FLAGS.batch_size could be wrong, we allow smaller final batches.
             Batch size.
 
     Returns:
