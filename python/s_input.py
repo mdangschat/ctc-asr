@@ -16,7 +16,7 @@ import s_utils
 
 
 _label_manager = s_utils.LabelManager()
-NUM_CLASSES = _label_manager.num_classes()   # review
+NUM_CLASSES = _label_manager.num_classes()
 MAX_INPUT_LEN = 666         # review
 INPUT_PAD_LEN = 8           # review
 NUM_MFCC = 13

@@ -6,8 +6,8 @@ import numpy as np
 class LabelManager(object):
     """Convert characters (chr) to integer (int) labels and vice versa."""
     # TODO: Map from 0=<space>,  1=a, ... to 26=z, 27=<blank>
+    # review: <blank label>, <space>
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
-    # TODO: <blank label>, <space>
 
     def __init__(self):
         self._map = r'abcdefghijklmnopqrstuvwxyz '
@@ -56,7 +56,7 @@ class LabelManager(object):
         Returns:
             int: Number of classes.
         """
-        return len(self._map) + 2
+        return len(self._map) + 2   # review: How many are there really?
 
 
 ######################################################################

@@ -41,8 +41,8 @@ def sample_info(file_path, label=''):
     num_samples = y.shape[0]
     duration = rosa.get_duration(y=y, sr=sr)
     info_str = 'Label="{}"\nPath={}\nDuration={:.3f}s with {:,d} Samples\n' \
-               'Sampling Rate={:,d} Hz\nMin, Max=[{:.2f}, {:.2f}]'\
-        .format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
+               'Sampling Rate={:,d} Hz\nMin, Max=[{:.2f}, {:.2f}]'
+    info_str = info_str.format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
     print(info_str)
 
     plt.figure()
