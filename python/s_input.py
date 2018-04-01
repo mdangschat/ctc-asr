@@ -1,9 +1,8 @@
-"""L8ER Documentation
-Routines to load the traffic sign (TS) corpus [BelgiumTS (cropped images)]
-and transform the images into an usable format.
+"""Routines to load the `TIMIT`_ corpus and and
+pre process the audio files and labels.
 
-.. _BelgiumTS:
-   http://btsd.ethz.ch/shareddata/
+.. _TIMIT:
+    https://vcs.zwuenf.org/agct_data/timit
 """
 
 import os
@@ -15,11 +14,10 @@ import tensorflow.contrib as tfc
 from s_utils import LabelManager
 
 
-NUM_CLASSES = LabelManager().num_classes()
-MAX_INPUT_LEN = 666         # review
 NUM_MFCC = 13
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
+NUM_CLASSES = LabelManager().num_classes()
 DATA_PATH = '/home/marc/workspace/speech/data'
 
 FLAGS = tf.app.flags.FLAGS
@@ -32,13 +30,17 @@ def inputs_train(batch_size):
     review Documentation
 
     Args:
-        batch_size (int): Number of samples per batch.
+        batch_size (int):
+            (Maximum) number of samples per batch.
+            See: _generate_batch() and allow_smaller_final_batch
 
     Returns:
         tf.Tensor:
             4D tensor of [batch_size, IMAGE_SHAPE[0], IMAGE_SHAPE[1], INPUT_SHAPE[2]] shape.
         tf.Tensor:
             1D labels tensor of [batch_size] shape.
+        tf.Tensor:
+            TODO
     """
     # Info: Longest label list in TIMIT train/test is 79 characters long.
     train_txt_path = os.path.join(DATA_PATH, 'train.txt')
@@ -49,7 +51,6 @@ def inputs_train(batch_size):
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
         label_lens = tf.convert_to_tensor(label_len_list, dtype=tf.int32)
-        print('train_input:', file_names, labels, label_lens)
 
         # Ensure that the random shuffling has good mixing properties.
         min_fraction_of_examples_in_queue = 0.33
@@ -59,50 +60,45 @@ def inputs_train(batch_size):
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, label_len_queue = tf.train.slice_input_producer(
             [file_names, labels, label_lens], capacity=capacity, num_epochs=None, shuffle=False)
-        print('queues:', sample_queue, label_queue, label_len_queue)
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
-        print('label_queue decode_raw:', label_queue)
 
         # Read the sample from disk and extract it's features.
         sample, sample_len = tf.py_func(_load_sample, [sample_queue], [tf.float32, tf.int32])
-        print('py_func:', sample, sample_len, labels, label_len_queue)
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
         sample.set_shape([None, NUM_MFCC])
         sample_len.set_shape([])    # Shape for scalar is [].
-        print('set_shape:', sample, sample.shape, sample_len, sample_len.shape)
 
         print('Generating training batches of size {}. Queue capacity is {}. '
               'This may take some time.'.format(batch_size, capacity))
-
         sequences, seq_length, labels = _generate_batch(sample, sample_len, label_queue,
                                                         batch_size, capacity)
         return sequences, seq_length, labels
 
 
 def inputs():
-    # L8ER: Rewrite this function to match inputs_train().
+    # TODO: Rewrite this function to match inputs_train().
     raise NotImplementedError
 
 
-def _load_sample(sample_queue):
-    """Reads the wave file and converts it into an MFCC.
-    review Documentation
+def _load_sample(file_path):
+    """Loads the wave file and converts it into feature vectors.
 
     Args:
-        sample_queue: A TensorFlow queue of tuples with the file names to read from and labels.
-                      Compare: tf.train.slice_input_producer
+        file_path (bytes):
+            A TensorFlow queue of tuples with the file names to read from and labels.
+            `tf.py_func` converts the provided Tensor into a `np.ndarray`s bytes.
 
     Returns:
         np.ndarray:
-            A single sample.
+            2D array with [time, NUM_MFCC] shape, containing float32.
         np.ndarray:
-            Sample length.
+            1D array, containing int32.
     """
-    file_path = str(sample_queue, 'utf-8')
+    file_path = str(file_path, 'utf-8')
 
     if not os.path.isfile(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
@@ -135,16 +131,13 @@ def _load_sample(sample_queue):
     # And the first-order differences (delta features).
     # mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
 
-    # L8ER Remove prints
+    # Review NUM_MFCC = 13.
+    # Review if (mfcc + mfcc_delta) are better features than pure mfcc.
+
     sample = mfcc.astype(np.float32)
-    assert sample.shape[1] <= MAX_INPUT_LEN, 'MAX_INPUT_LEN to low: %d' % sample.shape[1]
-    # print('sample:', sample.shape)
-    # sample = np.pad(sample, [[0, 0], [0, MAX_INPUT_LEN - sample.shape[1]]], 'constant')
 
     sample = np.swapaxes(sample, 0, 1)
-    # review Not sure if np.array is needed here.
     sample_len = np.array(sample.shape[0], dtype=np.int32)
-    # print('sample:', sample.shape, sample_len)
     return sample, sample_len
 
 
@@ -183,46 +176,47 @@ def _read_file_list(path, label_manager=LabelManager()):
 
 
 def _generate_batch(sequences, seq_len, label, batch_size, capacity):
-    """Construct a queued batch of images and labels.
-    review Documentation
+    """Construct a queued batch of sample sequences and labels.
 
     Args:
-        sequences (): 3D tensor of [height, width, 1] of type float32.
-        seq_len (): 1D tensor of type int32.
-        label (): 1D tensor of type int32.
-        batch_size (int): Number of images per batch.
+        sequences (tf.Tensor):
+            2D tensor of shape [time, NUM_MFCC] with type float32.
+        seq_len (tf.Tensor):
+            1D tensor of shape [1] with type int32.
+        label (tf.Tensor):
+            1D tensor of shape [<length label>] with type int32.
+        batch_size (int):
+            (Maximum) number of samples per batch.
+        capacity (int):
+            The maximum number of minibatches in the top queue,
+            and also the maximum number of elements within each bucket.
 
     Returns:
-        images: Images 4D tensor of [batch_size, height, width, 1] size.
-        labels: Labels 1D tensor of [batch_size] size.
+        tf.Tensor:
+            TODO
+        tf.Tensor:
+            TODO
+        tf.Tensor:
+            TODO
     """
-    num_pre_process_threads = 1     # L8ER Use 12
+    num_pre_process_threads = 12
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
         tensors=[sequences, label],
         batch_size=batch_size,
-        bucket_boundaries=[150, 200, 250],
-        # bucket_boundaries=[l for l in         TODO test above
-        #                    range(4 * INPUT_PAD_LEN, 50 * INPUT_PAD_LEN + 1, INPUT_PAD_LEN)],
+        bucket_boundaries=[180, 200, 220, 240],  # review Find good bucket sizes.
         num_threads=num_pre_process_threads,
         capacity=capacity,
-        dynamic_pad=True,
+        dynamic_pad=True,                   # review What's being padded? seq, label, or both?
         allow_smaller_final_batch=False     # review Test if it works?
     )
 
-    # Display the training images in the visualizer.    TODO re-enable
+    # Display the training images in the visualizer.
     batch_size_t = tf.shape(sequences)[0]
     summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_MFCC, 1])
     tf.summary.image('sample', summary_batch, max_outputs=batch_size)
     tf.summary.histogram('labels_hist', labels)
 
-    # seq_length = tf.Print(seq_length, [tf.shape(seq_length), seq_length],
-    #                            message='Batch_sequence_length:')
-    # labels = tf.Print(labels, [tf.shape(labels)], message='Label_batch:')
-    # sequence = tf.Print(sequence, [tf.shape(sequence)], message='Sample_batch:')
-    print('batch_sequence_length:', seq_length)
-    labels = tf.Print(labels, [seq_length, tf.shape(sequences), tf.shape(labels), labels],
-                      message='labels, seq_length: ')
     return sequences, seq_length, labels

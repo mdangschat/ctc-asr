@@ -185,7 +185,7 @@ def inputs_train():
 
 
 def inputs():
-    # L8ER: Write according to `inputs_train`.
+    # TODO: Write according to `inputs_train`.
     raise NotImplementedError
 
 

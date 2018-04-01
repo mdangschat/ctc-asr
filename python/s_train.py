@@ -16,9 +16,9 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1234)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_integer('max_steps', 50,
+tf.app.flags.DEFINE_integer('max_steps', 11,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 1,
+tf.app.flags.DEFINE_integer('log_frequency', 100,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
@@ -40,7 +40,7 @@ def train():
         # Build the logits (prediction) graph.
         logits = s_model.inference(sequences, seq_length)
 
-        # Calculate loss.
+        # Calculate loss/cost.
         loss = s_model.loss(logits, labels, seq_length)
 
         # Build the training graph, that updates the model parameters after each batch.
@@ -100,7 +100,7 @@ def train():
                 try:
                     mon_sess.run(train_op)
                 except tf.errors.OutOfRangeError:
-                    print('Done. All batches fed.')
+                    print('All batches fed. Stopping.')
                     break
 
 
