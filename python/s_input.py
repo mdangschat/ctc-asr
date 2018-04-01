@@ -12,13 +12,11 @@ import librosa
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-import s_utils
+from s_utils import LabelManager
 
 
-_label_manager = s_utils.LabelManager()
-NUM_CLASSES = _label_manager.num_classes()
+NUM_CLASSES = LabelManager().num_classes()
 MAX_INPUT_LEN = 666         # review
-INPUT_PAD_LEN = 8           # review
 NUM_MFCC = 13
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
@@ -77,8 +75,12 @@ def inputs_train(batch_size):
         sample_len.set_shape([])    # Shape for scalar is [].
         print('set_shape:', sample, sample.shape, sample_len, sample_len.shape)
 
-        print('Generating training batches. This may take some time.')
-        return _generate_batch(sample, label_queue, sample_len, batch_size, capacity)
+        print('Generating training batches of size {}. Queue capacity is {}. '
+              'This may take some time.'.format(batch_size, capacity))
+
+        sequences, seq_length, labels = _generate_batch(sample, sample_len, label_queue,
+                                                        batch_size, capacity)
+        return sequences, seq_length, labels
 
 
 def inputs():
@@ -142,11 +144,11 @@ def _load_sample(sample_queue):
     sample = np.swapaxes(sample, 0, 1)
     # review Not sure if np.array is needed here.
     sample_len = np.array(sample.shape[0], dtype=np.int32)
-    print('sample:', sample.shape, sample_len)
+    # print('sample:', sample.shape, sample_len)
     return sample, sample_len
 
 
-def _read_file_list(path, label_manager=s_utils.LabelManager()):
+def _read_file_list(path, label_manager=LabelManager()):
     """Generate two synchronous lists of all image samples and their respective labels
     within the provided path.
     review Documentation
@@ -180,12 +182,12 @@ def _read_file_list(path, label_manager=s_utils.LabelManager()):
         return sample_paths, labels, label_lens
 
 
-def _generate_batch(sequence, label, seq_len, batch_size, capacity):
+def _generate_batch(sequences, seq_len, label, batch_size, capacity):
     """Construct a queued batch of images and labels.
     review Documentation
 
     Args:
-        sequence (): 3D tensor of [height, width, 1] of type float32.
+        sequences (): 3D tensor of [height, width, 1] of type float32.
         seq_len (): 1D tensor of type int32.
         label (): 1D tensor of type int32.
         batch_size (int): Number of images per batch.
@@ -194,31 +196,33 @@ def _generate_batch(sequence, label, seq_len, batch_size, capacity):
         images: Images 4D tensor of [batch_size, height, width, 1] size.
         labels: Labels 1D tensor of [batch_size] size.
     """
-    num_pre_process_threads = 1     # 12
+    num_pre_process_threads = 1     # L8ER Use 12
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
-    sequence_length, (sample_batch, label_batch) = tfc.training.bucket_by_sequence_length(
+    seq_length, (sequences, labels) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
-        tensors=[sequence, label],
+        tensors=[sequences, label],
         batch_size=batch_size,
-        bucket_boundaries=[50, 100, 150, 200, 250],
+        bucket_boundaries=[150, 200, 250],
         # bucket_boundaries=[l for l in         TODO test above
         #                    range(4 * INPUT_PAD_LEN, 50 * INPUT_PAD_LEN + 1, INPUT_PAD_LEN)],
         num_threads=num_pre_process_threads,
         capacity=capacity,
         dynamic_pad=True,
-        allow_smaller_final_batch=True     # review Test if it works?
+        allow_smaller_final_batch=False     # review Test if it works?
     )
 
     # Display the training images in the visualizer.    TODO re-enable
-    batch_size_t = tf.shape(sample_batch)[0]
-    summary_batch = tf.reshape(sample_batch, [batch_size_t, -1, NUM_MFCC, 1])
+    batch_size_t = tf.shape(sequences)[0]
+    summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_MFCC, 1])
     tf.summary.image('sample', summary_batch, max_outputs=batch_size)
-    tf.summary.histogram('labels_hist', label_batch)
+    tf.summary.histogram('labels_hist', labels)
 
-    # sequence_length = tf.Print(sequence_length, [tf.shape(sequence_length), sequence_length],
+    # seq_length = tf.Print(seq_length, [tf.shape(seq_length), seq_length],
     #                            message='Batch_sequence_length:')
-    # label_batch = tf.Print(label_batch, [tf.shape(label_batch)], message='Label_batch:')
-    # sample_batch = tf.Print(sample_batch, [tf.shape(sample_batch)], message='Sample_batch:')
-    print('batch_sequence_length:', sequence_length)
-    return sample_batch, label_batch, sequence_length
+    # labels = tf.Print(labels, [tf.shape(labels)], message='Label_batch:')
+    # sequence = tf.Print(sequence, [tf.shape(sequence)], message='Sample_batch:')
+    print('batch_sequence_length:', seq_length)
+    labels = tf.Print(labels, [seq_length, tf.shape(sequences), tf.shape(labels), labels],
+                      message='labels, seq_length: ')
+    return sequences, seq_length, labels

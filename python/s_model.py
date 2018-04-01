@@ -7,7 +7,7 @@ import s_input
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 1,
+tf.app.flags.DEFINE_integer('batch_size', 16,
                             """Number of images to process in a batch.""")
 
 # Global constants describing the data set.
@@ -17,7 +17,7 @@ NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 # Constants describing the training process.
 NUM_EPOCHS_PER_DECAY = 0.33          # review Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.75    # review Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.01         # review Initial learning rate.
+INITIAL_LEARNING_RATE = 0.0005         # review Initial learning rate.
 
 
 def inference(sample_batch, length_batch):
@@ -67,7 +67,7 @@ def inference(sample_batch, length_batch):
     return logits
 
 
-def loss(logits, label_batch, length_batch, batch_size=FLAGS.batch_size):
+def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
     """L8ER Documentation
 
     Args:
@@ -76,11 +76,11 @@ def loss(logits, label_batch, length_batch, batch_size=FLAGS.batch_size):
             [batch_size, max_time, num_classes]. If time_major == True (default), this will be a
             Tensor shaped: [max_time, batch_size, num_classes]. The logits.
 
-        label_batch (tf.SparseTensor):
+        labels (tf.SparseTensor):
             An int32 SparseTensor. labels.indices[i, :] == [b, t] means labels.values[i] stores the
             id for (batch b, time t). labels.values[i] must take on values in [0, num_labels).
 
-        length_batch (tf.Tensor):
+        seq_length (tf.Tensor):
             1-D int32 vector, size [batch_size]. The sequence lengths.
 
         batch_size (int): TODO: FLAGS.batch_size could be wrong, we allow smaller final batches.
@@ -89,24 +89,54 @@ def loss(logits, label_batch, length_batch, batch_size=FLAGS.batch_size):
     Returns:
         A 1-D float Tensor, size [batch], containing the negative log probabilities.
     """
-    print('shape1:', tf.shape(label_batch), label_batch)
+    print('shape1:', tf.shape(labels), labels)
+    # label_batch = tf.Print(label_batch,
+    #                        [tf.shape(label_batch), label_batch],
+    #                        message='DENSE label_batch: ', summarize=200)
+
+    # Reshape labels for CTC loss.
     # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
-    label_batch = tfc.layers.dense_to_sparse(label_batch)
-    print('shape2:', tf.shape(label_batch), label_batch)
+    label_batch_s = tfc.layers.dense_to_sparse(labels)
+    print('shape2:', tf.shape(label_batch_s), label_batch_s)
+
+    dense = tf.sparse_tensor_to_dense(label_batch_s)
+    labels = tf.Print(labels, [
+        tf.shape(tf.equal(dense, labels)),
+        tf.reduce_all(tf.equal(dense, labels)),
+        tf.shape(logits),
+        tf.shape(seq_length),
+        seq_length
+    ], message='DENSE == SPARE label_batch: ', summarize=100)
+    labels = tf.Print(labels, [
+        label_batch_s.dense_shape,
+        tf.reduce_max(label_batch_s.values),
+        label_batch_s.indices,
+        label_batch_s.values
+    ], message='Print Sparse: ', summarize=200)
+
+    label_batch_s = tfc.layers.dense_to_sparse(labels)
 
     # Reshape logits for CTC loss.
     logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
     # Logits time major.
     logits = tf.transpose(logits, [1, 0, 2])
+    logits = tf.Print(logits, [tf.shape(logits), logits], message='LOGITS: ')
 
-    print('ctc_loss:', label_batch, logits, length_batch)
+    print('ctc_loss:', label_batch_s.dense_shape, logits.shape, seq_length.shape)
 
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
-    losses = tf.nn.ctc_loss(labels=label_batch, inputs=logits, sequence_length=length_batch)
+    losses = tf.nn.ctc_loss(labels=label_batch_s,
+                            inputs=logits,
+                            sequence_length=seq_length,
+                            preprocess_collapse_repeated=False,
+                            ctc_merge_repeated=True,
+                            time_major=True)
+    losses = tf.Print(losses, [losses], message='losses: ')
+
     tf.summary.histogram('losses', losses)
-    mean_loss = tf.reduce_mean(losses, name='mean_loss')
+    mean_loss = tf.reduce_mean(losses)
     tf.summary.scalar('mean_loss', mean_loss)
-    return losses
+    return mean_loss
 
 
 def train(total_loss, global_step):
@@ -137,7 +167,8 @@ def train(total_loss, global_step):
     tf.summary.scalar('learning_rate', lr)
 
     # Compute gradients.
-    optimizer = tf.train.GradientDescentOptimizer(lr)
+    # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
+    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     return optimizer.minimize(total_loss, global_step=global_step)
 
 

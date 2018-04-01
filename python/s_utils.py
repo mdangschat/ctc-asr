@@ -10,13 +10,13 @@ class LabelManager(object):
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 
     def __init__(self):
-        self._map = r'abcdefghijklmnopqrstuvwxyz '
+        self._map = r' abcdefghijklmnopqrstuvwxyz'      # 27 characters including <space>.
         self._ctoi = dict()
         self._itoc = dict()
 
         for i, c in enumerate(self._map):
-            self._ctoi.update({c: i + 1})
-            self._itoc.update({i + 1: c})
+            self._ctoi.update({c: i})
+            self._itoc.update({i: c})
 
     def ctoi(self, char):
         """Convert character label to integer.
@@ -54,9 +54,10 @@ class LabelManager(object):
         """Return number of different classes.
 
         Returns:
-            int: Number of classes.
+            int:
+                Number of classes.
         """
-        return len(self._map) + 2   # review: How many are there really?
+        return len(self._map) + 1
 
 
 ######################################################################

@@ -16,14 +16,14 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1234)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
-                           """Directory where to write event logs and checkpoints.""")
-tf.app.flags.DEFINE_integer('max_steps', 101,
+tf.app.flags.DEFINE_integer('max_steps', 50,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 20,
+tf.app.flags.DEFINE_integer('log_frequency', 1,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
+tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
+                           """Directory where to write event logs and checkpoints.""")
 
 
 def train():
@@ -35,13 +35,13 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sample_batch, label_batch, length_batch = s_model.inputs_train()
+            sequences, seq_length, labels = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
-        logits = s_model.inference(sample_batch, length_batch)
+        logits = s_model.inference(sequences, seq_length)
 
         # Calculate loss.
-        loss = s_model.loss(logits, label_batch, length_batch)
+        loss = s_model.loss(logits, labels, seq_length)
 
         # Build the training graph, that updates the model parameters after each batch.
         train_op = s_model.train(loss, global_step)
@@ -68,7 +68,7 @@ def train():
                     duration = current_time - self._start_time
                     self._start_time = current_time
 
-                    loss_value = run_values.results[0]
+                    loss_value = run_values.results
                     examples_per_sec = FLAGS.log_frequency * FLAGS.batch_size / duration
                     sec_per_batch = duration / float(FLAGS.log_frequency)
 
@@ -76,7 +76,7 @@ def train():
                           .format(datetime.now(), self._step, loss_value,
                                   examples_per_sec, sec_per_batch))
 
-        with tf.train.MonitoredTrainingSession(
+        mon_sess = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
             # The frequency, in number of global steps, that the summaries are written to disk
             # using a default summary saver.
@@ -92,9 +92,10 @@ def train():
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
-                gpu_options=tf.GPUOptions(allow_growth=True)
+                gpu_options=tf.GPUOptions(allow_growth=False)
             )
-        ) as mon_sess:
+        )
+        with mon_sess:
             while not mon_sess.should_stop():
                 try:
                     mon_sess.run(train_op)
