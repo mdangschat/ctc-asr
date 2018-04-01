@@ -1,6 +1,7 @@
-"""Testing environment for `librosa` functionality.
+"""Testing environment for `librosa`_ functionality.
 
-review Documentation
+.. _librosa:
+    https://librosa.github.io/librosa/index.html
 """
 
 import os
@@ -11,7 +12,16 @@ from matplotlib import pyplot as plt
 
 
 def sample_info(file_path, label=''):
-    # L8ER Documentation
+    """Generate various representations a given audio file.
+    E.g. Mel, MFCC and power spectrograms.
+
+    Args:
+        file_path (str): Path to the audio file.
+        label (str): Optional label to display for the given audio file.
+
+    Returns:
+        Nothing.
+    """
 
     if not os.path.isfile(file_path):
         raise ValueError('{} does not exist.'.format(file_path))
@@ -21,18 +31,18 @@ def sample_info(file_path, label=''):
     y, sr = rosa.load(file_path, sr=None, mono=True)
 
     # Set generally used variables.
-    # At 22050 Hz, 512 samples ~= 23ms. At 16000 Hz, 512 samples ~= TODO ms.
-    hop_length = 200
-    f_max = sr / 2.
-    f_min = 64.
+    # At 22050 Hz, 512 samples ~= 23ms. At 16000 Hz, 512 samples = 32ms.
+    hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
+    f_max = sr / 2.     # Maximum frequency (Nyquist rate).
+    f_min = 64.         # Minimum frequency.
+    n_fft = 1024        # Number of samples in a frame.
 
     # Create info string.
     num_samples = y.shape[0]
     duration = rosa.get_duration(y=y, sr=sr)
-    info_str = 'Label="{}"\nPath={}\nDuration={:.1f}s with {:,d} Samples\n' \
-               'Sampling Rate={:,d}Hz\nMin, Max=[{:.2f}, {:.2f}]'\
+    info_str = 'Label="{}"\nPath={}\nDuration={:.3f}s with {:,d} Samples\n' \
+               'Sampling Rate={:,d} Hz\nMin, Max=[{:.2f}, {:.2f}]'\
         .format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
-
     print(info_str)
 
     plt.figure()
@@ -54,7 +64,8 @@ def sample_info(file_path, label=''):
     plt.tight_layout()
 
     # Calculating MEL spectrogram and MFCC.
-    db_pow = np.abs(rosa.stft(y=y, n_fft=1024, hop_length=hop_length, win_length=400)) ** 2
+    # Review: win_length < n_fft it this better than win_length = n_fft?
+    db_pow = np.abs(rosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=400)) ** 2
 
     s_mel = rosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
                                         fmax=f_max, fmin=f_min, n_mels=80)

@@ -2,7 +2,10 @@
 Additionally some information about the data set is being printed out.
 
 Generated data format:
-    path/to/sample.wav Transcription of the sample wave file.<new_line>
+    `path/to/sample.wav transcription of the sample wave file<new_line>`
+
+    The transcription is in lower case letters a-z with every word separated
+    by a <space>. Punctuation is removed.
 
 .. _TIMIT:
     https://vcs.zwuenf.org/agct_data/timit
@@ -12,8 +15,8 @@ import os
 import re
 
 
-DATA_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'     # Path to the TIMIT data set base.
-TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to generate the files.
+DATA_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'     # Path to the TIMIT data set.
+TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to generate the .txt files.
 
 
 def _gen_list(target):

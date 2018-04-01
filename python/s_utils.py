@@ -19,15 +19,35 @@ class LabelManager(object):
             self._itoc.update({i + 1: c})
 
     def ctoi(self, char):
-        # L8ER Documentation
-        # review: No if `char` exists validation
+        """Convert character label to integer.
+
+        Args:
+            char (char): Character label.
+
+        Returns:
+            int:
+                Integer representation.
+        """
+        if char not in self._map:
+            raise ValueError('Invalid input character \'{}\'.'.format(char))
         if not len(char) == 1:
             raise ValueError('"{}" is not a valid character.'.format(char))
+
         return self._ctoi[char.lower()]
 
     def itoc(self, integer):
-        # L8ER Documentation
-        # review: No if `integer` exists validation
+        """Convert integer label to character.
+
+        Args:
+            integer (int): Integer label.
+
+        Returns:
+            char:
+                Character representation.
+        """
+        if not 0 <= integer < self.num_classes():
+            raise ValueError('Integer label ({}) out of range.'.format(integer))
+
         return self._itoc[integer]
 
     def num_classes(self):
@@ -43,8 +63,8 @@ class LabelManager(object):
 # CTC Helper
 ######################################################################
 def convert_to_sparse_tensor(labels):
-    # TODO Documentation
-    # Review Unused?
+    # L8ER: Documentation
+    # Review: Method not used at the moment.
     indices = list()
     values = list()
 

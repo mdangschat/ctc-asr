@@ -137,7 +137,7 @@ def _read_sample(sample_queue):
 
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)      # TODO Not sure if np.array is needed here.
-    #print('sample:', sample.shape, sample_len)
+    print('sample:', sample.shape, sample_len)
     return sample, sample_len
 
 

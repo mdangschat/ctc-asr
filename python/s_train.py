@@ -1,6 +1,7 @@
-"""Training the model.
+"""Train the model.
 
-Tested with Python 3.6.4. The Code should work with 3.4+. Python 2.x compatibility isn't provided.
+Tested with Python 3.6.4. The Code should work with 3.4+.
+Python 2.x compatibility isn't provided.
 """
 
 import time
@@ -17,9 +18,9 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
                            """Directory where to write event logs and checkpoints.""")
-tf.app.flags.DEFINE_integer('max_steps', 10001,
+tf.app.flags.DEFINE_integer('max_steps', 101,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 25,
+tf.app.flags.DEFINE_integer('log_frequency', 20,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
@@ -97,7 +98,7 @@ def train():
                 try:
                     mon_sess.run(train_op)
                 except tf.errors.OutOfRangeError:
-                    print('All batches fed.')
+                    print('Done. All batches fed.')
                     break
 
 
