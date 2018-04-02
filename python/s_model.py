@@ -7,17 +7,17 @@ import s_input
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 16,
-                            """Number of images to process in a batch.""")
+tf.app.flags.DEFINE_integer('batch_size', 1,
+                            """Number of samples within a batch.""")
 
 # Global constants describing the data set.
 NUM_CLASSES = s_input.NUM_CLASSES
 NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 0.50          # Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.75    # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.001        # Initial learning rate.
+NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
+LEARNING_RATE_DECAY_FACTOR = 0.66   # Learning rate decay factor.
+INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
 
 
 def inference(sequences, seq_length):

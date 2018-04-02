@@ -14,7 +14,8 @@ import tensorflow.contrib as tfc
 from s_utils import LabelManager
 
 
-NUM_MFCC = 13
+_NUM_MFCC = 13
+INPUT_LENGTH = _NUM_MFCC + _NUM_MFCC
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
 NUM_CLASSES = LabelManager().num_classes()
@@ -55,11 +56,12 @@ def inputs_train(batch_size):
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        min_fraction_of_examples_in_queue = 0.33
+        min_fraction_of_examples_in_queue = 0.2
         min_queue_examples = int(NUM_EXAMPLES_PER_EPOCH_TRAIN * min_fraction_of_examples_in_queue)
         capacity = min_queue_examples + 3 * batch_size
 
         # Create an input queue that produces the file names to read.
+        # review: Enable shuffle.
         sample_queue, label_queue = tf.train.slice_input_producer(
             [file_names, labels], capacity=capacity, num_epochs=None, shuffle=False)
 
@@ -71,7 +73,7 @@ def inputs_train(batch_size):
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([None, NUM_MFCC])
+        sample.set_shape([None, INPUT_LENGTH])
         sample_len.set_shape([])    # Shape for scalar is [].
 
         print('Generating training batches of size {}. Queue capacity is {}. '
@@ -97,7 +99,7 @@ def _load_sample(file_path):
 
     Returns:
         np.ndarray:
-            2D array with [time, NUM_MFCC] shape, containing float32.
+            2D array with [time, INPUT_LENGTH] shape, containing float32.
         np.ndarray:
             1D array, containing int32.
 
@@ -123,7 +125,7 @@ def _load_sample(file_path):
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
     f_min = 64.         # Minimum frequency.
     n_fft = 1024        # Number of samples in a frame.
-    n_mfcc = NUM_MFCC   # Number of Mel cepstral coefficients to extract.
+    n_mfcc = _NUM_MFCC   # Number of Mel cepstral coefficients to extract.
 
     db_pow = np.abs(librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=400)) ** 2
 
@@ -136,9 +138,12 @@ def _load_sample(file_path):
     mfcc = librosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
 
     # And the first-order differences (delta features).
-    # mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
+    mfcc_delta = librosa.feature.delta(mfcc, width=5, order=1)
 
-    sample = mfcc.astype(np.float32)
+    # Combine MFCC with MFCC_delta
+    sample = np.concatenate([mfcc, mfcc_delta], axis=0)
+
+    sample = sample.astype(np.float32)
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
@@ -181,7 +186,7 @@ def _generate_batch(sequence, seq_len, label, batch_size, capacity):
 
     Args:
         sequence (tf.Tensor):
-            2D tensor of shape [time, NUM_MFCC] with type float32.
+            2D tensor of shape [time, INPUT_LENGTH] with type float32.
         seq_len (tf.Tensor):
             1D tensor of shape [1] with type int32.
         label (tf.Tensor):
@@ -221,7 +226,7 @@ def _generate_batch(sequence, seq_len, label, batch_size, capacity):
 
     # Display the training images in the visualizer.
     batch_size_t = tf.shape(sequences)[0]
-    summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_MFCC, 1])
+    summary_batch = tf.reshape(sequences, [batch_size_t, -1, INPUT_LENGTH, 1])
     tf.summary.image('sample', summary_batch, max_outputs=batch_size)
     tf.summary.histogram('labels_hist', labels)
 

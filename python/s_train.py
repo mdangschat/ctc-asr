@@ -16,9 +16,9 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_integer('max_steps', 1001,
+tf.app.flags.DEFINE_integer('max_steps', 11,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 25,
+tf.app.flags.DEFINE_integer('log_frequency', 1,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
