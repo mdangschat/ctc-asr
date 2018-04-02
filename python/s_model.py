@@ -15,41 +15,36 @@ NUM_CLASSES = s_input.NUM_CLASSES
 NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 0.33          # review Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.75    # review Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.0005         # review Initial learning rate.
+NUM_EPOCHS_PER_DECAY = 0.50          # Number of epochs after which learning rate decays.
+LEARNING_RATE_DECAY_FACTOR = 0.75    # Learning rate decay factor.
+INITIAL_LEARNING_RATE = 0.001        # Initial learning rate.
 
 
-def inference(sample_batch, length_batch):
-    """Build the TS model.
-    # review Documentation
+def inference(sequences, seq_length):
+    """Build the speech model.
 
     Args:
-        length_batch ():
-        sample_batch ():
+        sequences (tf.Tensor): 3D Tensor with input sequences.
+        seq_length (tf.Tensor): 2D Tensor with sequence length.
 
     Returns:
         tf.Tensor:
-            Softmax layer pre activation function, i.e. layer(X*W + b)
+            Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
     """
-    num_hidden = 128
-    print('inference:', sample_batch, length_batch)
     # LSTM cells
+    num_hidden = 128
+    num_layers = 1
+
     with tf.variable_scope('lstm'):
-        cell = tf.nn.rnn_cell.LSTMCell(num_units=128, state_is_tuple=True)    # review: test this
-        # cell = tfc.rnn.LSTMCell(num_units=num_hidden, state_is_tuple=True)
-        num_layers = 1
-        stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)  # review
-        # stack = tfc.rnn.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
+        cell = tf.nn.rnn_cell.LSTMCell(num_units=num_hidden, state_is_tuple=True)
+        stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
         # The second output is the last hidden state, it's not required anymore.
-        cell_out, _ = tf.nn.dynamic_rnn(stack, sample_batch, sequence_length=length_batch,
+        cell_out, _ = tf.nn.dynamic_rnn(stack, sequences, sequence_length=seq_length,
                                         dtype=tf.float32)
-
-        print('cell_out:', cell_out)
+        # Reshape for dense layer.
         cell_out = tf.reshape(cell_out, [-1, num_hidden])
-        print('cell_out.reshape:', cell_out)
 
-    # linear layer(XW + b),
+    # Logits: layer(XW + b),
     # We don't apply softmax here because
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
@@ -58,8 +53,7 @@ def inference(sample_batch, length_batch):
         biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
         logits = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
 
-        batch_size = tf.shape(sample_batch)[0]
-        print('logits:', logits, ', batch_size:', batch_size)
+        batch_size = tf.shape(sequences)[0]
         logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
         logits = tf.transpose(logits, [1, 0, 2])
         # _activation_summary(logits)
@@ -68,11 +62,11 @@ def inference(sample_batch, length_batch):
 
 
 def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
-    """L8ER Documentation
+    """Calculate the networks loss.
 
     Args:
         logits (tf.Tensor):
-            3-D float Tensor. If time_major == False, this will be a Tensor shaped:
+            3D float Tensor. If time_major == False, this will be a Tensor shaped:
             [batch_size, max_time, num_classes]. If time_major == True (default), this will be a
             Tensor shaped: [max_time, batch_size, num_classes]. The logits.
 
@@ -81,13 +75,15 @@ def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
             id for (batch b, time t). labels.values[i] must take on values in [0, num_labels).
 
         seq_length (tf.Tensor):
-            1-D int32 vector, size [batch_size]. The sequence lengths.
+            1D int32 vector, size [batch_size]. The sequence lengths.
 
-        batch_size (int): TODO: FLAGS.batch_size could be wrong, we allow smaller final batches.
-            Batch size.
+        batch_size (int): Batch size.
+            Note that the default `FLAGS.batch_size` could be wrong,
+            if we allow for smaller final batches.
 
     Returns:
-        A 1-D float Tensor, size [batch], containing the negative log probabilities.
+        tf.Tensor:
+            1D float Tensor with size [1], containing the mean loss.
     """
     # Reshape labels for CTC loss.
     # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
@@ -112,16 +108,16 @@ def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
     return mean_loss
 
 
-def train(total_loss, global_step):
-    """Train the TS model.
-    L8ER documentation
+def train(_loss, global_step):
+    """Train op for the speech model.
 
-    Create an optimizer and apply to all trainable variables. Add moving
-    average for all trainable variables.
+    Create an optimizer and apply to all trainable variables.
 
     Args:
-        total_loss: Total loss from the loss() function.
-        global_step: Variable counting the number of training steps processed.
+        _loss (tf.Tensor):
+            Scalar Tensor of type float containing total loss from the loss() function.
+        global_step (tf.Tensor):
+            Scalar Tensor of type int32 counting the number of training steps processed.
 
     Returns:
         tf.Tensor:
@@ -142,24 +138,45 @@ def train(total_loss, global_step):
     # Compute gradients.
     # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
     optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
-    return optimizer.minimize(total_loss, global_step=global_step)
+    return optimizer.minimize(_loss, global_step=global_step)
 
 
 def inputs_train():
-    """Construct modified input for the TS training.
-    review Documentation
+    """Construct input for the speech training.
 
     Returns:
-        samples: Image 4D tf.Tensor of [batch_size, width, height, channels] size.
-        label_batch: Labels 1D tf.Tensor of [batch_size] size.
+        tf.Tensor:
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
+        tf.Tensor:
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
+        tf.Tensor:
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
     """
     sample_batch, label_batch, length_batch = s_input.inputs_train(FLAGS.batch_size)
     return sample_batch, label_batch, length_batch
 
 
 def inputs():
-    # TODO: Write according to `inputs_train`.
-    raise NotImplementedError
+    """Construct input for the speech evaluation.
+
+    Returns:
+        tf.Tensor:
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
+        tf.Tensor:
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
+        tf.Tensor:
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
+    """
+    sample_batch, label_batch, length_batch = s_input.inputs_train(FLAGS.batch_size)
+    return sample_batch, label_batch, length_batch
 
 
 def _activation_summary(x):

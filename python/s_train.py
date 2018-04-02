@@ -16,9 +16,9 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_integer('max_steps', 101,
+tf.app.flags.DEFINE_integer('max_steps', 1001,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 10,
+tf.app.flags.DEFINE_integer('log_frequency', 25,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
@@ -41,10 +41,10 @@ def train():
         logits = s_model.inference(sequences, seq_length)
 
         # Calculate loss/cost.
-        loss = s_model.loss(logits, labels, seq_length)
+        loss_op = s_model.loss(logits, labels, seq_length)
 
         # Build the training graph, that updates the model parameters after each batch.
-        train_op = s_model.train(loss, global_step)
+        train_op = s_model.train(loss_op, global_step)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):
@@ -60,7 +60,7 @@ def train():
 
             def before_run(self, run_context):
                 self._step += 1
-                return tf.train.SessionRunArgs(loss)    # Asks for loss value.
+                return tf.train.SessionRunArgs(loss_op)    # Asks for loss value.
 
             def after_run(self, run_context, run_values):
                 if self._step % FLAGS.log_frequency == 0:
@@ -82,12 +82,12 @@ def train():
             # using a default summary saver.
             save_summaries_steps=FLAGS.log_frequency,
             # The frequency, in number of global steps, that the global step/sec is logged.
-            log_step_count_steps=250,
+            log_step_count_steps=FLAGS.log_frequency * 5,
             hooks=[
                 # Requests stop at a specified step.
                 tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                 # Monitors the loss tensor and stops training if loss is NaN.
-                tf.train.NanTensorHook(loss),
+                tf.train.NanTensorHook(loss_op),
                 _LoggerHook()
             ],
             config=tf.ConfigProto(
@@ -95,6 +95,7 @@ def train():
                 gpu_options=tf.GPUOptions(allow_growth=False)
             )
         )
+
         with mon_sess:
             while not mon_sess.should_stop():
                 try:

@@ -27,7 +27,6 @@ tf.app.flags.DEFINE_integer('sampling_rate', 16000,
 
 def inputs_train(batch_size):
     """Construct input for speech training.
-    review Documentation
 
     Args:
         batch_size (int):
@@ -36,11 +35,15 @@ def inputs_train(batch_size):
 
     Returns:
         tf.Tensor:
-            4D tensor of [batch_size, IMAGE_SHAPE[0], IMAGE_SHAPE[1], INPUT_SHAPE[2]] shape.
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
         tf.Tensor:
-            1D labels tensor of [batch_size] shape.
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
         tf.Tensor:
-            TODO
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
     """
     # Info: Longest label list in TIMIT train/test is 79 characters long.
     train_txt_path = os.path.join(DATA_PATH, 'train.txt')
@@ -72,7 +75,8 @@ def inputs_train(batch_size):
         sample_len.set_shape([])    # Shape for scalar is [].
 
         print('Generating training batches of size {}. Queue capacity is {}. '
-              'This may take some time.'.format(batch_size, capacity))
+              .format(batch_size, capacity))
+
         sequences, seq_length, labels = _generate_batch(sample, sample_len, label_queue,
                                                         batch_size, capacity)
         return sequences, seq_length, labels
@@ -172,11 +176,11 @@ def _read_file_list(path, label_manager=LabelManager()):
         return sample_paths, labels
 
 
-def _generate_batch(sequences, seq_len, label, batch_size, capacity):
+def _generate_batch(sequence, seq_len, label, batch_size, capacity):
     """Construct a queued batch of sample sequences and labels.
 
     Args:
-        sequences (tf.Tensor):
+        sequence (tf.Tensor):
             2D tensor of shape [time, NUM_MFCC] with type float32.
         seq_len (tf.Tensor):
             1D tensor of shape [1] with type int32.
@@ -190,29 +194,30 @@ def _generate_batch(sequences, seq_len, label, batch_size, capacity):
 
     Returns:
         tf.Tensor:
-            TODO
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
         tf.Tensor:
-            TODO
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
         tf.Tensor:
-            TODO
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
     """
     num_pre_process_threads = 12
-
-    # TODO: Pre bucket shapes.
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
-        tensors=[sequences, label],
+        tensors=[sequence, label],
         batch_size=batch_size,
-        bucket_boundaries=[180, 200, 220, 240],  # review Find good bucket sizes.
+        bucket_boundaries=[160, 200, 220, 240, 300],  # L8ER Find good bucket sizes.
         num_threads=num_pre_process_threads,
         capacity=capacity,
-        dynamic_pad=True,                       # review What's being padded? seq, label, or both?
-        allow_smaller_final_batch=False         # review Test if it works?
+        # Pads smaller batch elements (sequence and label) to the size of the longest one.
+        dynamic_pad=True,
+        allow_smaller_final_batch=False             # review Test if it works? Return batch_size
     )
-
-    # TODO: Post bucket shapes.
 
     # Display the training images in the visualizer.
     batch_size_t = tf.shape(sequences)[0]
