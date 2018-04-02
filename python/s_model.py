@@ -7,7 +7,7 @@ import s_input
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 8,
+tf.app.flags.DEFINE_integer('batch_size', 4,
                             """(Maximum) Number of samples within a batch.""")
 
 # Global constants describing the data set.
@@ -32,8 +32,8 @@ def inference(sequences, seq_length):
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
     """
     # LSTM cells
-    num_hidden = 128
-    num_layers = 4
+    num_hidden = 100
+    num_layers = 2
 
     # with tf.variable_scope('rnn'):
     # Create RNN cell.
@@ -160,10 +160,10 @@ def train(_loss, global_step):
     tf.summary.scalar('learning_rate', lr)
 
     # Compute gradients. review Optimizers
-    # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
+    optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    optimizer = tf.train.AdamOptimizer(learning_rate=lr)
+    # optimizer = tf.train.AdamOptimizer(learning_rate=lr)
     return optimizer.minimize(_loss, global_step=global_step)
 
 
