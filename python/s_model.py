@@ -7,7 +7,7 @@ import s_input
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 4,
+tf.app.flags.DEFINE_integer('batch_size', 1,
                             """(Maximum) Number of samples within a batch.""")
 
 # Global constants describing the data set.
@@ -32,7 +32,7 @@ def inference(sequences, seq_length):
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
     """
     # LSTM cells
-    num_hidden = 100
+    num_hidden = 64
     num_layers = 2
 
     # with tf.variable_scope('rnn'):
@@ -201,8 +201,21 @@ def inputs():
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
     """
-    sample_batch, label_batch, length_batch = s_input.inputs_train(FLAGS.batch_size)
+    sample_batch, label_batch, length_batch = s_input.inputs(FLAGS.batch_size)
     return sample_batch, label_batch, length_batch
+
+
+def _decoding(logits, seq_len, labels):
+    # TODO: Implement & Document
+    # Review tf.nn.ctc_beam_search_decoder
+    decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    # TODO: print both
+
+    # Edit distance and label error rate (LER).
+    edit_distance = tf.edit_distance(tf.cast(decoded[0], tf.int32), labels)
+    tf.summary.histogram('edit_distance', edit_distance)
+    label_error_rate = tf.reduce_mean(edit_distance)
+    tf.summary.scalar('LER', label_error_rate)
 
 
 def _activation_summary(x):

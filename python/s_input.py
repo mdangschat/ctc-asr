@@ -84,7 +84,7 @@ def inputs_train(batch_size):
         return sequences, seq_length, labels
 
 
-def inputs():
+def inputs(batch_size=FLAGS.batch_size):
     # TODO: Rewrite this function to match inputs_train().
     raise NotImplementedError
 
