@@ -109,17 +109,13 @@ def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
     """
-    # Reshape labels for CTC loss.
-    # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
-    label_batch_s = tfc.layers.dense_to_sparse(labels)
-
     # Reshape logits for CTC loss.
     logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
     # Logits time major.
     logits = tf.transpose(logits, [1, 0, 2])
 
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
-    losses = tf.nn.ctc_loss(labels=label_batch_s,
+    losses = tf.nn.ctc_loss(labels=labels,
                             inputs=logits,
                             sequence_length=seq_length,
                             preprocess_collapse_repeated=False,
@@ -205,17 +201,33 @@ def inputs():
     return sample_batch, label_batch, length_batch
 
 
-def _decoding(logits, seq_len, labels):
+def decoding(logits, seq_len, labels):
     # TODO: Implement & Document
-    # Review tf.nn.ctc_beam_search_decoder
+    # Review label_len needed, instead of seq_len?
+
+    # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
+    print('decoding:', logits, ', ', seq_len, ', ', labels)
     decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
-    # TODO: print both
+    decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
+    print('ctc_greedy_decoder:', decoded, log_prob)
+    seq_len = tf.Print(seq_len, [seq_len, decoded.dense_shape, log_prob],
+                       message='ctc_greedy_decoder: ')
+    tf.summary.histogram('delete me', seq_len)
 
     # Edit distance and label error rate (LER).
-    edit_distance = tf.edit_distance(tf.cast(decoded[0], tf.int32), labels)
+    edit_distance = tf.edit_distance(tf.cast(decoded, tf.int32), labels)
     tf.summary.histogram('edit_distance', edit_distance)
     label_error_rate = tf.reduce_mean(edit_distance)
-    tf.summary.scalar('LER', label_error_rate)
+    label_error_rate = tf.Print(label_error_rate, [label_error_rate, edit_distance],
+                                message='ler & ed: ')
+    tf.summary.scalar('label_error_rate', label_error_rate)
+
+    # review: Experimental decoding
+    dense = tf.sparse_tensor_to_dense(decoded)
+    dense = tf.Print(dense, [dense, tf.shape(dense)], message='dense: ')
+    tf.summary.tensor_summary('dense', dense)
+
+    return label_error_rate
 
 
 def _activation_summary(x):

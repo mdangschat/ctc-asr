@@ -16,9 +16,9 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_integer('max_steps', 50001,
+tf.app.flags.DEFINE_integer('max_steps', 3,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 50,
+tf.app.flags.DEFINE_integer('log_frequency', 1,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
@@ -47,6 +47,7 @@ def train():
         train_op = s_model.train(loss_op, global_step)
 
         # TODO: Decode
+        ler = s_model.decoding(logits, seq_length, labels)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):

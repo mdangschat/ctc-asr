@@ -81,10 +81,15 @@ def inputs_train(batch_size):
 
         sequences, seq_length, labels = _generate_batch(sample, sample_len, label_queue,
                                                         batch_size, capacity)
+
+        # Reshape labels for CTC loss.
+        # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
+        labels = tfc.layers.dense_to_sparse(labels)
+
         return sequences, seq_length, labels
 
 
-def inputs(batch_size=FLAGS.batch_size):
+def inputs(batch_size):
     # TODO: Rewrite this function to match inputs_train().
     raise NotImplementedError
 
