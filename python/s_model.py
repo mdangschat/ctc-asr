@@ -7,8 +7,8 @@ import s_input
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 1,
-                            """Number of samples within a batch.""")
+tf.app.flags.DEFINE_integer('batch_size', 8,
+                            """(Maximum) Number of samples within a batch.""")
 
 # Global constants describing the data set.
 NUM_CLASSES = s_input.NUM_CLASSES
@@ -33,14 +33,38 @@ def inference(sequences, seq_length):
     """
     # LSTM cells
     num_hidden = 128
-    num_layers = 1
+    num_layers = 4
 
-    with tf.variable_scope('lstm'):
-        cell = tf.nn.rnn_cell.LSTMCell(num_units=num_hidden, state_is_tuple=True)
-        stack = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
+    # with tf.variable_scope('rnn'):
+    # Create RNN cell.
+    def create_cell(num_units, keep_prob=1.0):
+        """Create a RNN cell with added dropout wrapper.
+
+        Args:
+            num_units (int): Number of units within the RNN cell.
+            keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
+                no outputs will be dropped.
+
+        Returns:
+            tf.LayerRNNCell:
+                RNN cell with dropout wrapper.
+        """
+        # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
+        cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units,
+                                       use_peepholes=False,
+                                       state_is_tuple=True)
+        drop = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
+        return drop
+
+    with tf.variable_scope('rnn'):
+        # Stack RNN cells.
+        stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)],
+                                            state_is_tuple=True)
+
         # The second output is the last hidden state, it's not required anymore.
         cell_out, _ = tf.nn.dynamic_rnn(stack, sequences, sequence_length=seq_length,
                                         dtype=tf.float32)
+
         # Reshape for dense layer.
         cell_out = tf.reshape(cell_out, [-1, num_hidden])
 
@@ -135,9 +159,11 @@ def train(_loss, global_step):
                                     staircase=True)
     tf.summary.scalar('learning_rate', lr)
 
-    # Compute gradients.
+    # Compute gradients. review Optimizers
     # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
-    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
+    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
+    # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
+    optimizer = tf.train.AdamOptimizer(learning_rate=lr)
     return optimizer.minimize(_loss, global_step=global_step)
 
 
