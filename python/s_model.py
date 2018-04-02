@@ -89,40 +89,14 @@ def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
     Returns:
         A 1-D float Tensor, size [batch], containing the negative log probabilities.
     """
-    print('shape1:', tf.shape(labels), labels)
-    # label_batch = tf.Print(label_batch,
-    #                        [tf.shape(label_batch), label_batch],
-    #                        message='DENSE label_batch: ', summarize=200)
-
     # Reshape labels for CTC loss.
     # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
-    label_batch_s = tfc.layers.dense_to_sparse(labels)
-    print('shape2:', tf.shape(label_batch_s), label_batch_s)
-
-    dense = tf.sparse_tensor_to_dense(label_batch_s)
-    labels = tf.Print(labels, [
-        tf.shape(tf.equal(dense, labels)),
-        tf.reduce_all(tf.equal(dense, labels)),
-        tf.shape(logits),
-        tf.shape(seq_length),
-        seq_length
-    ], message='DENSE == SPARE label_batch: ', summarize=100)
-    labels = tf.Print(labels, [
-        label_batch_s.dense_shape,
-        tf.reduce_max(label_batch_s.values),
-        label_batch_s.indices,
-        label_batch_s.values
-    ], message='Print Sparse: ', summarize=200)
-
     label_batch_s = tfc.layers.dense_to_sparse(labels)
 
     # Reshape logits for CTC loss.
     logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
     # Logits time major.
     logits = tf.transpose(logits, [1, 0, 2])
-    logits = tf.Print(logits, [tf.shape(logits), logits], message='LOGITS: ')
-
-    print('ctc_loss:', label_batch_s.dense_shape, logits.shape, seq_length.shape)
 
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
     losses = tf.nn.ctc_loss(labels=label_batch_s,
@@ -131,7 +105,6 @@ def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
                             preprocess_collapse_repeated=False,
                             ctc_merge_repeated=True,
                             time_major=True)
-    losses = tf.Print(losses, [losses], message='losses: ')
 
     tf.summary.histogram('losses', losses)
     mean_loss = tf.reduce_mean(losses)

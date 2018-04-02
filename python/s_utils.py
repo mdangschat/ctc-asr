@@ -1,10 +1,10 @@
-"""Provides utility functions for the speech recognition network."""
+"""Provide helper methods for speech training."""
 
 
 class LabelManager(object):
     """Convert characters (chr) to integer (int) labels and vice versa.
 
-    Maps from 0=<space>,  1=a, ... to 26=z, 27=<blank>
+    `ctc_loss`_ maps labels from 0=<space>, 1=a, ..., 26=z, 27=<blank>
 
     See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
     """
@@ -24,8 +24,7 @@ class LabelManager(object):
             char (char): Character label.
 
         Returns:
-            int:
-                Integer representation.
+            int: Integer representation.
         """
         if char not in self._map:
             raise ValueError('Invalid input character \'{}\'.'.format(char))
@@ -41,8 +40,7 @@ class LabelManager(object):
             integer (int): Integer label.
 
         Returns:
-            char:
-                Character representation.
+            char: Character representation.
         """
         if not 0 <= integer < self.num_classes():
             raise ValueError('Integer label ({}) out of range.'.format(integer))
@@ -53,7 +51,6 @@ class LabelManager(object):
         """Return number of different classes.
 
         Returns:
-            int:
-                Number of classes.
+            int: Number of classes.
         """
         return len(self._map) + 1

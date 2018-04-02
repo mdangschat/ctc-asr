@@ -32,7 +32,7 @@ def inputs_train(batch_size):
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
-            See: _generate_batch() and allow_smaller_final_batch
+            See: _generate_batch() and `allow_smaller_final_batch=True`
 
     Returns:
         tf.Tensor:
@@ -44,13 +44,12 @@ def inputs_train(batch_size):
     """
     # Info: Longest label list in TIMIT train/test is 79 characters long.
     train_txt_path = os.path.join(DATA_PATH, 'train.txt')
-    sample_list, label_list, label_len_list = _read_file_list(train_txt_path)
+    sample_list, label_list = _read_file_list(train_txt_path)
 
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
-        label_lens = tf.convert_to_tensor(label_len_list, dtype=tf.int32)
 
         # Ensure that the random shuffling has good mixing properties.
         min_fraction_of_examples_in_queue = 0.33
@@ -58,8 +57,8 @@ def inputs_train(batch_size):
         capacity = min_queue_examples + 3 * batch_size
 
         # Create an input queue that produces the file names to read.
-        sample_queue, label_queue, label_len_queue = tf.train.slice_input_producer(
-            [file_names, labels, label_lens], capacity=capacity, num_epochs=None, shuffle=False)
+        sample_queue, label_queue = tf.train.slice_input_producer(
+            [file_names, labels], capacity=capacity, num_epochs=None, shuffle=False)
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
@@ -89,14 +88,18 @@ def _load_sample(file_path):
 
     Args:
         file_path (bytes):
-            A TensorFlow queue of tuples with the file names to read from and labels.
-            `tf.py_func` converts the provided Tensor into a `np.ndarray`s bytes.
+            A TensorFlow queue of file names to read from.
+            `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
 
     Returns:
         np.ndarray:
             2D array with [time, NUM_MFCC] shape, containing float32.
         np.ndarray:
             1D array, containing int32.
+
+    Review:
+        * Review NUM_MFCC = 13.
+        * Review if (mfcc + mfcc_delta) are better features than pure mfcc.
     """
     file_path = str(file_path, 'utf-8')
 
@@ -131,32 +134,26 @@ def _load_sample(file_path):
     # And the first-order differences (delta features).
     # mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
 
-    # Review NUM_MFCC = 13.
-    # Review if (mfcc + mfcc_delta) are better features than pure mfcc.
-
     sample = mfcc.astype(np.float32)
-
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
+
     return sample, sample_len
 
 
 def _read_file_list(path, label_manager=LabelManager()):
-    """Generate two synchronous lists of all image samples and their respective labels
-    within the provided path.
-    review Documentation
-    review: Labels are converted from characters to integers. See: `s_utils.Labels`.
+    """Generate synchronous lists of all samples with their respective lengths and labels.
+    Labels are converted from characters to integers. See: `s_utils.LabelManager`.
 
     Args:
-        path (str): Path to the training or testing folder of the TS data set.
+        path (str):
+            Path to the training or testing .TXT files, e.g. `/some/path/timit/train.txt`
         label_manager (s_utils.LabelManager):
+            Character to integer mapping.
 
     Returns:
-        file_names ([str]): A list of file name strings.
-        labels ([[int]]): A list of labels as integer.
-
-    .. _StackOverflow:
-       https://stackoverflow.com/questions/34340489/tensorflow-read-images-with-labels
+        [str]: List of absolute paths to .WAV files.
+        [[int]]: List of labels filtered and converted to integer lists.
     """
     with open(path) as f:
         lines = f.readlines()
@@ -172,7 +169,7 @@ def _read_file_list(path, label_manager=LabelManager()):
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
 
-        return sample_paths, labels, label_lens
+        return sample_paths, labels
 
 
 def _generate_batch(sequences, seq_len, label, batch_size, capacity):
@@ -201,6 +198,8 @@ def _generate_batch(sequences, seq_len, label, batch_size, capacity):
     """
     num_pre_process_threads = 12
 
+    # TODO: Pre bucket shapes.
+
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
@@ -209,9 +208,11 @@ def _generate_batch(sequences, seq_len, label, batch_size, capacity):
         bucket_boundaries=[180, 200, 220, 240],  # review Find good bucket sizes.
         num_threads=num_pre_process_threads,
         capacity=capacity,
-        dynamic_pad=True,                   # review What's being padded? seq, label, or both?
-        allow_smaller_final_batch=False     # review Test if it works?
+        dynamic_pad=True,                       # review What's being padded? seq, label, or both?
+        allow_smaller_final_batch=False         # review Test if it works?
     )
+
+    # TODO: Post bucket shapes.
 
     # Display the training images in the visualizer.
     batch_size_t = tf.shape(sequences)[0]
