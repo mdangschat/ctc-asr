@@ -16,7 +16,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_integer('max_steps', 3,
+tf.app.flags.DEFINE_integer('max_steps', 10001,
                             """Number of batches to run.""")
 tf.app.flags.DEFINE_integer('log_frequency', 1,
                             """How often (every x steps) to log results to the console.""")
@@ -28,14 +28,13 @@ tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
 
 def train():
     """Train the network for a number of steps."""
-
     with tf.Graph().as_default():
         global_step = tf.train.get_or_create_global_step()
 
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sequences, seq_length, labels = s_model.inputs_train()
+            sequences, seq_length, labels, originals = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
         logits = s_model.inference(sequences, seq_length)
@@ -47,7 +46,7 @@ def train():
         train_op = s_model.train(loss_op, global_step)
 
         # TODO: Decode
-        ler = s_model.decoding(logits, seq_length, labels)
+        ler = s_model.decoding(logits, seq_length, labels, originals)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):
