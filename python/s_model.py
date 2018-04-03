@@ -1,9 +1,10 @@
 """Contains the TS model definition."""
 
+import numpy as np
 import tensorflow as tf
-import tensorflow.contrib as tfc
 
 import s_input
+import s_labels
 
 
 FLAGS = tf.app.flags.FLAGS
@@ -17,7 +18,7 @@ NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 # Constants describing the training process.
 NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.66   # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
+INITIAL_LEARNING_RATE = 0.0001       # Initial learning rate.
 
 
 def inference(sequences, seq_length):
@@ -32,11 +33,9 @@ def inference(sequences, seq_length):
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
     """
     # LSTM cells
-    num_hidden = 64
+    num_hidden = 128
     num_layers = 2
 
-    # with tf.variable_scope('rnn'):
-    # Create RNN cell.
     def create_cell(num_units, keep_prob=1.0):
         """Create a RNN cell with added dropout wrapper.
 
@@ -51,18 +50,23 @@ def inference(sequences, seq_length):
         """
         # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
         cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units,
-                                       use_peepholes=False,
+                                       use_peepholes=True,
                                        state_is_tuple=True)
         drop = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
         return drop
 
     with tf.variable_scope('rnn'):
-        # Stack RNN cells.
+        # Create a stack of RNN cells.
         stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)],
                                             state_is_tuple=True)
 
-        # The second output is the last hidden state, it's not required anymore.
-        cell_out, _ = tf.nn.dynamic_rnn(stack, sequences, sequence_length=seq_length,
+        batch_size = tf.shape(seq_length)[0]
+        initial_state = stack.zero_state(batch_size, dtype=tf.float32)
+        # The second output is the final hidden state, it's not required anymore.
+        cell_out, _ = tf.nn.dynamic_rnn(cell=stack,
+                                        inputs=sequences,
+                                        sequence_length=seq_length,
+                                        initial_state=initial_state,
                                         dtype=tf.float32)
 
         # Reshape for dense layer.
@@ -85,7 +89,7 @@ def inference(sequences, seq_length):
     return logits
 
 
-def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
+def loss(logits, labels, seq_length):
     """Calculate the networks loss.
 
     Args:
@@ -109,11 +113,6 @@ def loss(logits, labels, seq_length, batch_size=FLAGS.batch_size):
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
     """
-    # Reshape logits for CTC loss.
-    logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
-    # Logits time major.
-    logits = tf.transpose(logits, [1, 0, 2])
-
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
     losses = tf.nn.ctc_loss(labels=labels,
                             inputs=logits,
@@ -156,8 +155,8 @@ def train(_loss, global_step):
     tf.summary.scalar('learning_rate', lr)
 
     # Compute gradients. review Optimizers
-    optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
-    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
+    # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
+    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
     # optimizer = tf.train.AdamOptimizer(learning_rate=lr)
     return optimizer.minimize(_loss, global_step=global_step)
@@ -177,9 +176,12 @@ def inputs_train():
             2D Tensor with labels batch of shape [batch_size, max_label_len],
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
+        tf.Tensor:
+            2D Tensor with the original strings.
     """
-    sample_batch, label_batch, length_batch = s_input.inputs_train(FLAGS.batch_size)
-    return sample_batch, label_batch, length_batch
+    sample_batch, label_batch, length_batch, originals_batch = s_input.inputs_train(
+        FLAGS.batch_size)
+    return sample_batch, label_batch, length_batch, originals_batch
 
 
 def inputs():
@@ -201,31 +203,45 @@ def inputs():
     return sample_batch, label_batch, length_batch
 
 
-def decoding(logits, seq_len, labels):
+def decoding(logits, seq_len, labels, originals):
     # TODO: Implement & Document
     # Review label_len needed, instead of seq_len?
 
-    # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
+    def dense_to_text(_decoded, _original):
+        result = []
+        _original = str(_original[0], 'utf-8')
+        for i in _decoded[0]:
+            result.append(s_labels.itoc(int(i)))
+
+        print('d: "{}"\no: "{}"'.format(''.join(result), _original))
+        result = np.array(''.join(result), dtype=np.object)
+        _original = np.array(_original, dtype=np.object)
+        result = np.vstack([result, _original])
+        return result
+
     print('decoding:', logits, ', ', seq_len, ', ', labels)
-    decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
+    decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
     decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
     print('ctc_greedy_decoder:', decoded, log_prob)
-    seq_len = tf.Print(seq_len, [seq_len, decoded.dense_shape, log_prob],
-                       message='ctc_greedy_decoder: ')
-    tf.summary.histogram('delete me', seq_len)
+    # seq_len = tf.Print(seq_len, [seq_len, decoded.dense_shape, log_prob], message='ctc_greedy_decoder: ')
+    tf.summary.histogram('delete_me', seq_len)
 
     # Edit distance and label error rate (LER).
     edit_distance = tf.edit_distance(tf.cast(decoded, tf.int32), labels)
     tf.summary.histogram('edit_distance', edit_distance)
     label_error_rate = tf.reduce_mean(edit_distance)
-    label_error_rate = tf.Print(label_error_rate, [label_error_rate, edit_distance],
-                                message='ler & ed: ')
+    # label_error_rate = tf.Print(label_error_rate, [label_error_rate, edit_distance], message='ler & ed: ')
     tf.summary.scalar('label_error_rate', label_error_rate)
 
     # review: Experimental decoding
     dense = tf.sparse_tensor_to_dense(decoded)
-    dense = tf.Print(dense, [dense, tf.shape(dense)], message='dense: ')
-    tf.summary.tensor_summary('dense', dense)
+    # dense = tf.Print(dense, [dense, tf.shape(dense)], message='dense: ', summarize=100)
+    text = tf.py_func(dense_to_text, [dense, originals], tf.string)
+    text = tf.cast(text, dtype=tf.string)
+    # dense = tf.Print(dense, [text, tf.shape(text)], message='text: ', summarize=100)
+
+    tf.summary.text('decoded_text', text)
 
     return label_error_rate
 

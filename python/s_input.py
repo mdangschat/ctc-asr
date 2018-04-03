@@ -11,14 +11,14 @@ import librosa
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-from s_utils import LabelManager
+import s_labels
 
 
 _NUM_MFCC = 13
-INPUT_LENGTH = _NUM_MFCC + _NUM_MFCC
+INPUT_LENGTH = _NUM_MFCC
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
-NUM_CLASSES = LabelManager().num_classes()
+NUM_CLASSES = s_labels.num_classes()
 DATA_PATH = '/home/marc/workspace/speech/data'
 
 FLAGS = tf.app.flags.FLAGS
@@ -45,15 +45,18 @@ def inputs_train(batch_size):
             2D Tensor with labels batch of shape [batch_size, max_label_len],
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
+        tf.Tensor:
+            2D Tensor with the original strings.
     """
     # Info: Longest label list in TIMIT train/test is 79 characters long.
     train_txt_path = os.path.join(DATA_PATH, 'train.txt')
-    sample_list, label_list = _read_file_list(train_txt_path)
+    sample_list, label_list, original_list = _read_file_list(train_txt_path)
 
     with tf.name_scope('train_input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
+        originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
         min_fraction_of_examples_in_queue = 0.2
@@ -62,8 +65,8 @@ def inputs_train(batch_size):
 
         # Create an input queue that produces the file names to read.
         # review: Enable shuffle.
-        sample_queue, label_queue = tf.train.slice_input_producer(
-            [file_names, labels], capacity=capacity, num_epochs=None, shuffle=False)
+        sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
+            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=False)
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
@@ -79,14 +82,14 @@ def inputs_train(batch_size):
         print('Generating training batches of size {}. Queue capacity is {}. '
               .format(batch_size, capacity))
 
-        sequences, seq_length, labels = _generate_batch(sample, sample_len, label_queue,
-                                                        batch_size, capacity)
+        sequences, seq_length, labels, originals = _generate_batch(
+            sample, sample_len, label_queue, originals_queue, batch_size, capacity)
 
         # Reshape labels for CTC loss.
         # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
         labels = tfc.layers.dense_to_sparse(labels)
 
-        return sequences, seq_length, labels
+        return sequences, seq_length, labels, originals
 
 
 def inputs(batch_size):
@@ -143,10 +146,11 @@ def _load_sample(file_path):
     mfcc = librosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
 
     # And the first-order differences (delta features).
-    mfcc_delta = librosa.feature.delta(mfcc, width=5, order=1)
+    # mfcc_delta = librosa.feature.delta(mfcc, width=5, order=1)    TODO
 
     # Combine MFCC with MFCC_delta
-    sample = np.concatenate([mfcc, mfcc_delta], axis=0)
+    # sample = np.concatenate([mfcc, mfcc_delta], axis=0)   # TODO
+    sample = mfcc       # TODO remove
 
     sample = sample.astype(np.float32)
     sample = np.swapaxes(sample, 0, 1)
@@ -155,38 +159,38 @@ def _load_sample(file_path):
     return sample, sample_len
 
 
-def _read_file_list(path, label_manager=LabelManager()):
+def _read_file_list(path):
     """Generate synchronous lists of all samples with their respective lengths and labels.
     Labels are converted from characters to integers. See: `s_utils.LabelManager`.
 
     Args:
         path (str):
             Path to the training or testing .TXT files, e.g. `/some/path/timit/train.txt`
-        label_manager (s_utils.LabelManager):
-            Character to integer mapping.
 
     Returns:
         [str]: List of absolute paths to .WAV files.
         [[int]]: List of labels filtered and converted to integer lists.
+        [str]: List of original strings.
     """
     with open(path) as f:
         lines = f.readlines()
 
         sample_paths = []
         labels = []
-        label_lens = []
+        originals = []
         for line in lines:
             sample_path, label = line.split(' ', 1)
             sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
-            label = [label_manager.ctoi(c) for c in label.strip()]
-            label_lens.append(len(label))
+            label = label.strip()
+            originals.append(label)
+            label = [s_labels.ctoi(c) for c in label]
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
 
-        return sample_paths, labels
+        return sample_paths, labels, originals
 
 
-def _generate_batch(sequence, seq_len, label, batch_size, capacity):
+def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
     """Construct a queued batch of sample sequences and labels.
 
     Args:
@@ -196,6 +200,9 @@ def _generate_batch(sequence, seq_len, label, batch_size, capacity):
             1D tensor of shape [1] with type int32.
         label (tf.Tensor):
             1D tensor of shape [<length label>] with type int32.
+        original (tf.Tensor):
+            1D tensor of shape [<length original text>] with type tf.string.
+            The original text.
         batch_size (int):
             (Maximum) number of samples per batch.
         capacity (int):
@@ -213,13 +220,15 @@ def _generate_batch(sequence, seq_len, label, batch_size, capacity):
             2D Tensor with labels batch of shape [batch_size, max_label_len],
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
+        tf.Tensor:
+            2D Tensor with the original strings.
     """
     num_pre_process_threads = 12
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
-    seq_length, (sequences, labels) = tfc.training.bucket_by_sequence_length(
+    seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
-        tensors=[sequence, label],
+        tensors=[sequence, label, original],
         batch_size=batch_size,
         bucket_boundaries=[160, 200, 220, 240, 300],  # L8ER Find good bucket sizes.
         num_threads=num_pre_process_threads,
@@ -235,4 +244,4 @@ def _generate_batch(sequence, seq_len, label, batch_size, capacity):
     tf.summary.image('sample', summary_batch, max_outputs=batch_size)
     tf.summary.histogram('labels_hist', labels)
 
-    return sequences, seq_length, labels
+    return sequences, seq_length, labels, originals
