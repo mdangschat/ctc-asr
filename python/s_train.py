@@ -16,9 +16,9 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(1)
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_integer('max_steps', 10001,
+tf.app.flags.DEFINE_integer('max_steps', 50000,
                             """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 1,
+tf.app.flags.DEFINE_integer('log_frequency', 50,
                             """How often (every x steps) to log results to the console.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
@@ -40,10 +40,10 @@ def train():
         logits = s_model.inference(sequences, seq_length)
 
         # Calculate loss/cost.
-        loss_op = s_model.loss(logits, labels, seq_length)
+        loss = s_model.loss(logits, labels, seq_length)
 
         # Build the training graph, that updates the model parameters after each batch.
-        train_op = s_model.train(loss_op, global_step)
+        train_op = s_model.train(loss, global_step)
 
         # TODO: Decode
         ler = s_model.decoding(logits, seq_length, labels, originals)
@@ -62,7 +62,7 @@ def train():
 
             def before_run(self, run_context):
                 self._step += 1
-                return tf.train.SessionRunArgs(loss_op)    # Asks for loss value.
+                return tf.train.SessionRunArgs(loss)    # Asks for loss value.
 
             def after_run(self, run_context, run_values):
                 if self._step % FLAGS.log_frequency == 0:
@@ -89,12 +89,12 @@ def train():
                 # Requests stop at a specified step.
                 tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                 # Monitors the loss tensor and stops training if loss is NaN.
-                tf.train.NanTensorHook(loss_op),
+                tf.train.NanTensorHook(loss),
                 _LoggerHook()
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
-                gpu_options=tf.GPUOptions(allow_growth=False)
+                gpu_options=tf.GPUOptions(allow_growth=True)    # review: Set False for deployment.
             )
         )
 

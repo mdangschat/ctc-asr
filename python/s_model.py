@@ -8,7 +8,7 @@ import s_labels
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 1,
+tf.app.flags.DEFINE_integer('batch_size', 32,
                             """(Maximum) Number of samples within a batch.""")
 
 # Global constants describing the data set.
@@ -18,7 +18,7 @@ NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 # Constants describing the training process.
 NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.66   # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.0001       # Initial learning rate.
+INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
 
 
 def inference(sequences, seq_length):
@@ -49,25 +49,27 @@ def inference(sequences, seq_length):
                 RNN cell with dropout wrapper.
         """
         # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
-        cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units,
-                                       use_peepholes=True,
-                                       state_is_tuple=True)
+        cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
         drop = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
         return drop
 
     with tf.variable_scope('rnn'):
         # Create a stack of RNN cells.
-        stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)],
-                                            state_is_tuple=True)
+        stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
 
         batch_size = tf.shape(seq_length)[0]
+        # sequences = tf.Print(sequences, [tf.shape(sequences)], message='sequences: ')
         initial_state = stack.zero_state(batch_size, dtype=tf.float32)
+        # `sequences` [batch_size, time, data]
         # The second output is the final hidden state, it's not required anymore.
         cell_out, _ = tf.nn.dynamic_rnn(cell=stack,
                                         inputs=sequences,
                                         sequence_length=seq_length,
                                         initial_state=initial_state,
                                         dtype=tf.float32)
+        # `cell_out` [batch_size, time, num_hidden]
+
+        # cell_out = tf.Print(cell_out, [tf.shape(cell_out), tf.shape(_)], message='cell_out: ')
 
         # Reshape for dense layer.
         cell_out = tf.reshape(cell_out, [-1, num_hidden])
@@ -84,8 +86,10 @@ def inference(sequences, seq_length):
         batch_size = tf.shape(sequences)[0]
         logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
         logits = tf.transpose(logits, [1, 0, 2])
+        # `logits` [time, batch_size, NUM_CLASSES]
         # _activation_summary(logits)
 
+    # logits = tf.Print(logits, [tf.shape(logits)], message='logits: ')
     return logits
 
 
@@ -105,10 +109,6 @@ def loss(logits, labels, seq_length):
         seq_length (tf.Tensor):
             1D int32 vector, size [batch_size]. The sequence lengths.
 
-        batch_size (int): Batch size.
-            Note that the default `FLAGS.batch_size` could be wrong,
-            if we allow for smaller final batches.
-
     Returns:
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
@@ -121,7 +121,6 @@ def loss(logits, labels, seq_length):
                             ctc_merge_repeated=True,
                             time_major=True)
 
-    tf.summary.histogram('losses', losses)
     mean_loss = tf.reduce_mean(losses)
     tf.summary.scalar('mean_loss', mean_loss)
     return mean_loss
@@ -207,21 +206,34 @@ def decoding(logits, seq_len, labels, originals):
     # TODO: Implement & Document
     # Review label_len needed, instead of seq_len?
 
-    def dense_to_text(_decoded, _original):
-        result = []
-        _original = str(_original[0], 'utf-8')
-        for i in _decoded[0]:
-            result.append(s_labels.itoc(int(i)))
+    def dense_to_text(decoded_batch, original_batch):
+        # L8ER Documentation
+        # L8ER Move somewhere else?
+        decoded_result = ['"']
+        original_result = ['"']
 
-        print('d: "{}"\no: "{}"'.format(''.join(result), _original))
-        result = np.array(''.join(result), dtype=np.object)
-        _original = np.array(_original, dtype=np.object)
-        result = np.vstack([result, _original])
-        return result
+        for _decoded in decoded_batch:
+            for i in _decoded:
+                decoded_result.append(s_labels.itoc(i))
+            decoded_result.append('", "')
+
+        for _original in original_batch:
+            _original = str(_original, 'utf-8')
+            for c in _original:
+                original_result.append(c)
+            original_result.append('", "')
+
+        decoded_result = ''.join(decoded_result)[: -3]
+        original_result = ''.join(original_result)[: -3]
+        print('d: {}\no: {}'.format(decoded_result, original_result))
+
+        decoded_result = np.array(decoded_result, dtype=np.object)
+        original_result = np.array(original_result, dtype=np.object)
+        return np.vstack([decoded_result, original_result])
 
     print('decoding:', logits, ', ', seq_len, ', ', labels)
     # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
-    decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
+    decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
     decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
     print('ctc_greedy_decoder:', decoded, log_prob)
     # seq_len = tf.Print(seq_len, [seq_len, decoded.dense_shape, log_prob], message='ctc_greedy_decoder: ')

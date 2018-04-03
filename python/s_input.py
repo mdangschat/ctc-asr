@@ -15,7 +15,7 @@ import s_labels
 
 
 _NUM_MFCC = 13
-INPUT_LENGTH = _NUM_MFCC
+INPUT_LENGTH = _NUM_MFCC + _NUM_MFCC
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
 NUM_CLASSES = s_labels.num_classes()
@@ -121,15 +121,14 @@ def _load_sample(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
     # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
-    # y, sr = rosa.load(file_path, sr=None, mono=True)
     y, sr = librosa.load(file_path, sr=None, mono=True)
 
     if not sr == FLAGS.sampling_rate:
         raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
     # Set generally used variables.
-    # At 22050 Hz, 512 samples ~= 23ms. At 16000 Hz, 512 samples = 32ms.
-    hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
+    # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
+    hop_length = 256    # Number of samples between successive frames e.g. columns if a spectrogram.
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
     f_min = 64.         # Minimum frequency.
     n_fft = 1024        # Number of samples in a frame.
@@ -146,11 +145,10 @@ def _load_sample(file_path):
     mfcc = librosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
 
     # And the first-order differences (delta features).
-    # mfcc_delta = librosa.feature.delta(mfcc, width=5, order=1)    TODO
+    mfcc_delta = librosa.feature.delta(mfcc, width=5, order=1)
 
     # Combine MFCC with MFCC_delta
-    # sample = np.concatenate([mfcc, mfcc_delta], axis=0)   # TODO
-    sample = mfcc       # TODO remove
+    sample = np.concatenate([mfcc, mfcc_delta], axis=0)
 
     sample = sample.astype(np.float32)
     sample = np.swapaxes(sample, 0, 1)
@@ -223,14 +221,14 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 12
+    num_pre_process_threads = 1     # review 12
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
         tensors=[sequence, label, original],
         batch_size=batch_size,
-        bucket_boundaries=[160, 200, 220, 240, 300],  # L8ER Find good bucket sizes.
+        bucket_boundaries=[130, 170, 200, 230, 270, 330, 400],  # L8ER Find good bucket sizes.
         num_threads=num_pre_process_threads,
         capacity=capacity,
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
