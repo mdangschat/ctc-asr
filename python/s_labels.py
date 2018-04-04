@@ -6,14 +6,14 @@ See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 """
 
 
-__map = r'% abcdefghijklmnopqrstuvwxyz'      # 27 characters including <space>.
+__map = r' abcdefghijklmnopqrstuvwxyz'      # 27 characters including <space>.
 __ctoi = dict()
-__itoc = dict()
+__itoc = dict([(0, '@')])   # This is in case the net decodes a 0 on step 0.
 
 if len(__ctoi) == 0 or len(__itoc) == 0:
     for i, c in enumerate(__map):
-        __ctoi.update({c: i})
-        __itoc.update({i: c})
+        __ctoi.update({c: i + 1})
+        __itoc.update({i + 1: c})
 
 
 def ctoi(char):
@@ -49,9 +49,9 @@ def itoc(integer):
 
 
 def num_classes():
-    """Return number of different classes.
+    """Return number of different classes +1 for the <blank> label.
 
     Returns:
-        int: Number of classes.
+        int: Number of labels +1.
     """
     return len(__map) + 1
