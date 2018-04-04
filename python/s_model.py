@@ -16,7 +16,7 @@ NUM_CLASSES = s_input.NUM_CLASSES
 NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 0.2          # Number of epochs after which learning rate decays.
+NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.50   # Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
 
@@ -55,39 +55,49 @@ def inference(sequences, seq_length):
 
     with tf.variable_scope('rnn'):
         # Create a stack of RNN cells.
-        stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
+        # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
+        fw1, bw1 = create_cell(num_hidden), create_cell(num_hidden)
 
-        batch_size = tf.shape(seq_length)[0]
+        # batch_size = tf.shape(seq_length)[0]
         # sequences = tf.Print(sequences, [tf.shape(sequences)], message='sequences: ')
-        initial_state = stack.zero_state(batch_size, dtype=tf.float32)
+        # initial_state = stack.zero_state(batch_size, dtype=tf.float32)
         # `sequences` [batch_size, time, data]
         # The second output is the final hidden state, it's not required anymore.
-        cell_out, _ = tf.nn.dynamic_rnn(cell=stack,
-                                        inputs=sequences,
-                                        sequence_length=seq_length,
-                                        initial_state=initial_state,
-                                        dtype=tf.float32)
+        # cell_out, _ = tf.nn.dynamic_rnn(cell=stack,
+        #                                 inputs=sequences,
+        #                                 sequence_length=seq_length,
+        #                                 initial_state=initial_state,
+        #                                 dtype=tf.float32)
+
         # `cell_out` [batch_size, time, num_hidden]
+        cell_out, _ = tf.nn.bidirectional_dynamic_rnn(cell_fw=fw1, cell_bw=bw1,
+                                                      inputs=sequences,
+                                                      sequence_length=seq_length,
+                                                      dtype=tf.float32)
+        cell_out = tf.concat(cell_out, -1)
 
         # cell_out = tf.Print(cell_out, [tf.shape(cell_out), tf.shape(_)], message='cell_out: ')
 
         # Reshape for dense layer.
-        cell_out = tf.reshape(cell_out, [-1, num_hidden])
+        # cell_out = tf.reshape(cell_out, [-1, num_hidden * 2])
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
     with tf.variable_scope('logits') as scope:
-        weights = _variable_with_weight_decay('weights', [num_hidden, NUM_CLASSES], 0.1, 0.004)
-        biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
-        logits = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
-
-        batch_size = tf.shape(sequences)[0]
-        logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
-        logits = tf.transpose(logits, [1, 0, 2])
+        # weights = _variable_with_weight_decay('weights', [num_hidden * 2, NUM_CLASSES], 0.04, 0.004)
+        # biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
+        # logits = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
+        #
+        # batch_size = tf.shape(sequences)[0]
+        # logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
+        # logits = tf.transpose(logits, [1, 0, 2])
         # `logits` [time, batch_size, NUM_CLASSES]
         # _activation_summary(logits)
+        logits = tf.layers.dense(cell_out, NUM_CLASSES,
+                                 kernel_initializer=tf.glorot_normal_initializer())
+        logits = tf.transpose(logits, [1, 0, 2])
 
     # logits = tf.Print(logits, [tf.shape(logits)], message='logits: ')
     return logits

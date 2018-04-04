@@ -14,8 +14,8 @@ import tensorflow.contrib as tfc
 import s_labels
 
 
-_NUM_MFCC = 13
-INPUT_LENGTH = _NUM_MFCC + _NUM_MFCC
+NUM_MFCC = 13
+INPUT_LENGTH = NUM_MFCC * 2
 NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
 NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
 NUM_CLASSES = s_labels.num_classes()
@@ -128,16 +128,19 @@ def _load_sample(file_path):
 
     # Set generally used variables.
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    hop_length = 256    # Number of samples between successive frames e.g. columns if a spectrogram.
+    hop_length = 100    # Number of samples between successive frames e.g. columns if a spectrogram.
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
     f_min = 64.         # Minimum frequency.
     n_fft = 1024        # Number of samples in a frame.
-    n_mfcc = _NUM_MFCC  # Number of Mel cepstral coefficients to extract.
+    n_mfcc = NUM_MFCC  # Number of Mel cepstral coefficients to extract.
+    n_mels = 80        # Number of Mel bins to generate
+    win_length = 400   # Window length
 
-    db_pow = np.abs(librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=400)) ** 2
+    db_pow = np.abs(librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length,
+                                 win_length=win_length)) ** 2
 
     s_mel = librosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
-                                           fmax=f_max, fmin=f_min, n_mels=80)
+                                           fmax=f_max, fmin=f_min, n_mels=n_mels)
 
     s_mel = librosa.power_to_db(s_mel, ref=np.max)
 
@@ -242,6 +245,6 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
     batch_size_t = tf.shape(sequences)[0]
     summary_batch = tf.reshape(sequences, [batch_size_t, -1, INPUT_LENGTH, 1])
     tf.summary.image('sample', summary_batch, max_outputs=batch_size)
-    tf.summary.histogram('labels_hist', labels)
+    tf.summary.histogram('labels', labels)
 
     return sequences, seq_length, labels, originals

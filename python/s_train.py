@@ -13,7 +13,7 @@ import s_model
 
 # General TensorFlow settings and setup.
 tf.logging.set_verbosity(tf.logging.INFO)
-tf.set_random_seed(1)
+tf.set_random_seed(4711)
 FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_integer('max_steps', 5000,
