@@ -8,7 +8,7 @@ import s_labels
 
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 32,
+tf.app.flags.DEFINE_integer('batch_size', 1,
                             """(Maximum) Number of samples within a batch.""")
 
 # Global constants describing the data set.
@@ -16,8 +16,8 @@ NUM_CLASSES = s_input.NUM_CLASSES
 NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.66   # Learning rate decay factor.
+NUM_EPOCHS_PER_DECAY = 0.2          # Number of epochs after which learning rate decays.
+LEARNING_RATE_DECAY_FACTOR = 0.50   # Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
 
 
@@ -79,7 +79,7 @@ def inference(sequences, seq_length):
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
     with tf.variable_scope('logits') as scope:
-        weights = _variable_with_weight_decay('weights', [num_hidden, NUM_CLASSES], 0.04, 0.004)
+        weights = _variable_with_weight_decay('weights', [num_hidden, NUM_CLASSES], 0.1, 0.004)
         biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
         logits = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
 

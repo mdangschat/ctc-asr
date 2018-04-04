@@ -132,7 +132,7 @@ def _load_sample(file_path):
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
     f_min = 64.         # Minimum frequency.
     n_fft = 1024        # Number of samples in a frame.
-    n_mfcc = _NUM_MFCC   # Number of Mel cepstral coefficients to extract.
+    n_mfcc = _NUM_MFCC  # Number of Mel cepstral coefficients to extract.
 
     db_pow = np.abs(librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=400)) ** 2
 
@@ -184,6 +184,8 @@ def _read_file_list(path):
             label = [s_labels.ctoi(c) for c in label]
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
+
+            break   # TODO remove
 
         return sample_paths, labels, originals
 

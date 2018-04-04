@@ -6,7 +6,7 @@ See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 """
 
 
-__map = r' abcdefghijklmnopqrstuvwxyz'      # 27 characters including <space>.
+__map = r'%abcdefghijklmnopqrstuvwxyz '      # 27 characters including <space>.
 __ctoi = dict()
 __itoc = dict()
 
