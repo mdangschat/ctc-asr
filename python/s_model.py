@@ -16,9 +16,9 @@ NUM_CLASSES = s_input.NUM_CLASSES
 NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
 
 # Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
+NUM_EPOCHS_PER_DECAY = 0.4          # Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.50   # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
+INITIAL_LEARNING_RATE = 0.0001       # Initial learning rate.
 
 
 def inference(sequences, seq_length):
@@ -74,7 +74,7 @@ def inference(sequences, seq_length):
                                                       inputs=sequences,
                                                       sequence_length=seq_length,
                                                       dtype=tf.float32)
-        cell_out = tf.concat(cell_out, -1)
+        cell_out = tf.concat([cell_out[0], cell_out[1]], 2)
 
         # cell_out = tf.Print(cell_out, [tf.shape(cell_out), tf.shape(_)], message='cell_out: ')
 
@@ -243,7 +243,8 @@ def decoding(logits, seq_len, labels, originals):
 
     print('decoding:', logits, ', ', seq_len, ', ', labels)
     # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
-    decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    # decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
     decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
     print('ctc_greedy_decoder:', decoded, log_prob)
     # seq_len = tf.Print(seq_len, [seq_len, decoded.dense_shape, log_prob], message='ctc_greedy_decoder: ')

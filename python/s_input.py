@@ -107,13 +107,13 @@ def _load_sample(file_path):
 
     Returns:
         np.ndarray:
-            2D array with [time, INPUT_LENGTH] shape, containing float32.
+            2D array with [time, num_features] shape, containing float32.
         np.ndarray:
-            1D array, containing int32.
+            1 element array, containing a single int32.
 
     Review:
-        * Review NUM_MFCC = 13.
-        * Review if (mfcc + mfcc_delta) are better features than pure mfcc.
+        * Review if (mfcc + mfcc_delta) are better features than pure mfcc?
+        * Normalize mfcc_delta.
     """
     file_path = str(file_path, 'utf-8')
 
@@ -128,13 +128,13 @@ def _load_sample(file_path):
 
     # Set generally used variables.
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    hop_length = 100    # Number of samples between successive frames e.g. columns if a spectrogram.
+    hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
     f_min = 64.         # Minimum frequency.
     n_fft = 1024        # Number of samples in a frame.
-    n_mfcc = NUM_MFCC  # Number of Mel cepstral coefficients to extract.
-    n_mels = 80        # Number of Mel bins to generate
-    win_length = 400   # Window length
+    n_mfcc = NUM_MFCC   # Number of Mel cepstral coefficients to extract.
+    n_mels = 80         # Number of Mel bins to generate
+    win_length = 333    # Window length
 
     db_pow = np.abs(librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length,
                                  win_length=win_length)) ** 2
@@ -156,7 +156,9 @@ def _load_sample(file_path):
     sample = sample.astype(np.float32)
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
+    sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? also try norm.
 
+    # `sample`: [time, num_features], `sample_len`: scalar
     return sample, sample_len
 
 
@@ -179,6 +181,7 @@ def _read_file_list(path):
         sample_paths = []
         labels = []
         originals = []
+        tmp = 0     # TODO remove
         for line in lines:
             sample_path, label = line.split(' ', 1)
             sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
@@ -188,7 +191,10 @@ def _read_file_list(path):
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
 
-            break   # TODO remove
+            # TODO remove
+            tmp += 1
+            if tmp >= 1:
+                break
 
         return sample_paths, labels, originals
 
@@ -227,15 +233,16 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
             2D Tensor with the original strings.
     """
     num_pre_process_threads = 1     # review 12
+    bucket_boundaries = [130, 170, 200, 230, 270, 330]   # L8ER Find good bucket sizes.
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
         tensors=[sequence, label, original],
         batch_size=batch_size,
-        bucket_boundaries=[130, 170, 200, 230, 270, 330, 400],  # L8ER Find good bucket sizes.
+        bucket_boundaries=bucket_boundaries,
         num_threads=num_pre_process_threads,
-        capacity=capacity,
+        capacity=capacity // (len(bucket_boundaries) + 2),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
         allow_smaller_final_batch=False             # review Test if it works? Return batch_size
