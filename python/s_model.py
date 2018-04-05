@@ -14,8 +14,8 @@ def inference(sequences, seq_length):
     """Build the speech model.
 
     Args:
-        sequences (tf.Tensor): 3D Tensor with input sequences.
-        seq_length (tf.Tensor): 2D Tensor with sequence length.
+        sequences (tf.Tensor): 3D float Tensor with input sequences. [batch_size, time, NUM_INPUTS]
+        seq_length (tf.Tensor): 1D int Tensor with sequence length. [batch_size]
 
     Returns:
         tf.Tensor:
@@ -30,26 +30,37 @@ def inference(sequences, seq_length):
                 no outputs will be dropped.
 
         Returns:
-            tf.LayerRNNCell:
-                RNN cell with dropout wrapper.
+            tf.nn.rnn_cell.LSTMCell: RNN cell with dropout wrapper.
         """
         # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
         cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
         return tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
 
     def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
-        # L8ER Document
+        """Create two lists of forward and backward cells that can be used to build
+        a BDLSTM stack.
+
+        Args:
+            num_units (int): Number of units within the RNN cell.
+            _num_layers (int): Amount of cells to create for each list.
+            keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
+                no outputs will be dropped.
+
+        Returns:
+            [tf.nn.rnn_cell.LSTMCell]: List of forward cells.
+            [tf.nn.rnn_cell.LSTMCell]: List of backward cells.
+        """
         _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
         _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
         return _fw_cells, _bw_cells
 
-    # BDLSTM cells.
-    with tf.variable_scope('rnn'):
+    # BDLSTM cell stack.
+    with tf.variable_scope('bdlstm'):
         # Create a stack of RNN cells.
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
         fw_cells, bw_cells = create_bidirectional_cells(NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM)
 
-        # `output` [batch_size, time, num_hidden*2]
+        # `output` = [batch_size, time, num_hidden*2]
         # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
         output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
                                                                inputs=sequences,
@@ -69,14 +80,14 @@ def inference(sequences, seq_length):
         #
         # batch_size = tf.shape(sequences)[0]
         # logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
-        # logits = tf.transpose(logits, [1, 0, 2])
-        # `logits` [time, batch_size, NUM_CLASSES]
+        # logits = tfc.rnn.transpose_batch_time(logits)
         # _activation_summary(logits)
         logits = tf.layers.dense(output, NUM_CLASSES,
                                  kernel_initializer=tf.glorot_normal_initializer())
-        logits = tf.transpose(logits, [1, 0, 2])
+        logits = tfc.rnn.transpose_batch_time(logits)
 
     # logits = tf.Print(logits, [tf.shape(logits)], message='logits: ')
+    # `logits` = [time, batch_size, NUM_CLASSES]
     return logits
 
 
@@ -145,6 +156,7 @@ def train(_loss, global_step):
     optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
     # optimizer = tf.train.AdamOptimizer(learning_rate=lr)
+
     return optimizer.minimize(_loss, global_step=global_step)
 
 
@@ -272,8 +284,8 @@ def _variable_on_cpu(name, shape, initializer):
     Returns:
         Variable tensor.
     """
-    with tf.device('/cpu:0'):
-        return tf.get_variable(name, shape, initializer=initializer, dtype=tf.float32)
+    # with tf.device('/cpu:0'):
+    return tf.get_variable(name, shape, initializer=initializer, dtype=TF_FLOAT)
 
 
 def _variable_with_weight_decay(name, shape, stddev, weight_decay):
@@ -293,7 +305,7 @@ def _variable_with_weight_decay(name, shape, stddev, weight_decay):
         Variable tensor.
     """
     var = _variable_on_cpu(name, shape,
-                           tf.truncated_normal_initializer(stddev=stddev, dtype=tf.float32))
+                           tf.truncated_normal_initializer(stddev=stddev, dtype=TF_FLOAT))
     if weight_decay is not None:
         wd = tf.multiply(tf.nn.l2_loss(var), weight_decay, name='weight_loss')
         tf.add_to_collection('losses', wd)

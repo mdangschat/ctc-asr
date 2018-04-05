@@ -16,7 +16,7 @@ import s_labels
 
 
 NUM_MFCC = 13
-INPUT_LENGTH = NUM_MFCC * 2
+NUM_INPUTS = NUM_MFCC * 2
 DATA_PATH = '/home/marc/workspace/speech/data'
 
 
@@ -69,7 +69,7 @@ def inputs_train(batch_size):
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([None, INPUT_LENGTH])
+        sample.set_shape([None, NUM_INPUTS])
         sample_len.set_shape([])    # Shape for scalar is [].
 
         print('Generating training batches of size {}. Queue capacity is {}. '
@@ -86,8 +86,8 @@ def inputs_train(batch_size):
 
 
 def inputs(batch_size):
-    # TODO: Rewrite this function to match inputs_train().
-    raise NotImplementedError
+    # Review: This method should always return unaltered data.
+    return inputs_train(batch_size)
 
 
 def _load_sample(file_path):
@@ -149,9 +149,9 @@ def _load_sample(file_path):
     sample = sample.astype(NP_FLOAT)
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
-    sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? also try norm.
+    sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? Also try normalize.
 
-    # `sample`: [time, num_features], `sample_len`: scalar
+    # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
 
 
@@ -175,7 +175,6 @@ def _read_file_list(path):
         sample_paths = []
         labels = []
         originals = []
-        tmp = 0     # TODO remove
         for line in lines:
             sample_path, label = line.split(' ', 1)
             sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
@@ -185,11 +184,6 @@ def _read_file_list(path):
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
 
-            # TODO remove
-            # tmp += 1
-            # if tmp >= 8:
-            #     break
-
         return sample_paths, labels, originals
 
 
@@ -198,7 +192,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
 
     Args:
         sequence (tf.Tensor):
-            2D tensor of shape [time, INPUT_LENGTH] with type float.
+            2D tensor of shape [time, NUM_INPUTS] with type float.
         seq_len (tf.Tensor):
             1D tensor of shape [1] with type int32.
         label (tf.Tensor):
@@ -227,7 +221,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
             2D Tensor with the original strings.
     """
     num_pre_process_threads = 6
-    bucket_boundaries = [130, 170, 200, 230, 270, 330]   # L8ER Find good bucket sizes.
+    bucket_boundaries = [130, 170, 200, 230, 270, 300, 330]   # review Find good bucket sizes.
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
@@ -244,8 +238,9 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
 
     # Display the training images in the visualizer.
     batch_size_t = tf.shape(sequences)[0]
-    summary_batch = tf.reshape(sequences, [batch_size_t, -1, INPUT_LENGTH, 1])
+    summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
     tf.summary.image('sample', summary_batch, max_outputs=batch_size)
+    tf.summary.scalar('seq_length', seq_length[0])
     tf.summary.histogram('labels', labels)
 
     return sequences, seq_length, labels, originals

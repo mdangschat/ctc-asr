@@ -24,8 +24,8 @@ def train():
 
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
-        with tf.device('/cpu:0'):
-            sequences, seq_length, labels, originals = s_model.inputs_train()
+        # with tf.device('/cpu:0'):
+        sequences, seq_length, labels, originals = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
         logits = s_model.inference(sequences, seq_length)
@@ -36,7 +36,7 @@ def train():
         # Build the training graph, that updates the model parameters after each batch.
         train_op = s_model.train(loss, global_step)
 
-        # Decodeing.
+        # Decode.
         s_model.decoding(logits, seq_length, labels, originals)
 
         # Logging hook
@@ -85,7 +85,7 @@ def train():
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
-                gpu_options=tf.GPUOptions(allow_growth=False)
+                gpu_options=tf.GPUOptions(allow_growth=True)
             )
         )
 
