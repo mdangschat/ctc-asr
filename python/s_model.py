@@ -74,16 +74,17 @@ def inference(sequences, seq_length):
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
     with tf.variable_scope('logits') as scope:
-        # weights = _variable_with_weight_decay('weights', [num_hidden * 2, NUM_CLASSES], 0.04, 0.004)
+        # weights = _variable_with_weight_decay('weights', [NUM_HIDDEN_LSTM * 2, NUM_CLASSES],
+        #                                       0.04, 0.004)
         # biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
         # logits = tf.add(tf.matmul(output, weights), biases, name=scope.name)
         #
         # batch_size = tf.shape(sequences)[0]
         # logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
         # logits = tfc.rnn.transpose_batch_time(logits)
-        # _activation_summary(logits)
-        logits = tf.layers.dense(output, NUM_CLASSES,
-                                 kernel_initializer=tf.glorot_normal_initializer())
+
+        initializer = tf.truncated_normal_initializer(stddev=0.1, dtype=TF_FLOAT)
+        logits = tf.layers.dense(output, NUM_CLASSES, kernel_initializer=initializer)
         logits = tfc.rnn.transpose_batch_time(logits)
 
     # logits = tf.Print(logits, [tf.shape(logits)], message='logits: ')
@@ -231,46 +232,23 @@ def decoding(logits, seq_len, labels, originals):
         return np.vstack([decoded_result, original_result])
 
     # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
-    # decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
-    decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
+    decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    # decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
     decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
-    # seq_len = tf.Print(seq_len, [seq_len, decoded.dense_shape, log_prob], message='ctc_greedy_decoder: ')
-    tf.summary.histogram('delete_me', seq_len)
 
     # Edit distance and label error rate (LER).
     edit_distance = tf.edit_distance(tf.cast(decoded, tf.int32), labels)
     tf.summary.histogram('edit_distance', edit_distance)
     label_error_rate = tf.reduce_mean(edit_distance)
-    # label_error_rate = tf.Print(label_error_rate, [label_error_rate, edit_distance], message='ler & ed: ')
     tf.summary.scalar('label_error_rate', label_error_rate)
 
-    # review: Experimental decoding
+    # Translate decoded integer data back to character strings.
     dense = tf.sparse_tensor_to_dense(decoded)
-    # dense = tf.Print(dense, [dense, tf.shape(dense)], message='dense: ', summarize=100)
     text = tf.py_func(dense_to_text, [dense, originals], tf.string)
     text = tf.cast(text, dtype=tf.string)
-    # dense = tf.Print(dense, [text, tf.shape(text)], message='text: ', summarize=100)
-
     tf.summary.text('decoded_text', text)
 
     return label_error_rate
-
-
-def _activation_summary(x):
-    """Helper to create summaries for activations.
-
-    Creates a summary that provides a histogram of activations.
-    Creates a summary that measures the sparsity of activations.
-
-    Args:
-        x: Tensor
-
-    Returns:
-        nothing
-    """
-    tensor_name = x.op.name
-    tf.summary.histogram(tensor_name + '/activations', x)
-    tf.summary.scalar(tensor_name + '/sparsity', tf.nn.zero_fraction(x))
 
 
 def _variable_on_cpu(name, shape, initializer):
@@ -284,8 +262,8 @@ def _variable_on_cpu(name, shape, initializer):
     Returns:
         Variable tensor.
     """
-    # with tf.device('/cpu:0'):
-    return tf.get_variable(name, shape, initializer=initializer, dtype=TF_FLOAT)
+    with tf.device('/cpu:0'):
+        return tf.get_variable(name, shape, initializer=initializer, dtype=TF_FLOAT)
 
 
 def _variable_with_weight_decay(name, shape, stddev, weight_decay):

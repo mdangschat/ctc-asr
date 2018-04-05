@@ -220,7 +220,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 6
+    num_pre_process_threads = 12
     bucket_boundaries = [130, 170, 200, 230, 270, 300, 330]   # review Find good bucket sizes.
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length

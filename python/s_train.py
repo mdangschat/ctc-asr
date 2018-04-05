@@ -24,8 +24,8 @@ def train():
 
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
-        # with tf.device('/cpu:0'):
-        sequences, seq_length, labels, originals = s_model.inputs_train()
+        with tf.device('/cpu:0'):
+            sequences, seq_length, labels, originals = s_model.inputs_train()
 
         # Build the logits (prediction) graph.
         logits = s_model.inference(sequences, seq_length)

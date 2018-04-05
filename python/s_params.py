@@ -8,7 +8,7 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 4,
+tf.flags.DEFINE_integer('batch_size', 2,
                         """(Maximum) Number of samples within a batch.""")
 
 NUM_EPOCHS_PER_DECAY = 2.0          # Number of epochs after which learning rate decays.
@@ -27,7 +27,7 @@ tf.flags.DEFINE_integer('log_frequency', 47,
 # Miscellaneous & Data set
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_boolean('log_device_placement', False,
+tf.flags.DEFINE_boolean('log_device_placement', True,
                         """Whether to log device placement.""")
 tf.flags.DEFINE_string('train_dir', '/tmp/s_train',
                        """Directory where to write event logs and checkpoints.""")
