@@ -11,7 +11,7 @@ import librosa
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-from s_params import FLAGS, NUM_EXAMPLES_PER_EPOCH_TRAIN
+from s_params import FLAGS, NP_DTYPE, TF_DTYPE
 import s_labels
 
 
@@ -54,7 +54,7 @@ def inputs_train(batch_size):
 
         # Ensure that the random shuffling has good mixing properties.
         min_fraction_of_examples_in_queue = 0.2
-        min_queue_examples = int(NUM_EXAMPLES_PER_EPOCH_TRAIN * min_fraction_of_examples_in_queue)
+        min_queue_examples = int(FLAGS.num_examples_train * min_fraction_of_examples_in_queue)
         capacity = min_queue_examples + 3 * batch_size
 
         # Create an input queue that produces the file names to read.
@@ -66,7 +66,7 @@ def inputs_train(batch_size):
         label_queue = tf.decode_raw(label_queue, tf.int32)
 
         # Read the sample from disk and extract it's features.
-        sample, sample_len = tf.py_func(_load_sample, [sample_queue], [tf.float32, tf.int32])
+        sample, sample_len = tf.py_func(_load_sample, [sample_queue], [TF_DTYPE, tf.int32])
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
@@ -101,7 +101,7 @@ def _load_sample(file_path):
 
     Returns:
         np.ndarray:
-            2D array with [time, num_features] shape, containing float32.
+            2D array with [time, num_features] shape, containing float.
         np.ndarray:
             1 element array, containing a single int32.
 
@@ -147,7 +147,7 @@ def _load_sample(file_path):
     # Combine MFCC with MFCC_delta
     sample = np.concatenate([mfcc, mfcc_delta], axis=0)
 
-    sample = sample.astype(np.float32)
+    sample = sample.astype(NP_DTYPE)
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
     sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? also try norm.
@@ -158,7 +158,8 @@ def _load_sample(file_path):
 
 def _read_file_list(path):
     """Generate synchronous lists of all samples with their respective lengths and labels.
-    Labels are converted from characters to integers. See: `s_utils.LabelManager`.
+    Labels are converted from characters to integers.
+    See: `s_labels`.
 
     Args:
         path (str):
@@ -198,7 +199,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
 
     Args:
         sequence (tf.Tensor):
-            2D tensor of shape [time, INPUT_LENGTH] with type float32.
+            2D tensor of shape [time, INPUT_LENGTH] with type float.
         seq_len (tf.Tensor):
             1D tensor of shape [1] with type int32.
         label (tf.Tensor):
@@ -226,8 +227,9 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 1     # review 12
+    num_pre_process_threads = 1     # L8ER 12
     bucket_boundaries = [130, 170, 200, 230, 270, 330]   # L8ER Find good bucket sizes.
+    bucket_boundaries = [20]   # L8ER remove
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(

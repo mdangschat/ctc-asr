@@ -2,9 +2,10 @@
 
 import numpy as np
 import tensorflow as tf
+import tensorflow.contrib as tfc
 
 from s_params import FLAGS, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR, INITIAL_LEARNING_RATE
-from s_params import NUM_CLASSES, NUM_EXAMPLES_PER_EPOCH_TRAIN
+from s_params import NUM_CLASSES, TF_DTYPE
 import s_input
 import s_labels
 
@@ -41,33 +42,27 @@ def inference(sequences, seq_length):
         drop = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
         return drop
 
+    def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
+        # L8ER Document
+        _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
+        _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
+        return _fw_cells, _bw_cells
+
     with tf.variable_scope('rnn'):
         # Create a stack of RNN cells.
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
-        fw1, bw1 = create_cell(num_hidden), create_cell(num_hidden)
-
-        # batch_size = tf.shape(seq_length)[0]
-        # sequences = tf.Print(sequences, [tf.shape(sequences)], message='sequences: ')
-        # initial_state = stack.zero_state(batch_size, dtype=tf.float32)
-        # `sequences` [batch_size, time, data]
-        # The second output is the final hidden state, it's not required anymore.
-        # cell_out, _ = tf.nn.dynamic_rnn(cell=stack,
-        #                                 inputs=sequences,
-        #                                 sequence_length=seq_length,
-        #                                 initial_state=initial_state,
-        #                                 dtype=tf.float32)
+        fw_cells, bw_cells = create_bidirectional_cells(num_hidden, num_layers)
 
         # `cell_out` [batch_size, time, num_hidden]
-        cell_out, _ = tf.nn.bidirectional_dynamic_rnn(cell_fw=fw1, cell_bw=bw1,
-                                                      inputs=sequences,
-                                                      sequence_length=seq_length,
-                                                      dtype=tf.float32)
-        cell_out = tf.concat([cell_out[0], cell_out[1]], 2)
+        output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells,
+                                                               bw_cells, sequences,
+                                                               dtype=TF_DTYPE,
+                                                               sequence_length=seq_length)
 
-        # cell_out = tf.Print(cell_out, [tf.shape(cell_out), tf.shape(_)], message='cell_out: ')
+        # output = tf.Print(output, [tf.shape(output)], message='output: ')
 
         # Reshape for dense layer.
-        # cell_out = tf.reshape(cell_out, [-1, num_hidden * 2])
+        # output = tf.reshape(output, [-1, num_hidden * 2])
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because
@@ -76,14 +71,14 @@ def inference(sequences, seq_length):
     with tf.variable_scope('logits') as scope:
         # weights = _variable_with_weight_decay('weights', [num_hidden * 2, NUM_CLASSES], 0.04, 0.004)
         # biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
-        # logits = tf.add(tf.matmul(cell_out, weights), biases, name=scope.name)
+        # logits = tf.add(tf.matmul(output, weights), biases, name=scope.name)
         #
         # batch_size = tf.shape(sequences)[0]
         # logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
         # logits = tf.transpose(logits, [1, 0, 2])
         # `logits` [time, batch_size, NUM_CLASSES]
         # _activation_summary(logits)
-        logits = tf.layers.dense(cell_out, NUM_CLASSES,
+        logits = tf.layers.dense(output, NUM_CLASSES,
                                  kernel_initializer=tf.glorot_normal_initializer())
         logits = tf.transpose(logits, [1, 0, 2])
 
@@ -111,6 +106,9 @@ def loss(logits, labels, seq_length):
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
     """
+    # Cast possible float64 down to float32, because ctc_loss can't handle float64.
+    logits = tf.cast(logits, tf.float32)    # Remove this is it get"s fixed in TF.
+
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
     losses = tf.nn.ctc_loss(labels=labels,
                             inputs=logits,
@@ -140,7 +138,7 @@ def train(_loss, global_step):
             Optimizer operator for training.
     """
     # Variables that affect learning rate.
-    num_batches_per_epoch = NUM_EXAMPLES_PER_EPOCH_TRAIN / FLAGS.batch_size
+    num_batches_per_epoch = FLAGS.num_examples_train / FLAGS.batch_size
     decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)
 
     # Decay the learning rate exponentially based on the number of steps.
@@ -230,6 +228,9 @@ def decoding(logits, seq_len, labels, originals):
         return np.vstack([decoded_result, original_result])
 
     print('decoding:', logits, ', ', seq_len, ', ', labels)
+    # Cast possible float64 down to float32, because ctc_loss can't handle float64.
+    logits = tf.cast(logits, tf.float32)  # Remove this is it get"s fixed in TF.
+
     # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
     # decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
     decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)

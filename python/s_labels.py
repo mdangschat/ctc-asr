@@ -8,7 +8,7 @@ See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 
 __map = r' abcdefghijklmnopqrstuvwxyz'      # 27 characters including <space>.
 __ctoi = dict()
-__itoc = dict([(0, '@')])   # This is in case the net decodes a 0 on step 0.
+__itoc = dict([(0, '')])   # This is in case the net decodes a 0 on step 0.
 
 if len(__ctoi) == 0 or len(__itoc) == 0:
     for i, c in enumerate(__map):
