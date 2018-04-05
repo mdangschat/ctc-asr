@@ -54,4 +54,4 @@ def num_classes():
     Returns:
         int: Number of labels +1.
     """
-    return len(__map) + 1
+    return len(__map) + 2
