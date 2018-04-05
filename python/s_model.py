@@ -3,22 +3,10 @@
 import numpy as np
 import tensorflow as tf
 
+from s_params import FLAGS, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR, INITIAL_LEARNING_RATE
+from s_params import NUM_CLASSES, NUM_EXAMPLES_PER_EPOCH_TRAIN
 import s_input
 import s_labels
-
-
-FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('batch_size', 1,
-                            """(Maximum) Number of samples within a batch.""")
-
-# Global constants describing the data set.
-NUM_CLASSES = s_input.NUM_CLASSES
-NUM_EXAMPLES_PER_EPOCH_TRAIN = s_input.NUM_EXAMPLES_PER_EPOCH_TRAIN
-
-# Constants describing the training process.
-NUM_EPOCHS_PER_DECAY = 0.4          # Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.50   # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.0001       # Initial learning rate.
 
 
 def inference(sequences, seq_length):

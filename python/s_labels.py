@@ -1,6 +1,6 @@
 """Convert characters (chr) to integer (int) labels and vice versa.
 
-`ctc_loss`_ maps labels from 0=<space>, 1=a, ..., 26=z, 27=<blank>
+`ctc_loss`_ maps labels from 0=<space>, 1=a, ..., 26=z, 27=<blank>      review: index 0 bug
 
 See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 """

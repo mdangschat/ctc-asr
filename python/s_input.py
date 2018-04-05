@@ -11,19 +11,13 @@ import librosa
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
+from s_params import FLAGS, NUM_EXAMPLES_PER_EPOCH_TRAIN
 import s_labels
 
 
 NUM_MFCC = 13
 INPUT_LENGTH = NUM_MFCC * 2
-NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
-NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
-NUM_CLASSES = s_labels.num_classes()
 DATA_PATH = '/home/marc/workspace/speech/data'
-
-FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('sampling_rate', 16000,
-                            """The sampling rate of the audio files (2 * 8kHz).""")
 
 
 def inputs_train(batch_size):
@@ -193,7 +187,7 @@ def _read_file_list(path):
 
             # TODO remove
             tmp += 1
-            if tmp >= 1:
+            if tmp >= 8:
                 break
 
         return sample_paths, labels, originals
