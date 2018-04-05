@@ -60,6 +60,7 @@ def _gen_list(target):
             txt = txt[0].split(' ', 2)[2]
 
             txt = re.sub(pattern, '', txt).strip()
+            txt = txt.replace('  ', ' ')
             txt = txt.lower()
             longest = len(txt) if len(txt) > longest else longest
             shortest = len(txt) if len(txt) < shortest else shortest
