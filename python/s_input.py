@@ -11,7 +11,7 @@ import librosa
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-from s_params import FLAGS, NP_DTYPE, TF_DTYPE
+from s_params import FLAGS, NP_FLOAT, TF_FLOAT
 import s_labels
 
 
@@ -65,7 +65,7 @@ def inputs_train(batch_size):
         label_queue = tf.decode_raw(label_queue, tf.int32)
 
         # Read the sample from disk and extract it's features.
-        sample, sample_len = tf.py_func(_load_sample, [sample_queue], [TF_DTYPE, tf.int32])
+        sample, sample_len = tf.py_func(_load_sample, [sample_queue], [TF_FLOAT, tf.int32])
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
@@ -146,7 +146,7 @@ def _load_sample(file_path):
     # Combine MFCC with MFCC_delta
     sample = np.concatenate([mfcc, mfcc_delta], axis=0)
 
-    sample = sample.astype(NP_DTYPE)
+    sample = sample.astype(NP_FLOAT)
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
     sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? also try norm.

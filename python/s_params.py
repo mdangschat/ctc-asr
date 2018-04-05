@@ -8,7 +8,7 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 1,
+tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
 
 NUM_EPOCHS_PER_DECAY = 2.0          # Number of epochs after which learning rate decays.
@@ -36,8 +36,8 @@ tf.flags.DEFINE_integer('num_examples_train', 4620,
 tf.flags.DEFINE_integer('num_examples_test', 1680,
                         """Number of examples in the testing/evaluation set.""")
 NUM_CLASSES = num_classes()
-TF_DTYPE = tf.float32
-NP_DTYPE = np.float32
+TF_FLOAT = tf.float32   # ctc_xxxx functions don't support float64. See #13
+NP_FLOAT = np.float32   # ctc_xxxx functions don't support float64. See #13
 
 
 # Export names.

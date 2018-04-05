@@ -5,7 +5,7 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 from s_params import FLAGS, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR, INITIAL_LEARNING_RATE
-from s_params import NUM_CLASSES, TF_DTYPE, NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM
+from s_params import NUM_CLASSES, TF_FLOAT, NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM
 import s_input
 import s_labels
 
@@ -53,7 +53,7 @@ def inference(sequences, seq_length):
         # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
         output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
                                                                inputs=sequences,
-                                                               dtype=TF_DTYPE,
+                                                               dtype=TF_FLOAT,
                                                                sequence_length=seq_length,
                                                                parallel_iterations=32,
                                                                time_major=False)
