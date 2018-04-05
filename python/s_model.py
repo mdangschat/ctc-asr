@@ -5,7 +5,7 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 from s_params import FLAGS, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR, INITIAL_LEARNING_RATE
-from s_params import NUM_CLASSES, TF_DTYPE
+from s_params import NUM_CLASSES, TF_DTYPE, NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM
 import s_input
 import s_labels
 
@@ -21,10 +21,6 @@ def inference(sequences, seq_length):
         tf.Tensor:
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
     """
-    # LSTM cells
-    num_hidden = 128
-    num_layers = 2
-
     def create_cell(num_units, keep_prob=1.0):
         """Create a RNN cell with added dropout wrapper.
 
@@ -39,8 +35,7 @@ def inference(sequences, seq_length):
         """
         # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
         cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
-        drop = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
-        return drop
+        return tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
 
     def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
         # L8ER Document
@@ -48,21 +43,20 @@ def inference(sequences, seq_length):
         _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
         return _fw_cells, _bw_cells
 
+    # BDLSTM cells.
     with tf.variable_scope('rnn'):
         # Create a stack of RNN cells.
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
-        fw_cells, bw_cells = create_bidirectional_cells(num_hidden, num_layers)
+        fw_cells, bw_cells = create_bidirectional_cells(NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM)
 
-        # `cell_out` [batch_size, time, num_hidden]
-        output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells,
-                                                               bw_cells, sequences,
+        # `output` [batch_size, time, num_hidden*2]
+        # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
+        output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
+                                                               inputs=sequences,
                                                                dtype=TF_DTYPE,
-                                                               sequence_length=seq_length)
-
-        # output = tf.Print(output, [tf.shape(output)], message='output: ')
-
-        # Reshape for dense layer.
-        # output = tf.reshape(output, [-1, num_hidden * 2])
+                                                               sequence_length=seq_length,
+                                                               parallel_iterations=32,
+                                                               time_major=False)
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because
@@ -106,9 +100,6 @@ def loss(logits, labels, seq_length):
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
     """
-    # Cast possible float64 down to float32, because ctc_loss can't handle float64.
-    logits = tf.cast(logits, tf.float32)    # Remove this is it get"s fixed in TF.
-
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
     losses = tf.nn.ctc_loss(labels=labels,
                             inputs=logits,
@@ -146,7 +137,7 @@ def train(_loss, global_step):
                                     global_step,
                                     decay_steps,
                                     LEARNING_RATE_DECAY_FACTOR,
-                                    staircase=True)
+                                    staircase=False)
     tf.summary.scalar('learning_rate', lr)
 
     # Compute gradients. review Optimizers
@@ -227,15 +218,10 @@ def decoding(logits, seq_len, labels, originals):
         original_result = np.array(original_result, dtype=np.object)
         return np.vstack([decoded_result, original_result])
 
-    print('decoding:', logits, ', ', seq_len, ', ', labels)
-    # Cast possible float64 down to float32, because ctc_loss can't handle float64.
-    logits = tf.cast(logits, tf.float32)  # Remove this is it get"s fixed in TF.
-
     # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
     # decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
     decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
     decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
-    print('ctc_greedy_decoder:', decoded, log_prob)
     # seq_len = tf.Print(seq_len, [seq_len, decoded.dense_shape, log_prob], message='ctc_greedy_decoder: ')
     tf.summary.histogram('delete_me', seq_len)
 

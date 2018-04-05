@@ -8,16 +8,18 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 4,
+tf.flags.DEFINE_integer('batch_size', 1,
                         """(Maximum) Number of samples within a batch.""")
 
 NUM_EPOCHS_PER_DECAY = 2.0          # Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.50   # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.001      # Initial learning rate.
+INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
+NUM_HIDDEN_LSTM = 128               # Number of hidden units per LSTM cell.
+NUM_LAYERS_LSTM = 2                 # Number of BDLSTM layers.
 
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 100000,
+tf.flags.DEFINE_integer('max_steps', 10000,
                         """Number of batches to run.""")
 tf.flags.DEFINE_integer('log_frequency', 47,
                         """How often (every x steps) to log results to the console.""")
@@ -34,8 +36,8 @@ tf.flags.DEFINE_integer('num_examples_train', 4620,
 tf.flags.DEFINE_integer('num_examples_test', 1680,
                         """Number of examples in the testing/evaluation set.""")
 NUM_CLASSES = num_classes()
-TF_DTYPE = tf.float64
-NP_DTYPE = np.float64
+TF_DTYPE = tf.float32
+NP_DTYPE = np.float32
 
 
 # Export names.

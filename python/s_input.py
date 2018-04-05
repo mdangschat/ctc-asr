@@ -58,9 +58,8 @@ def inputs_train(batch_size):
         capacity = min_queue_examples + 3 * batch_size
 
         # Create an input queue that produces the file names to read.
-        # review: Enable shuffle.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
-            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=False)
+            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=True)
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
@@ -106,7 +105,7 @@ def _load_sample(file_path):
             1 element array, containing a single int32.
 
     Review:
-        * Review if (mfcc + mfcc_delta) are better features than pure mfcc?
+        * (mfcc + mfcc_delta) better features than pure mfcc?
         * Normalize mfcc_delta.
     """
     file_path = str(file_path, 'utf-8')
@@ -187,9 +186,9 @@ def _read_file_list(path):
             labels.append(label)
 
             # TODO remove
-            tmp += 1
-            if tmp >= 8:
-                break
+            # tmp += 1
+            # if tmp >= 8:
+            #     break
 
         return sample_paths, labels, originals
 
@@ -227,9 +226,8 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 1     # L8ER 12
+    num_pre_process_threads = 6
     bucket_boundaries = [130, 170, 200, 230, 270, 330]   # L8ER Find good bucket sizes.
-    bucket_boundaries = [20]   # L8ER remove
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(

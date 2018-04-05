@@ -36,8 +36,8 @@ def train():
         # Build the training graph, that updates the model parameters after each batch.
         train_op = s_model.train(loss, global_step)
 
-        # TODO: Decode
-        ler = s_model.decoding(logits, seq_length, labels, originals)
+        # Decodeing.
+        s_model.decoding(logits, seq_length, labels, originals)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):
@@ -85,7 +85,7 @@ def train():
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
-                gpu_options=tf.GPUOptions(allow_growth=False)    # review: Set False for deployment.
+                gpu_options=tf.GPUOptions(allow_growth=False)
             )
         )
 
