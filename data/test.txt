@@ -40,7 +40,7 @@ TEST/DR1/FJEM0/SX4.WAV jane may earn more money by working hard
 TEST/DR1/FJEM0/SX94.WAV youngsters love common candy as treats
 TEST/DR1/MDAB0/SA1.WAV she had your dark suit in greasy wash water all year
 TEST/DR1/MDAB0/SA2.WAV dont ask me to carry an oily rag like that
-TEST/DR1/MDAB0/SI1039.WAV he has never himself done anything for which to be hated  which of us has
+TEST/DR1/MDAB0/SI1039.WAV he has never himself done anything for which to be hated which of us has
 TEST/DR1/MDAB0/SI1669.WAV be excited and dont identify yourself
 TEST/DR1/MDAB0/SI2299.WAV sometimes he coincided with my fathers being at home
 TEST/DR1/MDAB0/SX139.WAV the bungalow was pleasantly situated near the shore
@@ -111,7 +111,7 @@ TEST/DR1/MWBT0/SX383.WAV the carpet cleaners shampooed our oriental rug
 TEST/DR2/FCMR0/SA1.WAV she had your dark suit in greasy wash water all year
 TEST/DR2/FCMR0/SA2.WAV dont ask me to carry an oily rag like that
 TEST/DR2/FCMR0/SI1105.WAV what obsessions had she picked up during these long nights of talk
-TEST/DR2/FCMR0/SI1735.WAV and possessed himself  how
+TEST/DR2/FCMR0/SI1735.WAV and possessed himself how
 TEST/DR2/FCMR0/SI475.WAV they will take a wedding trip later
 TEST/DR2/FCMR0/SX115.WAV the emblem depicts the acropolis all aglow
 TEST/DR2/FCMR0/SX205.WAV military personnel are expected to obey government orders
@@ -151,7 +151,7 @@ TEST/DR2/FJRE0/SX396.WAV the fish began to leap frantically on the surface of th
 TEST/DR2/FJWB0/SA1.WAV she had your dark suit in greasy wash water all year
 TEST/DR2/FJWB0/SA2.WAV dont ask me to carry an oily rag like that
 TEST/DR2/FJWB0/SI1265.WAV ballets were used in opera from its beginning
-TEST/DR2/FJWB0/SI635.WAV he is a man of major talent  but a man of solitary uncertain impulses
+TEST/DR2/FJWB0/SI635.WAV he is a man of major talent but a man of solitary uncertain impulses
 TEST/DR2/FJWB0/SI992.WAV they were a vagabond lot and considered to be shady and undesirable characters
 TEST/DR2/FJWB0/SX185.WAV did you buy any corduroy overalls
 TEST/DR2/FJWB0/SX275.WAV steve wore a bright red cashmere sweater
@@ -240,7 +240,7 @@ TEST/DR2/MDBB0/SX295.WAV if carol comes tomorrow have her arrange for a meeting 
 TEST/DR2/MDBB0/SX385.WAV his shoulder felt as if it were broken
 TEST/DR2/MDLD0/SA1.WAV she had your dark suit in greasy wash water all year
 TEST/DR2/MDLD0/SA2.WAV dont ask me to carry an oily rag like that
-TEST/DR2/MDLD0/SI1543.WAV then he  then what
+TEST/DR2/MDLD0/SI1543.WAV then he then what
 TEST/DR2/MDLD0/SI2173.WAV he wadded his sweat shirt into a ball and stripped down to his swimming trunks
 TEST/DR2/MDLD0/SI913.WAV do you love to run up a hem sew on buttons make neat buttonholes
 TEST/DR2/MDLD0/SX103.WAV call an ambulance for medical assistance
@@ -881,7 +881,7 @@ TEST/DR4/MLLL0/SX373.WAV a boring novel is a superb sleeping pill
 TEST/DR4/MPCS0/SA1.WAV she had your dark suit in greasy wash water all year
 TEST/DR4/MPCS0/SA2.WAV dont ask me to carry an oily rag like that
 TEST/DR4/MPCS0/SI1359.WAV in short scientific sampling was introduced in place of subjective sampling
-TEST/DR4/MPCS0/SI1989.WAV accident murder suicide  take your pick
+TEST/DR4/MPCS0/SI1989.WAV accident murder suicide take your pick
 TEST/DR4/MPCS0/SI729.WAV best solution is to find an area that is predominantly sunlight or shade
 TEST/DR4/MPCS0/SX189.WAV destroy every file related to my audits
 TEST/DR4/MPCS0/SX279.WAV alices ability to work without supervision is noteworthy
@@ -982,7 +982,7 @@ TEST/DR5/FGMD0/SA1.WAV she had your dark suit in greasy wash water all year
 TEST/DR5/FGMD0/SA2.WAV dont ask me to carry an oily rag like that
 TEST/DR5/FGMD0/SI1943.WAV for the unseen ghostlike rifleman aimed a little higher the third time
 TEST/DR5/FGMD0/SI2107.WAV it sounded silly why go on
-TEST/DR5/FGMD0/SI683.WAV an octillion atoms  now let us see where this power comes from
+TEST/DR5/FGMD0/SI683.WAV an octillion atoms now let us see where this power comes from
 TEST/DR5/FGMD0/SX143.WAV the sound of jennifers bugle scared the antelope
 TEST/DR5/FGMD0/SX233.WAV highway and freeway mean the same thing
 TEST/DR5/FGMD0/SX323.WAV the fog prevented them from arriving on time
@@ -1671,7 +1671,7 @@ TEST/DR8/MRES0/SX47.WAV mom strongly dislikes appetizers
 TEST/DR8/MSLB0/SA1.WAV she had your dark suit in greasy wash water all year
 TEST/DR8/MSLB0/SA2.WAV dont ask me to carry an oily rag like that
 TEST/DR8/MSLB0/SI1193.WAV hed collared one of his generals in public
-TEST/DR8/MSLB0/SI1823.WAV sonic electronic galvanic  all blank
+TEST/DR8/MSLB0/SI1823.WAV sonic electronic galvanic all blank
 TEST/DR8/MSLB0/SI563.WAV heels place emphasis on the long legged silhouette
 TEST/DR8/MSLB0/SX113.WAV a muscular abdomen is good for your back
 TEST/DR8/MSLB0/SX203.WAV the causeway ended abruptly at the shore

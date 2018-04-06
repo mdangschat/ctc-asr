@@ -302,7 +302,7 @@ TRAIN/DR1/MRDD0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR1/MRDD0/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR1/MRDD0/SI1050.WAV both the conditions and the complicity are documented in considerable detail
 TRAIN/DR1/MRDD0/SI1680.WAV he checked into a motel and drove downtown
-TRAIN/DR1/MRDD0/SI2310.WAV and now nora  dont you encourage him
+TRAIN/DR1/MRDD0/SI2310.WAV and now nora dont you encourage him
 TRAIN/DR1/MRDD0/SX150.WAV vietnamese cuisine is exquisite
 TRAIN/DR1/MRDD0/SX240.WAV its not easy to create illuminating examples
 TRAIN/DR1/MRDD0/SX277.WAV the rose corsage smelled sweet
@@ -350,7 +350,7 @@ TRAIN/DR1/MTPF0/SX425.WAV movies never have enough villains
 TRAIN/DR1/MTPF0/SX65.WAV challenge each generals intelligence
 TRAIN/DR1/MTRR0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR1/MTRR0/SA2.WAV dont ask me to carry an oily rag like that
-TRAIN/DR1/MTRR0/SI1548.WAV yall wanna walk  walk he said
+TRAIN/DR1/MTRR0/SI1548.WAV yall wanna walk walk he said
 TRAIN/DR1/MTRR0/SI2178.WAV her cough sounded like cloth ripping
 TRAIN/DR1/MTRR0/SI918.WAV we know that actors can learn to portray a wide variety of character roles
 TRAIN/DR1/MTRR0/SX108.WAV his scalp was blistered from todays hot sun
@@ -460,7 +460,7 @@ TRAIN/DR2/FDXW0/SX431.WAV the fifth jar contains big juicy peaches
 TRAIN/DR2/FDXW0/SX71.WAV porcupines resemble sea urchins
 TRAIN/DR2/FEAC0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR2/FEAC0/SA2.WAV dont ask me to carry an oily rag like that
-TRAIN/DR2/FEAC0/SI1245.WAV object  a village crossroads
+TRAIN/DR2/FEAC0/SI1245.WAV object a village crossroads
 TRAIN/DR2/FEAC0/SI1875.WAV they were tethered army style on stable lines
 TRAIN/DR2/FEAC0/SI615.WAV her debut over perhaps the earlier scenes will emerge equally fine
 TRAIN/DR2/FEAC0/SX165.WAV the easygoing zoologist relaxed throughout the voyage
@@ -711,7 +711,7 @@ TRAIN/DR2/MDPS0/SX89.WAV its hard to tell an original from a forgery
 TRAIN/DR2/MDSS0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR2/MDSS0/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR2/MDSS0/SI1881.WAV powder flame gushed beneath the wagon
-TRAIN/DR2/MDSS0/SI2087.WAV why lacerate the  congregation
+TRAIN/DR2/MDSS0/SI2087.WAV why lacerate the congregation
 TRAIN/DR2/MDSS0/SI621.WAV not a corner has been visibly cut in this one
 TRAIN/DR2/MDSS0/SX171.WAV the diagnosis was discouraging however he was not overly worried
 TRAIN/DR2/MDSS0/SX261.WAV do you have the yellow ointment ready
@@ -731,7 +731,7 @@ TRAIN/DR2/MDWD0/SX90.WAV the thinker is a famous sculpture
 TRAIN/DR2/MEFG0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR2/MEFG0/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR2/MEFG0/SI465.WAV nobody really expects to evacuate
-TRAIN/DR2/MEFG0/SI491.WAV hiring the wife for ones company  may win her taxaided retirement income
+TRAIN/DR2/MEFG0/SI491.WAV hiring the wife for ones company may win her taxaided retirement income
 TRAIN/DR2/MEFG0/SI598.WAV new selfdeceiving rags are hurriedly tossed on the toonaked bones
 TRAIN/DR2/MEFG0/SX105.WAV you must explicitly delete files
 TRAIN/DR2/MEFG0/SX15.WAV the museum hires musicians every evening
@@ -951,7 +951,7 @@ TRAIN/DR2/MPRB0/SX395.WAV i took her word for it but is she really going with yo
 TRAIN/DR2/MRAB0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR2/MRAB0/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR2/MRAB0/SI1224.WAV this is nevertheless a minority view
-TRAIN/DR2/MRAB0/SI1854.WAV he remembered the last time he had eaten  actual eggs from an actual pan
+TRAIN/DR2/MRAB0/SI1854.WAV he remembered the last time he had eaten actual eggs from an actual pan
 TRAIN/DR2/MRAB0/SI594.WAV the trial balloons are afloat
 TRAIN/DR2/MRAB0/SX144.WAV the willowy woman wore a muskrat coat
 TRAIN/DR2/MRAB0/SX234.WAV the paper boy bought two apples and three ices
@@ -1711,7 +1711,7 @@ TRAIN/DR3/MMJB1/SX58.WAV we experience distress and frustration obtaining our de
 TRAIN/DR3/MMSM0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR3/MMSM0/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR3/MMSM0/SI1106.WAV everything in the final analysis reduced itself to sexual symbolism
-TRAIN/DR3/MMSM0/SI1736.WAV the poor unlucky  the telephone rang
+TRAIN/DR3/MMSM0/SI1736.WAV the poor unlucky the telephone rang
 TRAIN/DR3/MMSM0/SI476.WAV so if anybody solicits by phone make sure you mail the dough to the above
 TRAIN/DR3/MMSM0/SX116.WAV clasp the screw in your left hand
 TRAIN/DR3/MMSM0/SX206.WAV when peeling an orange it is hard not to spray juice
@@ -1790,7 +1790,7 @@ TRAIN/DR3/MRTC0/SX288.WAV brush fires are common in the dry underbrush of nevada
 TRAIN/DR3/MRTC0/SX378.WAV i just saw jim near the new archeological museum
 TRAIN/DR3/MRTJ0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR3/MRTJ0/SA2.WAV dont ask me to carry an oily rag like that
-TRAIN/DR3/MRTJ0/SI1551.WAV oh  we managed she said
+TRAIN/DR3/MRTJ0/SI1551.WAV oh we managed she said
 TRAIN/DR3/MRTJ0/SI2032.WAV he took a big swig of his drink
 TRAIN/DR3/MRTJ0/SI772.WAV a cardboard pattern cut to fit inside holder will help to prevent warping
 TRAIN/DR3/MRTJ0/SX142.WAV which long article was opaque and needed clarification
@@ -2610,7 +2610,7 @@ TRAIN/DR5/FCDR1/SX286.WAV in every major cloverleaf traffic sometimes gets backe
 TRAIN/DR5/FCDR1/SX376.WAV women may never become completely equal to men
 TRAIN/DR5/FDMY0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR5/FDMY0/SA2.WAV dont ask me to carry an oily rag like that
-TRAIN/DR5/FDMY0/SI1197.WAV transparent look waxy skin  could well be uremia
+TRAIN/DR5/FDMY0/SI1197.WAV transparent look waxy skin could well be uremia
 TRAIN/DR5/FDMY0/SI567.WAV at the left is a pair of dressy straw pumps in a light but crisp texture
 TRAIN/DR5/FDMY0/SI714.WAV other interpretations present the music as an essentially intimate creation
 TRAIN/DR5/FDMY0/SX117.WAV the mango and the papaya are in a bowl
@@ -2872,7 +2872,7 @@ TRAIN/DR5/MDHL0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR5/MDHL0/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR5/MDHL0/SI1439.WAV simple elongation has been treated in detail
 TRAIN/DR5/MDHL0/SI2069.WAV his head came up and he said it defiantly
-TRAIN/DR5/MDHL0/SI809.WAV topography  topography is very important
+TRAIN/DR5/MDHL0/SI809.WAV topography topography is very important
 TRAIN/DR5/MDHL0/SX179.WAV we could barely see the fjords through the snow flurries
 TRAIN/DR5/MDHL0/SX269.WAV do atypical farmers grow oats
 TRAIN/DR5/MDHL0/SX359.WAV the system may break down soon so save your files frequently
@@ -3312,7 +3312,7 @@ TRAIN/DR6/FJDM2/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR6/FJDM2/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR6/FJDM2/SI1582.WAV they werent as well paid as they should have been
 TRAIN/DR6/FJDM2/SI1964.WAV the pilots heads looked ridiculously small
-TRAIN/DR6/FJDM2/SI2212.WAV the rides were tame enough  mostly we talked
+TRAIN/DR6/FJDM2/SI2212.WAV the rides were tame enough mostly we talked
 TRAIN/DR6/FJDM2/SX142.WAV which long article was opaque and needed clarification
 TRAIN/DR6/FJDM2/SX232.WAV his failure to open the store by eight cost him his job
 TRAIN/DR6/FJDM2/SX322.WAV a leather handbag would be a suitable gift
@@ -4170,7 +4170,7 @@ TRAIN/DR7/MMDG0/SX430.WAV those who are not purists used canned vegetables when 
 TRAIN/DR7/MMDG0/SX70.WAV did you eat yet
 TRAIN/DR7/MMWS1/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR7/MMWS1/SA2.WAV dont ask me to carry an oily rag like that
-TRAIN/DR7/MMWS1/SI1071.WAV two miles northeast then five miles southwest  that sort of thing
+TRAIN/DR7/MMWS1/SI1071.WAV two miles northeast then five miles southwest that sort of thing
 TRAIN/DR7/MMWS1/SI1701.WAV emotionally they penetrated him not at all
 TRAIN/DR7/MMWS1/SI2331.WAV now if youll pardon me i wont keep him waiting
 TRAIN/DR7/MMWS1/SX261.WAV do you have the yellow ointment ready
@@ -4282,7 +4282,7 @@ TRAIN/DR7/MSES0/SA1.WAV she had your dark suit in greasy wash water all year
 TRAIN/DR7/MSES0/SA2.WAV dont ask me to carry an oily rag like that
 TRAIN/DR7/MSES0/SI1589.WAV no she would not pretend modesty but neither must she be crudely bold
 TRAIN/DR7/MSES0/SI2216.WAV its never wrong if love is real
-TRAIN/DR7/MSES0/SI2219.WAV share bath maybe  but share refrigerator
+TRAIN/DR7/MSES0/SI2219.WAV share bath maybe but share refrigerator
 TRAIN/DR7/MSES0/SX149.WAV while waiting for chipper she crisscrossed the square many times
 TRAIN/DR7/MSES0/SX239.WAV puree some fruit before preparing the skewers
 TRAIN/DR7/MSES0/SX329.WAV chip postponed alimony payments until the latest possible date

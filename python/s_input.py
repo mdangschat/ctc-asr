@@ -6,24 +6,18 @@ pre process the audio files and labels.
 """
 
 import os
-import numpy as np
+
 import librosa
+import numpy as np
 import tensorflow as tf
-import tensorflow.contrib as tfc
+from tensorflow import contrib as tfc
 
 import s_labels
-
+from s_params import FLAGS, NP_FLOAT, TF_FLOAT
 
 NUM_MFCC = 13
-INPUT_LENGTH = NUM_MFCC * 2
-NUM_EXAMPLES_PER_EPOCH_TRAIN = 4620
-NUM_EXAMPLES_PER_EPOCH_EVAL = 1680
-NUM_CLASSES = s_labels.num_classes()
+NUM_INPUTS = NUM_MFCC * 2
 DATA_PATH = '/home/marc/workspace/speech/data'
-
-FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_integer('sampling_rate', 16000,
-                            """The sampling rate of the audio files (2 * 8kHz).""")
 
 
 def inputs_train(batch_size):
@@ -59,24 +53,23 @@ def inputs_train(batch_size):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        min_fraction_of_examples_in_queue = 0.2
-        min_queue_examples = int(NUM_EXAMPLES_PER_EPOCH_TRAIN * min_fraction_of_examples_in_queue)
+        min_fraction_of_examples_in_queue = 0.33
+        min_queue_examples = int(FLAGS.num_examples_train * min_fraction_of_examples_in_queue)
         capacity = min_queue_examples + 3 * batch_size
 
         # Create an input queue that produces the file names to read.
-        # review: Enable shuffle.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
-            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=False)
+            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=True)
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
 
         # Read the sample from disk and extract it's features.
-        sample, sample_len = tf.py_func(_load_sample, [sample_queue], [tf.float32, tf.int32])
+        sample, sample_len = tf.py_func(_load_sample, [sample_queue], [TF_FLOAT, tf.int32])
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sample.set_shape([None, INPUT_LENGTH])
+        sample.set_shape([None, NUM_INPUTS])
         sample_len.set_shape([])    # Shape for scalar is [].
 
         print('Generating training batches of size {}. Queue capacity is {}. '
@@ -93,8 +86,8 @@ def inputs_train(batch_size):
 
 
 def inputs(batch_size):
-    # TODO: Rewrite this function to match inputs_train().
-    raise NotImplementedError
+    # Review: This method should always return unaltered data.
+    return inputs_train(batch_size)
 
 
 def _load_sample(file_path):
@@ -107,12 +100,12 @@ def _load_sample(file_path):
 
     Returns:
         np.ndarray:
-            2D array with [time, num_features] shape, containing float32.
+            2D array with [time, num_features] shape, containing float.
         np.ndarray:
             1 element array, containing a single int32.
 
     Review:
-        * Review if (mfcc + mfcc_delta) are better features than pure mfcc?
+        * (mfcc + mfcc_delta) better features than pure mfcc?
         * Normalize mfcc_delta.
     """
     file_path = str(file_path, 'utf-8')
@@ -126,7 +119,6 @@ def _load_sample(file_path):
     if not sr == FLAGS.sampling_rate:
         raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
-    # Set generally used variables.
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
     hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
@@ -153,18 +145,19 @@ def _load_sample(file_path):
     # Combine MFCC with MFCC_delta
     sample = np.concatenate([mfcc, mfcc_delta], axis=0)
 
-    sample = sample.astype(np.float32)
+    sample = sample.astype(NP_FLOAT)
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
-    sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? also try norm.
+    sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? Also try normalize.
 
-    # `sample`: [time, num_features], `sample_len`: scalar
+    # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
 
 
 def _read_file_list(path):
     """Generate synchronous lists of all samples with their respective lengths and labels.
-    Labels are converted from characters to integers. See: `s_utils.LabelManager`.
+    Labels are converted from characters to integers.
+    See: `s_labels`.
 
     Args:
         path (str):
@@ -181,7 +174,6 @@ def _read_file_list(path):
         sample_paths = []
         labels = []
         originals = []
-        tmp = 0     # TODO remove
         for line in lines:
             sample_path, label = line.split(' ', 1)
             sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
@@ -191,11 +183,6 @@ def _read_file_list(path):
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
 
-            # TODO remove
-            tmp += 1
-            if tmp >= 1:
-                break
-
         return sample_paths, labels, originals
 
 
@@ -204,7 +191,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
 
     Args:
         sequence (tf.Tensor):
-            2D tensor of shape [time, INPUT_LENGTH] with type float32.
+            2D tensor of shape [time, NUM_INPUTS] with type float.
         seq_len (tf.Tensor):
             1D tensor of shape [1] with type int32.
         label (tf.Tensor):
@@ -232,26 +219,27 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 1     # review 12
-    bucket_boundaries = [130, 170, 200, 230, 270, 330]   # L8ER Find good bucket sizes.
+    num_pre_process_threads = 12
+    boundaries = [155, 175, 188, 200, 209, 218, 227, 236, 247, 258, 270, 284, 302, 327, 366, 494]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
         tensors=[sequence, label, original],
         batch_size=batch_size,
-        bucket_boundaries=bucket_boundaries,
+        bucket_boundaries=boundaries,
         num_threads=num_pre_process_threads,
-        capacity=capacity // (len(bucket_boundaries) + 2),
+        capacity=capacity // len(boundaries),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
-        allow_smaller_final_batch=False             # review Test if it works? Return batch_size
+        allow_smaller_final_batch=False
     )
 
     # Display the training images in the visualizer.
     batch_size_t = tf.shape(sequences)[0]
-    summary_batch = tf.reshape(sequences, [batch_size_t, -1, INPUT_LENGTH, 1])
+    summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
     tf.summary.image('sample', summary_batch, max_outputs=batch_size)
+    tf.summary.scalar('seq_length', seq_length[0])
     tf.summary.histogram('labels', labels)
 
     return sequences, seq_length, labels, originals

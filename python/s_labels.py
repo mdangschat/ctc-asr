@@ -1,6 +1,6 @@
 """Convert characters (chr) to integer (int) labels and vice versa.
 
-`ctc_loss`_ maps labels from 0=<space>, 1=a, ..., 26=z, 27=<blank>
+`ctc_loss`_ maps labels from 0=<space>, 1=a, ..., 26=z, 27=<blank>      review: index 0 bug
 
 See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 """
@@ -8,7 +8,7 @@ See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 
 __map = r' abcdefghijklmnopqrstuvwxyz'      # 27 characters including <space>.
 __ctoi = dict()
-__itoc = dict([(0, '@')])   # This is in case the net decodes a 0 on step 0.
+__itoc = dict([(0, '')])   # This is in case the net decodes a 0 on step 0.
 
 if len(__ctoi) == 0 or len(__itoc) == 0:
     for i, c in enumerate(__map):
@@ -54,4 +54,4 @@ def num_classes():
     Returns:
         int: Number of labels +1.
     """
-    return len(__map) + 1
+    return len(__map) + 2

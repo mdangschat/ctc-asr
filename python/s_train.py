@@ -8,22 +8,13 @@ import time
 from datetime import datetime
 import tensorflow as tf
 
+from s_params import FLAGS
 import s_model
 
 
 # General TensorFlow settings and setup.
 tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(4711)
-FLAGS = tf.app.flags.FLAGS
-
-tf.app.flags.DEFINE_integer('max_steps', 10000,
-                            """Number of batches to run.""")
-tf.app.flags.DEFINE_integer('log_frequency', 47,
-                            """How often (every x steps) to log results to the console.""")
-tf.app.flags.DEFINE_boolean('log_device_placement', False,
-                            """Whether to log device placement.""")
-tf.app.flags.DEFINE_string('train_dir', '/tmp/s_train',
-                           """Directory where to write event logs and checkpoints.""")
 
 
 def train():
@@ -45,8 +36,8 @@ def train():
         # Build the training graph, that updates the model parameters after each batch.
         train_op = s_model.train(loss, global_step)
 
-        # TODO: Decode
-        ler = s_model.decoding(logits, seq_length, labels, originals)
+        # Decode.
+        s_model.decoding(logits, seq_length, labels, originals)
 
         # Logging hook
         class _LoggerHook(tf.train.SessionRunHook):
@@ -94,7 +85,7 @@ def train():
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
-                gpu_options=tf.GPUOptions(allow_growth=True)    # review: Set False for deployment.
+                gpu_options=tf.GPUOptions(allow_growth=True)
             )
         )
 

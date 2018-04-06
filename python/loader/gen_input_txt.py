@@ -13,18 +13,23 @@ Generated data format:
 
 import os
 import re
+import numpy as np
+import matplotlib.pyplot as plt
+
+from loader import audio_set_info
 
 
 DATA_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'     # Path to the TIMIT data set.
 TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to generate the .txt files.
 
 
-def _gen_list(target):
+def _gen_list(target, additional_output=False, dry_run=False):
     """Generate .txt files containing the audio path and the corresponding sentence.
     Return additional data set information, see below.
 
     Args:
         target (str): 'train' or 'test'
+        additional_output (bool): TODO Document & Implement
 
     Returns:
         char_set: Set containing each character within the data set.
@@ -50,7 +55,8 @@ def _gen_list(target):
     shortest = (2 ** 31) - 1
     pattern = re.compile(r'[^a-zA-Z ]+')
 
-    for line in master_data:
+    sample_len_list = []
+    for i, line in enumerate(master_data):
         wav_path, txt_path, _, _ = line.split(',')
         txt_path = os.path.join(DATA_PATH, txt_path)
 
@@ -60,11 +66,16 @@ def _gen_list(target):
             txt = txt[0].split(' ', 2)[2]
 
             txt = re.sub(pattern, '', txt).strip()
+            txt = txt.replace('  ', ' ')
             txt = txt.lower()
             longest = len(txt) if len(txt) > longest else longest
             shortest = len(txt) if len(txt) < shortest else shortest
             char_set.update(set(list(txt)))
             word_set.update(set(txt.split(' ')))
+
+        if additional_output:
+            sample_len, _, _ = audio_set_info.sample_info(os.path.join(DATA_PATH, wav_path))
+            sample_len_list.append(sample_len)
 
         output_line = '{} {}\n'.format(wav_path, txt)
         result.append(output_line)
@@ -75,9 +86,10 @@ def _gen_list(target):
     target_path = os.path.join(TARGET_PATH, '{}.txt'.format(target))
     _delete_file_if_exists(target_path)
 
-    with open(target_path, 'w') as f:
-        print('Writing {} lines of {} files to {}'.format(len(result), target, target_path))
-        f.writelines(result)
+    if not dry_run:
+        with open(target_path, 'w') as f:
+            print('Writing {} lines of {} files to {}'.format(len(result), target, target_path))
+            f.writelines(result)
 
     # Remove unwanted elements from set.
     char_set.discard('')
@@ -89,6 +101,28 @@ def _gen_list(target):
     print('#char_set={}:'.format(len(char_set)), char_set)
     print('#word_set={}:'.format(len(word_set)), word_set)
     print('Longest sentence was {} and the shortest was {} characters.'.format(longest, shortest))
+
+    if additional_output:
+        # MFCC sample information's.
+        sample_len_list = np.array(sample_len_list, dtype=np.float32)
+        sample_len_list = np.sort(sample_len_list)
+        avg_value = np.mean(sample_len_list)
+        min_value = np.amin(sample_len_list)
+        max_value = np.amax(sample_len_list)
+        plt.hist(sample_len_list, 64)
+        plt.grid()
+        plt.show()
+        print('Sample lengths: min={}, max={}, avg={}'.format(min_value, max_value, avg_value))
+
+        # Bin information.
+        list_len = len(sample_len_list)
+        num_bins = 16
+        step = list_len // num_bins
+
+        output = ''
+        for i in range(0, list_len, step):
+            output += ', {}'.format(int(sample_len_list[i]))
+        print('Bins: ', output[2:])
 
     return char_set, word_set, len(result)
 
@@ -107,7 +141,8 @@ def _delete_file_if_exists(path):
 
 
 if __name__ == '__main__':
-    train_char_s, train_word_s, train_len = _gen_list('train')
+    print('Starting...')
+    train_char_s, train_word_s, train_len = _gen_list('train', additional_output=True)
     test_char_s, test_word_s, test_len = _gen_list('test')
     print('#(TEST_WORD\\TRAIN_WORD)={}:'
           .format(len(test_word_s - train_word_s)), test_word_s - train_word_s)
