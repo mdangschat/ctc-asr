@@ -161,47 +161,6 @@ def train(_loss, global_step):
     return optimizer.minimize(_loss, global_step=global_step)
 
 
-def inputs_train():
-    """Construct input for the speech training.
-
-    Returns:
-        tf.Tensor:
-            3D Tensor with sequence batch of shape [batch_size, time, data].
-            Where time is equal to max(seq_len) for the bucket batch.
-        tf.Tensor:
-            1D Tensor with sequence lengths for each sequence within the batch.
-            With shape [batch_size], and type tf.int32.
-        tf.Tensor:
-            2D Tensor with labels batch of shape [batch_size, max_label_len],
-            with max_label_len equal to max(len(label)) for the bucket batch.
-            Type is tf.int32.
-        tf.Tensor:
-            2D Tensor with the original strings.
-    """
-    sample_batch, label_batch, length_batch, originals_batch = s_input.inputs_train(
-        FLAGS.batch_size)
-    return sample_batch, label_batch, length_batch, originals_batch
-
-
-def inputs():
-    """Construct input for the speech evaluation.
-
-    Returns:
-        tf.Tensor:
-            3D Tensor with sequence batch of shape [batch_size, time, data].
-            Where time is equal to max(seq_len) for the bucket batch.
-        tf.Tensor:
-            1D Tensor with sequence lengths for each sequence within the batch.
-            With shape [batch_size], and type tf.int32.
-        tf.Tensor:
-            2D Tensor with labels batch of shape [batch_size, max_label_len],
-            with max_label_len equal to max(len(label)) for the bucket batch.
-            Type is tf.int32.
-    """
-    sample_batch, label_batch, length_batch = s_input.inputs(FLAGS.batch_size)
-    return sample_batch, label_batch, length_batch
-
-
 def decoding(logits, seq_len, labels, originals):
     # TODO: Implement & Document
     # Review label_len needed, instead of seq_len?
@@ -249,6 +208,47 @@ def decoding(logits, seq_len, labels, originals):
     tf.summary.text('decoded_text', text)
 
     return label_error_rate
+
+
+def inputs_train():
+    """Construct input for the speech training.
+
+    Returns:
+        tf.Tensor:
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
+        tf.Tensor:
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
+        tf.Tensor:
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
+        tf.Tensor:
+            2D Tensor with the original strings.
+    """
+    sample_batch, label_batch, length_batch, originals_batch = s_input.inputs_train(
+        FLAGS.batch_size)
+    return sample_batch, label_batch, length_batch, originals_batch
+
+
+def inputs():
+    """Construct input for the speech evaluation.
+
+    Returns:
+        tf.Tensor:
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
+        tf.Tensor:
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
+        tf.Tensor:
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
+    """
+    sample_batch, label_batch, length_batch = s_input.inputs(FLAGS.batch_size)
+    return sample_batch, label_batch, length_batch
 
 
 def _variable_on_cpu(name, shape, initializer):
