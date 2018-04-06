@@ -9,7 +9,7 @@ import os
 import numpy as np
 import librosa
 import tensorflow as tf
-import tensorflow.contrib as tfc
+from tensorflow import contrib as tfc
 
 from s_params import FLAGS, NP_FLOAT, TF_FLOAT
 import s_labels
@@ -53,7 +53,7 @@ def inputs_train(batch_size):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        min_fraction_of_examples_in_queue = 0.2
+        min_fraction_of_examples_in_queue = 0.33
         min_queue_examples = int(FLAGS.num_examples_train * min_fraction_of_examples_in_queue)
         capacity = min_queue_examples + 3 * batch_size
 
@@ -221,7 +221,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
             2D Tensor with the original strings.
     """
     num_pre_process_threads = 12
-    bucket_boundaries = [130, 170, 200, 230, 270, 300, 330]   # review Find good bucket sizes.
+    bucket_boundaries = [130, 170, 200, 230, 270, 300, 330, 400]   # review Find good bucket sizes.
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
@@ -233,7 +233,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         capacity=capacity // (len(bucket_boundaries) + 2),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
-        allow_smaller_final_batch=False             # review Test if it works? Return batch_size
+        allow_smaller_final_batch=False
     )
 
     # Display the training images in the visualizer.

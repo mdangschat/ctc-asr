@@ -2,7 +2,7 @@
 
 import numpy as np
 import tensorflow as tf
-import tensorflow.contrib as tfc
+from tensorflow import contrib as tfc
 
 from s_params import FLAGS, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR, INITIAL_LEARNING_RATE
 from s_params import NUM_CLASSES, TF_FLOAT, NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM
@@ -73,7 +73,7 @@ def inference(sequences, seq_length):
     # We don't apply softmax here because
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
-    with tf.variable_scope('logits') as scope:
+    with tf.variable_scope('logits'):
         # weights = _variable_with_weight_decay('weights', [NUM_HIDDEN_LSTM * 2, NUM_CLASSES],
         #                                       0.04, 0.004)
         # biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
