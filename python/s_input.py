@@ -6,14 +6,14 @@ pre process the audio files and labels.
 """
 
 import os
-import numpy as np
+
 import librosa
+import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from s_params import FLAGS, NP_FLOAT, TF_FLOAT
 import s_labels
-
+from s_params import FLAGS, NP_FLOAT, TF_FLOAT
 
 NUM_MFCC = 13
 NUM_INPUTS = NUM_MFCC * 2
@@ -119,7 +119,6 @@ def _load_sample(file_path):
     if not sr == FLAGS.sampling_rate:
         raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
-    # Set generally used variables.
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
     hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
@@ -221,16 +220,16 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
             2D Tensor with the original strings.
     """
     num_pre_process_threads = 12
-    bucket_boundaries = [130, 170, 200, 230, 270, 300, 330, 400]   # review Find good bucket sizes.
+    boundaries = [155, 175, 188, 200, 209, 218, 227, 236, 247, 258, 270, 284, 302, 327, 366, 494]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
         tensors=[sequence, label, original],
         batch_size=batch_size,
-        bucket_boundaries=bucket_boundaries,
+        bucket_boundaries=boundaries,
         num_threads=num_pre_process_threads,
-        capacity=capacity // (len(bucket_boundaries) + 2),
+        capacity=capacity // len(boundaries),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
         allow_smaller_final_batch=False

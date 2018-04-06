@@ -83,7 +83,7 @@ def inference(sequences, seq_length):
         # logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
         # logits = tfc.rnn.transpose_batch_time(logits)
 
-        initializer = tf.truncated_normal_initializer(stddev=0.1, dtype=TF_FLOAT)
+        initializer = tf.truncated_normal_initializer(stddev=0.04, dtype=TF_FLOAT)
         logits = tf.layers.dense(output, NUM_CLASSES, kernel_initializer=initializer)
         logits = tfc.rnn.transpose_batch_time(logits)
 
