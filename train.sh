@@ -9,4 +9,3 @@ fi
 
 echo "Starting training..."
 nohup python3 python/s_train.py &
-

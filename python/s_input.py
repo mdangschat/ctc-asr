@@ -148,6 +148,7 @@ def _load_sample(file_path):
     sample = sample.astype(NP_FLOAT)
     sample = np.swapaxes(sample, 0, 1)
     sample_len = np.array(sample.shape[0], dtype=np.int32)
+
     sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? Also try normalize.
 
     # `sample` = [time, num_features], `sample_len`: scalar
@@ -235,11 +236,9 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         allow_smaller_final_batch=False
     )
 
-    # Display the training images in the visualizer.
+    # Add input vectors to TensorBoard summary.
     batch_size_t = tf.shape(sequences)[0]
     summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
-    tf.summary.image('sample', summary_batch, max_outputs=batch_size)
-    tf.summary.scalar('seq_length', seq_length[0])
-    tf.summary.histogram('labels', labels)
+    tf.summary.image('sample', summary_batch, max_outputs=4)
 
     return sequences, seq_length, labels, originals

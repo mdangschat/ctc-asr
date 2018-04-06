@@ -154,9 +154,9 @@ def train(_loss, global_step):
 
     # Compute gradients. review Optimizers
     # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
-    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
+    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    # optimizer = tf.train.AdamOptimizer(learning_rate=lr)
+    optimizer = tf.train.AdamOptimizer(learning_rate=lr)
 
     return optimizer.minimize(_loss, global_step=global_step)
 
@@ -191,8 +191,8 @@ def decoding(logits, seq_len, labels, originals):
         return np.vstack([decoded_result, original_result])
 
     # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
-    decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
-    # decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
+    # decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
     decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
 
     # Edit distance and label error rate (LER).

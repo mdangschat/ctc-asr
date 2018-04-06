@@ -8,7 +8,7 @@ import time
 from datetime import datetime
 import tensorflow as tf
 
-from s_params import FLAGS
+from s_params import FLAGS, get_parameters
 import s_model
 
 
@@ -19,6 +19,8 @@ tf.set_random_seed(4711)
 
 def train():
     """Train the network for a number of steps."""
+    print('Parameters: ', get_parameters())
+
     with tf.Graph().as_default():
         global_step = tf.train.get_or_create_global_step()
 

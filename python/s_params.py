@@ -12,10 +12,10 @@ tf.flags.DEFINE_integer('batch_size', 1,
                         """(Maximum) Number of samples within a batch.""")
 
 NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.50   # Learning rate decay factor.
+LEARNING_RATE_DECAY_FACTOR = 0.5    # Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
-NUM_HIDDEN_LSTM = 256               # Number of hidden units per LSTM cell.
-NUM_LAYERS_LSTM = 4                 # Number of BDLSTM layers.
+NUM_HIDDEN_LSTM = 128               # Number of hidden units per LSTM cell.
+NUM_LAYERS_LSTM = 2                 # Number of BDLSTM layers.
 
 
 # Logging & Output
@@ -42,3 +42,15 @@ NP_FLOAT = np.float32   # ctc_xxxx functions don't support float64. See #13
 
 # Export names.
 FLAGS = tf.flags.FLAGS
+
+
+def get_parameters():
+    """Generate a string containing the training parameters.
+
+    Returns:
+        (str): Training parameters.
+    """
+    ps = 'Learning Rage (lr={}, epochs={}, decay={}); BDLSTM (num_units={}, num_layers={}); ' \
+         'Training (max_steps={}, log_frequency={})'
+    return ps.format(INITIAL_LEARNING_RATE, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR,
+                     NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM, FLAGS.max_steps, FLAGS.log_frequency)
