@@ -11,10 +11,10 @@ from s_labels import num_classes
 tf.flags.DEFINE_integer('batch_size', 1,
                         """(Maximum) Number of samples within a batch.""")
 
-NUM_EPOCHS_PER_DECAY = 9.0          # Number of epochs after which learning rate decays.
+NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.50   # Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
-NUM_HIDDEN_LSTM = 128               # Number of hidden units per LSTM cell.
+NUM_HIDDEN_LSTM = 256               # Number of hidden units per LSTM cell.
 NUM_LAYERS_LSTM = 4                 # Number of BDLSTM layers.
 
 
@@ -29,7 +29,7 @@ tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
-tf.flags.DEFINE_string('train_dir', '/tmp/s_train',
+tf.flags.DEFINE_string('train_dir', '/tmp/speech/train',
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('num_examples_train', 4620,
                         """Number of examples in the training set.""")
