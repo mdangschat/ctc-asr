@@ -8,14 +8,14 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 1,
+tf.flags.DEFINE_integer('batch_size', 2,
                         """(Maximum) Number of samples within a batch.""")
 
 NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.5    # Learning rate decay factor.
+LEARNING_RATE_DECAY_FACTOR = 0.75   # Learning rate decay factor.
 INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
-NUM_HIDDEN_LSTM = 128               # Number of hidden units per LSTM cell.
-NUM_LAYERS_LSTM = 2                 # Number of BDLSTM layers.
+NUM_HIDDEN_LSTM = 256               # Number of hidden units per LSTM cell.
+NUM_LAYERS_LSTM = 3                 # Number of BDLSTM layers.
 
 
 # Logging & Output
