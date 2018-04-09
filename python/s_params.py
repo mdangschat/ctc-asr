@@ -11,17 +11,17 @@ from s_labels import num_classes
 tf.flags.DEFINE_integer('batch_size', 2,
                         """(Maximum) Number of samples within a batch.""")
 
-NUM_EPOCHS_PER_DECAY = 1.0          # Number of epochs after which learning rate decays.
+NUM_EPOCHS_PER_DECAY = 10.          # Number of epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.75   # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.001       # Initial learning rate.
-NUM_HIDDEN_LSTM = 256               # Number of hidden units per LSTM cell.
-NUM_LAYERS_LSTM = 3                 # Number of BDLSTM layers.
+INITIAL_LEARNING_RATE = 0.01       # Initial learning rate.
+NUM_HIDDEN_LSTM = 128               # Number of hidden units per LSTM cell.
+NUM_LAYERS_LSTM = 1                 # Number of BDLSTM layers.
 
 
 # Logging & Output
 tf.flags.DEFINE_integer('max_steps', 1000000,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 101,
+tf.flags.DEFINE_integer('log_frequency', 11,
                         """How often (every x steps) to log results to the console.""")
 
 # Miscellaneous & Data set

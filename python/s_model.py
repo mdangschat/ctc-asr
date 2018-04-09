@@ -59,7 +59,9 @@ def inference(sequences, seq_length):
     with tf.variable_scope('bdlstm'):
         # Create a stack of RNN cells.
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
-        fw_cells, bw_cells = create_bidirectional_cells(NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM)
+        fw_cells, bw_cells = create_bidirectional_cells(NUM_HIDDEN_LSTM,
+                                                        NUM_LAYERS_LSTM,
+                                                        keep_prob=0.8)
 
         # `output` = [batch_size, time, num_hidden*2]
         # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
@@ -69,6 +71,16 @@ def inference(sequences, seq_length):
                                                                sequence_length=seq_length,
                                                                parallel_iterations=32,
                                                                time_major=False)
+
+    with tf.variable_scope('attention'):
+        attention_output, alphas = s_utils.attention(output, 128)
+        alphas = tf.Print(alphas, [tf.shape(attention_output), tf.shape(alphas)])
+
+        # TODO: Log/Summarize outputs and hidden state
+        tf.summary.histogram('attention', alphas)
+        tf.summary.image('attention', tf.reshape(alphas, [2, tf.shape(alphas)[1], 1, 1]))
+
+        output = attention_output
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because
@@ -146,16 +158,13 @@ def train(_loss, global_step):
     decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)
 
     # Decay the learning rate exponentially based on the number of steps.
-    # lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
-    #                                 global_step,
-    #                                 decay_steps,
-    #                                 LEARNING_RATE_DECAY_FACTOR,
-    #                                 staircase=True)
-    lr = _variable_on_cpu('lr', [],
-                          initializer=tf.constant_initializer([INITIAL_LEARNING_RATE],
-                                                              dtype=TF_FLOAT))
+    lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
+                                    global_step,
+                                    decay_steps,
+                                    LEARNING_RATE_DECAY_FACTOR,
+                                    staircase=True)
 
-    # Compute gradients. review Optimizers
+    # Compute gradients.
     # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
@@ -217,6 +226,7 @@ def decoding(logits, seq_len, labels, originals):
 
 def inputs_train():
     """Construct input for the speech training.
+    # review Documentation up to date? Types okay?
 
     Returns:
         tf.Tensor:
@@ -232,9 +242,8 @@ def inputs_train():
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    sample_batch, label_batch, length_batch, originals_batch = s_input.inputs_train(
-        FLAGS.batch_size)
-    return sample_batch, label_batch, length_batch, originals_batch
+    sequences, seq_length, labels, originals = s_input.inputs_train(FLAGS.batch_size)
+    return sequences, seq_length, labels, originals
 
 
 def inputs():
