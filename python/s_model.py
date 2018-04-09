@@ -8,6 +8,7 @@ from s_params import FLAGS, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR, IN
 from s_params import NUM_CLASSES, TF_FLOAT, NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM
 import s_input
 import s_labels
+import s_utils
 
 
 def inference(sequences, seq_length):
@@ -145,19 +146,23 @@ def train(_loss, global_step):
     decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)
 
     # Decay the learning rate exponentially based on the number of steps.
-    lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
-                                    global_step,
-                                    decay_steps,
-                                    LEARNING_RATE_DECAY_FACTOR,
-                                    staircase=True)
-    tf.summary.scalar('learning_rate', lr)
+    # lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
+    #                                 global_step,
+    #                                 decay_steps,
+    #                                 LEARNING_RATE_DECAY_FACTOR,
+    #                                 staircase=True)
+    lr = _variable_on_cpu('lr', [],
+                          initializer=tf.constant_initializer([INITIAL_LEARNING_RATE],
+                                                              dtype=TF_FLOAT))
 
     # Compute gradients. review Optimizers
     # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
-    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
+    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
     # optimizer = tf.train.AdamOptimizer(learning_rate=lr)
+    optimizer = s_utils.AdamOptimizerLogger(learning_rate=lr)
 
+    tf.summary.scalar('learning_rate', lr)
     return optimizer.minimize(_loss, global_step=global_step)
 
 
