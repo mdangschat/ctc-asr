@@ -4,8 +4,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from s_params import FLAGS, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR, INITIAL_LEARNING_RATE
-from s_params import NUM_CLASSES, TF_FLOAT, NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM
+from s_params import FLAGS, NUM_CLASSES, TF_FLOAT, LSTM_NUM_UNITS, LSTM_NUM_LAYERS, DENSE_NUM_UNITS
 import s_input
 import s_labels
 import s_utils
@@ -22,82 +21,64 @@ def inference(sequences, seq_length):
         tf.Tensor:
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
     """
-    def create_cell(num_units, keep_prob=1.0):
-        """Create a RNN cell with added dropout wrapper.
+    initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
+    regularizer = tfc.layers.l2_regularizer(0.004)
 
-        Args:
-            num_units (int): Number of units within the RNN cell.
-            keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
-                no outputs will be dropped.
+    # Dense1
+    with tf.variable_scope('dense1'):
+        dense1 = tf.layers.dense(sequences, DENSE_NUM_UNITS,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=initializer,
+                                 kernel_regularizer=regularizer)
+        dense1 = tf.minimum(dense1, 20.0)
 
-        Returns:
-            tf.nn.rnn_cell.LSTMCell: RNN cell with dropout wrapper.
-        """
-        # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
-        cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
-        return tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
+    # Dense2
+    with tf.variable_scope('dense2'):
+        dense2 = tf.layers.dense(dense1, DENSE_NUM_UNITS,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=initializer,
+                                 kernel_regularizer=regularizer)
+        dense2 = tf.minimum(dense2, 20.0)
 
-    def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
-        """Create two lists of forward and backward cells that can be used to build
-        a BDLSTM stack.
-
-        Args:
-            num_units (int): Number of units within the RNN cell.
-            _num_layers (int): Amount of cells to create for each list.
-            keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
-                no outputs will be dropped.
-
-        Returns:
-            [tf.nn.rnn_cell.LSTMCell]: List of forward cells.
-            [tf.nn.rnn_cell.LSTMCell]: List of backward cells.
-        """
-        _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
-        _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
-        return _fw_cells, _bw_cells
+    # Dense3
+    with tf.variable_scope('dense3'):
+        dense3 = tf.layers.dense(dense2, DENSE_NUM_UNITS,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=initializer,
+                                 kernel_regularizer=regularizer)
+        dense3 = tf.minimum(dense3, 20.0)
 
     # BDLSTM cell stack.
     with tf.variable_scope('bdlstm'):
         # Create a stack of RNN cells.
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
-        fw_cells, bw_cells = create_bidirectional_cells(NUM_HIDDEN_LSTM,
-                                                        NUM_LAYERS_LSTM,
-                                                        keep_prob=0.8)
+        fw_cells, bw_cells = s_utils.create_bidirectional_cells(LSTM_NUM_UNITS,
+                                                                LSTM_NUM_LAYERS,
+                                                                keep_prob=0.8)
 
         # `output` = [batch_size, time, num_hidden*2]
         # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
-        output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
-                                                               inputs=sequences,
+        bdlstm, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
+                                                               inputs=dense3,
                                                                dtype=TF_FLOAT,
                                                                sequence_length=seq_length,
-                                                               parallel_iterations=32,
+                                                               parallel_iterations=64,  # review
                                                                time_major=False)
 
-    with tf.variable_scope('attention'):
-        attention_output, alphas = s_utils.attention(output, 128)
-        alphas = tf.Print(alphas, [tf.shape(attention_output), tf.shape(alphas)])
-
-        # TODO: Log/Summarize outputs and hidden state
-        tf.summary.histogram('attention', alphas)
-        tf.summary.image('attention', tf.reshape(alphas, [2, tf.shape(alphas)[1], 1, 1]))
-
-        output = attention_output
+    # Dense4
+    with tf.variable_scope('dense4'):
+        dense4 = tf.layers.dense(bdlstm, DENSE_NUM_UNITS,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=initializer,
+                                 kernel_regularizer=regularizer)
+        dense4 = tf.minimum(dense4, 20.0)
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
     with tf.variable_scope('logits'):
-        # weights = _variable_with_weight_decay('weights', [NUM_HIDDEN_LSTM * 2, NUM_CLASSES],
-        #                                       0.04, 0.004)
-        # biases = _variable_on_cpu('biases', [NUM_CLASSES], tf.constant_initializer(0.0))
-        # logits = tf.add(tf.matmul(output, weights), biases, name=scope.name)
-        #
-        # batch_size = tf.shape(sequences)[0]
-        # logits = tf.reshape(logits, [batch_size, -1, NUM_CLASSES])
-        # logits = tfc.rnn.transpose_batch_time(logits)
-
-        initializer = tf.truncated_normal_initializer(stddev=0.04, dtype=TF_FLOAT)
-        logits = tf.layers.dense(output, NUM_CLASSES, kernel_initializer=initializer)
+        logits = tf.layers.dense(dense4, NUM_CLASSES, kernel_initializer=initializer)
         logits = tfc.rnn.transpose_batch_time(logits)
 
     # logits = tf.Print(logits, [tf.shape(logits)], message='logits: ')
@@ -155,21 +136,22 @@ def train(_loss, global_step):
     """
     # Variables that affect learning rate.
     num_batches_per_epoch = FLAGS.num_examples_train / FLAGS.batch_size
-    decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)
+    decay_steps = int(num_batches_per_epoch * FLAGS.num_epochs_per_decay)
 
     # Decay the learning rate exponentially based on the number of steps.
-    lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
+    lr = tf.train.exponential_decay(FLAGS.learning_rate,
                                     global_step,
                                     decay_steps,
-                                    LEARNING_RATE_DECAY_FACTOR,
+                                    FLAGS.learning_rate_decay_factor,
                                     staircase=True)
 
-    # Compute gradients.
-    # optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
+    # Compute gradients.    review Which optimizer performs best?
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
     # optimizer = tf.train.AdamOptimizer(learning_rate=lr)
-    optimizer = s_utils.AdamOptimizerLogger(learning_rate=lr)
+    optimizer = s_utils.AdamOptimizerLogger(learning_rate=lr, beta1=FLAGS.adam_beta1,
+                                            beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
+    # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
 
     tf.summary.scalar('learning_rate', lr)
     return optimizer.minimize(_loss, global_step=global_step)

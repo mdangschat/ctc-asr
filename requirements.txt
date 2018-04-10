@@ -2,3 +2,4 @@ numpy
 matplotlib
 librosa
 tensorflow
+gitpython

@@ -1,7 +1,7 @@
 """Utility and helper methods for TensorFlow speech learning."""
 
 import tensorflow as tf
-from tensorflow import contrib as tfc
+from git import Repo
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):
@@ -97,3 +97,48 @@ def attention(inputs, attention_size, time_major=False):
     output = inputs * tf.expand_dims(alphas, -1)
 
     return output, alphas
+
+
+def get_git_revision_hash():
+    repo = Repo('.', search_parent_directories=True)
+    return repo.head.object.hexsha
+
+
+def get_git_branch():
+    repo = Repo('.', search_parent_directories=True)
+    return repo.active_branch.name
+
+
+def create_cell(num_units, keep_prob=1.0):
+    """Create a RNN cell with added dropout wrapper.
+
+    Args:
+        num_units (int): Number of units within the RNN cell.
+        keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
+            no outputs will be dropped.
+
+    Returns:
+        tf.nn.rnn_cell.LSTMCell: RNN cell with dropout wrapper.
+    """
+    # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
+    cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
+    return tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
+
+
+def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
+    """Create two lists of forward and backward cells that can be used to build
+    a BDLSTM stack.
+
+    Args:
+        num_units (int): Number of units within the RNN cell.
+        _num_layers (int): Amount of cells to create for each list.
+        keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
+            no outputs will be dropped.
+
+    Returns:
+        [tf.nn.rnn_cell.LSTMCell]: List of forward cells.
+        [tf.nn.rnn_cell.LSTMCell]: List of backward cells.
+    """
+    _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
+    _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
+    return _fw_cells, _bw_cells

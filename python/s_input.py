@@ -175,7 +175,7 @@ def _read_file_list(path):
         sample_paths = []
         labels = []
         originals = []
-        tmp = 0     # TODO delete me
+        # tmp = 0     # TODO delete me
         for line in lines:
             sample_path, label = line.split(' ', 1)
             sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
@@ -185,9 +185,9 @@ def _read_file_list(path):
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
 
-            tmp += 1
-            if tmp >= 8:
-                break   # TODO remove
+            # tmp += 1
+            # if tmp >= 8:
+            #     break   # TODO remove
 
         return sample_paths, labels, originals
 

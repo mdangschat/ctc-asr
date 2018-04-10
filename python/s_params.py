@@ -1,4 +1,5 @@
 """Collection of hyper parameters."""
+# TODO: Convert to FLAGs where applicable.
 
 
 import tensorflow as tf
@@ -11,11 +12,24 @@ from s_labels import num_classes
 tf.flags.DEFINE_integer('batch_size', 2,
                         """(Maximum) Number of samples within a batch.""")
 
-NUM_EPOCHS_PER_DECAY = 10.          # Number of epochs after which learning rate decays.
-LEARNING_RATE_DECAY_FACTOR = 0.75   # Learning rate decay factor.
-INITIAL_LEARNING_RATE = 0.01       # Initial learning rate.
-NUM_HIDDEN_LSTM = 128               # Number of hidden units per LSTM cell.
-NUM_LAYERS_LSTM = 1                 # Number of BDLSTM layers.
+tf.flags.DEFINE_float('learning_rate', 1e-3,
+                      """Initial learning rate.""")
+tf.flags.DEFINE_float('learning_rate_decay_factor', 0.75,
+                      """Learning rate decay factor.""")
+tf.flags.DEFINE_float('num_epochs_per_decay', 10.0,
+                      """Number of epochs after which learning rate decays.""")
+
+tf.flags.DEFINE_float('adam_beta1', 0.9,
+                      """Adam optimizer beta_1 power.""")
+tf.flags.DEFINE_float('adam_beta2', 0.999,
+                      """Adam optimizer beta_2 power.""")
+tf.flags.DEFINE_float('adam_epsilon', 1e-8,
+                      """Adam optimizer epsilon.""")
+
+
+LSTM_NUM_UNITS = 2048                # Number of hidden units per LSTM cell.
+LSTM_NUM_LAYERS = 1                  # Number of stacked BDLSTM layers.
+DENSE_NUM_UNITS = 2048               # Number of units per dense layer.
 
 
 # Logging & Output
@@ -52,5 +66,6 @@ def get_parameters():
     """
     ps = 'Learning Rage (lr={}, epochs={}, decay={}); BDLSTM (num_units={}, num_layers={}); ' \
          'Training (max_steps={}, log_frequency={})'
-    return ps.format(INITIAL_LEARNING_RATE, NUM_EPOCHS_PER_DECAY, LEARNING_RATE_DECAY_FACTOR,
-                     NUM_HIDDEN_LSTM, NUM_LAYERS_LSTM, FLAGS.max_steps, FLAGS.log_frequency)
+    return ps.format(FLAGS.learning_rate, FLAGS.num_epochs_per_decay,
+                     FLAGS.learning_rate_decay_factor, LSTM_NUM_UNITS, LSTM_NUM_LAYERS,
+                     FLAGS.max_steps, FLAGS.log_frequency)

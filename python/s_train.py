@@ -10,6 +10,7 @@ import tensorflow as tf
 
 from s_params import FLAGS, get_parameters
 import s_model
+from s_utils import get_git_branch, get_git_revision_hash
 
 
 # General TensorFlow settings and setup.
@@ -19,6 +20,7 @@ tf.set_random_seed(4711)
 
 def train():
     """Train the network for a number of steps."""
+    print('Version hash: {}; Branch: {}'.format(get_git_revision_hash(), get_git_branch()))
     print('Parameters: ', get_parameters())
 
     with tf.Graph().as_default():
@@ -42,7 +44,7 @@ def train():
         s_model.decoding(logits, seq_length, labels, originals)
 
         # Logging hook
-        class _LoggerHook(tf.train.SessionRunHook):
+        class LoggerHook(tf.train.SessionRunHook):
             """Log loss and runtime."""
 
             def __init__(self):
@@ -83,7 +85,7 @@ def train():
                 tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                 # Monitors the loss tensor and stops training if loss is NaN.
                 tf.train.NanTensorHook(loss),
-                _LoggerHook()
+                LoggerHook()
             ],
             config=tf.ConfigProto(
                 log_device_placement=FLAGS.log_device_placement,
