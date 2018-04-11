@@ -20,7 +20,7 @@ tf.set_random_seed(4711)
 
 def train():
     """Train the network for a number of steps."""
-    print('Version hash: {}; Branch: {}'.format(get_git_revision_hash(), get_git_branch()))
+    print('Version: {}; Branch: {}'.format(get_git_revision_hash(), get_git_branch()))
     print('Parameters: ', get_parameters())
 
     with tf.Graph().as_default():
@@ -73,30 +73,38 @@ def train():
                           .format(datetime.now(), self._step, loss_value,
                                   examples_per_sec, sec_per_batch))
 
-        mon_sess = tf.train.MonitoredTrainingSession(
+        # Session configuration.
+        session_config = tf.ConfigProto(
+            log_device_placement=FLAGS.log_device_placement,
+            gpu_options=tf.GPUOptions(allow_growth=True)
+        )
+
+        # Session hooks.
+        session_hooks = [
+                # Requests stop at a specified step.
+                tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
+                # Monitors the loss tensor and stops training if loss is NaN.
+                tf.train.NanTensorHook(loss),
+                LoggerHook()
+            ]
+
+        # The MonitoredTrainingSession takes care of session initialization, session resumption,
+        # creating checkpoints, and some basic error handling.
+        session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
             # The frequency, in number of global steps, that the summaries are written to disk
             # using a default summary saver.
             save_summaries_steps=FLAGS.log_frequency,
             # The frequency, in number of global steps, that the global step/sec is logged.
             log_step_count_steps=FLAGS.log_frequency * 5,
-            hooks=[
-                # Requests stop at a specified step.
-                tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
-                # Monitors the loss tensor and stops training if loss is NaN.
-                tf.train.NanTensorHook(loss),
-                LoggerHook()
-            ],
-            config=tf.ConfigProto(
-                log_device_placement=FLAGS.log_device_placement,
-                gpu_options=tf.GPUOptions(allow_growth=True)
-            )
+            hooks=session_hooks,
+            config=session_config
         )
 
-        with mon_sess:
-            while not mon_sess.should_stop():
+        with session:
+            while not session.should_stop():
                 try:
-                    mon_sess.run(train_op)
+                    session.run(train_op)
                 except tf.errors.OutOfRangeError:
                     print('All batches fed. Stopping.')
                     break

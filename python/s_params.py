@@ -26,7 +26,7 @@ tf.flags.DEFINE_float('adam_beta2', 0.999,
 tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
-
+# Geometric layout.
 LSTM_NUM_UNITS = 2048                # Number of hidden units per LSTM cell.
 LSTM_NUM_LAYERS = 1                  # Number of stacked BDLSTM layers.
 DENSE_NUM_UNITS = 2048               # Number of units per dense layer.
@@ -38,7 +38,7 @@ tf.flags.DEFINE_integer('max_steps', 1000000,
 tf.flags.DEFINE_integer('log_frequency', 11,
                         """How often (every x steps) to log results to the console.""")
 
-# Miscellaneous & Data set
+# Data set
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
@@ -49,7 +49,10 @@ tf.flags.DEFINE_integer('num_examples_train', 4620,
                         """Number of examples in the training set.""")
 tf.flags.DEFINE_integer('num_examples_test', 1680,
                         """Number of examples in the testing/evaluation set.""")
+
 NUM_CLASSES = num_classes()
+
+# Miscellaneous
 TF_FLOAT = tf.float32   # ctc_xxxx functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_xxxx functions don't support float64. See #13
 
