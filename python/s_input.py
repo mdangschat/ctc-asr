@@ -147,6 +147,8 @@ def _load_sample(file_path):
 
     sample = sample.astype(NP_FLOAT)
     sample = np.swapaxes(sample, 0, 1)
+    sample = sample[::2, :]
+
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
     sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? Also try normalize.
