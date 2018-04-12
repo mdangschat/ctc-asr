@@ -105,6 +105,7 @@ def loss(logits, labels, seq_length):
             1D float Tensor with size [1], containing the mean loss.
     """
     if FLAGS.use_baidu_ctc:
+        # Not installed at the moment.
         # https://github.com/baidu-research/warp-ctc
         total_loss = tfc.wrapctc.wrap_ctc_loss(labels=labels,
                                                inputs=logits,
@@ -179,24 +180,26 @@ def decoding(logits, seq_len, labels, originals):
     decoded = tf.cast(decoded[0], tf.int32)
 
     # Edit distance and label error rate (LER).
-    edit_distance = tf.edit_distance(decoded, labels)
-    tf.summary.histogram('edit_distance', edit_distance)
+    edit_distances = tf.edit_distance(decoded, labels)
+    tf.summary.histogram('edit_distances', edit_distances)
 
-    mean_edit_distance = tf.reduce_mean(edit_distance)
+    mean_edit_distance = tf.reduce_mean(edit_distances)
     tf.summary.scalar('mean_edit_distance', mean_edit_distance)
 
     # Translate decoded integer data back to character strings.
     dense = tf.sparse_tensor_to_dense(decoded)
-    text = tf.py_func(s_utils.dense_to_text, [dense, originals], tf.string)
-    text = tf.cast(text, dtype=tf.string)
-    tf.summary.text('decoded_text', text)
+    decoded_text_summary, decoded_texts = tf.py_func(s_utils.dense_to_text,
+                                                     [dense, originals],
+                                                     [tf.string, tf.string])
 
-    # TODO: Word Error Rate (WER)
-    # TODO Inputs should be strings, not tensors.
-    wer = s_utils.wer(originals[0], decoded)
-    tf.summary.histogram('wer', wer)
+    tf.summary.text('decoded_text_summary', decoded_text_summary)
 
-    return mean_edit_distance
+    # Word Error Rate (WER)
+    wers, wer = tf.py_func(s_utils.wers, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT])
+    tf.summary.histogram('word_error_rates', wers)
+    tf.summary.scalar('word_error_rate', wer)
+
+    return mean_edit_distance, wer
 
 
 def inputs_train():

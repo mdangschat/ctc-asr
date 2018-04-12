@@ -77,7 +77,7 @@ def inputs_train(batch_size):
         sequences, seq_length, labels, originals = _generate_batch(
             sample, sample_len, label_queue, originals_queue, batch_size, capacity)
 
-        # Reshape labels for CTC loss.
+        # Convert the dense labels to sparse ones for the CTC loss function.
         # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
         labels = tfc.layers.dense_to_sparse(labels)
 

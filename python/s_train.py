@@ -39,7 +39,7 @@ def train():
             loss = s_model.loss(logits, labels, seq_length)
 
             # Decode.
-            s_model.decoding(logits, seq_length, labels, originals)
+            _, _ = s_model.decoding(logits, seq_length, labels, originals)
 
         # Build the training graph, that updates the model parameters after each batch.
         train_op = s_model.train(loss, global_step)

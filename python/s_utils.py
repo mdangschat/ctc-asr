@@ -5,6 +5,7 @@ from git import Repo
 import tensorflow as tf
 
 from s_labels import itoc
+from s_params import NP_FLOAT
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):
@@ -43,8 +44,8 @@ def attention(inputs, attention_size, time_major=False):
                         `[batch_size, max_time, cell.output_size]`.
                     If time_major == True, this must be a tensor of shape:
                         `[max_time, batch_size, cell.output_size]`.
-                In case of Bidirectional RNN, this must be a tuple (outputs_fw, outputs_bw) containing the forward and
-                the backward RNN outputs `Tensor`.
+                In case of Bidirectional RNN, this must be a tuple (outputs_fw, outputs_bw)
+                containing the forward and the backward RNN outputs `Tensor`.
                     If time_major == False (default),
                         outputs_fw is a `Tensor` shaped:
                         `[batch_size, max_time, cell_fw.output_size]`
@@ -147,30 +148,23 @@ def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
     return _fw_cells, _bw_cells
 
 
-def dense_to_text(decoded_batch, original_batch):
+def dense_to_text(decoded, originals):
     # L8ER Documentation
     # L8ER Move somewhere else?
-    decoded_result = ['"']
-    original_result = ['"']
+    decoded_strings = []
+    original_strings = []
 
-    for _decoded in decoded_batch:
-        for i in _decoded:
-            decoded_result.append(itoc(i))
-        decoded_result.append('", "')
+    for d in decoded:
+        decoded_strings.append(''.join([itoc(i) for i in d]))
 
-    for _original in original_batch:
-        _original = str(_original, 'utf-8')
-        for c in _original:
-            original_result.append(c)
-        original_result.append('", "')
+    for o in originals:
+        original_strings.append(''.join([c for c in o.decode('utf-8')]))
 
-    decoded_result = ''.join(decoded_result)[: -3]
-    original_result = ''.join(original_result)[: -3]
-    print('d: {}\no: {}'.format(decoded_result, original_result))
+    print('d: {}\no: {}'.format(decoded_strings, original_strings))
 
-    decoded_result = np.array(decoded_result, dtype=np.object)
-    original_result = np.array(original_result, dtype=np.object)
-    return np.vstack([decoded_result, original_result])
+    decoded_strings = np.array(decoded_strings, dtype=np.object)
+    original_strings = np.array(original_strings, dtype=np.object)
+    return np.vstack([decoded_strings, original_strings]), np.array(decoded_strings)
 
 
 def wer(original, result):
@@ -186,20 +180,22 @@ def wer(original, result):
     # Therefore we split the strings into words first:
     original = original.split()
     result = result.split()
-    return levenshtein(original, result) / float(len(original))
+    levenshtein_distance = levenshtein(original, result) / float(len(original))
+    return np.array(levenshtein_distance, dtype=NP_FLOAT)
 
 
 def wers(originals, results):
     # TODO: Documentation
     count = len(originals)
-    rates = []
+    rates = np.array([], dtype=NP_FLOAT)
     mean = 0.0
     assert count == len(results)
     for i in range(count):
         rate = wer(originals[i], results[i])
         mean = mean + rate
-        rates.append(rate)
-    return rates, mean / float(count)
+        rates = np.append(rates, rate)
+
+    return rates, np.array(mean / float(count), dtype=NP_FLOAT)
 
 
 # The following code is from: http://hetland.org/coding/python/levenshtein.py
@@ -210,23 +206,23 @@ def wers(originals, results):
 # to the public domain worldwide, by distributing it under the CC0 license,
 # version 1.0. This software is distributed without any warranty. For more
 # information, see <http://creativecommons.org/publicdomain/zero/1.0>
-def levenshtein(a,b):
+def levenshtein(a, b):
     """Calculates the Levenshtein distance between a and b.
     TODO: Documentation
     """
     n, m = len(a), len(b)
     if n > m:
         # Make sure n <= m, to use O(min(n,m)) space
-        a,b = b,a
-        n,m = m,n
+        a, b = b, a
+        n, m = m, n
 
-    current = list(range(n+1))
-    for i in range(1,m+1):
-        previous, current = current, [i]+[0]*n
-        for j in range(1,n+1):
-            add, delete = previous[j]+1, current[j-1]+1
-            change = previous[j-1]
-            if a[j-1] != b[i-1]:
+    current = list(range(n + 1))
+    for i in range(1, m + 1):
+        previous, current = current, [i] + [0] * n
+        for j in range(1, n + 1):
+            add, delete = previous[j] + 1, current[j - 1] + 1
+            change = previous[j - 1]
+            if a[j - 1] != b[i - 1]:
                 change = change + 1
             current[j] = min(add, delete, change)
 
