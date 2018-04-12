@@ -147,7 +147,7 @@ def _delete_file_if_exists(path):
 
 if __name__ == '__main__':
     print('Starting...')
-    train_char_s, train_word_s, train_len = _gen_list('train', additional_output=False)
+    train_char_s, train_word_s, train_len = _gen_list('train', additional_output=True)
     test_char_s, test_word_s, test_len = _gen_list('test', additional_output=False)
     print('#(TEST_WORD\\TRAIN_WORD)={}:'
           .format(len(test_word_s - train_word_s)), test_word_s - train_word_s)

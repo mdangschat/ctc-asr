@@ -28,7 +28,8 @@ def load_sample(file_path):
         * (mfcc + mfcc_delta) better features than pure mfcc?
         * Normalize mfcc_delta.
     """
-    file_path = str(file_path, 'utf-8')
+    if type(file_path) is not str:
+        file_path = str(file_path, 'utf-8')
 
     if not path.isfile(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
@@ -67,6 +68,8 @@ def load_sample(file_path):
 
     sample = sample.astype(NP_FLOAT)
     sample = np.swapaxes(sample, 0, 1)
+
+    # Skip every 2nd time frame.
     sample = sample[::2, :]
 
     sample_len = np.array(sample.shape[0], dtype=np.int32)
