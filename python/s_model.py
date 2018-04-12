@@ -115,7 +115,8 @@ def loss(logits, labels, seq_length):
                             time_major=True)
 
     mean_loss = tf.reduce_mean(losses)
-    tf.summary.scalar('mean_loss', mean_loss)
+    tf.summary.scalar('loss/mean_loss', mean_loss)
+
     return mean_loss
 
 
@@ -154,6 +155,7 @@ def train(_loss, global_step):
     # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
 
     tf.summary.scalar('learning_rate', lr)
+
     return optimizer.minimize(_loss, global_step=global_step)
 
 
@@ -193,9 +195,9 @@ def decoding(logits, seq_len, labels, originals):
 
     # Edit distance and label error rate (LER).
     edit_distance = tf.edit_distance(tf.cast(decoded, tf.int32), labels)
-    tf.summary.histogram('edit_distance', edit_distance)
+    tf.summary.histogram('loss/edit_distance', edit_distance)
     label_error_rate = tf.reduce_mean(edit_distance)
-    tf.summary.scalar('label_error_rate', label_error_rate)
+    tf.summary.scalar('loss/label_error_rate', label_error_rate)
 
     # Translate decoded integer data back to character strings.
     dense = tf.sparse_tensor_to_dense(decoded)
@@ -229,7 +231,8 @@ def inputs_train():
 
 
 def inputs():
-    """Construct input for the speech evaluation.
+    """Construct input for the speech training.
+    # review Documentation up to date? Types okay?
 
     Returns:
         tf.Tensor:
@@ -242,9 +245,11 @@ def inputs():
             2D Tensor with labels batch of shape [batch_size, max_label_len],
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
+        tf.Tensor:
+            2D Tensor with the original strings.
     """
-    sample_batch, label_batch, length_batch = s_input.inputs(FLAGS.batch_size)
-    return sample_batch, label_batch, length_batch
+    sequences, seq_length, labels, originals = s_input.inputs(FLAGS.batch_size)
+    return sequences, seq_length, labels, originals
 
 
 def _variable_on_cpu(name, shape, initializer):
