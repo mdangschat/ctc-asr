@@ -1,5 +1,5 @@
 """Collection of hyper parameters."""
-# TODO: Convert to FLAGs where applicable.
+# REVIEW: Convert to FLAGs where applicable.
 
 
 import tensorflow as tf
