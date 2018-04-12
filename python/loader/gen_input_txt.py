@@ -1,4 +1,4 @@
-"""Generate `train.txt` and `test.txt` for the `TIMIT`_ data set.
+"""Generate `all_train.txt` and `all_test.txt` for the `TIMIT`_ data set.
 Additionally some information about the data set is being printed out.
 
 Generated data format:
@@ -26,6 +26,7 @@ TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to gener
 def _gen_list(target, additional_output=False, dry_run=False):
     """Generate .txt files containing the audio path and the corresponding sentence.
     Return additional data set information, see below.
+    review Documentation
 
     Args:
         target (str): 'train' or 'test'
@@ -59,6 +60,10 @@ def _gen_list(target, additional_output=False, dry_run=False):
     for i, line in enumerate(master_data):
         wav_path, txt_path, _, _ = line.split(',')
         txt_path = os.path.join(DATA_PATH, txt_path)
+
+        basename = os.path.basename(wav_path)
+        if 'SA1.WAV' == basename or 'SA2.WAV' == basename:
+            continue
 
         with open(txt_path, 'r') as f:
             txt = f.readlines()
@@ -142,8 +147,8 @@ def _delete_file_if_exists(path):
 
 if __name__ == '__main__':
     print('Starting...')
-    train_char_s, train_word_s, train_len = _gen_list('train', additional_output=True)
-    test_char_s, test_word_s, test_len = _gen_list('test')
+    train_char_s, train_word_s, train_len = _gen_list('train', additional_output=False)
+    test_char_s, test_word_s, test_len = _gen_list('test', additional_output=False)
     print('#(TEST_WORD\\TRAIN_WORD)={}:'
           .format(len(test_word_s - train_word_s)), test_word_s - train_word_s)
 

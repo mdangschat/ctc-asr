@@ -35,7 +35,7 @@ DENSE_NUM_UNITS = 2048               # Number of units per dense layer.
 # Logging & Output
 tf.flags.DEFINE_integer('max_steps', 1000000,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 11,
+tf.flags.DEFINE_integer('log_frequency', 101,
                         """How often (every x steps) to log results to the console.""")
 
 # Data set
@@ -45,9 +45,9 @@ tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
 tf.flags.DEFINE_string('train_dir', '/tmp/speech/train',
                        """Directory where to write event logs and checkpoints.""")
-tf.flags.DEFINE_integer('num_examples_train', 4620,
+tf.flags.DEFINE_integer('num_examples_train', 3696,
                         """Number of examples in the training set.""")
-tf.flags.DEFINE_integer('num_examples_test', 1680,
+tf.flags.DEFINE_integer('num_examples_test', 1344,
                         """Number of examples in the testing/evaluation set.""")
 
 NUM_CLASSES = num_classes()

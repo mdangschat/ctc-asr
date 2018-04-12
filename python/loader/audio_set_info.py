@@ -10,45 +10,14 @@ import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
 
+from loader.load_sample import load_sample
+
 
 def sample_info(file_path):
     # TODO Document
-    if not os.path.isfile(file_path):
-        raise ValueError('"{}" does not exist.'.format(file_path))
 
-    # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
-    y, sr = rosa.load(file_path, sr=None, mono=True)
+    mfcc, sample_len = load_sample(file_path)
 
-    # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
-    f_max = sr / 2.     # Maximum frequency (Nyquist rate).
-    f_min = 64.         # Minimum frequency.
-    n_fft = 1024        # Number of samples in a frame.
-    n_mfcc = 13         # Number of Mel cepstral coefficients to extract.
-    n_mels = 80         # Number of Mel bins to generate
-    win_length = 333    # Window length
-
-    db_pow = np.abs(rosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=win_length)) ** 2
-
-    s_mel = rosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
-                                        fmax=f_max, fmin=f_min, n_mels=n_mels)
-
-    s_mel = rosa.power_to_db(s_mel, ref=np.max)
-
-    # Compute MFCC features from the mel spectrogram.
-    mfcc = rosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
-
-    # And the first-order differences (delta features).
-    mfcc_delta = rosa.feature.delta(mfcc, width=5, order=1)
-
-    # Combine MFCC with MFCC_delta
-    sample = np.concatenate([mfcc, mfcc_delta], axis=0)
-
-    sample = sample.astype(np.float32)
-    sample = np.swapaxes(sample, 0, 1)
-    sample_len = sample.shape[0]
-
-    mfcc = np.swapaxes(mfcc, 0, 1)
     mfcc_max_value = np.amax(mfcc)
     mfcc_min_value = np.amin(mfcc)
 
@@ -182,7 +151,7 @@ def display_sample_info(file_path, label=''):
 
 if __name__ == '__main__':
     _timit_base_path = '/home/marc/workspace/speech/data/'
-    _test_txt_path = os.path.join(_timit_base_path, 'train.txt')
+    _test_txt_path = os.path.join(_timit_base_path, 'all_train.txt')
     with open(_test_txt_path, 'r') as f:
         lines = f.readlines()
         line = lines[0]
