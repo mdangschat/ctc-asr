@@ -118,10 +118,10 @@ def loss(logits, labels, seq_length):
                                     ctc_merge_repeated=True,
                                     time_major=True)
 
-    avg_loss = tf.reduce_mean(total_loss)
-    tf.summary.scalar('avg_loss', avg_loss)
+    mean_loss = tf.reduce_mean(total_loss)
+    tf.summary.scalar('mean_loss', mean_loss)
 
-    return avg_loss
+    return mean_loss
 
 
 def train(_loss, global_step):
@@ -168,17 +168,22 @@ def decoding(logits, seq_len, labels, originals):
     # TODO: Implement & Document
     # Review label_len needed, instead of seq_len?
 
-    # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
-    # decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
-    decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
+    # tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
+    # decoded, _ = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    decoded, _ = tf.nn.ctc_beam_search_decoder(inputs=logits,
+                                               sequence_length=seq_len,
+                                               merge_repeated=False,
+                                               beam_width=FLAGS.beam_width)
+
     # ctc_greedy_decoder returns a list with one SparseTensor as only element.
-    decoded = decoded[0]
+    decoded = tf.cast(decoded[0], tf.int32)
 
     # Edit distance and label error rate (LER).
-    edit_distance = tf.edit_distance(tf.cast(decoded, tf.int32), labels)
+    edit_distance = tf.edit_distance(decoded, labels)
     tf.summary.histogram('edit_distance', edit_distance)
-    label_error_rate = tf.reduce_mean(edit_distance)
-    tf.summary.scalar('label_error_rate', label_error_rate)
+
+    mean_edit_distance = tf.reduce_mean(edit_distance)
+    tf.summary.scalar('mean_edit_distance', mean_edit_distance)
 
     # Translate decoded integer data back to character strings.
     dense = tf.sparse_tensor_to_dense(decoded)
@@ -186,7 +191,12 @@ def decoding(logits, seq_len, labels, originals):
     text = tf.cast(text, dtype=tf.string)
     tf.summary.text('decoded_text', text)
 
-    return label_error_rate
+    # TODO: Word Error Rate (WER)
+    # TODO Inputs should be strings, not tensors.
+    wer = s_utils.wer(originals[0], decoded)
+    tf.summary.histogram('wer', wer)
+
+    return mean_edit_distance
 
 
 def inputs_train():
