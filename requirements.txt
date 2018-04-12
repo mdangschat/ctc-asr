@@ -1,5 +1,5 @@
-numpy
-matplotlib
-librosa
-tensorflow
-gitpython
+numpy           >= 1.14.0
+matplotlib      >= 2.2.0
+librosa         >= 0.6.0
+tensorflow      >= 1.7.0
+gitpython       >= 2.1.9

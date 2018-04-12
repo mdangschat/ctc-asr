@@ -26,10 +26,13 @@ tf.flags.DEFINE_float('adam_beta2', 0.999,
 tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
+tf.flags.DEFINE_bool('use_baidu_ctc', False,    # L8ER Not implemented at the moment.
+                     """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
+
 # Geometric layout.
-LSTM_NUM_UNITS = 2048                # Number of hidden units per LSTM cell.
+LSTM_NUM_UNITS = 512                # Number of hidden units per LSTM cell.
 LSTM_NUM_LAYERS = 1                  # Number of stacked BDLSTM layers.
-DENSE_NUM_UNITS = 2048               # Number of units per dense layer.
+DENSE_NUM_UNITS = 512               # Number of units per dense layer.
 
 
 # Logging & Output

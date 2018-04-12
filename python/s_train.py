@@ -34,14 +34,15 @@ def train():
         # Build the logits (prediction) graph.
         logits = s_model.inference(sequences, seq_length)
 
-        # Calculate loss/cost.
-        loss = s_model.loss(logits, labels, seq_length)
+        with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
+            # Calculate loss/cost.
+            loss = s_model.loss(logits, labels, seq_length)
+
+            # Decode.
+            s_model.decoding(logits, seq_length, labels, originals)
 
         # Build the training graph, that updates the model parameters after each batch.
         train_op = s_model.train(loss, global_step)
-
-        # Decode.
-        s_model.decoding(logits, seq_length, labels, originals)
 
         # Logging hook
         class LoggerHook(tf.train.SessionRunHook):

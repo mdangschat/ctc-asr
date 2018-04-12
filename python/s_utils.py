@@ -1,7 +1,10 @@
 """Utility and helper methods for TensorFlow speech learning."""
 
-import tensorflow as tf
+import numpy as np
 from git import Repo
+import tensorflow as tf
+
+from s_labels import itoc
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):
@@ -142,3 +145,29 @@ def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
     _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
     _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
     return _fw_cells, _bw_cells
+
+
+def dense_to_text(decoded_batch, original_batch):
+    # L8ER Documentation
+    # L8ER Move somewhere else?
+    decoded_result = ['"']
+    original_result = ['"']
+
+    for _decoded in decoded_batch:
+        for i in _decoded:
+            decoded_result.append(itoc(i))
+        decoded_result.append('", "')
+
+    for _original in original_batch:
+        _original = str(_original, 'utf-8')
+        for c in _original:
+            original_result.append(c)
+        original_result.append('", "')
+
+    decoded_result = ''.join(decoded_result)[: -3]
+    original_result = ''.join(original_result)[: -3]
+    print('d: {}\no: {}'.format(decoded_result, original_result))
+
+    decoded_result = np.array(decoded_result, dtype=np.object)
+    original_result = np.array(original_result, dtype=np.object)
+    return np.vstack([decoded_result, original_result])

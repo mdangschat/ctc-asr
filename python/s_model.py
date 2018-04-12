@@ -1,12 +1,10 @@
 """Contains the TS model definition."""
 
-import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
 from s_params import FLAGS, NUM_CLASSES, TF_FLOAT, LSTM_NUM_UNITS, LSTM_NUM_LAYERS, DENSE_NUM_UNITS
 import s_input
-import s_labels
 import s_utils
 
 
@@ -87,7 +85,7 @@ def inference(sequences, seq_length):
 
 
 def loss(logits, labels, seq_length):
-    """Calculate the networks loss.
+    """Calculate the networks CTC loss.
 
     Args:
         logits (tf.Tensor):
@@ -106,18 +104,24 @@ def loss(logits, labels, seq_length):
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
     """
-    # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
-    losses = tf.nn.ctc_loss(labels=labels,
-                            inputs=logits,
-                            sequence_length=seq_length,
-                            preprocess_collapse_repeated=False,
-                            ctc_merge_repeated=True,
-                            time_major=True)
+    if FLAGS.use_baidu_ctc:
+        # https://github.com/baidu-research/warp-ctc
+        total_loss = tfc.wrapctc.wrap_ctc_loss(labels=labels,
+                                               inputs=logits,
+                                               sequence_length=seq_length)
+    else:
+        # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
+        total_loss = tf.nn.ctc_loss(labels=labels,
+                                    inputs=logits,
+                                    sequence_length=seq_length,
+                                    preprocess_collapse_repeated=False,
+                                    ctc_merge_repeated=True,
+                                    time_major=True)
 
-    mean_loss = tf.reduce_mean(losses)
-    tf.summary.scalar('loss/mean_loss', mean_loss)
+    avg_loss = tf.reduce_mean(total_loss)
+    tf.summary.scalar('avg_loss', avg_loss)
 
-    return mean_loss
+    return avg_loss
 
 
 def train(_loss, global_step):
@@ -149,7 +153,8 @@ def train(_loss, global_step):
     # Compute gradients.    review Which optimizer performs best?
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    # optimizer = tf.train.AdamOptimizer(learning_rate=lr)
+    # optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
+    #                                    beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
     optimizer = s_utils.AdamOptimizerLogger(learning_rate=lr, beta1=FLAGS.adam_beta1,
                                             beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
     # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
@@ -163,45 +168,21 @@ def decoding(logits, seq_len, labels, originals):
     # TODO: Implement & Document
     # Review label_len needed, instead of seq_len?
 
-    def dense_to_text(decoded_batch, original_batch):
-        # L8ER Documentation
-        # L8ER Move somewhere else?
-        decoded_result = ['"']
-        original_result = ['"']
-
-        for _decoded in decoded_batch:
-            for i in _decoded:
-                decoded_result.append(s_labels.itoc(i))
-            decoded_result.append('", "')
-
-        for _original in original_batch:
-            _original = str(_original, 'utf-8')
-            for c in _original:
-                original_result.append(c)
-            original_result.append('", "')
-
-        decoded_result = ''.join(decoded_result)[: -3]
-        original_result = ''.join(original_result)[: -3]
-        print('d: {}\no: {}'.format(decoded_result, original_result))
-
-        decoded_result = np.array(decoded_result, dtype=np.object)
-        original_result = np.array(original_result, dtype=np.object)
-        return np.vstack([decoded_result, original_result])
-
     # Review: tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
     # decoded, log_prob = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
     decoded, log_prob = tf.nn.ctc_beam_search_decoder(inputs=logits, sequence_length=seq_len)
-    decoded = decoded[0]    # ctc_greedy_decoder returns a list with 1 SparseTensor as only element.
+    # ctc_greedy_decoder returns a list with one SparseTensor as only element.
+    decoded = decoded[0]
 
     # Edit distance and label error rate (LER).
     edit_distance = tf.edit_distance(tf.cast(decoded, tf.int32), labels)
-    tf.summary.histogram('loss/edit_distance', edit_distance)
+    tf.summary.histogram('edit_distance', edit_distance)
     label_error_rate = tf.reduce_mean(edit_distance)
-    tf.summary.scalar('loss/label_error_rate', label_error_rate)
+    tf.summary.scalar('label_error_rate', label_error_rate)
 
     # Translate decoded integer data back to character strings.
     dense = tf.sparse_tensor_to_dense(decoded)
-    text = tf.py_func(dense_to_text, [dense, originals], tf.string)
+    text = tf.py_func(s_utils.dense_to_text, [dense, originals], tf.string)
     text = tf.cast(text, dtype=tf.string)
     tf.summary.text('decoded_text', text)
 
@@ -261,7 +242,7 @@ def _variable_on_cpu(name, shape, initializer):
         initializer: Initializer for the variable.
 
     Returns:
-        Variable tensor.
+        tf.Tensor: Variable tensor.
     """
     with tf.device('/cpu:0'):
         return tf.get_variable(name, shape, initializer=initializer, dtype=TF_FLOAT)
@@ -281,11 +262,13 @@ def _variable_with_weight_decay(name, shape, stddev, weight_decay):
             If None, weight decay is not added for this variable.
 
     Returns:
-        Variable tensor.
+        tf.Tensor: Variable tensor.
     """
-    var = _variable_on_cpu(name, shape,
-                           tf.truncated_normal_initializer(stddev=stddev, dtype=TF_FLOAT))
+    initializer = tf.truncated_normal_initializer(stddev=stddev, dtype=TF_FLOAT)
+    var = _variable_on_cpu(name, shape, initializer=initializer)
+
     if weight_decay is not None:
         wd = tf.multiply(tf.nn.l2_loss(var), weight_decay, name='weight_loss')
         tf.add_to_collection('losses', wd)
+
     return var

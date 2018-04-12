@@ -42,7 +42,7 @@ def inputs_train(batch_size):
             2D Tensor with the original strings.
     """
     # Info: Longest label list in TIMIT train/test is 79 characters long.
-    train_txt_path = os.path.join(DATA_PATH, 'all_train.txt')
+    train_txt_path = os.path.join(DATA_PATH, 'train.txt')
     sample_list, label_list, original_list = _read_file_list(train_txt_path)
 
     with tf.name_scope('train_input'):
@@ -52,7 +52,7 @@ def inputs_train(batch_size):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        min_fraction_of_examples_in_queue = 0.33
+        min_fraction_of_examples_in_queue = 0.25
         min_queue_examples = int(FLAGS.num_examples_train * min_fraction_of_examples_in_queue)
         capacity = min_queue_examples + 3 * batch_size
 
@@ -173,6 +173,6 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
     # Add input vectors to TensorBoard summary.
     batch_size_t = tf.shape(sequences)[0]
     summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
-    tf.summary.image('sample', summary_batch, max_outputs=4)
+    tf.summary.image('sample', summary_batch, max_outputs=1)
 
     return sequences, seq_length, labels, originals
