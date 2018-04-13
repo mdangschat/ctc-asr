@@ -53,8 +53,7 @@ def inputs_train(batch_size):
 
         # Ensure that the random shuffling has good mixing properties.
         min_fraction_of_examples_in_queue = 0.25
-        min_queue_examples = int(FLAGS.num_examples_train * min_fraction_of_examples_in_queue)
-        capacity = min_queue_examples + 3 * batch_size
+        capacity = int(FLAGS.num_examples_train * min_fraction_of_examples_in_queue)
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
@@ -165,7 +164,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         batch_size=batch_size,
         bucket_boundaries=boundaries,
         num_threads=num_pre_process_threads,
-        capacity=capacity // len(boundaries),
+        capacity=(capacity // len(boundaries)) + (3 * batch_size * len(boundaries)),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
         allow_smaller_final_batch=False
