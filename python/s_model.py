@@ -20,7 +20,7 @@ def inference(sequences, seq_length):
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
     """
     initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
-    regularizer = tfc.layers.l2_regularizer(0.004)
+    regularizer = tfc.layers.l2_regularizer(0.0046875)
 
     # Dense1
     with tf.variable_scope('dense1'):
