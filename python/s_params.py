@@ -14,7 +14,7 @@ tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 0.75,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_float('num_epochs_per_decay', 10.0,
+tf.flags.DEFINE_float('num_epochs_per_decay', 5.0,
                       """Number of epochs after which learning rate decays.""")
 
 tf.flags.DEFINE_float('adam_beta1', 0.9,
@@ -57,8 +57,8 @@ tf.flags.DEFINE_integer('num_examples_train', 3696,
                         """Number of examples in the training set.""")
 tf.flags.DEFINE_integer('num_examples_test', 1344,
                         """Number of examples in the testing/evaluation set.""")
-
-NUM_CLASSES = num_classes()
+tf.flags.DEFINE_integer('num_classes', num_classes(),
+                        """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Miscellaneous
 TF_FLOAT = tf.float32   # ctc_xxxx functions don't support float64. See #13

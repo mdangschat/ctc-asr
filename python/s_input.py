@@ -85,7 +85,8 @@ def inputs_train(batch_size):
 
 
 def inputs(batch_size):
-    # L8ER: This method should always return unaltered data.
+    # This method should always return unaltered data.
+    # TODO: Implement for evaluation.
     return inputs_train(batch_size)
 
 

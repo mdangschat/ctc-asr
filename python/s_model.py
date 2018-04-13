@@ -3,7 +3,7 @@
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from s_params import FLAGS, NUM_CLASSES, TF_FLOAT, LSTM_NUM_UNITS, LSTM_NUM_LAYERS, DENSE_NUM_UNITS
+from s_params import FLAGS, TF_FLOAT
 import s_input
 import s_utils
 
@@ -24,7 +24,7 @@ def inference(sequences, seq_length):
 
     # Dense1
     with tf.variable_scope('dense1'):
-        dense1 = tf.layers.dense(sequences, DENSE_NUM_UNITS,
+        dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
@@ -32,7 +32,7 @@ def inference(sequences, seq_length):
 
     # Dense2
     with tf.variable_scope('dense2'):
-        dense2 = tf.layers.dense(dense1, DENSE_NUM_UNITS,
+        dense2 = tf.layers.dense(dense1, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
@@ -40,7 +40,7 @@ def inference(sequences, seq_length):
 
     # Dense3
     with tf.variable_scope('dense3'):
-        dense3 = tf.layers.dense(dense2, DENSE_NUM_UNITS,
+        dense3 = tf.layers.dense(dense2, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
@@ -50,8 +50,8 @@ def inference(sequences, seq_length):
     with tf.variable_scope('bdlstm'):
         # Create a stack of RNN cells.
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
-        fw_cells, bw_cells = s_utils.create_bidirectional_cells(LSTM_NUM_UNITS,
-                                                                LSTM_NUM_LAYERS,
+        fw_cells, bw_cells = s_utils.create_bidirectional_cells(FLAGS.num_units_lstm,
+                                                                FLAGS.num_layers_lstm,
                                                                 keep_prob=0.8)
 
         # `output` = [batch_size, time, num_hidden*2]
@@ -65,7 +65,7 @@ def inference(sequences, seq_length):
 
     # Dense4
     with tf.variable_scope('dense4'):
-        dense4 = tf.layers.dense(bdlstm, DENSE_NUM_UNITS,
+        dense4 = tf.layers.dense(bdlstm, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
@@ -76,7 +76,7 @@ def inference(sequences, seq_length):
     # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
     # and performs the softmax internally for efficiency.
     with tf.variable_scope('logits'):
-        logits = tf.layers.dense(dense4, NUM_CLASSES, kernel_initializer=initializer)
+        logits = tf.layers.dense(dense4, FLAGS.num_classes, kernel_initializer=initializer)
         logits = tfc.rnn.transpose_batch_time(logits)
 
     # logits = tf.Print(logits, [tf.shape(logits)], message='logits: ')
@@ -151,7 +151,7 @@ def train(_loss, global_step):
                                     FLAGS.learning_rate_decay_factor,
                                     staircase=True)
 
-    # Compute gradients.    review Which optimizer performs best?
+    # Compute gradients.    Review which optimizer performs best?
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
     # optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
@@ -166,17 +166,31 @@ def train(_loss, global_step):
 
 
 def decoding(logits, seq_len, labels, originals):
-    # TODO: Implement & Document
+    """Decode a given inference (`logits`) and calculate the edit distance and the word error rate.
+
+    Args:
+        logits (tf.Tensor): Logits Tensor of shape [time (input), batch_size, num_classes].
+        seq_len (tf.Tensor): Tensor containing the batches sequence lengths of shape [batch_size].
+        labels (tf.SparseTensor): Integer SparseTensor containing the target.
+            With dense shape [batch_size, time (target)].
+        originals (tf.Tensor): String Tensor of shape [batch_size] with the original plaintext.
+
+    Returns:
+        tf.Tensor: Float Mean Edit Distance.
+        tf.Tensor: Float Word Error Rate.
+    """
     # Review label_len needed, instead of seq_len?
 
     # tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
+    # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_beam_search_decoder
     # decoded, _ = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
     decoded, _ = tf.nn.ctc_beam_search_decoder(inputs=logits,
                                                sequence_length=seq_len,
-                                               merge_repeated=False,
-                                               beam_width=FLAGS.beam_width)
+                                               beam_width=FLAGS.beam_width,
+                                               top_paths=1,
+                                               merge_repeated=False)
 
-    # ctc_greedy_decoder returns a list with one SparseTensor as only element.
+    # ctc_greedy_decoder returns a list with one SparseTensor as only element, if `top_paths=1`.
     decoded = tf.cast(decoded[0], tf.int32)
 
     # Edit distance and label error rate (LER).
@@ -195,7 +209,7 @@ def decoding(logits, seq_len, labels, originals):
     tf.summary.text('decoded_text_summary', decoded_text_summary[:, : FLAGS.num_samples_to_report])
 
     # Word Error Rate (WER)
-    wers, wer = tf.py_func(s_utils.wers, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT])
+    wers, wer = tf.py_func(s_utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT])
     tf.summary.histogram('word_error_rates', wers)
     tf.summary.scalar('word_error_rate', wer)
 
@@ -204,7 +218,6 @@ def decoding(logits, seq_len, labels, originals):
 
 def inputs_train():
     """Construct input for the speech training.
-    # review Documentation up to date? Types okay?
 
     Returns:
         tf.Tensor:
@@ -226,7 +239,6 @@ def inputs_train():
 
 def inputs():
     """Construct input for the speech training.
-    # review Documentation up to date? Types okay?
 
     Returns:
         tf.Tensor:

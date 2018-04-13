@@ -9,7 +9,12 @@ from s_params import NP_FLOAT
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):
-    # TODO: Document
+    """Modified `AdamOptimizer`_ that logs it's learning rate and step.
+
+    .. _AdamOptimizer:
+        https://www.tensorflow.org/api_docs/python/tf/train/AdamOptimizer
+    """
+
     def _apply_dense(self, grad, var):
         m = self.get_slot(var, 'm')
         v = self.get_slot(var, 'v')
@@ -21,7 +26,7 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
         step = m_hat / (v_hat ** 0.5 + self._epsilon_t)
 
         # Use a histogram summary to monitor it during training.
-        tf.summary.histogram('hist', step)
+        tf.summary.histogram('step', step)
 
         current_lr = self._lr_t * tf.sqrt(1. - beta2_power) / (1. - beta1_power)
         tf.summary.scalar('estimated_lr', current_lr)
@@ -71,7 +76,6 @@ def attention(inputs, attention_size, time_major=False):
         In case of Bidirectional RNN, this will be a `Tensor` shaped:
             `[batch_size, cell_fw.output_size + cell_bw.output_size]`.
     """
-
     if isinstance(inputs, tuple):
         # In case of Bi-RNN, concatenate the forward and the backward RNN outputs.
         inputs = tf.concat(inputs, 2)
@@ -104,11 +108,21 @@ def attention(inputs, attention_size, time_major=False):
 
 
 def get_git_revision_hash():
+    """Return the git revision id/hash.
+
+    Returns:
+        str: Git revision hash.
+    """
     repo = Repo('.', search_parent_directories=True)
     return repo.head.object.hexsha
 
 
 def get_git_branch():
+    """Return the active git branches name.
+
+    Returns:
+        str: Git branch.
+    """
     repo = Repo('.', search_parent_directories=True)
     return repo.active_branch.name
 
@@ -149,8 +163,23 @@ def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
 
 
 def dense_to_text(decoded, originals):
-    # L8ER Documentation
-    # L8ER Move somewhere else?
+    """Convert a dense, integer encoded `tf.Tensor` into a readable string.
+
+        Args:
+            decoded (tf.Tensor):
+                The decoded integer Tensor path.
+            originals (tf.Tensor):
+                String tensor, containing the original input string for comparision.
+
+        Returns:
+            tf.Tensor:
+                2D string Tensor with layout:
+                    [[decoded_string_0, original_string_0], ...
+                     [decoded_string_N, original_string_N]]
+            tf.Tensor:
+                1D string Tensor containing only the decoded text outputs.
+                    [decoded_string_0, ..., decoded_string_N]
+        """
     decoded_strings = []
     original_strings = []
 
@@ -168,14 +197,23 @@ def dense_to_text(decoded, originals):
     return np.vstack([decoded_strings, original_strings]), np.array(decoded_strings)
 
 
+# The following function has been taken from:
+# <https://github.com/mozilla/DeepSpeech/blob/master/util/text.py#L85>
 def wer(original, result):
-    """The WER is defined as the editing/Levenshtein distance on word level
-    divided by the amount of words in the original text.
+    """The Word Error Rate (WER) is defined as the editing/Levenshtein distance
+    on word level divided by the amount of words in the original text.
     In case of the original having more words (N) than the result and both
     being totally different (all N words resulting in 1 edit operation each),
     the WER will always be 1 (N / N = 1).
 
-    TODO: Documentation
+    Args:
+        original (np.string): The original sentences.
+            A tf.Tensor converted to `np.ndarray` object bytes by `tf.py_func`.
+        result (np.string): The decoded sentences.
+            A tf.Tensor converted to `np.ndarray` object bytes by `tf.py_func`.
+
+    Returns:
+        np.ndarray: Numpy array containing float scalar.
     """
     # The WER ist calculated on word (and NOT on character) level.
     # Therefore we split the strings into words first:
@@ -185,8 +223,23 @@ def wer(original, result):
     return np.array(levenshtein_distance, dtype=NP_FLOAT)
 
 
-def wers(originals, results):
-    # TODO: Documentation
+# The following functiom has been taken from:
+# <https://github.com/mozilla/DeepSpeech/blob/master/util/text.py#L99>
+def wer_batch(originals, results):
+    """Calculate the Word Error Rate (WER) for a batch.
+
+    Args:
+        originals (np.ndarray): 2D string Tensor with the original sentences. [batch_size, 1]
+            A tf.Tensor converted to `np.ndarray` bytes by `tf.py_func`.
+        results (np.ndarray): 2D string Tensor with the decoded sentences. [batch_size, 1]
+            A tf.Tensor converted to `np.ndarray` bytes by `tf.py_func`.
+
+    Returns:
+        np.ndarray:
+            Float array containing the WER for every sample within the batch. [batch_size]
+        np.ndarray:
+            Float scalar with the average WER for the batch.
+    """
     count = len(originals)
     rates = np.array([], dtype=NP_FLOAT)
     mean = 0.0
@@ -199,7 +252,7 @@ def wers(originals, results):
     return rates, np.array(mean / float(count), dtype=NP_FLOAT)
 
 
-# The following code is from: http://hetland.org/coding/python/levenshtein.py
+# The following code is from: <http://hetland.org/coding/python/levenshtein.py>
 # This is a straightforward implementation of a well-known algorithm, and thus
 # probably shouldn't be covered by copyright to begin with. But in case it is,
 # the author (Magnus Lie Hetland) has, to the extent possible under law,
@@ -208,8 +261,14 @@ def wers(originals, results):
 # version 1.0. This software is distributed without any warranty. For more
 # information, see <http://creativecommons.org/publicdomain/zero/1.0>
 def levenshtein(a, b):
-    """Calculates the Levenshtein distance between a and b.
-    TODO: Documentation
+    """Calculate the Levenshtein distance between `a` and `b`.
+
+    Args:
+        a (str): Original word.
+        b (str): Decoded word.
+
+    Returns:
+        float: Levenshtein distance.
     """
     n, m = len(a), len(b)
     if n > m:
