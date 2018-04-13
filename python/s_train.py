@@ -97,7 +97,7 @@ def train():
             # using a default summary saver.
             save_summaries_steps=FLAGS.log_frequency,
             # The frequency, in number of global steps, that the global step/sec is logged.
-            log_step_count_steps=FLAGS.log_frequency * 5,
+            log_step_count_steps=FLAGS.log_frequency * 10,
             hooks=session_hooks,
             config=session_config
         )

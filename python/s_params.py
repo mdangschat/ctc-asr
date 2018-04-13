@@ -12,7 +12,7 @@ tf.flags.DEFINE_integer('batch_size', 16,
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 0.75,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 0.666,
                       """Learning rate decay factor.""")
 tf.flags.DEFINE_float('num_epochs_per_decay', 5.0,
                       """Number of epochs after which learning rate decays.""")
