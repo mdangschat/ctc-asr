@@ -22,11 +22,7 @@ def load_sample(file_path):
         np.ndarray:
             2D array with [time, num_features] shape, containing float.
         np.ndarray:
-            1 element array, containing a single int32.
-
-    Review:
-        * (mfcc + mfcc_delta) better features than pure mfcc?
-        * Normalize mfcc_delta.
+            Array containing a single int32.
     """
     if type(file_path) is not str:
         file_path = str(file_path, 'utf-8')
@@ -74,7 +70,7 @@ def load_sample(file_path):
 
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
-    sample = (sample - np.mean(sample)) / np.std(sample)    # review useful? Also try normalize.
+    sample = (sample - np.mean(sample)) / np.std(sample)
 
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len

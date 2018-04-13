@@ -1,4 +1,5 @@
 """Testing environment for `librosa`_ functionality.
+Provides display options for audio files and their preprocessed features.
 
 .. _librosa:
     https://librosa.github.io/librosa/index.html
@@ -14,14 +15,18 @@ from loader.load_sample import load_sample
 
 
 def sample_info(file_path):
-    # TODO Document
+    """Load a given audio file and pre process it with `loader.load_sample.load_sample()`,
+    then extract some additional statistics.
 
+    Args:
+        file_path: Audio file path.
+
+    Returns:
+        (int, int, int): Pre processed sample length, maximum MFCC value, minimum MFCC value.
+    """
     mfcc, sample_len = load_sample(file_path)
 
-    mfcc_max_value = np.amax(mfcc)
-    mfcc_min_value = np.amin(mfcc)
-
-    return sample_len, mfcc_max_value, mfcc_min_value
+    return sample_len, np.amax(mfcc), np.amin(mfcc)
 
 
 def display_sample_info(file_path, label=''):
