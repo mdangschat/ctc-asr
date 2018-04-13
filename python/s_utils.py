@@ -124,7 +124,7 @@ def create_cell(num_units, keep_prob=1.0):
     Returns:
         tf.nn.rnn_cell.LSTMCell: RNN cell with dropout wrapper.
     """
-    # review Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
+    # Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
     cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
     return tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
 
@@ -160,6 +160,7 @@ def dense_to_text(decoded, originals):
     for o in originals:
         original_strings.append(''.join([c for c in o.decode('utf-8')]))
 
+    # L8ER: Remove debug print.
     print('d: {}\no: {}'.format(decoded_strings, original_strings))
 
     decoded_strings = np.array(decoded_strings, dtype=np.object)
