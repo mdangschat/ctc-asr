@@ -192,7 +192,7 @@ def decoding(logits, seq_len, labels, originals):
                                                      [dense, originals],
                                                      [tf.string, tf.string])
 
-    tf.summary.text('decoded_text_summary', decoded_text_summary)
+    tf.summary.text('decoded_text_summary', decoded_text_summary[:, : FLAGS.num_samples_to_report])
 
     # Word Error Rate (WER)
     wers, wer = tf.py_func(s_utils.wers, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT])

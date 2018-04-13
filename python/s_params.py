@@ -1,4 +1,4 @@
-"""Collection of hyper parameters."""
+"""Collection of hyper parameters, network layout, and reporting options."""
 # REVIEW: Convert to FLAGs where applicable.
 
 
@@ -9,7 +9,7 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 2,
+tf.flags.DEFINE_integer('batch_size', 8,
                         """(Maximum) Number of samples within a batch.""")
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
@@ -27,29 +27,31 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_bool('use_baidu_ctc', False,    # L8ER Not implemented at the moment.
+tf.flags.DEFINE_bool('use_baidu_ctc', False,    # TODO: Don't use. Not implemented at the moment.
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
-tf.flags.DEFINE_integer('beam_width', 256,
+tf.flags.DEFINE_integer('beam_width', 128,
                         """Beam width used in the CTC `beam_search_decoder`.""")
 
 # Geometric layout.
-LSTM_NUM_UNITS = 256                # Number of hidden units per LSTM cell.
+LSTM_NUM_UNITS = 128                # Number of hidden units per LSTM cell.
 LSTM_NUM_LAYERS = 1                  # Number of stacked BDLSTM layers.
-DENSE_NUM_UNITS = 256               # Number of units per dense layer.
+DENSE_NUM_UNITS = 128               # Number of units per dense layer.
 
 
 # Logging & Output
 tf.flags.DEFINE_integer('max_steps', 1000000,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 101,
+tf.flags.DEFINE_integer('log_frequency', 10,
                         """How often (every x steps) to log results to the console.""")
+tf.flags.DEFINE_integer('num_samples_to_report', 4,
+                        """The number of decoded and original text samples to report.""")
 
 # Data set
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
-tf.flags.DEFINE_string('train_dir', '/tmp/speech/train',
+tf.flags.DEFINE_string('train_dir', '/tmp/speech/ds_base',
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('num_examples_train', 3696,
                         """Number of examples in the training set.""")
@@ -69,6 +71,7 @@ FLAGS = tf.flags.FLAGS
 
 def get_parameters():
     """Generate a string containing the training parameters.
+    Review if new parameters should also be reported.
 
     Returns:
         (str): Training parameters.
