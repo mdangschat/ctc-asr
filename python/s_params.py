@@ -60,6 +60,11 @@ tf.flags.DEFINE_integer('num_examples_test', 1344,
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
+# Evaluation
+tf.app.flags.DEFINE_string('eval_dir', '/tmp/speech/eval',
+                           """Directory where to write the evaluation logs into.""")
+
+
 # Miscellaneous
 TF_FLOAT = tf.float32   # ctc_xxxx functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_xxxx functions don't support float64. See #13

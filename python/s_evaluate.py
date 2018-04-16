@@ -1,6 +1,6 @@
-"""Evaluate the trained TS model.
+"""Evaluate the trained speech model.
 
-Add accuracy table.
+L8ER: Add accuracy table.
 """
 
 import math
@@ -9,23 +9,14 @@ from datetime import datetime
 import numpy as np
 import tensorflow as tf
 
-import s_input
+from s_params import FLAGS
 import s_model
 
-FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string('eval_dir', '/tmp/s_eval',
-                           """Directory where to write the evaluation logs into.""")
-tf.app.flags.DEFINE_string('checkpoint_dir', '/tmp/s_train',
-                           """Points to the directory in which the training checkpoints are 
-                           stored.""")
-
-
-def eval_once(saver, summary_writer, top_k_op, summary_op):
+def eval_once(summary_writer, top_k_op, summary_op):
     """Run the evaluation once over all test/eval inputs.
 
     Args:
-        saver: Saver.
         summary_writer: Summary writer.
         top_k_op: Top K operator.
         summary_op: Summary operator.
@@ -36,6 +27,8 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
     with tf.Session() as sess:
         checkpoint = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
         if checkpoint and checkpoint.model_checkpoint_path:
+            saver = tf.train.Saver()
+
             # Restore from checkpoint.
             saver.restore(sess, checkpoint.model_checkpoint_path)
             # Extract global stop from checkpoint.
@@ -53,7 +46,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
             for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
-            num_iter = int(math.ceil(s_input.NUM_EXAMPLES_PER_EPOCH_EVAL / FLAGS.batch_size))
+            num_iter = int(math.ceil(FLAGS.num_examples_test / FLAGS.batch_size))
             true_count = 0  # Counts the number of correct predictions.
             total_sample_count = num_iter * FLAGS.batch_size
             step = 0
@@ -84,26 +77,21 @@ def evaluate():
     # L8ER: Add top k accuracy support.
     top_k = 1
     with tf.Graph().as_default() as g:
-        # Get images and labels.
-        images, labels = s_model.inputs(True)
+        # Get evaluation sequences and ground truth.
+        sequences, seq_length, labels, originals = s_model.inputs()
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits = s_model.inference(images)
+        logits = s_model.inference(sequences, seq_length)
 
         # Calculate predictions.
         top_k_op = tf.nn.in_top_k(logits, labels, top_k)
-
-        # Restore the moving average version of the learned variables for eval.
-        variable_averages = tf.train.ExponentialMovingAverage(s_model.MOVING_AVERAGE_DECAY)
-        variables_to_restore = variable_averages.variables_to_restore()
-        saver = tf.train.Saver(variables_to_restore)
 
         # Build the summary operation based on the TF collection of summaries.
         summary_op = tf.summary.merge_all()
         summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
 
         # L8ER: Add continuous evaluation loop.
-        eval_once(saver, summary_writer, top_k_op, summary_op)
+        eval_once(summary_writer, top_k_op, summary_op)
 
 
 # noinspection PyUnusedLocal
