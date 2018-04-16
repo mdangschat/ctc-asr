@@ -26,11 +26,15 @@ TARGET_PATH = '/home/marc/workspace/speech/data/'               # Where to gener
 def _gen_list(target, additional_output=False, dry_run=False):
     """Generate .txt files containing the audio path and the corresponding sentence.
     Return additional data set information, see below.
-    review Documentation
 
     Args:
-        target (str): 'train' or 'test'
-        additional_output (bool): TODO Document & Implement
+        target (str):
+            'train' or 'test'
+        additional_output (bool):
+            Convert the audio data to features and extract additional information.
+            Prints out optimal bucket sizes.
+        dry_run (bool):
+            Dry run, do not create output.txt file.
 
     Returns:
         char_set: Set containing each character within the data set.
