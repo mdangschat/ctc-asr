@@ -26,9 +26,9 @@ def inference(sequences, seq_length):
     with tf.variable_scope('dense1'):
         dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
-                                 kernel_initializer=initializer,
+                                 kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
-        dense1 = tf.minimum(dense1, 20.0)
+        dense1 = tf.minimum(dense1, FLAGS.relu_cutoff)
 
     # Dense2
     with tf.variable_scope('dense2'):
@@ -36,7 +36,7 @@ def inference(sequences, seq_length):
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
-        dense2 = tf.minimum(dense2, 20.0)
+        dense2 = tf.minimum(dense2, FLAGS.relu_cutoff)
 
     # Dense3
     with tf.variable_scope('dense3'):
@@ -44,7 +44,7 @@ def inference(sequences, seq_length):
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
-        dense3 = tf.minimum(dense3, 20.0)
+        dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
 
     # BDLSTM cell stack.
     with tf.variable_scope('bdlstm'):
@@ -69,7 +69,7 @@ def inference(sequences, seq_length):
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
-        dense4 = tf.minimum(dense4, 20.0)
+        dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because

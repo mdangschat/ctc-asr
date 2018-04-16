@@ -24,6 +24,9 @@ tf.flags.DEFINE_float('adam_beta2', 0.999,
 tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
+tf.flags.DEFINE_float('relu_cutoff', 20.0,
+                      """Cutoff ReLU activations that exceed the cutoff.""")
+
 # CTC loss and decoder.
 tf.flags.DEFINE_bool('use_warp_ctc', False,    # TODO: Not implemented at the moment. See #23
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
@@ -66,6 +69,8 @@ tf.app.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/
 
 
 # Miscellaneous
+tf.flags.DEFINE_integer('random_seed', 4711,
+                        """TensorFlow random seed.""")
 TF_FLOAT = tf.float32   # ctc_xxxx functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_xxxx functions don't support float64. See #13
 

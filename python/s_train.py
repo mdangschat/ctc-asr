@@ -15,7 +15,7 @@ from s_utils import get_git_branch, get_git_revision_hash
 
 # General TensorFlow settings and setup.
 tf.logging.set_verbosity(tf.logging.INFO)
-tf.set_random_seed(4711)
+tf.set_random_seed(FLAGS.random_seed)
 
 
 def train():

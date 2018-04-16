@@ -140,7 +140,10 @@ def create_cell(num_units, keep_prob=1.0):
     """
     # Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
     cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
-    return tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=keep_prob)
+    return tf.nn.rnn_cell.DropoutWrapper(cell,
+                                         input_keep_prob=keep_prob,
+                                         output_keep_prob=keep_prob,
+                                         seed=FLAGS.random_seed)
 
 
 def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):

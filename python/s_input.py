@@ -85,9 +85,10 @@ def inputs_train(batch_size, txt_file='train.txt'):
         return sequences, seq_length, labels, originals
 
 
-def inputs(batch_size, txt_file='test.txt'):
+def inputs(batch_size):
     # This method should always return unaltered data.
     # L8ER: Implement default version, if `inputs_train()` alters the data.
+    txt_file = 'test.txt'
     return inputs_train(batch_size, txt_file=txt_file)
 
 
