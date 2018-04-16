@@ -13,19 +13,18 @@ from s_params import FLAGS
 import s_model
 
 
-def eval_once(summary_writer, top_k_op, summary_op):
+def eval_once(summary_writer, med_op, wer_op, summary_op):
     """Run the evaluation once over all test/eval inputs.
 
     Args:
         summary_writer: Summary writer.
-        top_k_op: Top K operator.
         summary_op: Summary operator.
 
     Returns:
         Nothing.
     """
     with tf.Session() as sess:
-        checkpoint = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
+        checkpoint = tf.train.get_checkpoint_state(FLAGS.train_dir)
         if checkpoint and checkpoint.model_checkpoint_path:
             saver = tf.train.Saver()
 
@@ -34,7 +33,7 @@ def eval_once(summary_writer, top_k_op, summary_op):
             # Extract global stop from checkpoint.
             _, global_step = checkpoint.model_checkpoint_path.split('/')[-1].split('-'[-1])
             global_step = str(global_step)
-            print('global_stop:', global_step)
+            print('Loaded global step:', global_step)
         else:
             print('No checkpoint file found.')
             return
@@ -47,22 +46,32 @@ def eval_once(summary_writer, top_k_op, summary_op):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
             num_iter = int(math.ceil(FLAGS.num_examples_test / FLAGS.batch_size))
-            true_count = 0  # Counts the number of correct predictions.
+            med_sum, wer_sum = 0.0, 0.0
             total_sample_count = num_iter * FLAGS.batch_size
             step = 0
-            while step < num_iter and not coord.should_stop():
-                predictions = sess.run([top_k_op])
-                true_count += np.sum(predictions)
-                step += 1
 
-            # Compute precision @ 1.
-            precision = true_count / total_sample_count
-            print('{}: precision @ 1 = {:.3f}'.format(datetime.now(), precision))
+            while step < num_iter and not coord.should_stop():
+                med_batch, wer_batch = sess.run([med_op, wer_op])
+                med_sum += np.sum(med_batch)
+                wer_sum += np.sum(wer_batch)
+                step += 1
+                print('DEBUG:', med_batch, wer_batch, step, num_iter)
+
+            # Compute error rates.
+            print('DEBUG1:', type(med_sum), type(wer_sum), type(global_step))
+            mean_med = med_sum / num_iter
+            mean_wer = wer_sum / num_iter
+            print('{}: mean_edit_distance = {:.3f}; word_error_rate = {:.3f}'
+                  .format(datetime.now(), mean_med, mean_wer))
+            print('DEBUG2:', mean_med, med_sum, mean_wer, wer_sum, global_step)
 
             summary = tf.Summary()
             summary.ParseFromString(sess.run(summary_op))
-            summary.value.add(tag='Precision @ 1', simple_value=precision)
-            summary_writer.add_summary(summary, str(global_step[1]))
+            summary.value.add(tag='eval/loss', simple_value=avg_loss)
+            summary.value.add(tag='eval/mean_edit_distance', simple_value=mean_med)
+            summary.value.add(tag='eval/word_error_rate', simple_value=mean_wer)
+            # summary_writer.add_summary(summary, str(global_step))
+            summary_writer.add_summary(summary, 1)
         except Exception as e:
             print('EXCEPTION:', e, ', type:', type(e))
             coord.request_stop(e)
@@ -73,9 +82,7 @@ def eval_once(summary_writer, top_k_op, summary_op):
 
 
 def evaluate():
-    """Evaluate TS."""
-    # L8ER: Add top k accuracy support.
-    top_k = 1
+    """Evaluate the speech model."""
     with tf.Graph().as_default() as g:
         # Get evaluation sequences and ground truth.
         sequences, seq_length, labels, originals = s_model.inputs()
@@ -83,15 +90,15 @@ def evaluate():
         # Build a graph that computes the logits predictions from the inference model.
         logits = s_model.inference(sequences, seq_length)
 
-        # Calculate predictions.
-        top_k_op = tf.nn.in_top_k(logits, labels, top_k)
+        # Calculate error rates
+        med_op, wer_op = s_model.decoding(logits, seq_length, labels, originals)
 
         # Build the summary operation based on the TF collection of summaries.
         summary_op = tf.summary.merge_all()
         summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
 
         # L8ER: Add continuous evaluation loop.
-        eval_once(summary_writer, top_k_op, summary_op)
+        eval_once(summary_writer, med_op, wer_op, summary_op)
 
 
 # noinspection PyUnusedLocal

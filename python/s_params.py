@@ -27,21 +27,21 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
 # CTC loss and decoder.
 tf.flags.DEFINE_bool('use_warp_ctc', False,    # TODO: Not implemented at the moment. See #23
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
-tf.flags.DEFINE_integer('beam_width', 1024,
+tf.flags.DEFINE_integer('beam_width', 128,
                         """Beam width used in the CTC `beam_search_decoder`.""")
 
 # Geometric layout.
-tf.flags.DEFINE_integer('num_units_lstm', 2048,
+tf.flags.DEFINE_integer('num_units_lstm', 128,
                         """Number of hidden units in each of the BDLSTM cells.""")
 tf.flags.DEFINE_integer('num_layers_lstm', 1,
                         """Number of stacked BDLSTM cells.""")
-tf.flags.DEFINE_integer('num_units_dense', 2048,
+tf.flags.DEFINE_integer('num_units_dense', 128,
                         """Number of units per dense layer.""")
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 1000000,
+tf.flags.DEFINE_integer('max_steps', 100,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 10,
+tf.flags.DEFINE_integer('log_frequency', 5,
                         """How often (every x steps) to log results to the console.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The number of decoded and original text samples to report.""")

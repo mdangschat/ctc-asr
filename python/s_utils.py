@@ -189,9 +189,9 @@ def dense_to_text(decoded, originals):
     for o in originals:
         original_strings.append(''.join([c for c in o.decode('utf-8')]))
 
-    # Print a maximum of `FLAGS.num_samples_to_report` to STDOUT.
-    print('d: {}\no: {}'.format(decoded_strings[: FLAGS.num_samples_to_report],
-                                original_strings[: FLAGS.num_samples_to_report]))
+    # Print a maximum of `FLAGS.num_samples_to_report` to STDOUT.   # TODO deactivated for eval rewr
+    # print('d: {}\no: {}'.format(decoded_strings[: FLAGS.num_samples_to_report],
+    #                             original_strings[: FLAGS.num_samples_to_report]))
 
     decoded_strings = np.array(decoded_strings, dtype=np.object)
     original_strings = np.array(original_strings, dtype=np.object)
