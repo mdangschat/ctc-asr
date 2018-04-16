@@ -13,12 +13,15 @@ from s_params import FLAGS
 import s_model
 
 
-def eval_once(summary_writer, med_op, wer_op, summary_op):
+def eval_once(summary_writer, loss_op, med_op, wer_op, summary_op):
     """Run the evaluation once over all test/eval inputs.
 
     Args:
-        summary_writer: Summary writer.
-        summary_op: Summary operator.
+        summary_writer (): Summary writer.
+        wer_op ():
+        med_op ():
+        loss_op ():
+        summary_op (): Summary operator.
 
     Returns:
         Nothing.
@@ -46,32 +49,34 @@ def eval_once(summary_writer, med_op, wer_op, summary_op):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
             num_iter = int(math.ceil(FLAGS.num_examples_test / FLAGS.batch_size))
-            med_sum, wer_sum = 0.0, 0.0
-            total_sample_count = num_iter * FLAGS.batch_size
+            med_sum, wer_sum, loss_sum = 0.0, 0.0, 0.0
             step = 0
 
             while step < num_iter and not coord.should_stop():
-                med_batch, wer_batch = sess.run([med_op, wer_op])
+                loss_batch, med_batch, wer_batch = sess.run([loss_op, med_op, wer_op])
+
+                loss_sum += np.sum(loss_batch)
                 med_sum += np.sum(med_batch)
                 wer_sum += np.sum(wer_batch)
                 step += 1
-                print('DEBUG:', med_batch, wer_batch, step, num_iter)
+                print('{}: loss={:.3f}; mean_edit_distance={:.3f}; word_error_rate={:.3f}; step={}'
+                      .format(datetime.now(), loss_batch, med_batch, wer_batch, step))
 
             # Compute error rates.
-            print('DEBUG1:', type(med_sum), type(wer_sum), type(global_step))
-            mean_med = med_sum / num_iter
-            mean_wer = wer_sum / num_iter
-            print('{}: mean_edit_distance = {:.3f}; word_error_rate = {:.3f}'
-                  .format(datetime.now(), mean_med, mean_wer))
-            print('DEBUG2:', mean_med, med_sum, mean_wer, wer_sum, global_step)
+            avg_loss = loss_sum / num_iter
+            avg_med = med_sum / num_iter
+            avg_wer = wer_sum / num_iter
+            print('Summarizing averages:')
+            print('{}: loss = {:.3f}; mean_edit_distance = {:.3f}; word_error_rate = {:.3f}'
+                  .format(datetime.now(), avg_loss, avg_med, avg_wer))
 
             summary = tf.Summary()
             summary.ParseFromString(sess.run(summary_op))
-            summary.value.add(tag='eval/loss', simple_value=avg_loss)
-            summary.value.add(tag='eval/mean_edit_distance', simple_value=mean_med)
-            summary.value.add(tag='eval/word_error_rate', simple_value=mean_wer)
-            # summary_writer.add_summary(summary, str(global_step))
-            summary_writer.add_summary(summary, 1)
+            summary.value.add(tag='eval/mean_loss', simple_value=avg_loss)
+            summary.value.add(tag='eval/mean_edit_distance', simple_value=avg_med)
+            summary.value.add(tag='eval/word_error_rate', simple_value=avg_wer)
+            summary_writer.add_summary(summary, str(global_step))
+
         except Exception as e:
             print('EXCEPTION:', e, ', type:', type(e))
             coord.request_stop(e)
@@ -91,6 +96,7 @@ def evaluate():
         logits = s_model.inference(sequences, seq_length)
 
         # Calculate error rates
+        loss_op = s_model.loss(logits, labels, seq_length)
         med_op, wer_op = s_model.decoding(logits, seq_length, labels, originals)
 
         # Build the summary operation based on the TF collection of summaries.
@@ -98,7 +104,7 @@ def evaluate():
         summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
 
         # L8ER: Add continuous evaluation loop.
-        eval_once(summary_writer, med_op, wer_op, summary_op)
+        eval_once(summary_writer, loss_op, med_op, wer_op, summary_op)
 
 
 # noinspection PyUnusedLocal

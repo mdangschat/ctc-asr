@@ -19,8 +19,9 @@ NUM_INPUTS = NUM_MFCC * 2
 DATA_PATH = '/home/marc/workspace/speech/data'
 
 
-def inputs_train(batch_size):
+def inputs_train(batch_size, txt_file='train.txt'):
     """Construct input for speech training.
+    TODO: `txt_file` is a workaround, remove or refactor it.
 
     Args:
         batch_size (int):
@@ -42,7 +43,7 @@ def inputs_train(batch_size):
             2D Tensor with the original strings.
     """
     # Info: Longest label list in TIMIT train/test is 79 characters long.
-    train_txt_path = os.path.join(DATA_PATH, 'train.txt')
+    train_txt_path = os.path.join(DATA_PATH, txt_file)
     sample_list, label_list, original_list = _read_file_list(train_txt_path)
 
     with tf.name_scope('train_input'):
@@ -57,7 +58,8 @@ def inputs_train(batch_size):
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
-            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=True)
+            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=False)
+        # TODO Shuffle True
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
@@ -83,10 +85,10 @@ def inputs_train(batch_size):
         return sequences, seq_length, labels, originals
 
 
-def inputs(batch_size):
+def inputs(batch_size, txt_file='test.txt'):
     # This method should always return unaltered data.
     # L8ER: Implement default version, if `inputs_train()` alters the data.
-    return inputs_train(batch_size)
+    return inputs_train(batch_size, txt_file=txt_file)
 
 
 def _read_file_list(path):

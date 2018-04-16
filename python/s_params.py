@@ -27,21 +27,21 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
 # CTC loss and decoder.
 tf.flags.DEFINE_bool('use_warp_ctc', False,    # TODO: Not implemented at the moment. See #23
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
-tf.flags.DEFINE_integer('beam_width', 128,
+tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
 
 # Geometric layout.
-tf.flags.DEFINE_integer('num_units_lstm', 128,
+tf.flags.DEFINE_integer('num_units_lstm', 2048,
                         """Number of hidden units in each of the BDLSTM cells.""")
 tf.flags.DEFINE_integer('num_layers_lstm', 1,
                         """Number of stacked BDLSTM cells.""")
-tf.flags.DEFINE_integer('num_units_dense', 128,
+tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 100,
+tf.flags.DEFINE_integer('max_steps', 3001,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 5,
+tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every x steps) to log results to the console.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The number of decoded and original text samples to report.""")
@@ -51,7 +51,7 @@ tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
-tf.flags.DEFINE_string('train_dir', '/tmp/speech/ds_base',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_1',
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('num_examples_train', 3696,
                         """Number of examples in the training set.""")
@@ -61,7 +61,7 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Evaluation
-tf.app.flags.DEFINE_string('eval_dir', '/tmp/speech/eval',
+tf.app.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/eval',
                            """Directory where to write the evaluation logs into.""")
 
 

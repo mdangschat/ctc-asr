@@ -52,7 +52,7 @@ def inference(sequences, seq_length):
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
         fw_cells, bw_cells = s_utils.create_bidirectional_cells(FLAGS.num_units_lstm,
                                                                 FLAGS.num_layers_lstm,
-                                                                keep_prob=0.8)
+                                                                keep_prob=1.0)
 
         # `output` = [batch_size, time, num_hidden*2]
         # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
@@ -120,7 +120,8 @@ def loss(logits, labels, seq_length):
                                     time_major=True)
 
     mean_loss = tf.reduce_mean(total_loss)
-    tf.summary.scalar('mean_loss', mean_loss)
+    # TODO
+    # tf.summary.scalar('mean_loss', mean_loss)
 
     return mean_loss
 
@@ -154,10 +155,10 @@ def train(_loss, global_step):
     # Compute gradients.    Review which optimizer performs best?
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    # optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
-    #                                    beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
-    optimizer = s_utils.AdamOptimizerLogger(learning_rate=lr, beta1=FLAGS.adam_beta1,
-                                            beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
+    optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
+                                       beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
+    # optimizer = s_utils.AdamOptimizerLogger(learning_rate=lr, beta1=FLAGS.adam_beta1,
+    #                                         beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
     # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
 
     tf.summary.scalar('learning_rate', lr)
