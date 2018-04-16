@@ -25,7 +25,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_bool('use_baidu_ctc', False,    # TODO: Not implemented at the moment. See #23
+tf.flags.DEFINE_bool('use_warp_ctc', False,    # TODO: Not implemented at the moment. See #23
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")

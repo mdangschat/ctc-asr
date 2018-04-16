@@ -104,7 +104,7 @@ def loss(logits, labels, seq_length):
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
     """
-    if FLAGS.use_baidu_ctc:
+    if FLAGS.use_warp_ctc:
         # Not installed at the moment.
         # https://github.com/baidu-research/warp-ctc
         total_loss = tfc.wrapctc.wrap_ctc_loss(labels=labels,
