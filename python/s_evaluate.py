@@ -34,7 +34,7 @@ def eval_once(summary_writer, loss_op, med_op, wer_op, summary_op):
             # Restore from checkpoint.
             saver.restore(sess, checkpoint.model_checkpoint_path)
             # Extract global stop from checkpoint.
-            _, global_step = checkpoint.model_checkpoint_path.split('/')[-1].split('-'[-1])
+            _, global_step = checkpoint.model_checkpoint_path.split('/')[-1].split('-')
             global_step = str(global_step)
             print('Loaded global step:', global_step)
         else:

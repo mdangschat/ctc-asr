@@ -79,7 +79,6 @@ def inference(sequences, seq_length):
         logits = tf.layers.dense(dense4, FLAGS.num_classes, kernel_initializer=initializer)
         logits = tfc.rnn.transpose_batch_time(logits)
 
-    # logits = tf.Print(logits, [tf.shape(logits)], message='logits: ')
     # `logits` = [time, batch_size, NUM_CLASSES]
     return logits
 
@@ -120,8 +119,7 @@ def loss(logits, labels, seq_length):
                                     time_major=True)
 
     mean_loss = tf.reduce_mean(total_loss)
-    # TODO
-    # tf.summary.scalar('mean_loss', mean_loss)
+    tf.summary.scalar('mean_loss', mean_loss)
 
     return mean_loss
 
