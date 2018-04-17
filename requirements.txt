@@ -1,3 +1,4 @@
+scipy
 numpy           >= 1.14.0
 matplotlib      >= 2.2.0
 python_speech_features >= 0.6
