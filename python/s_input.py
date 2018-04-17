@@ -57,7 +57,12 @@ def inputs_train(batch_size, txt_file='train.txt'):
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
-            [file_names, labels, originals], capacity=capacity, num_epochs=None, shuffle=False)
+            [file_names, labels, originals],
+            capacity=capacity,
+            num_epochs=None,
+            shuffle=False,
+            seed=FLAGS.random_seed
+        )
         # TODO Shuffle True
 
         # Reinterpret the bytes of a string as a vector of numbers.
