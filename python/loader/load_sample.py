@@ -72,6 +72,5 @@ def load_sample(file_path):
 
     sample = (sample - np.mean(sample)) / np.std(sample)
 
-    print('Sample loaded.', sample_len)
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
