@@ -12,6 +12,7 @@ Generated data format:
 """
 
 import os
+import re
 
 
 # Path to the LibriSpeech ASR data set.
@@ -44,6 +45,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
     if not os.path.isdir(DATA_PATH):
         raise ValueError('"{}" is not a directory.'.format(DATA_PATH))
 
+    pattern = re.compile(r'[^a-z ]+')    # RegEX filter pattern for valid characters.
     output = []
     for root, dirs, files in os.walk(DATA_PATH):
         if len(dirs) is 0:
@@ -65,6 +67,8 @@ def _gen_list(target, additional_output=False, dry_run=False):
             for _id, txt in lines:
                 path = os.path.join(root, '{}.flac'.format(_id))
                 assert os.path.isfile(path)
+
+                txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
                 output.append('{} {}\n'.format(path, txt.strip()))
 
     if not dry_run:
