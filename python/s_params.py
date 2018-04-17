@@ -56,9 +56,9 @@ tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_1',
                        """Directory where to write event logs and checkpoints.""")
-tf.flags.DEFINE_integer('num_examples_train', 3696,
+tf.flags.DEFINE_integer('num_examples_train', 132553,
                         """Number of examples in the training set.""")
-tf.flags.DEFINE_integer('num_examples_test', 1344,
+tf.flags.DEFINE_integer('num_examples_test', 5040,
                         """Number of examples in the testing/evaluation set.""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
