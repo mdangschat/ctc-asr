@@ -1,9 +1,9 @@
 """Helper methods to load audio files."""
 
 from os import path
+import numpy as np
 import scipy.io.wavfile as wav
 import python_speech_features as psf
-import numpy as np
 
 from params import FLAGS, NP_FLOAT
 
@@ -38,16 +38,19 @@ def load_sample(file_path):
         raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
+    win_len = 0.025     # Window length in ms.
+    win_step = 0.0125   # Number of milliseconds between successive frames.
     f_max = sr / 2.     # Maximum frequency (Nyquist rate).
     f_min = 64.         # Minimum frequency.
-    n_fft = 1024        # Number of samples in a frame.
+    n_fft = 512         # Number of samples in a frame.
     n_mfcc = NUM_MFCC   # Number of Mel cepstral coefficients to extract.
-    n_mels = 80         # Number of Mel bins to generate
-    win_length = 333    # Window length
+    n_filters = 26      # Number of Mel bins to generate.
 
     # Compute MFCC features from the mel spectrogram.
-    mfcc = psf.mfcc(y, sr)
+    mfcc = psf.mfcc(signal=y, samplerate=sr, winlen=win_len, winstep=win_step,
+                    numcep=n_mfcc, nfilt=n_filters, nfft=n_fft,
+                    lowfreq=f_min, highfreq=f_max,
+                    preemph=0.97, ceplifter=22, appendEnergy=True)
 
     # And the first-order differences (delta features).
     mfcc_delta = psf.delta(mfcc, 2)
