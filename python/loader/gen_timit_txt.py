@@ -17,6 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from loader import audio_set_info
+from loader import utils
 
 
 DATA_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'     # Path to the TIMIT data set.
@@ -93,7 +94,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
     result[-1] = result[-1].strip()
 
     target_path = os.path.join(TARGET_PATH, '{}.txt'.format(target))
-    _delete_file_if_exists(target_path)
+    utils.delete_file_if_exists(target_path)
 
     if not dry_run:
         with open(target_path, 'w') as f:
@@ -134,19 +135,6 @@ def _gen_list(target, additional_output=False, dry_run=False):
         print('Bins: ', output[2:])
 
     return char_set, word_set, len(result)
-
-
-def _delete_file_if_exists(path):
-    """Delete the file for the given path, if it exists.
-
-    Args:
-        path (str): File path.
-
-    Returns:
-        Nothing.
-    """
-    if os.path.exists(path) and os.path.isfile(path):
-        os.remove(path)
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@ from tensorflow import contrib as tfc
 
 from params import FLAGS, TF_FLOAT
 import utils
-import input
+import s_input
 
 
 def inference(sequences, seq_length):
@@ -234,7 +234,7 @@ def inputs_train():
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    sequences, seq_length, labels, originals = input.inputs_train(FLAGS.batch_size)
+    sequences, seq_length, labels, originals = s_input.inputs_train(FLAGS.batch_size)
     return sequences, seq_length, labels, originals
 
 
@@ -255,7 +255,7 @@ def inputs():
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    sequences, seq_length, labels, originals = input.inputs(FLAGS.batch_size)
+    sequences, seq_length, labels, originals = s_input.inputs(FLAGS.batch_size)
     return sequences, seq_length, labels, originals
 
 

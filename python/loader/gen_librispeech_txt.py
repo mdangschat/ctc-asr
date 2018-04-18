@@ -14,6 +14,8 @@ Generated data format:
 import os
 import re
 
+from loader import utils
+
 
 # Path to the LibriSpeech ASR data set.
 DATA_PATH = '/home/marc/workspace/speech/data/libri_speech/LibriSpeech/'
@@ -24,7 +26,7 @@ TARGET_PATH = '/home/marc/workspace/speech/data/'
 def _gen_list(target, additional_output=False, dry_run=False):
     """Generate .txt files containing the audio path and the corresponding sentence.
     Return additional data set information, see below.
-    # TODO: Update documentation
+    TODO: Update documentation
 
     Args:
         target (str):
@@ -73,25 +75,11 @@ def _gen_list(target, additional_output=False, dry_run=False):
 
     if not dry_run:
         target_path = os.path.join(TARGET_PATH, '{}.txt'.format(target))
-        _delete_file_if_exists(target_path)
+        utils.delete_file_if_exists(target_path)
 
         with open(target_path, 'w') as f:
             print('Writing {} lines of {} files to {}'.format(len(output), target, target_path))
             f.writelines(output)
-
-
-def _delete_file_if_exists(path):
-    """Delete the file for the given path, if it exists.
-    TODO: Move to `utils.py`
-
-    Args:
-        path (str): File path.
-
-    Returns:
-        Nothing.
-    """
-    if os.path.exists(path) and os.path.isfile(path):
-        os.remove(path)
 
 
 if __name__ == '__main__':
