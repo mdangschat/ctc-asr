@@ -54,7 +54,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
             # Get list of `.trans.txt` files.
             trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
             # Verify that a `*.trans.txt` file exists.
-            assert len(trans_txt_files) is 1
+            assert len(trans_txt_files) is 1, 'No .tans.txt file found: {}'.format(trans_txt_files)
 
             # Absolute path.
             trans_txt_path = os.path.join(root, trans_txt_files[0])
@@ -68,7 +68,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
 
             for file_id, txt in lines:
                 path = os.path.join(root, '{}.wav'.format(file_id))
-                assert os.path.isfile(path)
+                assert os.path.isfile(path), '{} not found.'.format(path)
 
                 txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
                 output.append('{} {}\n'.format(path, txt.strip()))

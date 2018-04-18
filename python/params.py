@@ -7,14 +7,14 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 16,
+tf.flags.DEFINE_integer('batch_size', 8,
                         """(Maximum) Number of samples within a batch.""")
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 0.666,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 0.5,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_float('num_epochs_per_decay', 3.0,
+tf.flags.DEFINE_float('num_epochs_per_decay', 1.0,
                       """Number of epochs after which learning rate decays.""")
 
 tf.flags.DEFINE_float('adam_beta1', 0.9,
