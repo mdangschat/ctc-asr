@@ -7,7 +7,7 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 16,
+tf.flags.DEFINE_integer('batch_size', 1,    # TODO: Debug see #29
                         """(Maximum) Number of samples within a batch.""")
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
@@ -28,7 +28,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_bool('use_warp_ctc', False,    # TODO: Not implemented at the moment. See #23
+tf.flags.DEFINE_bool('use_warp_ctc', False,    # L8ER: Not implemented at the moment. See #23
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
@@ -47,7 +47,7 @@ tf.flags.DEFINE_integer('max_steps', 3000001,
 tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every x steps) to log results to the console.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
-                        """The number of decoded and original text samples to report.""")
+                        """The maximum number of decoded and original text samples to report.""")
 
 # Data set
 tf.flags.DEFINE_integer('sampling_rate', 16000,

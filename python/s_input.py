@@ -69,7 +69,8 @@ def inputs_train(batch_size, txt_file='train.txt'):
         label_queue = tf.decode_raw(label_queue, tf.int32)
 
         # Read the sample from disk and extract it's features.
-        sample, sample_len = tf.py_func(load_sample, [sample_queue], [TF_FLOAT, tf.int32])
+        sample, sample_len = tf.py_func(load_sample, [sample_queue], [TF_FLOAT, tf.int32],
+                                        name='py_load_sample')
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
@@ -161,7 +162,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 1
+    num_pre_process_threads = 2     # TODO: Set low for debugging #29
     boundaries = [74, 84, 92, 97, 103, 107, 112, 117, 123, 129, 136, 144, 155, 170, 188]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
@@ -177,9 +178,9 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         allow_smaller_final_batch=False
     )
 
-    # Add input vectors to TensorBoard summary.
-    batch_size_t = tf.shape(sequences)[0]
-    summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
-    tf.summary.image('sample', summary_batch, max_outputs=1)
+    # Add input vectors to TensorBoard summary.     TODO Deactivated for debugging LibriSpeech #29
+    # batch_size_t = tf.shape(sequences)[0]
+    # summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
+    # tf.summary.image('sample', summary_batch, max_outputs=1)
 
     return sequences, seq_length, labels, originals
