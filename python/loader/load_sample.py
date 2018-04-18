@@ -53,18 +53,18 @@ def load_sample(file_path):
     mfcc_delta = psf.delta(mfcc, 2)
 
     # Combine MFCC with MFCC_delta
-    sample = np.concatenate([mfcc, mfcc_delta], axis=0)
+    sample = np.concatenate([mfcc, mfcc_delta], axis=1)
 
+    # Data type.
     sample = sample.astype(NP_FLOAT)
-    sample = np.swapaxes(sample, 0, 1)
 
     # Skip every 2nd time frame.
-    sample = sample[::2, :]
+    sample = sample[:: 2, :]
 
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
+    # Sample normalization.
     sample = (sample - np.mean(sample)) / np.std(sample)
 
-    print('Sample loaded.', sample_len)
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len

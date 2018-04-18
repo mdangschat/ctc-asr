@@ -203,12 +203,14 @@ def decoding(logits, seq_len, labels, originals):
     dense = tf.sparse_tensor_to_dense(decoded)
     decoded_text_summary, decoded_texts = tf.py_func(s_utils.dense_to_text,
                                                      [dense, originals],
-                                                     [tf.string, tf.string])
+                                                     [tf.string, tf.string],
+                                                     name='py_dense_to_text')
 
     tf.summary.text('decoded_text_summary', decoded_text_summary[:, : FLAGS.num_samples_to_report])
 
     # Word Error Rate (WER)
-    wers, wer = tf.py_func(s_utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT])
+    wers, wer = tf.py_func(s_utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
+                           name='py_wer_batch')
     tf.summary.histogram('word_error_rates', wers)
     tf.summary.scalar('word_error_rate', wer)
 

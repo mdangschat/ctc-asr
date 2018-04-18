@@ -14,7 +14,7 @@ tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 0.666,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_float('num_epochs_per_decay', 5.0,
+tf.flags.DEFINE_float('num_epochs_per_decay', 3.0,
                       """Number of epochs after which learning rate decays.""")
 
 tf.flags.DEFINE_float('adam_beta1', 0.9,
@@ -28,7 +28,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_bool('use_warp_ctc', False,    # TODO: Not implemented at the moment. See #23
+tf.flags.DEFINE_bool('use_warp_ctc', False,    # L8ER: Not implemented at the moment. See #23
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
@@ -42,12 +42,12 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 3001,
+tf.flags.DEFINE_integer('max_steps', 3000001,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 10,
                         """How often (every x steps) to log results to the console.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
-                        """The number of decoded and original text samples to report.""")
+                        """The maximum number of decoded and original text samples to report.""")
 
 # Data set
 tf.flags.DEFINE_integer('sampling_rate', 16000,
@@ -85,8 +85,12 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rage (lr={}, epochs={}, decay={}); BDLSTM (num_units={}, num_layers={}); ' \
-        'Dense (num_units={}); Training (batch_size={}, max_steps={}, log_frequency={})'
+    s = 'Learning Rage (lr={}, epochs_per_decay={}, decay_factor={}); ' \
+        'BDLSTM (num_units={}, num_layers={}); ' \
+        'Dense (num_units={}); ' \
+        'Training (batch_size={}, max_steps={}, log_frequency={})'
     return s.format(FLAGS.learning_rate, FLAGS.num_epochs_per_decay,
-                    FLAGS.num_units_dense, FLAGS.learning_rate_decay_factor, FLAGS.num_units_lstm,
-                    FLAGS.num_layers_lstm, FLAGS.batch_size, FLAGS.max_steps, FLAGS.log_frequency)
+                    FLAGS.learning_rate_decay_factor,
+                    FLAGS.num_units_lstm, FLAGS.num_layers_lstm,
+                    FLAGS.num_units_dense,
+                    FLAGS.batch_size, FLAGS.max_steps, FLAGS.log_frequency)

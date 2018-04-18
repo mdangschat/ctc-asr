@@ -15,6 +15,7 @@ import s_labels
 from loader.load_sample import load_sample, NUM_MFCC
 from s_params import FLAGS, TF_FLOAT
 
+
 NUM_INPUTS = NUM_MFCC * 2
 DATA_PATH = '/home/marc/workspace/speech/data'
 
@@ -53,7 +54,7 @@ def inputs_train(batch_size, txt_file='train.txt'):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        capacity = 100 * FLAGS.batch_size
+        capacity = 1000 + 5 * FLAGS.batch_size
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
@@ -69,7 +70,8 @@ def inputs_train(batch_size, txt_file='train.txt'):
         label_queue = tf.decode_raw(label_queue, tf.int32)
 
         # Read the sample from disk and extract it's features.
-        sample, sample_len = tf.py_func(load_sample, [sample_queue], [TF_FLOAT, tf.int32])
+        sample, sample_len = tf.py_func(load_sample, [sample_queue], [TF_FLOAT, tf.int32],
+                                        name='py_load_sample')
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
@@ -161,8 +163,8 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 8
-    boundaries = [74, 84, 92, 97, 103, 107, 112, 117, 123, 129, 136, 144, 155, 170, 188]
+    num_threads = 8
+    boundaries = [296, 336, 368, 388, 412, 428, 448, 468, 492, 516, 544, 576, 620, 680, 752]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
@@ -170,7 +172,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tensors=[sequence, label, original],
         batch_size=batch_size,
         bucket_boundaries=boundaries,
-        num_threads=num_pre_process_threads,
+        num_threads=num_threads,
         capacity=capacity // len(boundaries),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
