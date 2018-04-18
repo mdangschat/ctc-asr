@@ -53,7 +53,7 @@ def inputs_train(batch_size, txt_file='train.txt'):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        capacity = 100 * FLAGS.batch_size
+        capacity = 1000 * FLAGS.batch_size
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
@@ -162,7 +162,7 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 2     # TODO: Set low for debugging #29
+    num_pre_process_threads = 4     # TODO: Set low for debugging #29
     boundaries = [74, 84, 92, 97, 103, 107, 112, 117, 123, 129, 136, 144, 155, 170, 188]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length

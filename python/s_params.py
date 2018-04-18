@@ -44,7 +44,7 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
 # Logging & Output
 tf.flags.DEFINE_integer('max_steps', 3000001,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 10,
                         """How often (every x steps) to log results to the console.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
