@@ -15,6 +15,7 @@ import s_labels
 from loader.load_sample import load_sample, NUM_MFCC
 from s_params import FLAGS, TF_FLOAT
 
+
 NUM_INPUTS = NUM_MFCC * 2
 DATA_PATH = '/home/marc/workspace/speech/data'
 
@@ -53,7 +54,7 @@ def inputs_train(batch_size, txt_file='train.txt'):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        capacity = 1000 * FLAGS.batch_size
+        capacity = 1000 + 5 * FLAGS.batch_size
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
@@ -162,8 +163,8 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    num_pre_process_threads = 4     # TODO: Set low for debugging #29
-    boundaries = [74, 84, 92, 97, 103, 107, 112, 117, 123, 129, 136, 144, 155, 170, 188]
+    num_threads = 8
+    boundaries = [296, 336, 368, 388, 412, 428, 448, 468, 492, 516, 544, 576, 620, 680, 752]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
@@ -171,16 +172,16 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
         tensors=[sequence, label, original],
         batch_size=batch_size,
         bucket_boundaries=boundaries,
-        num_threads=num_pre_process_threads,
+        num_threads=num_threads,
         capacity=capacity // len(boundaries),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
         allow_smaller_final_batch=False
     )
 
-    # Add input vectors to TensorBoard summary.     TODO Deactivated for debugging LibriSpeech #29
-    # batch_size_t = tf.shape(sequences)[0]
-    # summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
-    # tf.summary.image('sample', summary_batch, max_outputs=1)
+    # Add input vectors to TensorBoard summary.
+    batch_size_t = tf.shape(sequences)[0]
+    summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
+    tf.summary.image('sample', summary_batch, max_outputs=1)
 
     return sequences, seq_length, labels, originals
