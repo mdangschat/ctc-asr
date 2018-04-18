@@ -11,9 +11,9 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
+from s_params import FLAGS, TF_FLOAT
 import s_labels
 from loader.load_sample import load_sample, NUM_MFCC
-from s_params import FLAGS, TF_FLOAT
 
 
 NUM_INPUTS = NUM_MFCC * 2

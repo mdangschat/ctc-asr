@@ -4,8 +4,8 @@ import tensorflow as tf
 from tensorflow import contrib as tfc
 
 from s_params import FLAGS, TF_FLOAT
-import s_input
 import s_utils
+import s_input
 
 
 def inference(sequences, seq_length):

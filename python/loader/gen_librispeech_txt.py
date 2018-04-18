@@ -64,8 +64,8 @@ def _gen_list(target, additional_output=False, dry_run=False):
             # Sanitize lines.
             lines = [line.lower().strip().split(' ', 1) for line in lines]
 
-            for _id, txt in lines:
-                path = os.path.join(root, '{}.wav'.format(_id))
+            for file_id, txt in lines:
+                path = os.path.join(root, '{}.wav'.format(file_id))
                 assert os.path.isfile(path)
 
                 txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
@@ -82,6 +82,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
 
 def _delete_file_if_exists(path):
     """Delete the file for the given path, if it exists.
+    TODO: Move to `utils.py`
 
     Args:
         path (str): File path.
