@@ -3,7 +3,7 @@
 import tensorflow as tf
 import numpy as np
 
-from labels import num_classes
+from s_labels import num_classes
 
 
 # Constants describing the training process.

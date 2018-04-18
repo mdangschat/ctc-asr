@@ -9,8 +9,8 @@ from datetime import datetime
 import tensorflow as tf
 
 from params import FLAGS, get_parameters
-import model
 from utils import get_git_branch, get_git_revision_hash
+import model
 
 
 # General TensorFlow settings and setup.

@@ -4,8 +4,8 @@ import numpy as np
 from git import Repo
 import tensorflow as tf
 
-from labels import itoc
-from params import FLAGS, NP_FLOAT
+from params import FLAGS, NP_FLOAT, TF_FLOAT
+from s_labels import itoc
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):
@@ -119,7 +119,7 @@ def dense_to_text(decoded, originals):
     for o in originals:
         original_strings.append(''.join([c for c in o.decode('utf-8')]))
 
-    # Print a maximum of `FLAGS.num_samples_to_report` to STDOUT.   # TODO deactivated for eval rewr
+    # Print a maximum of `FLAGS.num_samples_to_report` to STDOUT.   # TODO deactivated for eval impl
     # print('d: {}\no: {}'.format(decoded_strings[: FLAGS.num_samples_to_report],
     #                             original_strings[: FLAGS.num_samples_to_report]))
 
@@ -218,3 +218,44 @@ def levenshtein(a, b):
             current[j] = min(add, delete, change)
 
     return current[n]
+
+
+def variable_on_cpu(name, shape, initializer):
+    """Helper to create a variable stored on CPU memory.
+
+    Args:
+        name (str): Name of the variable.
+        shape (list of int): List of ints, e.g. a numpy shape.
+        initializer: Initializer for the variable.
+
+    Returns:
+        tf.Tensor: Variable tensor.
+    """
+    with tf.device('/cpu:0'):
+        return tf.get_variable(name, shape, initializer=initializer, dtype=TF_FLOAT)
+
+
+def variable_with_weight_decay(name, shape, stddev, weight_decay):
+    """Helper to create an initialized variable with weight decay.
+
+    Note that the variable is initialized with a truncated normal distribution.
+    A weight decay is added only if one is specified.
+
+    Args:
+        name (str): Name of the variable.
+        shape (list of int): List of ints, e.g. a numpy shape.
+        stddev (float): Standard deviation of the Gaussian.
+        weight_decay: Add L2Loss weight decay multiplied by this float.
+            If None, weight decay is not added for this variable.
+
+    Returns:
+        tf.Tensor: Variable tensor.
+    """
+    initializer = tf.truncated_normal_initializer(stddev=stddev, dtype=TF_FLOAT)
+    var = variable_on_cpu(name, shape, initializer=initializer)
+
+    if weight_decay is not None:
+        wd = tf.multiply(tf.nn.l2_loss(var), weight_decay, name='weight_loss')
+        tf.add_to_collection('losses', wd)
+
+    return var

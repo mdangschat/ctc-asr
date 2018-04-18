@@ -12,7 +12,7 @@ import tensorflow as tf
 from tensorflow import contrib as tfc
 
 from params import FLAGS, TF_FLOAT
-import labels
+import s_labels
 from loader.load_sample import load_sample, NUM_MFCC
 
 
@@ -123,7 +123,7 @@ def _read_file_list(path):
             sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
             label = label.strip()
             originals.append(label)
-            label = [labels.ctoi(c) for c in label]
+            label = [s_labels.ctoi(c) for c in label]
             label = np.array(label, dtype=np.int32).tostring()
             labels.append(label)
 

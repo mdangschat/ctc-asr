@@ -1,6 +1,8 @@
 """Testing environment for `librosa`_ functionality.
 Provides display options for audio files and their preprocessed features.
 
+TODO: Move away from librosa.
+
 .. _librosa:
     https://librosa.github.io/librosa/index.html
 """
