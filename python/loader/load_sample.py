@@ -1,7 +1,8 @@
 """Helper methods to load audio files."""
 
 from os import path
-import librosa
+import scipy.io.wavfile as wav
+import python_speech_features as psf
 import numpy as np
 
 from s_params import FLAGS, NP_FLOAT
@@ -24,7 +25,6 @@ def load_sample(file_path):
         np.ndarray:
             Array containing a single int32.
     """
-    print('start:', path.basename(file_path))
     if type(file_path) is not str:
         file_path = str(file_path, 'utf-8')
 
@@ -32,7 +32,7 @@ def load_sample(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
     # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
-    y, sr = librosa.load(file_path, sr=None, mono=True)
+    (sr, y) = wav.read(file_path)
 
     if not sr == FLAGS.sampling_rate:
         raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
@@ -46,19 +46,11 @@ def load_sample(file_path):
     n_mels = 80         # Number of Mel bins to generate
     win_length = 333    # Window length
 
-    db_pow = np.abs(librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length,
-                                 win_length=win_length)) ** 2
-
-    s_mel = librosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
-                                           fmax=f_max, fmin=f_min, n_mels=n_mels)
-
-    s_mel = librosa.power_to_db(s_mel, ref=np.max)
-
     # Compute MFCC features from the mel spectrogram.
-    mfcc = librosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
+    mfcc = psf.mfcc(y, sr)
 
     # And the first-order differences (delta features).
-    mfcc_delta = librosa.feature.delta(mfcc, width=5, order=1)
+    mfcc_delta = psf.delta(mfcc, 2)
 
     # Combine MFCC with MFCC_delta
     sample = np.concatenate([mfcc, mfcc_delta], axis=0)
@@ -73,6 +65,6 @@ def load_sample(file_path):
 
     sample = (sample - np.mean(sample)) / np.std(sample)
 
-    print('done:', path.basename(file_path), sample_len)
+    print('Sample loaded.', sample_len)
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
