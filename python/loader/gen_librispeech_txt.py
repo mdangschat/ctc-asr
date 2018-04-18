@@ -65,7 +65,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
             lines = [line.lower().strip().split(' ', 1) for line in lines]
 
             for _id, txt in lines:
-                path = os.path.join(root, '{}.flac'.format(_id))
+                path = os.path.join(root, '{}.wav'.format(_id))
                 assert os.path.isfile(path)
 
                 txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
