@@ -48,15 +48,16 @@ def load_sample(file_path):
 
     # Compute MFCC features from the mel spectrogram.
     mfcc = psf.mfcc(y, sr)
+    print('shape:', mfcc.shape)
 
     # And the first-order differences (delta features).
     mfcc_delta = psf.delta(mfcc, 2)
 
     # Combine MFCC with MFCC_delta
-    sample = np.concatenate([mfcc, mfcc_delta], axis=0)
+    sample = np.concatenate([mfcc, mfcc_delta], axis=1)
 
     sample = sample.astype(NP_FLOAT)
-    sample = np.swapaxes(sample, 0, 1)
+    #sample = np.swapaxes(sample, 0, 1)
 
     # Skip every 2nd time frame.
     sample = sample[::2, :]
