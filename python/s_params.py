@@ -85,8 +85,12 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rage (lr={}, epochs={}, decay={}); BDLSTM (num_units={}, num_layers={}); ' \
-        'Dense (num_units={}); Training (batch_size={}, max_steps={}, log_frequency={})'
+    s = 'Learning Rage (lr={}, epochs_per_decay={}, decay_factor={}); ' \
+        'BDLSTM (num_units={}, num_layers={}); ' \
+        'Dense (num_units={}); ' \
+        'Training (batch_size={}, max_steps={}, log_frequency={})'
     return s.format(FLAGS.learning_rate, FLAGS.num_epochs_per_decay,
-                    FLAGS.num_units_dense, FLAGS.learning_rate_decay_factor, FLAGS.num_units_lstm,
-                    FLAGS.num_layers_lstm, FLAGS.batch_size, FLAGS.max_steps, FLAGS.log_frequency)
+                    FLAGS.learning_rate_decay_factor,
+                    FLAGS.num_units_lstm, FLAGS.num_layers_lstm,
+                    FLAGS.num_units_dense,
+                    FLAGS.batch_size, FLAGS.max_steps, FLAGS.log_frequency)
