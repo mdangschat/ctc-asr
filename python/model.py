@@ -3,9 +3,9 @@
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from s_params import FLAGS, TF_FLOAT
-import s_utils
-import s_input
+from params import FLAGS, TF_FLOAT
+import utils
+import input
 
 
 def inference(sequences, seq_length):
@@ -50,9 +50,9 @@ def inference(sequences, seq_length):
     with tf.variable_scope('bdlstm'):
         # Create a stack of RNN cells.
         # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
-        fw_cells, bw_cells = s_utils.create_bidirectional_cells(FLAGS.num_units_lstm,
-                                                                FLAGS.num_layers_lstm,
-                                                                keep_prob=1.0)
+        fw_cells, bw_cells = utils.create_bidirectional_cells(FLAGS.num_units_lstm,
+                                                              FLAGS.num_layers_lstm,
+                                                              keep_prob=1.0)
 
         # `output` = [batch_size, time, num_hidden*2]
         # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
@@ -201,7 +201,7 @@ def decoding(logits, seq_len, labels, originals):
 
     # Translate decoded integer data back to character strings.
     dense = tf.sparse_tensor_to_dense(decoded)
-    decoded_text_summary, decoded_texts = tf.py_func(s_utils.dense_to_text,
+    decoded_text_summary, decoded_texts = tf.py_func(utils.dense_to_text,
                                                      [dense, originals],
                                                      [tf.string, tf.string],
                                                      name='py_dense_to_text')
@@ -209,7 +209,7 @@ def decoding(logits, seq_len, labels, originals):
     tf.summary.text('decoded_text_summary', decoded_text_summary[:, : FLAGS.num_samples_to_report])
 
     # Word Error Rate (WER)
-    wers, wer = tf.py_func(s_utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
+    wers, wer = tf.py_func(utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
                            name='py_wer_batch')
     tf.summary.histogram('word_error_rates', wers)
     tf.summary.scalar('word_error_rate', wer)
@@ -234,7 +234,7 @@ def inputs_train():
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    sequences, seq_length, labels, originals = s_input.inputs_train(FLAGS.batch_size)
+    sequences, seq_length, labels, originals = input.inputs_train(FLAGS.batch_size)
     return sequences, seq_length, labels, originals
 
 
@@ -255,7 +255,7 @@ def inputs():
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    sequences, seq_length, labels, originals = s_input.inputs(FLAGS.batch_size)
+    sequences, seq_length, labels, originals = input.inputs(FLAGS.batch_size)
     return sequences, seq_length, labels, originals
 
 

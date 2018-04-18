@@ -9,8 +9,8 @@ from datetime import datetime
 import numpy as np
 import tensorflow as tf
 
-from s_params import FLAGS
-import s_model
+from params import FLAGS
+import model
 
 
 def eval_once(summary_writer, loss_op, med_op, wer_op, summary_op):
@@ -90,14 +90,14 @@ def evaluate():
     """Evaluate the speech model."""
     with tf.Graph().as_default() as g:
         # Get evaluation sequences and ground truth.
-        sequences, seq_length, labels, originals = s_model.inputs()
+        sequences, seq_length, labels, originals = model.inputs()
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits = s_model.inference(sequences, seq_length)
+        logits = model.inference(sequences, seq_length)
 
         # Calculate error rates
-        loss_op = s_model.loss(logits, labels, seq_length)
-        med_op, wer_op = s_model.decoding(logits, seq_length, labels, originals)
+        loss_op = model.loss(logits, labels, seq_length)
+        med_op, wer_op = model.decoding(logits, seq_length, labels, originals)
 
         # Build the summary operation based on the TF collection of summaries.
         summary_op = tf.summary.merge_all()

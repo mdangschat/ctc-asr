@@ -4,8 +4,8 @@ import numpy as np
 from git import Repo
 import tensorflow as tf
 
-from s_labels import itoc
-from s_params import FLAGS, NP_FLOAT
+from labels import itoc
+from params import FLAGS, NP_FLOAT
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):

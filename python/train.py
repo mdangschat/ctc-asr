@@ -8,9 +8,9 @@ import time
 from datetime import datetime
 import tensorflow as tf
 
-from s_params import FLAGS, get_parameters
-import s_model
-from s_utils import get_git_branch, get_git_revision_hash
+from params import FLAGS, get_parameters
+import model
+from utils import get_git_branch, get_git_revision_hash
 
 
 # General TensorFlow settings and setup.
@@ -29,20 +29,20 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sequences, seq_length, labels, originals = s_model.inputs_train()
+            sequences, seq_length, labels, originals = model.inputs_train()
 
         # Build the logits (prediction) graph.
-        logits = s_model.inference(sequences, seq_length)
+        logits = model.inference(sequences, seq_length)
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate loss/cost.
-            loss = s_model.loss(logits, labels, seq_length)
+            loss = model.loss(logits, labels, seq_length)
 
             # Decode.
-            _, _ = s_model.decoding(logits, seq_length, labels, originals)
+            _, _ = model.decoding(logits, seq_length, labels, originals)
 
         # Build the training graph, that updates the model parameters after each batch.
-        train_op = s_model.train(loss, global_step)
+        train_op = model.train(loss, global_step)
 
         # Logging hook
         class LoggerHook(tf.train.SessionRunHook):
