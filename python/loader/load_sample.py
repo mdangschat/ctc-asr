@@ -24,6 +24,7 @@ def load_sample(file_path):
         np.ndarray:
             Array containing a single int32.
     """
+    print('start:', path.basename(file_path))
     if type(file_path) is not str:
         file_path = str(file_path, 'utf-8')
 
@@ -72,5 +73,6 @@ def load_sample(file_path):
 
     sample = (sample - np.mean(sample)) / np.std(sample)
 
+    print('done:', path.basename(file_path))
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
