@@ -15,7 +15,7 @@ def load_sample(file_path):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
-        file_path (bytes):
+        file_path:
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
 

@@ -14,7 +14,12 @@ Generated data format:
 import os
 import re
 
+from tqdm import tqdm
+import numpy as np
+from matplotlib import pyplot as plt
+
 from loader import utils
+from loader.load_sample import load_sample
 
 
 # Path to the LibriSpeech ASR data set.
@@ -73,6 +78,24 @@ def _gen_list(target, additional_output=False, dry_run=False):
                 txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
                 output.append('{} {}\n'.format(path, txt.strip()))
 
+    # Calculate additional information. Time consuming.
+    if additional_output:
+        lengths = []
+        for i, line in tqdm(enumerate(output), total=len(output), dynamic_ncols=True):
+            wav_path = line.split(' ', 1)[0]
+            # TODO: tqdm Progressbar
+            _, sample_len = load_sample(wav_path)
+            lengths.append(sample_len)
+
+            if i > 1000:
+                break
+        lengths_a = np.array(lengths)
+        length_h = np.histogram(lengths_a)
+        plt.figure()
+        plt.hist(length_h, bins='auto')
+        plt.show()
+
+    # Write list to .txt file.
     if not dry_run:
         target_path = os.path.join(TARGET_PATH, '{}.txt'.format(target))
         utils.delete_file_if_exists(target_path)
@@ -84,7 +107,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
 
 if __name__ == '__main__':
     print('Starting to generate .txt files...')
-    _gen_list('train', additional_output=False)
+    _gen_list('train', additional_output=True, dry_run=True)
 
     # TODO: No test set yet.
     # _gen_list('test', additional_output=False)
