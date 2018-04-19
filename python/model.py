@@ -72,9 +72,8 @@ def inference(sequences, seq_length):
         dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
 
     # Logits: layer(XW + b),
-    # We don't apply softmax here because
-    # tf.nn.sparse_softmax_cross_entropy_with_logits accepts the unscaled logits
-    # and performs the softmax internally for efficiency.
+    # We don't apply softmax here because most TensorFlow loss functions perform
+    # a softmax activation as needed, and therefore don't expect activated logits.
     with tf.variable_scope('logits'):
         logits = tf.layers.dense(dense4, FLAGS.num_classes, kernel_initializer=initializer)
         logits = tfc.rnn.transpose_batch_time(logits)
@@ -118,10 +117,78 @@ def loss(logits, labels, seq_length):
                                     ctc_merge_repeated=True,
                                     time_major=True)
 
-    mean_loss = tf.reduce_mean(total_loss)
-    tf.summary.scalar('mean_loss', mean_loss)
+    # Return average CTC loss.
+    return tf.reduce_mean(total_loss)
 
-    return mean_loss
+
+def decode(logits, seq_len, originals):
+    """Decode a given inference (`logits`) and convert it to plaintext.
+
+    Review: `label_len` needed, instead of `seq_len`?
+    L8ER: Make `originals` optional for completely unknown inputs.
+
+    Args:
+        logits (tf.Tensor):
+            Logits Tensor of shape [time (input), batch_size, num_classes].
+        seq_len (tf.Tensor):
+            Tensor containing the batches sequence lengths of shape [batch_size].
+        originals (tf.Tensor):
+            String Tensor of shape [batch_size] with the original plaintext.
+
+    Returns:
+        tf.Tensor: Decoded integer labels.
+        tf.Tensor: Decoded plaintext's.
+        tf.Tensor: Decoded plaintext's and original texts for comparision in `tf.summary.text`.
+    """
+    # tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
+    # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_beam_search_decoder
+    # decoded, _ = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
+    decoded, _ = tf.nn.ctc_beam_search_decoder(inputs=logits,
+                                               sequence_length=seq_len,
+                                               beam_width=FLAGS.beam_width,
+                                               top_paths=1,
+                                               merge_repeated=False)
+
+    # ctc_greedy_decoder returns a list with one SparseTensor as only element, if `top_paths=1`.
+    decoded = tf.cast(decoded[0], tf.int32)
+
+    # Translate decoded integer data back to character strings.
+    dense = tf.sparse_tensor_to_dense(decoded)
+    plaintext_summary, plaintext = tf.py_func(utils.dense_to_text, [dense, originals],
+                                              [tf.string, tf.string], name='py_dense_to_text')
+
+    return decoded, plaintext, plaintext_summary
+
+
+def decoded_error_rates(labels, originals, decoded, decoded_texts):
+    """Calculate edit distance and word error rate.
+
+    Args:
+        labels (tf.SparseTensor):
+            Integer SparseTensor containing the target.
+            With dense shape [batch_size, time (target)].
+        originals (tf.Tensor):
+            String Tensor of shape [batch_size] with the original plaintext.
+        decoded (tf.Tensor):
+            Integer tensor of the decoded output labels.
+        decoded_texts (tf.Tensor)
+            String tensor with the decoded output labels converted to normal text.
+
+    Returns:
+        tf.Tensor: Edit distances for the batch.
+        tf.Tensor: Mean edit distance.
+        tf.Tensor: Word error rates for the batch.
+        tf.Tensor: Word error rate.
+    """
+    # Edit distances and average edit distance.
+    edit_distances = tf.edit_distance(decoded, labels)
+    mean_edit_distance = tf.reduce_mean(edit_distances)
+
+    # Word error rates for the batch and average word error rate (WER).
+    wers, wer = tf.py_func(utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
+                           name='py_wer_batch')
+
+    return edit_distances, mean_edit_distance, wers, wer
 
 
 def train(_loss, global_step):
@@ -162,59 +229,6 @@ def train(_loss, global_step):
     tf.summary.scalar('learning_rate', lr)
 
     return optimizer.minimize(_loss, global_step=global_step)
-
-
-def decoding(logits, seq_len, labels, originals):
-    """Decode a given inference (`logits`) and calculate the edit distance and the word error rate.
-
-    Args:
-        logits (tf.Tensor): Logits Tensor of shape [time (input), batch_size, num_classes].
-        seq_len (tf.Tensor): Tensor containing the batches sequence lengths of shape [batch_size].
-        labels (tf.SparseTensor): Integer SparseTensor containing the target.
-            With dense shape [batch_size, time (target)].
-        originals (tf.Tensor): String Tensor of shape [batch_size] with the original plaintext.
-
-    Returns:
-        tf.Tensor: Float Mean Edit Distance.
-        tf.Tensor: Float Word Error Rate.
-    """
-    # Review label_len needed, instead of seq_len?
-
-    # tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
-    # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_beam_search_decoder
-    # decoded, _ = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
-    decoded, _ = tf.nn.ctc_beam_search_decoder(inputs=logits,
-                                               sequence_length=seq_len,
-                                               beam_width=FLAGS.beam_width,
-                                               top_paths=1,
-                                               merge_repeated=False)
-
-    # ctc_greedy_decoder returns a list with one SparseTensor as only element, if `top_paths=1`.
-    decoded = tf.cast(decoded[0], tf.int32)
-
-    # Edit distance and label error rate (LER).
-    edit_distances = tf.edit_distance(decoded, labels)
-    tf.summary.histogram('edit_distances', edit_distances)
-
-    mean_edit_distance = tf.reduce_mean(edit_distances)
-    tf.summary.scalar('mean_edit_distance', mean_edit_distance)
-
-    # Translate decoded integer data back to character strings.
-    dense = tf.sparse_tensor_to_dense(decoded)
-    decoded_text_summary, decoded_texts = tf.py_func(utils.dense_to_text,
-                                                     [dense, originals],
-                                                     [tf.string, tf.string],
-                                                     name='py_dense_to_text')
-
-    tf.summary.text('decoded_text_summary', decoded_text_summary[:, : FLAGS.num_samples_to_report])
-
-    # Word Error Rate (WER)
-    wers, wer = tf.py_func(utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
-                           name='py_wer_batch')
-    tf.summary.histogram('word_error_rates', wers)
-    tf.summary.scalar('word_error_rate', wer)
-
-    return mean_edit_distance, wer
 
 
 def inputs_train():

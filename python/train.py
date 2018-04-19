@@ -1,7 +1,7 @@
-"""Train the model.
+"""Train the speech model.
 
-Tested with Python 3.6.4. The Code should work with 3.4+.
-Python 2.x compatibility isn't provided.
+Tested with Python 3.5 and 3.6.
+Note: No Python 2 compatibility is provided.
 """
 
 import time
@@ -37,9 +37,19 @@ def train():
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate loss/cost.
             loss = model.loss(logits, labels, seq_length)
+            tf.summary.scalar('ctc_loss', loss)
 
             # Decode.
-            _, _ = model.decoding(logits, seq_length, labels, originals)
+            decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
+            tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
+
+            # Error metrics for decoded text.
+            eds, mean_ed, wers, wer = model.decoded_error_rates(labels, originals, decoded,
+                                                                plaintext)
+            tf.summary.histogram('edit_distances', eds)
+            tf.summary.scalar('mean_edit_distance', mean_ed)
+            tf.summary.histogram('word_error_rates', wers)
+            tf.summary.scalar('word_error_rate', wer)
 
         # Build the training graph, that updates the model parameters after each batch.
         train_op = model.train(loss, global_step)

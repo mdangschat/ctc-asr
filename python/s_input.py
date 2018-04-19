@@ -17,13 +17,15 @@ NUM_INPUTS = NUM_MFCC * 2
 DATA_PATH = '/home/marc/workspace/speech/data'
 
 
-def inputs_train(batch_size, txt_file='train.txt'):
+def inputs_train(batch_size, scope='train_input', txt_file='train.txt'):
     """Construct input for speech training.
 
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
+        scope (str):
+            TensorFlow scope name.
         txt_file (str):
             Training filename.
 
@@ -45,7 +47,7 @@ def inputs_train(batch_size, txt_file='train.txt'):
     train_txt_path = os.path.join(DATA_PATH, txt_file)
     sample_list, label_list, original_list = _read_file_list(train_txt_path)
 
-    with tf.name_scope('train_input'):
+    with tf.name_scope(scope):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
@@ -88,13 +90,15 @@ def inputs_train(batch_size, txt_file='train.txt'):
         return sequences, seq_length, labels, originals
 
 
-def inputs(batch_size, txt_file='test.txt'):
+def inputs(batch_size, scope='test_input', txt_file='test.txt'):
     """Construct input for speech evaluation. This method always returns unaltered data.
 
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
+        scope (str):
+            TensorFlow scope name.
         txt_file (str):
             Training filename.
 
@@ -112,7 +116,7 @@ def inputs(batch_size, txt_file='test.txt'):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    return inputs_train(batch_size, txt_file=txt_file)
+    return inputs_train(batch_size, scope=scope, txt_file=txt_file)
 
 
 def _read_file_list(path):
@@ -200,6 +204,6 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
     # Add input vectors to TensorBoard summary.
     batch_size_t = tf.shape(sequences)[0]
     summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
-    tf.summary.image('sample', summary_batch, max_outputs=1)
+    tf.summary.image('sequence', summary_batch, max_outputs=1)
 
     return sequences, seq_length, labels, originals

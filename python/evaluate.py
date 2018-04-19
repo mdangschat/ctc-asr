@@ -13,13 +13,12 @@ from params import FLAGS
 import model
 
 
-def eval_once(summary_writer, loss_op, med_op, wer_op, summary_op):
+def eval_once(summary_writer, loss_op, summary_op):
     """Run the evaluation once over all test/eval inputs.
+    TODO Documentation
 
     Args:
         summary_writer (): Summary writer.
-        wer_op ():
-        med_op ():
         loss_op ():
         summary_op (): Summary operator.
 
@@ -49,32 +48,26 @@ def eval_once(summary_writer, loss_op, med_op, wer_op, summary_op):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
             num_iter = int(math.ceil(FLAGS.num_examples_test / FLAGS.batch_size))
-            med_sum, wer_sum, loss_sum = 0.0, 0.0, 0.0
+            loss_sum = 0.0
             step = 0
 
             while step < num_iter and not coord.should_stop():
-                loss_batch, med_batch, wer_batch = sess.run([loss_op, med_op, wer_op])
+                loss_batch = sess.run([loss_op])
+                loss_batch = loss_batch[0]
 
                 loss_sum += np.sum(loss_batch)
-                med_sum += np.sum(med_batch)
-                wer_sum += np.sum(wer_batch)
                 step += 1
-                print('{}: loss={:.3f}; mean_edit_distance={:.3f}; word_error_rate={:.3f}; step={}'
-                      .format(datetime.now(), loss_batch, med_batch, wer_batch, step))
+                print('{}: loss={:.3f}; step={}'.format(datetime.now(), loss_batch, step))
 
             # Compute error rates.
             avg_loss = loss_sum / num_iter
-            avg_med = med_sum / num_iter
-            avg_wer = wer_sum / num_iter
+
             print('Summarizing averages:')
-            print('{}: loss = {:.3f}; mean_edit_distance = {:.3f}; word_error_rate = {:.3f}'
-                  .format(datetime.now(), avg_loss, avg_med, avg_wer))
+            print('{}: loss = {:.3f}'.format(datetime.now(), avg_loss))
 
             summary = tf.Summary()
             summary.ParseFromString(sess.run(summary_op))
-            summary.value.add(tag='eval/mean_loss', simple_value=avg_loss)
-            summary.value.add(tag='eval/mean_edit_distance', simple_value=avg_med)
-            summary.value.add(tag='eval/word_error_rate', simple_value=avg_wer)
+            summary.value.add(tag='eval/ctc_loss', simple_value=avg_loss)
             summary_writer.add_summary(summary, str(global_step))
 
         except Exception as e:
@@ -95,16 +88,26 @@ def evaluate():
         # Build a graph that computes the logits predictions from the inference model.
         logits = model.inference(sequences, seq_length)
 
-        # Calculate error rates
-        loss_op = model.loss(logits, labels, seq_length)
-        med_op, wer_op = model.decoding(logits, seq_length, labels, originals)
+        with tf.name_scope('eval'):
+            # Calculate error rates
+            loss_op = model.loss(logits, labels, seq_length)
+            decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
+            tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
-        # Build the summary operation based on the TF collection of summaries.
-        summary_op = tf.summary.merge_all()
-        summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
+            # Error metrics for decoded text.
+            eds, mean_ed, wers, wer = model.decoded_error_rates(labels, originals, decoded,
+                                                                plaintext)
+            tf.summary.histogram('edit_distances', eds)
+            tf.summary.scalar('mean_edit_distance', mean_ed)
+            tf.summary.histogram('word_error_rates', wers)
+            tf.summary.scalar('word_error_rate', wer)
 
-        # L8ER: Add continuous evaluation loop.
-        eval_once(summary_writer, loss_op, med_op, wer_op, summary_op)
+            # Build the summary operation based on the TF collection of summaries.
+            summary_op = tf.summary.merge_all()
+            summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
+
+            # L8ER: Add continuous evaluation loop.
+            eval_once(summary_writer, loss_op, summary_op)
 
 
 # noinspection PyUnusedLocal
