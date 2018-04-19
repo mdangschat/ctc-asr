@@ -8,4 +8,4 @@ then
 fi
 
 echo "Starting training..."
-nohup python3 python/train.py &
+nohup python3 python/train.py "$@" &

@@ -71,6 +71,9 @@ tf.app.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/
 # Miscellaneous
 tf.flags.DEFINE_integer('random_seed', 4711,
                         """TensorFlow random seed.""")
+tf.flags.DEFINE_bool('delete', False,
+                     """Whether to delete old checkpoints, or resume training.""")
+
 TF_FLOAT = tf.float32   # ctc_xxxx functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_xxxx functions don't support float64. See #13
 
