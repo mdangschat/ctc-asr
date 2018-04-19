@@ -19,7 +19,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from loader import utils
-from loader.load_sample import load_sample
+from loader.load_sample import load_sample_dummy
 
 
 # Path to the LibriSpeech ASR data set.
@@ -78,21 +78,34 @@ def _gen_list(target, additional_output=False, dry_run=False):
                 txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
                 output.append('{} {}\n'.format(path, txt.strip()))
 
-    # Calculate additional information. Time consuming.
+    # Calculate additional information. Warning: Very time consuming.
     if additional_output:
         lengths = []
-        for i, line in tqdm(enumerate(output), total=len(output), dynamic_ncols=True):
+        # Progressbar
+        for line in tqdm(output, total=len(output), dynamic_ncols=True):
             wav_path = line.split(' ', 1)[0]
-            # TODO: tqdm Progressbar
-            _, sample_len = load_sample(wav_path)
+            sample_len = load_sample_dummy(wav_path)
             lengths.append(sample_len)
+        print()     # Clear line from tqdm progressbar.
 
-            if i > 1000:
-                break
-        lengths_a = np.array(lengths)
-        length_h = np.histogram(lengths_a)
+        lengths = np.array(lengths)
+        lengths = np.sort(lengths)
+        num_buckets = 20
+        step = len(lengths) // num_buckets
+        buckets = '['
+        for i in range(step, len(lengths), step):
+            buckets += '{}, '.format(lengths[i])
+        buckets = buckets[: -2] + ']'
+        print('Buckets: ', buckets)
+
+        # Plot histogram.
         plt.figure()
-        plt.hist(length_h, bins='auto')
+        plt.hist(lengths, bins='auto', facecolor='green', alpha=0.75)
+
+        plt.title('Sequence Length\'s Histogram')
+        plt.ylabel('Count')
+        plt.xlabel('Lengths')
+        plt.grid(True)
         plt.show()
 
     # Write list to .txt file.
@@ -107,7 +120,7 @@ def _gen_list(target, additional_output=False, dry_run=False):
 
 if __name__ == '__main__':
     print('Starting to generate .txt files...')
-    _gen_list('train', additional_output=True, dry_run=True)
+    _gen_list('train', additional_output=False, dry_run=True)
 
     # TODO: No test set yet.
     # _gen_list('test', additional_output=False)
