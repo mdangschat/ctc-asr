@@ -12,9 +12,9 @@ tf.flags.DEFINE_integer('batch_size', 8,
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 0.5,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 1/3,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_float('num_epochs_per_decay', 1.0,
+tf.flags.DEFINE_float('num_epochs_per_decay', 1/3,
                       """Number of epochs after which learning rate decays.""")
 
 tf.flags.DEFINE_float('adam_beta1', 0.9,
@@ -74,8 +74,8 @@ tf.flags.DEFINE_integer('random_seed', 4711,
 tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
 
-TF_FLOAT = tf.float32   # ctc_xxxx functions don't support float64. See #13
-NP_FLOAT = np.float32   # ctc_xxxx functions don't support float64. See #13
+TF_FLOAT = tf.float32   # ctc_*** functions don't support float64. See #13
+NP_FLOAT = np.float32   # ctc_*** functions don't support float64. See #13
 
 
 # Export names.

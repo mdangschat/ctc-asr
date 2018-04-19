@@ -1,7 +1,7 @@
 """Contains the TS model definition."""
 
 import tensorflow as tf
-from tensorflow import contrib as tfc
+import tensorflow.contrib as tfc
 
 from params import FLAGS, TF_FLOAT
 import utils
@@ -104,8 +104,8 @@ def loss(logits, labels, seq_length):
             1D float Tensor with size [1], containing the mean loss.
     """
     if FLAGS.use_warp_ctc:
-        # Not installed at the moment.
         # https://github.com/baidu-research/warp-ctc
+        # noinspection PyUnresolvedReferences
         total_loss = tfc.wrapctc.wrap_ctc_loss(labels=labels,
                                                inputs=logits,
                                                sequence_length=seq_length)
@@ -150,7 +150,7 @@ def train(_loss, global_step):
                                     FLAGS.learning_rate_decay_factor,
                                     staircase=True)
 
-    # Compute gradients.    Review which optimizer performs best?
+    # Select a gradient optimizer.
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
     optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,

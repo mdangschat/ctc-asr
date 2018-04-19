@@ -1,8 +1,5 @@
-"""Routines to load the `TIMIT`_ corpus and and
-pre process the audio files and labels.
-
-.. _TIMIT:
-    https://vcs.zwuenf.org/agct_data/timit
+"""Routines to load a corpus and perform the necessary pre processing on the
+audio files and labels.
 """
 
 import os
@@ -22,12 +19,13 @@ DATA_PATH = '/home/marc/workspace/speech/data'
 
 def inputs_train(batch_size, txt_file='train.txt'):
     """Construct input for speech training.
-    TODO: `txt_file` is a workaround, remove or refactor it.
 
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
+        txt_file (str):
+            Training filename.
 
     Returns:
         tf.Tensor:
@@ -61,10 +59,9 @@ def inputs_train(batch_size, txt_file='train.txt'):
             [file_names, labels, originals],
             capacity=capacity,
             num_epochs=None,
-            shuffle=False,
+            shuffle=True,
             seed=FLAGS.random_seed
         )
-        # TODO Shuffle True
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
@@ -91,10 +88,30 @@ def inputs_train(batch_size, txt_file='train.txt'):
         return sequences, seq_length, labels, originals
 
 
-def inputs(batch_size):
-    # This method should always return unaltered data.
-    # L8ER: Implement default version, if `inputs_train()` alters the data.
-    txt_file = 'test.txt'
+def inputs(batch_size, txt_file='test.txt'):
+    """Construct input for speech evaluation. This method always returns unaltered data.
+
+    Args:
+        batch_size (int):
+            (Maximum) number of samples per batch.
+            See: _generate_batch() and `allow_smaller_final_batch=True`
+        txt_file (str):
+            Training filename.
+
+    Returns:
+        tf.Tensor:
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
+        tf.Tensor:
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
+        tf.Tensor:
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
+        tf.Tensor:
+            2D Tensor with the original strings.
+    """
     return inputs_train(batch_size, txt_file=txt_file)
 
 

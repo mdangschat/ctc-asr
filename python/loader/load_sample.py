@@ -32,7 +32,7 @@ def load_sample(file_path):
     if not path.isfile(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
-    # Review By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
+    # Load the audio files sample rate (`sr`) and data (`y`)
     (sr, y) = wav.read(file_path)
 
     if not sr == FLAGS.sampling_rate:
