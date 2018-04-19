@@ -4,6 +4,7 @@ Tested with Python 3.6.4. The Code should work with 3.4+.
 Python 2.x compatibility isn't provided.
 """
 
+import argparse
 import time
 from datetime import datetime
 import tensorflow as tf
@@ -114,15 +115,26 @@ def train():
 # noinspection PyUnusedLocal
 def main(argv=None):
     """TensorFlow starting routine."""
-    # Delete old training data.
-    if tf.gfile.Exists(FLAGS.train_dir):
-        print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
-        tf.gfile.DeleteRecursively(FLAGS.train_dir)
-    tf.gfile.MakeDirs(FLAGS.train_dir)
-
-    # Start training.
-    train()
+    train()     # Start training.
 
 
 if __name__ == '__main__':
-    tf.app.run()
+    # Parse command line arguments.
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--delete', '-d',
+                        help='delete any existing training checkpoints.',
+                        action='store_true')
+
+    args = parser.parse_args()
+    print('args', args.delete)
+
+    # Delete old training data if requested.
+    if tf.gfile.Exists(FLAGS.train_dir) or True:
+        if args.delete:
+            print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
+            tf.gfile.DeleteRecursively(FLAGS.train_dir)
+        else:
+            print('Resuming training from: {}'.format(FLAGS.train_dir))
+    tf.gfile.MakeDirs(FLAGS.train_dir)
+
+    # tf.app.run()
