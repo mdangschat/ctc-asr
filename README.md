@@ -1,6 +1,13 @@
 # Speech Recognition System
 
 
+## Installation (Only Notes ATM)
+
+### Required Libraries
+```shell
+pacman -S tr
+```
+
 
 
 <!--
