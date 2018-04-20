@@ -12,7 +12,7 @@ tf.flags.DEFINE_integer('batch_size', 8,
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 2/3,
                       """Learning rate decay factor.""")
 tf.flags.DEFINE_integer('steps_per_decay', 10000,
                         """Number of epochs after which learning rate decays.""")
@@ -42,7 +42,7 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 3000001,
+tf.flags.DEFINE_integer('max_steps', 132553 * 10,
                         """Number of batches to run.""")
 tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every x steps) to log results to the console.""")

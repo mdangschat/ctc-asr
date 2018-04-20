@@ -14,7 +14,7 @@ import model
 
 
 def eval_once(summary_writer, loss_op, summary_op):
-    """Run the evaluation once over all test/eval inputs.
+    """Run the evaluation once over all test inputs.
     TODO Documentation
 
     Args:
