@@ -20,7 +20,7 @@ tf.set_random_seed(FLAGS.random_seed)
 
 def train():
     """Train the network for a number of steps."""
-    print('Version: {}; Branch: {}'.format(get_git_revision_hash(), get_git_branch()))
+    print('Version: {} Branch: {}'.format(get_git_revision_hash(), get_git_branch()))
     print('Parameters: ', get_parameters())
 
     with tf.Graph().as_default():

@@ -7,7 +7,7 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 16,
                         """(Maximum) Number of samples within a batch.""")
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
@@ -44,8 +44,8 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
 # Logging & Output
 tf.flags.DEFINE_integer('max_steps', 132553 * 10,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
-                        """How often (every x steps) to log results to the console.""")
+tf.flags.DEFINE_integer('log_frequency', 50,
+                        """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
 
