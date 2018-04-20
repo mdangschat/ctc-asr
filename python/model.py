@@ -206,14 +206,10 @@ def train(_loss, global_step):
         tf.Tensor:
             Optimizer operator for training.
     """
-    # Variables that affect learning rate.
-    num_batches_per_epoch = FLAGS.num_examples_train / FLAGS.batch_size
-    decay_steps = int(num_batches_per_epoch * FLAGS.num_epochs_per_decay)
-
     # Decay the learning rate exponentially based on the number of steps.
     lr = tf.train.exponential_decay(FLAGS.learning_rate,
                                     global_step,
-                                    decay_steps,
+                                    FLAGS.steps_per_decay,
                                     FLAGS.learning_rate_decay_factor,
                                     staircase=True)
 

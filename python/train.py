@@ -87,7 +87,7 @@ def train():
         # Session configuration.
         session_config = tf.ConfigProto(
             log_device_placement=FLAGS.log_device_placement,
-            gpu_options=tf.GPUOptions(allow_growth=True)
+            gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
         )
 
         # Session hooks.

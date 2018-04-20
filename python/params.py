@@ -12,10 +12,10 @@ tf.flags.DEFINE_integer('batch_size', 8,
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 1/3,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_float('num_epochs_per_decay', 1/13,
-                      """Number of epochs after which learning rate decays.""")
+tf.flags.DEFINE_integer('steps_per_decay', 10000,
+                        """Number of epochs after which learning rate decays.""")
 
 tf.flags.DEFINE_float('adam_beta1', 0.9,
                       """Adam optimizer beta_1 power.""")
@@ -54,6 +54,9 @@ tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
+tf.flags.DEFINE_boolean('allow_vram_growth', True,
+                        """Allow TensorFlow to allocate VRAM as needed, 
+                        as opposed to allocating the whole VRAWM at program start.""")
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_1',
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('num_examples_train', 132553,
@@ -88,11 +91,11 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rage (lr={}, epochs_per_decay={}, decay_factor={}); ' \
+    s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); ' \
         'BDLSTM (num_units={}, num_layers={}); ' \
         'Dense (num_units={}); ' \
         'Training (batch_size={}, max_steps={}, log_frequency={})'
-    return s.format(FLAGS.learning_rate, FLAGS.num_epochs_per_decay,
+    return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
                     FLAGS.learning_rate_decay_factor,
                     FLAGS.num_units_lstm, FLAGS.num_layers_lstm,
                     FLAGS.num_units_dense,
