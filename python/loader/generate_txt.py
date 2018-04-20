@@ -102,6 +102,7 @@ def generate_list(data_path, target, loader, additional_output=False, dry_run=Fa
         plt.ylabel('Count')
         plt.xlabel('Length')
         plt.grid(True)
+
         plt.show()
 
     # Write list to .txt file.
