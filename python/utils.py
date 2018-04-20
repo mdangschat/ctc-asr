@@ -3,6 +3,7 @@
 import numpy as np
 from git import Repo
 import tensorflow as tf
+import tensorflow.contrib as tfc
 
 from params import FLAGS, NP_FLOAT, TF_FLOAT
 from s_labels import itoc
@@ -66,7 +67,8 @@ def create_cell(num_units, keep_prob=1.0):
         tf.nn.rnn_cell.LSTMCell: RNN cell with dropout wrapper.
     """
     # Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
-    cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
+    # cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
+    cell = tfc.cudnn_rnn.CudnnCompatibleLSTMCell(num_units=num_units)
     return tf.nn.rnn_cell.DropoutWrapper(cell,
                                          input_keep_prob=keep_prob,
                                          output_keep_prob=keep_prob,
