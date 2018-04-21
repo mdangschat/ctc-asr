@@ -79,10 +79,12 @@ def train():
                     loss_value = run_values.results
                     examples_per_sec = FLAGS.log_frequency * FLAGS.batch_size / duration
                     sec_per_batch = duration / float(FLAGS.log_frequency)
+                    batch_per_sec = float(FLAGS.log_frequency)
 
-                    print('{}: step {}, loss={:.4f}, {:.1f} examples/sec ({:.3f} sec/batch)'
-                          .format(datetime.now(), self._step, loss_value,
-                                  examples_per_sec, sec_per_batch))
+                    print('{}: step {}, loss={:.4f}, {:.1f} examples/sec ({:.3f} sec/batch) '
+                          '({:.2f} batch/sec)'
+                          .format(datetime.now(), self._step, loss_value, examples_per_sec,
+                                  sec_per_batch, batch_per_sec))
 
         # Session configuration.
         session_config = tf.ConfigProto(
