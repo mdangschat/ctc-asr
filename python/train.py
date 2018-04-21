@@ -111,6 +111,7 @@ def train():
             # The frequency, in number of global steps, that the global step/sec is logged.
             log_step_count_steps=FLAGS.log_frequency * 10,
             hooks=session_hooks,
+            stop_grace_period_secs=10,
             config=session_config
         )
 

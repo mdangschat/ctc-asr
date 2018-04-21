@@ -7,12 +7,12 @@ from s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_integer('batch_size', 16,
+tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
 
 tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 2/3,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 1/3,
                       """Learning rate decay factor.""")
 tf.flags.DEFINE_integer('steps_per_decay', 10000,
                         """Number of epochs after which learning rate decays.""")
@@ -42,7 +42,7 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 132553 * 10,
+tf.flags.DEFINE_integer('max_steps', 500000,
                         """Number of batches to run.""")
 tf.flags.DEFINE_integer('log_frequency', 50,
                         """How often (every `log_frequency` steps) to log results.""")
