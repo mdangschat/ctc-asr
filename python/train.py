@@ -79,7 +79,7 @@ def train():
                     loss_value = run_values.results
                     examples_per_sec = FLAGS.log_frequency * FLAGS.batch_size / duration
                     sec_per_batch = duration / float(FLAGS.log_frequency)
-                    batch_per_sec = float(FLAGS.log_frequency)
+                    batch_per_sec = float(FLAGS.log_frequency) / duration
 
                     print('{}: step {}, loss={:.4f}, {:.1f} examples/sec ({:.3f} sec/batch) '
                           '({:.2f} batch/sec)'
