@@ -94,21 +94,23 @@ def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
 
 def dense_to_text(decoded, originals):
     """Convert a dense, integer encoded `tf.Tensor` into a readable string.
+    Create a summary comparing the decoded plaintext with a given original string.
 
         Args:
-            decoded (tf.Tensor):
-                The decoded integer Tensor path.
-            originals (tf.Tensor):
+            decoded (np.ndarray):
+                Integer array, containing the decoded sequences.
+            originals (np.ndarray):
                 String tensor, containing the original input string for comparision.
+                `originals` can be an empty tensor.
 
         Returns:
-            tf.Tensor:
+            np.ndarray:
+                1D string Tensor containing only the decoded text outputs.
+                    [decoded_string_0, ..., decoded_string_N]
+            np.ndarray:
                 2D string Tensor with layout:
                     [[decoded_string_0, original_string_0], ...
                      [decoded_string_N, original_string_N]]
-            tf.Tensor:
-                1D string Tensor containing only the decoded text outputs.
-                    [decoded_string_0, ..., decoded_string_N]
         """
     decoded_strings = []
     original_strings = []
@@ -116,12 +118,18 @@ def dense_to_text(decoded, originals):
     for d in decoded:
         decoded_strings.append(''.join([itoc(i) for i in d]))
 
-    for o in originals:
-        original_strings.append(''.join([c for c in o.decode('utf-8')]))
+    if len(originals) > 0:
+        for o in originals:
+            original_strings.append(''.join([c for c in o.decode('utf-8')]))
+    else:
+        original_strings = ['n/a'] * len(decoded_strings)
 
     decoded_strings = np.array(decoded_strings, dtype=np.object)
     original_strings = np.array(original_strings, dtype=np.object)
-    return np.vstack([decoded_strings, original_strings]), np.array(decoded_strings)
+
+    summary = np.vstack([decoded_strings, original_strings])
+
+    return np.array(decoded_strings), summary
 
 
 # The following function has been taken from:

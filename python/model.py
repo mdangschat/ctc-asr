@@ -1,5 +1,6 @@
 """Contains the TS model definition."""
 
+import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
@@ -121,18 +122,17 @@ def loss(logits, labels, seq_length):
     return tf.reduce_mean(total_loss)
 
 
-def decode(logits, seq_len, originals):
+def decode(logits, seq_len, originals=None):
     """Decode a given inference (`logits`) and convert it to plaintext.
 
     Review: `label_len` needed, instead of `seq_len`?
-    L8ER: Make `originals` optional for completely unknown inputs.
 
     Args:
         logits (tf.Tensor):
             Logits Tensor of shape [time (input), batch_size, num_classes].
         seq_len (tf.Tensor):
             Tensor containing the batches sequence lengths of shape [batch_size].
-        originals (tf.Tensor):
+        originals (tf.Tensor): Optional, default `None`.
             String Tensor of shape [batch_size] with the original plaintext.
 
     Returns:
@@ -152,9 +152,12 @@ def decode(logits, seq_len, originals):
     # ctc_greedy_decoder returns a list with one SparseTensor as only element, if `top_paths=1`.
     decoded = tf.cast(decoded[0], tf.int32)
 
-    # Translate decoded integer data back to character strings.
     dense = tf.sparse_tensor_to_dense(decoded)
-    plaintext_summary, plaintext = tf.py_func(utils.dense_to_text, [dense, originals],
+
+    originals = originals if originals is not None else np.array([], dtype=np.int32)
+
+    # Translate decoded integer data back to character strings.
+    plaintext, plaintext_summary = tf.py_func(utils.dense_to_text, [dense, originals],
                                               [tf.string, tf.string], name='py_dense_to_text')
 
     return decoded, plaintext, plaintext_summary

@@ -54,7 +54,7 @@ def inputs_train(batch_size, scope='train_input', txt_file='train.txt'):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Ensure that the random shuffling has good mixing properties.
-        capacity = 1000 + 5 * FLAGS.batch_size
+        capacity = 512 + 4 * FLAGS.batch_size
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
