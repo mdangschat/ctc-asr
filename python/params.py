@@ -50,6 +50,8 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
 
 # Data set
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_1',
+                       """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
@@ -57,8 +59,6 @@ tf.flags.DEFINE_boolean('log_device_placement', False,
 tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         """Allow TensorFlow to allocate VRAM as needed, 
                         as opposed to allocating the whole VRAWM at program start.""")
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_1',
-                       """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('num_examples_train', 132553,
                         """Number of examples in the training set.""")
 tf.flags.DEFINE_integer('num_examples_test', 5040,
@@ -67,8 +67,8 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Evaluation
-tf.app.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/eval',
-                           """Directory where to write the evaluation logs into.""")
+tf.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/eval',
+                       """Directory where to write the evaluation logs into.""")
 
 
 # Miscellaneous

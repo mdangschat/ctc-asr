@@ -9,7 +9,7 @@ from datetime import datetime
 import tensorflow as tf
 
 from params import FLAGS, get_parameters
-from utils import get_git_branch, get_git_revision_hash
+from utils import get_git_branch, get_git_revision_hash, TraceHook
 import model
 
 
@@ -98,6 +98,9 @@ def train():
                 tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                 # Monitors the loss tensor and stops training if loss is NaN.
                 tf.train.NanTensorHook(loss),
+                # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
+                TraceHook(FLAGS.train_dir, log_frequency=FLAGS.log_frequency * 10),
+                # LoggingHook, see implementation.
                 LoggerHook()
             ]
 
@@ -110,18 +113,19 @@ def train():
             save_summaries_steps=FLAGS.log_frequency,
             # The frequency, in number of global steps, that the global step/sec is logged.
             log_step_count_steps=FLAGS.log_frequency * 10,
+            # Attach hooks to session.
             hooks=session_hooks,
-            stop_grace_period_secs=10,
+            # Number of seconds given to threads to stop after close() has been called.
+            stop_grace_period_secs=60,
+            # Attach session config.
             config=session_config
         )
-
-        run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
-        run_metadata = tf.RunMetadata()
 
         with session:
             while not session.should_stop():
                 try:
-                    session.run([train_op], options=run_options, run_metadata=run_metadata)
+                    session.run([train_op])
+
                 except tf.errors.OutOfRangeError:
                     print('All batches fed. Stopping.')
                     break

@@ -263,3 +263,37 @@ def variable_with_weight_decay(name, shape, stddev, weight_decay):
         tf.add_to_collection('losses', wd)
 
     return var
+
+
+# The following code has been inspired by <https://stackoverflow.com/a/45681782>.
+class TraceHook(tf.train.SessionRunHook):
+    """Hook to perform Traces every N steps."""
+
+    def __init__(self, checkpoint_dir, log_frequency=FLAGS.log_frequency,
+                 trace_level=tf.RunOptions.FULL_TRACE):
+        self._trace = log_frequency == 1
+        self.writer = tf.summary.FileWriter(checkpoint_dir)
+        self.trace_level = trace_level
+        self.log_frequency = log_frequency
+        self._global_step_tensor = None
+
+    def begin(self):
+        self._global_step_tensor = tf.train.get_global_step()
+        if self._global_step_tensor is None:
+            raise RuntimeError("Global step should be created to use TraceHook.")
+
+    def before_run(self, run_context):
+        if self._trace:
+            options = tf.RunOptions(trace_level=self.trace_level)
+        else:
+            options = None
+
+        return tf.train.SessionRunArgs(fetches=self._global_step_tensor, options=options)
+
+    def after_run(self, run_context, run_values):
+        global_step = run_values.results - 1
+        if self._trace:
+            self._trace = False
+            self.writer.add_run_metadata(run_values.run_metadata, '{}'.format(global_step))
+        if not (global_step + 1) % self.log_frequency:
+            self._trace = True
