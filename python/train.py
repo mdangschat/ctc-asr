@@ -65,7 +65,7 @@ def train():
                 # Monitors the loss tensor and stops training if loss is NaN.
                 tf.train.NanTensorHook(loss),
                 # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
-                TraceHook(FLAGS.train_dir, log_frequency=FLAGS.log_frequency * 100),
+                TraceHook(FLAGS.train_metrics_dir, FLAGS.log_frequency * 100),
                 # LoggingHook.
                 LoggerHook(loss)
             ]
@@ -74,7 +74,7 @@ def train():
         # creating checkpoints, and some basic error handling.
         session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
-            save_checkpoint_steps=FLAGS.log_frequency * 10,
+            save_checkpoint_steps=FLAGS.log_frequency * 5,
             # The frequency, in number of global steps, that the summaries are written to disk
             # using a default summary saver.
             save_summaries_steps=FLAGS.log_frequency,

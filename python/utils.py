@@ -271,8 +271,7 @@ def variable_with_weight_decay(name, shape, stddev, weight_decay):
 class TraceHook(tf.train.SessionRunHook):
     """Hook to perform Traces every N steps."""
 
-    def __init__(self, checkpoint_dir, log_frequency=FLAGS.log_frequency,
-                 trace_level=tf.RunOptions.FULL_TRACE):
+    def __init__(self, checkpoint_dir, log_frequency, trace_level=tf.RunOptions.FULL_TRACE):
         self._trace = log_frequency == 1
         self.writer = tf.summary.FileWriter(checkpoint_dir)
         self.trace_level = trace_level
