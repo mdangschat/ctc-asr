@@ -7,7 +7,7 @@ Note: No Python 2 compatibility is provided.
 import tensorflow as tf
 
 from params import FLAGS, get_parameters
-from utils import get_git_branch, get_git_revision_hash, TraceHook, LoggerHook
+from utils import get_git_branch, get_git_revision_hash, LoggerHook
 import model
 
 
@@ -65,7 +65,8 @@ def train():
                 # Monitors the loss tensor and stops training if loss is NaN.
                 tf.train.NanTensorHook(loss),
                 # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
-                TraceHook(FLAGS.train_metrics_dir, FLAGS.log_frequency * 100),
+                # Deactivated `TraceHook`, because it screws up TensorBoard.
+                # TraceHook(FLAGS.train_dir, FLAGS.log_frequency * 5),
                 # LoggingHook.
                 LoggerHook(loss)
             ]
@@ -83,7 +84,7 @@ def train():
             # Attach hooks to session.
             hooks=session_hooks,
             # Number of seconds given to threads to stop after close() has been called.
-            stop_grace_period_secs=60,
+            stop_grace_period_secs=10,
             # Attach session config.
             config=session_config
         )
@@ -103,14 +104,11 @@ def main(argv=None):
     """TensorFlow starting routine."""
 
     # Delete old training data if requested.
-    if FLAGS.delete:
-        if tf.gfile.Exists(FLAGS.train_dir):
+    if tf.gfile.Exists(FLAGS.train_dir):
+        if FLAGS.delete:
             print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
             tf.gfile.DeleteRecursively(FLAGS.train_dir)
-        if tf.gfile.Exists(FLAGS.train_metrics_dir):
-            print('Deleting old metrics from: {}.'.format(FLAGS.train_metrics_dir))
-            tf.gfile.DeleteRecursively(FLAGS.train_metrics_dir)
-    elif not FLAGS.delte and tf.gfile.Exists(FLAGS.train_dir):
+    else:
         print('Resuming training from: {}'.format(FLAGS.train_dir))
 
     tf.gfile.MakeDirs(FLAGS.train_dir)
