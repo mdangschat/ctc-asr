@@ -99,7 +99,7 @@ def train():
                 # Monitors the loss tensor and stops training if loss is NaN.
                 tf.train.NanTensorHook(loss),
                 # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
-                TraceHook(FLAGS.train_dir, log_frequency=FLAGS.log_frequency * 10),
+                TraceHook(FLAGS.train_dir, log_frequency=FLAGS.log_frequency * 100),
                 # LoggingHook, see implementation.
                 LoggerHook()
             ]
