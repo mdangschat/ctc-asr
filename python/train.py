@@ -115,10 +115,13 @@ def train():
             config=session_config
         )
 
+        run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+        run_metadata = tf.RunMetadata()
+
         with session:
             while not session.should_stop():
                 try:
-                    session.run(train_op)
+                    session.run([train_op], options=run_options, run_metadata=run_metadata)
                 except tf.errors.OutOfRangeError:
                     print('All batches fed. Stopping.')
                     break
