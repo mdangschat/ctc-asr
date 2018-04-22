@@ -74,6 +74,7 @@ def train():
         # creating checkpoints, and some basic error handling.
         session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
+            save_checkpoint_steps=FLAGS.log_frequency * 10,
             # The frequency, in number of global steps, that the summaries are written to disk
             # using a default summary saver.
             save_summaries_steps=FLAGS.log_frequency,
