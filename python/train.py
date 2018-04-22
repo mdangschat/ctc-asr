@@ -4,12 +4,10 @@ Tested with Python 3.5 and 3.6.
 Note: No Python 2 compatibility is provided.
 """
 
-import time
-from datetime import datetime
 import tensorflow as tf
 
 from params import FLAGS, get_parameters
-from utils import get_git_branch, get_git_revision_hash, TraceHook
+from utils import get_git_branch, get_git_revision_hash, TraceHook, LoggerHook
 import model
 
 
@@ -54,38 +52,6 @@ def train():
         # Build the training graph, that updates the model parameters after each batch.
         train_op = model.train(loss, global_step)
 
-        # Logging hook
-        class LoggerHook(tf.train.SessionRunHook):
-            """Log loss and runtime."""
-
-            def __init__(self):
-                self._start_time = 0
-                self._step = 0
-
-            def begin(self):
-                self._step = -1
-                self._start_time = time.time()
-
-            def before_run(self, run_context):
-                self._step += 1
-                return tf.train.SessionRunArgs(loss)    # Asks for loss value.
-
-            def after_run(self, run_context, run_values):
-                if self._step % FLAGS.log_frequency == 0:
-                    current_time = time.time()
-                    duration = current_time - self._start_time
-                    self._start_time = current_time
-
-                    loss_value = run_values.results
-                    examples_per_sec = FLAGS.log_frequency * FLAGS.batch_size / duration
-                    sec_per_batch = duration / float(FLAGS.log_frequency)
-                    batch_per_sec = float(FLAGS.log_frequency) / duration
-
-                    print('{}: step {}, loss={:.4f}, {:.1f} examples/sec ({:.3f} sec/batch) '
-                          '({:.2f} batch/sec)'
-                          .format(datetime.now(), self._step, loss_value, examples_per_sec,
-                                  sec_per_batch, batch_per_sec))
-
         # Session configuration.
         session_config = tf.ConfigProto(
             log_device_placement=FLAGS.log_device_placement,
@@ -100,8 +66,8 @@ def train():
                 tf.train.NanTensorHook(loss),
                 # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
                 TraceHook(FLAGS.train_dir, log_frequency=FLAGS.log_frequency * 100),
-                # LoggingHook, see implementation.
-                LoggerHook()
+                # LoggingHook.
+                LoggerHook(loss)
             ]
 
         # The MonitoredTrainingSession takes care of session initialization, session resumption,

@@ -1,5 +1,7 @@
 """Utility and helper methods for TensorFlow speech learning."""
 
+import time
+from datetime import datetime
 import numpy as np
 from git import Repo
 import tensorflow as tf
@@ -297,3 +299,36 @@ class TraceHook(tf.train.SessionRunHook):
             self.writer.add_run_metadata(run_values.run_metadata, '{}'.format(global_step))
         if not (global_step + 1) % self.log_frequency:
             self._trace = True
+
+
+class LoggerHook(tf.train.SessionRunHook):
+    """Log loss and runtime."""
+
+    def __init__(self, loss_op):
+        self.loss_op = loss_op
+        self._global_step_tensor = None
+        self._start_time = 0
+
+    def begin(self):
+        self._global_step_tensor = tf.train.get_global_step()
+        self._start_time = time.time()
+
+    def before_run(self, run_context):
+        # Asks for loss value and global step.
+        return tf.train.SessionRunArgs(fetches=[self.loss_op, self._global_step_tensor])
+
+    def after_run(self, run_context, run_values):
+        loss_value, global_step = run_values.results
+
+        if global_step % FLAGS.log_frequency == 0:
+            current_time = time.time()
+            duration = current_time - self._start_time
+            self._start_time = current_time
+
+            examples_per_sec = FLAGS.log_frequency * FLAGS.batch_size / duration
+            sec_per_batch = duration / float(FLAGS.log_frequency)
+            batch_per_sec = float(FLAGS.log_frequency) / duration
+
+            print('{}: step {}, loss={:.4f}, {:.1f} examples/sec ({:.3f} sec/batch) '
+                  '({:.1f} batch/sec)'.format(datetime.now(), global_step, loss_value,
+                                              examples_per_sec, sec_per_batch, batch_per_sec))
