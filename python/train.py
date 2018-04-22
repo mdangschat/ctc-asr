@@ -101,13 +101,18 @@ def train():
 # noinspection PyUnusedLocal
 def main(argv=None):
     """TensorFlow starting routine."""
+
     # Delete old training data if requested.
-    if tf.gfile.Exists(FLAGS.train_dir):
-        if FLAGS.delete:
+    if FLAGS.delete:
+        if tf.gfile.Exists(FLAGS.train_dir):
             print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
             tf.gfile.DeleteRecursively(FLAGS.train_dir)
-        else:
-            print('Resuming training from: {}'.format(FLAGS.train_dir))
+        if tf.gfile.Exists(FLAGS.train_metrics_dir):
+            print('Deleting old metrics from: {}.'.format(FLAGS.train_metrics_dir))
+            tf.gfile.DeleteRecursively(FLAGS.train_metrics_dir)
+    elif not FLAGS.delte and tf.gfile.Exists(FLAGS.train_dir):
+        print('Resuming training from: {}'.format(FLAGS.train_dir))
+
     tf.gfile.MakeDirs(FLAGS.train_dir)
 
     # Start training.
