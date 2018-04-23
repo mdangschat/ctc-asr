@@ -7,7 +7,7 @@ Note: No Python 2 compatibility is provided.
 import tensorflow as tf
 
 from params import FLAGS, get_parameters
-from utils import get_git_branch, get_git_revision_hash, LoggerHook, TraceHook
+from utils import get_git_branch, get_git_revision_hash, LoggerHook
 import model
 
 
@@ -113,14 +113,14 @@ def main(argv=None):
     """TensorFlow starting routine."""
 
     # Delete old training data if requested.
-    if tf.gfile.Exists(FLAGS.train_dir):
-        if FLAGS.delete:
-            print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
-            tf.gfile.DeleteRecursively(FLAGS.train_dir)
-    else:
+    if tf.gfile.Exists(FLAGS.train_dir) and FLAGS.delete:
+        print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
+        tf.gfile.DeleteRecursively(FLAGS.train_dir)
+    elif tf.gfile.Exists(FLAGS.train_dir) and not FLAGS.delete:
         print('Resuming training from: {}'.format(FLAGS.train_dir))
-
-    tf.gfile.MakeDirs(FLAGS.train_dir)
+    else:
+        print('Starting a new training run in: {}'.format(FLAGS.train_dir))
+        tf.gfile.MakeDirs(FLAGS.train_dir)
 
     # Start training.
     train()

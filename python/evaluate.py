@@ -67,7 +67,7 @@ def eval_once(summary_writer, loss_op, summary_op):
 
             summary = tf.Summary()
             summary.ParseFromString(sess.run(summary_op))
-            summary.value.add(tag='eval/ctc_loss', simple_value=avg_loss)
+            summary.value.add(tag='loss/ctc_loss', simple_value=avg_loss)
             summary_writer.add_summary(summary, str(global_step))
 
         except Exception as e:
@@ -88,7 +88,7 @@ def evaluate():
         # Build a graph that computes the logits predictions from the inference model.
         logits = model.inference(sequences, seq_length)
 
-        with tf.name_scope('eval'):
+        with tf.name_scope('loss'):
             # Calculate error rates
             loss_op = model.loss(logits, labels, seq_length)
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
@@ -113,11 +113,17 @@ def evaluate():
 # noinspection PyUnusedLocal
 def main(argv=None):
     """TensorFlow starting routine."""
-    # Delete old evaluation data
-    if tf.gfile.Exists(FLAGS.eval_dir):
-        print('Deleting old evaluation data from: "{}".'.format(FLAGS.eval_dir))
+
+    # Delete old evaluation data if requested.
+    if tf.gfile.Exists(FLAGS.eval_dir) and FLAGS.delete:
+        print('Deleting old evaluation data from: {}.'.format(FLAGS.eval_dir))
         tf.gfile.DeleteRecursively(FLAGS.eval_dir)
-    tf.gfile.MakeDirs(FLAGS.eval_dir)
+    elif tf.gfile.Exists(FLAGS.eval_dir) and not FLAGS.delete:
+        print('Resuming evaluation in: {}'.format(FLAGS.eval_dir))
+    else:
+        print('Starting a new evaluation in: {}'.format(FLAGS.eval_dir))
+        tf.gfile.MakeDirs(FLAGS.eval_dir)
+
     evaluate()
 
 
