@@ -7,7 +7,7 @@ Note: No Python 2 compatibility is provided.
 import tensorflow as tf
 
 from params import FLAGS, get_parameters
-from utils import get_git_branch, get_git_revision_hash, LoggerHook
+from utils import get_git_branch, get_git_revision_hash, LoggerHook, TraceHook
 import model
 
 
@@ -58,15 +58,24 @@ def train():
             gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
         )
 
+        # Summary hook.
+        summary_op = tf.summary.merge_all()
+        file_writer = tf.summary.FileWriterCache.get(FLAGS.train_dir)
+        summary_saver_hook = tf.train.SummarySaverHook(save_steps=FLAGS.log_frequency,
+                                                       summary_writer=file_writer,
+                                                       summary_op=summary_op)
+
         # Session hooks.
         session_hooks = [
                 # Requests stop at a specified step.
                 tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
                 # Monitors the loss tensor and stops training if loss is NaN.
                 tf.train.NanTensorHook(loss),
+                # Summary saver hook.
+                summary_saver_hook,
                 # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
-                # Deactivated `TraceHook`, because it screws up TensorBoard.
-                # TraceHook(FLAGS.train_dir, FLAGS.log_frequency * 5),
+                # Deactivated `TraceHook`, because it's computational intensive.
+                # TraceHook(file_writer, FLAGS.log_frequency * 5),
                 # LoggingHook.
                 LoggerHook(loss)
             ]
