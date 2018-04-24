@@ -110,8 +110,9 @@ def evaluate():
             # Error metrics for decoded text.
             eds, mean_ed_op, wers, wer_op = model.decoded_error_rates(labels, originals, decoded,
                                                                       plaintext)
-            tf.summary.histogram('edit_distances', eds)
-            tf.summary.histogram('word_error_rates', wers)
+
+            # tf.summary.histogram('edit_distances', eds)
+            # tf.summary.histogram('word_error_rates', wers)
 
             # Build the summary operation based on the TF collection of summaries.
             summary_op = tf.summary.merge_all()
