@@ -71,7 +71,7 @@ def generate_list(data_path, target, loader, additional_output=False, dry_run=Fa
     pattern = re.compile(r'[^a-z ]+')
 
     # Load the output string.
-    output = loader(data_path, pattern)
+    output = loader(data_path, target, pattern)
 
     # Calculate additional information. Note: Time consuming.
     if additional_output:
@@ -118,7 +118,7 @@ def generate_list(data_path, target, loader, additional_output=False, dry_run=Fa
             f.writelines(output)
 
 
-def _libri_speech_loader(data_path, pattern):
+def _libri_speech_loader(data_path, target, pattern):
     """Build the output string that can be written to the desired *.txt file.
 
     Note: Since the TIMIT data set is relatively small, both train
@@ -126,41 +126,47 @@ def _libri_speech_loader(data_path, pattern):
 
     Args:
         data_path (str): Base path of the data set.
+        target (str): 'train' or 'test'
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    train_folders = ['train-clean-100', 'train-clean-360']
+    test_folders = ['dev-clean', 'test-clean']
+    folders = train_folders if target is 'train' else test_folders
+
     output = []
+    for folder in [os.path.join(data_path, f) for f in folders]:
+        for root, dirs, files in os.walk(folder):
+            if len(dirs) is 0:
+                # Get list of `.trans.txt` files.
+                trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
+                # Verify that a `*.trans.txt` file exists.
+                assert len(trans_txt_files) is 1, 'No .tans.txt file found: {}'.format(trans_txt_files)
 
-    for root, dirs, files in os.walk(data_path):
-        if len(dirs) is 0:
-            # Get list of `.trans.txt` files.
-            trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
-            # Verify that a `*.trans.txt` file exists.
-            assert len(trans_txt_files) is 1, 'No .tans.txt file found: {}'.format(trans_txt_files)
+                # Absolute path.
+                trans_txt_path = os.path.join(root, trans_txt_files[0])
 
-            # Absolute path.
-            trans_txt_path = os.path.join(root, trans_txt_files[0])
+                # Load `.trans.txt` contents.
+                with open(trans_txt_path, 'r') as f:
+                    lines = f.readlines()
 
-            # Load `.trans.txt` contents.
-            with open(trans_txt_path, 'r') as f:
-                lines = f.readlines()
+                # Sanitize lines.
+                lines = [line.lower().strip().split(' ', 1) for line in lines]
 
-            # Sanitize lines.
-            lines = [line.lower().strip().split(' ', 1) for line in lines]
+                for file_id, txt in lines:
+                    path = os.path.join(root, '{}.wav'.format(file_id))
+                    assert os.path.isfile(path), '{} not found.'.format(path)
 
-            for file_id, txt in lines:
-                path = os.path.join(root, '{}.wav'.format(file_id))
-                assert os.path.isfile(path), '{} not found.'.format(path)
-
-                txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
-                output.append('{} {}\n'.format(path, txt.strip()))
+                    txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
+                    output.append('{} {}\n'.format(path, txt.strip()))
 
     return output
 
 
-def _timit_loader(data_path, pattern):
+# noinspection PyUnusedLocal
+def _timit_loader(data_path, target, pattern):
     """Build the output string that can be written to the desired *.txt file.
 
     Note: Since the TIMIT data set is relatively small, both train
@@ -168,6 +174,7 @@ def _timit_loader(data_path, pattern):
 
     Args:
         data_path (str): Base path of the data set.
+        target (str): Not used at the moment for TIMIT data set.
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
     Returns:
@@ -221,8 +228,8 @@ def _timit_loader(data_path, pattern):
 if __name__ == '__main__':
     # train.txt
     generate_list(LIBRI_SPEECH_PATH, 'train', _libri_speech_loader,
-                  additional_output=True, dry_run=False)
+                  additional_output=False, dry_run=True)
 
     # test.txt
-    generate_list(TIMIT_PATH, 'test', _timit_loader,
-                  additional_output=True, dry_run=False)
+    generate_list(LIBRI_SPEECH_PATH, 'test', _libri_speech_loader,
+                  additional_output=False, dry_run=True)
