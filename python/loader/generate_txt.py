@@ -49,6 +49,8 @@ def generate_list(data_path, target, loader, additional_output=False, dry_run=Fa
         target (str):
             'train' or 'test'
         loader (function):
+            Loader function for the given data set.
+            See `_libri_speech_loader` and `_timit_loader` for details.
         additional_output (bool): Optional, default False.
             Convert the audio data to features and extract additional information.
             Prints out optimal bucket sizes.
@@ -174,7 +176,7 @@ def _timit_loader(data_path, target, pattern):
 
     Args:
         data_path (str): Base path of the data set.
-        target (str): Not used at the moment for TIMIT data set.
+        target (str): Not used at the moment for TIMIT data set. Set to `None`.
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
     Returns:

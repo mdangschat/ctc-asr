@@ -62,13 +62,13 @@ tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         as opposed to allocating the whole VRAWM at program start.""")
 tf.flags.DEFINE_integer('num_examples_train', 132553,
                         """Number of examples in the training set.""")
-tf.flags.DEFINE_integer('num_examples_test', 5040,
+tf.flags.DEFINE_integer('num_examples_test', 5323,
                         """Number of examples in the testing/evaluation set.""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Evaluation
-tf.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/eval',
+tf.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/eval_ls',
                        """Directory where to write the evaluation logs into.""")
 
 
