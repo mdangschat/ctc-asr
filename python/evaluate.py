@@ -13,13 +13,15 @@ from params import FLAGS
 import model
 
 
-def eval_once(summary_writer, loss_op, summary_op):
+def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
     """Run the evaluation once over all test inputs.
     TODO Documentation
 
     Args:
         summary_writer (): Summary writer.
         loss_op ():
+        mean_ed_op ():
+        wer_op ():
         summary_op (): Summary operator.
 
     Returns:
@@ -48,26 +50,37 @@ def eval_once(summary_writer, loss_op, summary_op):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
             num_iter = int(math.ceil(FLAGS.num_examples_test / FLAGS.batch_size))
-            loss_sum = 0.0
+            loss_sum, mean_ed_sum, wer_sum = 0., 0., 0.
             step = 0
 
             while step < num_iter and not coord.should_stop():
-                loss_batch = sess.run([loss_op])
-                loss_batch = loss_batch[0]
+                loss_batch, mean_ed_batch, wer_batch = sess.run([loss_op, mean_ed_op, wer_op])
 
                 loss_sum += np.sum(loss_batch)
+                mean_ed_sum += mean_ed_batch
+                wer_sum += wer_batch
                 step += 1
-                print('{}: loss={:.3f}; step={}'.format(datetime.now(), loss_batch, step))
+                print('{}: Batch {} results: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
+                      .format(datetime.now(), step, loss_batch, mean_ed_batch, wer_batch))
 
             # Compute error rates.
             avg_loss = loss_sum / num_iter
+            mean_ed = mean_ed_sum / num_iter
+            wer = wer_sum / num_iter
 
             print('Summarizing averages:')
-            print('{}: loss = {:.3f}'.format(datetime.now(), avg_loss))
+            print('{}: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
+                  .format(datetime.now(), avg_loss, mean_ed, wer))
 
             summary = tf.Summary()
             summary.ParseFromString(sess.run(summary_op))
+
             summary.value.add(tag='loss/ctc_loss', simple_value=avg_loss)
+            summary.value.add(tag='loss/mean_edit_distance', simple_value=mean_ed)
+            # summary.value.add(tag='loss/edit_distances', histo=eds)
+            summary.value.add(tag='loss/word_error_rate', simple_value=wer)
+            # summary.value.add(tag='loss/word_error_rates', histo=wers)
+
             summary_writer.add_summary(summary, str(global_step))
 
         except Exception as e:
@@ -95,19 +108,17 @@ def evaluate():
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
             # Error metrics for decoded text.
-            eds, mean_ed, wers, wer = model.decoded_error_rates(labels, originals, decoded,
-                                                                plaintext)
+            eds, mean_ed_op, wers, wer_op = model.decoded_error_rates(labels, originals, decoded,
+                                                                      plaintext)
             tf.summary.histogram('edit_distances', eds)
-            tf.summary.scalar('mean_edit_distance', mean_ed)
             tf.summary.histogram('word_error_rates', wers)
-            tf.summary.scalar('word_error_rate', wer)
 
             # Build the summary operation based on the TF collection of summaries.
             summary_op = tf.summary.merge_all()
             summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
 
             # L8ER: Add continuous evaluation loop.
-            eval_once(summary_writer, loss_op, summary_op)
+            eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op)
 
 
 # noinspection PyUnusedLocal
