@@ -158,7 +158,7 @@ def display_sample_info(file_path, label=''):
 
 if __name__ == '__main__':
     _timit_base_path = '/home/marc/workspace/speech/data/'
-    _test_txt_path = os.path.join(_timit_base_path, 'all_train.txt')
+    _test_txt_path = os.path.join(_timit_base_path, 'timit_train.txt')
     with open(_test_txt_path, 'r') as f:
         lines = f.readlines()
         line = lines[0]
