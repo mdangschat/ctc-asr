@@ -5,3 +5,4 @@ python_speech_features      >= 0.6
 scipy                       >= 1.0.1
 gitpython                   >= 2.1.9
 tensorflow                  >= 1.7.0
+librosa
