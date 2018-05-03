@@ -48,7 +48,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging & Output
 tf.flags.DEFINE_integer('max_steps', 250000,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 50,
+tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
@@ -64,8 +64,9 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Evaluation
-tf.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/eval_ls',
-                       """Directory where to write the evaluation logs into.""")
+tf.flags.DEFINE_string('', '/home/marc/workspace/speech_checkpoints/eval_ls',
+                       """If set, evaluation log data will be stored here, instead of the default
+                       directory `f'{FLAGS.train_dir}_eval'.""")
 
 
 # Miscellaneous

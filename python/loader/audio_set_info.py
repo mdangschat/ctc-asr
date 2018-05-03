@@ -33,7 +33,7 @@ def sample_info(file_path):
 
 def display_sample_info(file_path, label=''):
     """Generate various representations a given audio file.
-    E.g. Mel, MFCC and power spectrograms.
+    E.g. Mel, MFCC and power spectrogram's.
 
     Args:
         file_path (str): Path to the audio file.
