@@ -64,7 +64,7 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Evaluation
-tf.flags.DEFINE_string('', '/home/marc/workspace/speech_checkpoints/eval_ls',
+tf.flags.DEFINE_string('eval_dir', '',
                        """If set, evaluation log data will be stored here, instead of the default
                        directory `f'{FLAGS.train_dir}_eval'.""")
 

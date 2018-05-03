@@ -92,8 +92,15 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
         coord.join(threads, stop_grace_period_secs=10)
 
 
-def evaluate():
-    """Evaluate the speech model."""
+def evaluate(eval_dir):
+    """Evaluate the speech model.
+
+    Args:
+        eval_dir (str): Path where to store evaluation summaries.
+
+    Returns:
+        Nothing.
+    """
     with tf.Graph().as_default() as g:
         # Get evaluation sequences and ground truth.
         sequences, seq_length, labels, originals = model.inputs()
@@ -116,7 +123,7 @@ def evaluate():
 
             # Build the summary operation based on the TF collection of summaries.
             summary_op = tf.summary.merge_all()
-            summary_writer = tf.summary.FileWriter(FLAGS.eval_dir, g)
+            summary_writer = tf.summary.FileWriter(eval_dir, g)
 
             # L8ER: Add continuous evaluation loop.
             eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op)
@@ -126,17 +133,20 @@ def evaluate():
 def main(argv=None):
     """TensorFlow starting routine."""
 
-    # Delete old evaluation data if requested.
-    if tf.gfile.Exists(FLAGS.eval_dir) and FLAGS.delete:
-        print('Deleting old evaluation data from: {}.'.format(FLAGS.eval_dir))
-        tf.gfile.DeleteRecursively(FLAGS.eval_dir)
-    elif tf.gfile.Exists(FLAGS.eval_dir) and not FLAGS.delete:
-        print('Resuming evaluation in: {}'.format(FLAGS.eval_dir))
-    else:
-        print('Starting a new evaluation in: {}'.format(FLAGS.eval_dir))
-        tf.gfile.MakeDirs(FLAGS.eval_dir)
+    # Determine evaluation log directory.
+    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_eval'.format(FLAGS.train_dir)
 
-    evaluate()
+    # Delete old evaluation data if requested.
+    if tf.gfile.Exists(eval_dir) and FLAGS.delete:
+        print('Deleting old evaluation data from: {}.'.format(eval_dir))
+        tf.gfile.DeleteRecursively(eval_dir)
+    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:
+        print('Resuming evaluation in: {}'.format(eval_dir))
+    else:
+        print('Starting a new evaluation in: {}'.format(eval_dir))
+        tf.gfile.MakeDirs(eval_dir)
+
+    evaluate(eval_dir)
 
 
 if __name__ == '__main__':
