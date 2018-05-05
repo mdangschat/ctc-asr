@@ -27,6 +27,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.io import wavfile
 
+from params import FLAGS
 from loader import utils
 from loader.load_sample import load_sample_dummy
 
@@ -189,6 +190,17 @@ def _tedlium_loader(data_path, target, pattern):
     # TODO: Documentation
     # Note: Since TEDLIUM data is one large .wav file per speaker, this method needs to create
     #       several smaller part files. This takes some time.
+
+    def seconds_to_sample(seconds, sr=16000):
+        return int(seconds * sr)
+
+    def write_wav_part(data, file_name, start, end, sr=16000):
+        assert 0. <= start < len(wav_data) / sr
+        assert start < end <= len(wav_data) / sr
+        print('Saving {:,d}({:.3f}s) to {:,d}({:.3f}s) at: {}'
+              .format(seconds_to_sample(start), start, seconds_to_sample(end), end, file_name))
+        # wavfile.write(file_name, sr, data[seconds_to_sample(start): seconds_to_sample(end)])
+
     target_folders = {
         'validate': 'dev',
         'test': 'test',
@@ -199,12 +211,19 @@ def _tedlium_loader(data_path, target, pattern):
     # Flag that marks time segments that should be skipped.
     ignore_flag = 'ignore_time_segment_in_scoring'
 
+    # RegEx pattern to extract TEDLIUM's .stm information's.
+    format_pattern = re.compile(
+        r'\w+ [0-9] \w+ ([0-9]+\.[0-9]+) ([0-9]+\.[0-9]+) <[\w,]+> ([\w ]+)')
+
     print('target_folder:', target_folder)
     files = os.listdir(target_folder)
 
     output = []
 
-    for stm_file in files:
+    for stm_file in tqdm(files, desc='Reading audio files', total=len(files), file=sys.stdout,
+                         unit='files', dynamic_ncols=True):
+        assert os.path.splitext(stm_file)[1] == '.stm'
+
         stm_file_path = os.path.join(target_folder, stm_file)
         print('stm_file_path:', stm_file, stm_file_path)
         with open(stm_file_path, 'r') as f:
@@ -214,23 +233,24 @@ def _tedlium_loader(data_path, target, pattern):
                                     'sph', '{}.wav'.format(os.path.splitext(stm_file)[0]))
             assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
-            (sample_rate, wav_data) = wavfile.read(wav_path)
-            # TODO Stopped here!
+            # Load the audio data, to later split it into a part per speech segment.
+            (sampling_rate, wav_data) = wavfile.read(wav_path)
+            assert sampling_rate == FLAGS.sampling_rate
+            wav_seconds = len(wav_data) / sampling_rate
+            print('audio data:', sampling_rate, len(wav_data), wav_seconds)
 
             for i, line in enumerate(lines):
                 if ignore_flag in line:
                     continue
 
-                print(line)
-
-                format_pattern = re.compile(
-                    r'\w+ [0-9] \w+ ([0-9]+\.[0-9]+) ([0-9]+\.[0-9]+) <[\w,]+> ([\w ]+)'
-                )
                 res = re.search(format_pattern, line)
                 start_time = float(res.group(1))
                 end_time = float(res.group(2))
                 text = res.group(3)
                 print('DEBUG:', start_time, end_time, text)
+
+                # Create new partial .wav file.
+                write_wav_part(wav_data, 'name', start_time, end_time)
 
                 # Sanitize lines.
                 text = text.lower()
