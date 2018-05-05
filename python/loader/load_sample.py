@@ -5,7 +5,7 @@ import numpy as np
 import scipy.io.wavfile as wav
 import python_speech_features as psf
 
-from params import FLAGS, NP_FLOAT
+from python.params import FLAGS, NP_FLOAT
 
 
 NUM_MFCC = 13
