@@ -13,21 +13,27 @@ import python.s_labels as s_labels
 from python.loader.load_sample import load_sample, NUM_MFCC
 
 
+# Number of features per window.
 NUM_INPUTS = NUM_MFCC * 2
-DATA_PATH = '/home/marc/workspace/speech/data'
+# Path to train.txt file.
+TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
+# Path to train.txt file.
+TEST_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
+# Path to validate.txt file.
+VALIDATE_TXT_PATH = '/home/marc/workspace/data/validate.txt'
+# Path to dataset collection folder.
+DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
 
-def inputs_train(batch_size, scope='train_input', txt_file='train.txt'):
+def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
     """Construct input for speech training.
 
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
-        scope (str):
-            TensorFlow scope name.
-        txt_file (str):
-            Training filename.
+        train_txt_path (str):
+            Path to `train.txt` file.
 
     Returns:
         tf.Tensor:
@@ -43,11 +49,9 @@ def inputs_train(batch_size, scope='train_input', txt_file='train.txt'):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    # Info: Longest label list in TIMIT train/test is 79 characters long.
-    train_txt_path = os.path.join(DATA_PATH, txt_file)
     sample_list, label_list, original_list = _read_file_list(train_txt_path)
 
-    with tf.name_scope(scope):
+    with tf.name_scope('input'):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
@@ -90,17 +94,17 @@ def inputs_train(batch_size, scope='train_input', txt_file='train.txt'):
         return sequences, seq_length, labels, originals
 
 
-def inputs(batch_size, scope='test_input', txt_file='test.txt'):
+def inputs(batch_size, test_txt_path=TEST_TXT_PATH):
     """Construct input for speech evaluation. This method always returns unaltered data.
+
+    TODO train.txt vs. validate.txt vs. test.txt
 
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
-        scope (str):
-            TensorFlow scope name.
-        txt_file (str):
-            Training filename.
+        test_txt_path (str):
+            Testing or validation .txt path.
 
     Returns:
         tf.Tensor:
@@ -116,24 +120,24 @@ def inputs(batch_size, scope='test_input', txt_file='test.txt'):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    return inputs_train(batch_size, scope=scope, txt_file=txt_file)
+    return inputs_train(batch_size, train_txt_path=test_txt_path)
 
 
-def _read_file_list(path):
+def _read_file_list(txt_path):
     """Generate synchronous lists of all samples with their respective lengths and labels.
     Labels are converted from characters to integers.
     See: `s_labels`.
 
     Args:
-        path (str):
-            Path to the training or testing .TXT files, e.g. `/some/path/timit/train.txt`
+        txt_path (str):
+            Path to the training or testing .TXT files, e.g. `/some/path/train.txt`
 
     Returns:
         [str]: List of absolute paths to .WAV files.
         [[int]]: List of labels filtered and converted to integer lists.
         [str]: List of original strings.
     """
-    with open(path) as f:
+    with open(txt_path) as f:
         lines = f.readlines()
 
         sample_paths = []
@@ -141,7 +145,7 @@ def _read_file_list(path):
         originals = []
         for line in lines:
             sample_path, label = line.split(' ', 1)
-            sample_paths.append(os.path.join(DATA_PATH, 'timit/TIMIT', sample_path))
+            sample_paths.append(os.path.join(DATASET_PATH, sample_path))
             label = label.strip()
             originals.append(label)
             label = [s_labels.ctoi(c) for c in label]

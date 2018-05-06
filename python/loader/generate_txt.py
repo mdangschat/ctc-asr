@@ -29,14 +29,15 @@ from python.params import FLAGS
 from python.loader import utils
 
 
+# Dataset base path.
+DATASET_PATH = '/home/marc/workspace/datasets/speech_data'
+
 # Path to the LibriSpeech ASR dataset.
-LIBRI_SPEECH_PATH = '/home/marc/workspace/speech/data/libri_speech/LibriSpeech/'
-
+LIBRI_SPEECH_PATH = os.path.join(DATASET_PATH, 'libri_speech/LibriSpeech')
 # Path to the TEDLIUMv2 dataset.
-TEDLIUM_PATH = '/home/marc/workspace/speech/data/tedlium/'
-
+TEDLIUM_PATH = os.path.join(DATASET_PATH, 'tedlium')
 # Path to the TIMIT dataset.
-TIMIT_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'
+TIMIT_PATH = os.path.join(DATASET_PATH, 'timit/TIMIT')
 
 # Where to generate the .txt files, e.g. /home/user/../data/<target>.txt
 TXT_TARGET_PATH = '/home/marc/workspace/speech/data/'
@@ -53,11 +54,12 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
             Path the data set. Must match the `loader`'s capabilities.
         dataset_name (str):
             Name of the dataset. Supported dataset's:
-            `timit`, `libri_speech`, tedlium`
+            'timit', 'libri_speech', 'tedlium'
         target (str):
-            'train' or 'test'
-        dry_run (bool): Optional, default False.
-            Dry run, do not create output.txt file.
+            'train', 'test', or 'validate'
+        dry_run (bool):
+            Optional, default False.
+            Dry running does not create output.txt files.
 
     Returns:
         Nothing.
@@ -81,7 +83,7 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
         raise ValueError('"{}" is not a directory.'.format(dataset_path))
 
     target_path = os.path.join(TXT_TARGET_PATH, '{}_{}.txt'.format(dataset_name, target))
-    print('Starting to generate {}.txt file.'.format(os.path.basename(target_path)))
+    print('Starting to generate {} file.'.format(os.path.basename(target_path)))
 
     # RegEX filter pattern for valid characters.
     pattern = re.compile(r'[^a-z ]+')
@@ -100,14 +102,11 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
             f.writelines(output)
 
 
-def _libri_speech_loader(data_path, target, pattern):
+def _libri_speech_loader(dataset_path, target, pattern):
     """Build the output string that can be written to the desired *.txt file.
 
-    Note: Since the TIMIT data set is relatively small, both train
-    and test data is being merged into one .txt file.
-
     Args:
-        data_path (str): Path of the data set.
+        dataset_path (str): Path of the data set.
         target (str): 'train', 'test', or 'validate'
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
@@ -128,7 +127,7 @@ def _libri_speech_loader(data_path, target, pattern):
         folders = validate_folders
 
     output = []
-    for folder in [os.path.join(data_path, f) for f in folders]:
+    for folder in [os.path.join(dataset_path, f) for f in folders]:
         for root, dirs, files in os.walk(folder):
             if len(dirs) is 0:
                 # Get list of `.trans.txt` files.
@@ -148,24 +147,32 @@ def _libri_speech_loader(data_path, target, pattern):
                 lines = [line.lower().strip().split(' ', 1) for line in lines]
 
                 for file_id, txt in lines:
-                    path = os.path.join(root, '{}.wav'.format(file_id))
-                    assert os.path.isfile(path), '{} not found.'.format(path)
+                    # Absolute path.
+                    wav_path = os.path.join(root, '{}.wav'.format(file_id))
+                    assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
+
+                    # Relative path to `DATASET_PATH`.
+                    wav_path = os.path.relpath(wav_path, DATASET_PATH)
 
                     txt = re.sub(pattern, '', txt).strip().replace('  ', ' ')
-                    output.append('{} {}\n'.format(path, txt.strip()))
+                    output.append('{} {}\n'.format(wav_path, txt.strip()))
 
     return output
 
 
-def _tedlium_loader(data_path, target, pattern):
+def _tedlium_loader(dataset_path, target, pattern):
     """Build the output string that can be written to the desired *.txt file.
 
      Note:
          Since TEDLIUM data is one large .wav file per speaker. Therefore this method creates
          several smaller partial .wav files. This takes some time.
 
+    Note:
+        The large .wav files are being converted into parts, even if `dry_run=True` has been
+        selected.
+
     Args:
-        data_path (str): Path of the data set.
+        dataset_path (str): Path of the data set.
         target (str): 'train', 'test', or 'validate'
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
@@ -191,7 +198,8 @@ def _tedlium_loader(data_path, target, pattern):
         'test': 'test',
         'train': 'train'
     }
-    target_folder = os.path.join(data_path, 'TEDLIUM_release2', target_folders[target], 'stm')
+
+    target_folder = os.path.join(dataset_path, 'TEDLIUM_release2', target_folders[target], 'stm')
 
     # Flag that marks time segments that should be skipped.
     ignore_flag = 'ignore_time_segment_in_scoring'
@@ -206,6 +214,7 @@ def _tedlium_loader(data_path, target, pattern):
 
     for stm_file in tqdm(files, desc='Reading audio files', total=len(files), file=sys.stdout,
                          unit='files', dynamic_ncols=True):
+
         if os.path.splitext(stm_file)[1] != '.stm':
             # This check is required, since there are swap files, etc. in the TEDLIUM dataset.
             print('Invalid .stm file found:', stm_file)
@@ -215,7 +224,7 @@ def _tedlium_loader(data_path, target, pattern):
         with open(stm_file_path, 'r') as f:
             lines = f.readlines()
 
-            wav_path = os.path.join(data_path, 'TEDLIUM_release2', target_folders[target],
+            wav_path = os.path.join(dataset_path, 'TEDLIUM_release2', target_folders[target],
                                     'sph', '{}.wav'.format(os.path.splitext(stm_file)[0]))
             assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
@@ -240,6 +249,9 @@ def _tedlium_loader(data_path, target, pattern):
                 part_path = '{}_{}.wav'.format(wav_path[: -4], i)
                 write_wav_part(wav_data, part_path, start_time, end_time)
 
+                # Relative path to DATASET_PATH.
+                part_path = os.path.relpath(part_path, DATASET_PATH)
+
                 # Sanitize lines.
                 text = text.lower()
                 # Remove ` '`. TEDLIUM transcribes `i'm` as `i 'm`.
@@ -251,14 +263,11 @@ def _tedlium_loader(data_path, target, pattern):
 
 
 # noinspection PyUnusedLocal
-def _timit_loader(data_path, target, pattern):
+def _timit_loader(dataset_path, target, pattern):
     """Build the output string that can be written to the desired *.txt file.
 
-    Note: Since the TIMIT data set is relatively small, both train
-    and test data is being merged into one .txt file.
-
     Args:
-        data_path (str): Path of the data set.
+        dataset_path (str): Path of the data set.
         target (str): Not used at the moment for TIMIT data set. Set to `None`.
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
@@ -266,54 +275,55 @@ def _timit_loader(data_path, target, pattern):
         [str]: List containing the output string that can be written to *.txt file.
     """
     if target != 'test' and target != 'train':
-        raise ValueError('Timit only supports `train` and `test` targets.')
+        raise ValueError('Timit only supports \'train\' and \'test\' targets.')
 
-    def _timit_loader_helper(data_set_path, master_txt_path, _pattern):
-        # Internal helper method to generate the TIMIT .txt file.
-        if not os.path.isfile(master_txt_path):
-            raise ValueError('"{}" is not a file.'.format(master_txt_path))
+    # Location of timit intern .txt file listings.
+    train_txt_path = os.path.join(dataset_path, 'train_all.txt')
+    test_txt_path = os.path.join(dataset_path, 'test_all.txt')
 
-        with open(master_txt_path, 'r') as f:
-            master_data = f.readlines()
+    # Select target.
+    master_txt_path = train_txt_path if target == 'train' else test_txt_path
+    if not os.path.isfile(master_txt_path):
+        raise ValueError('"{}" is not a file.'.format(master_txt_path))
 
-        _output = []
+    with open(master_txt_path, 'r') as f:
+        master_data = f.readlines()
 
-        for line in master_data:
-            wav_path, txt_path, _, _ = line.split(',')
-            txt_path = os.path.join(data_set_path, txt_path)
+    output = []
 
-            basename = os.path.basename(wav_path)
-            if 'SA1.WAV' == basename or 'SA2.WAV' == basename:
-                continue
+    for line in master_data:
+        wav_path, txt_path, _, _ = line.split(',')
+        txt_path = os.path.join(dataset_path, txt_path)
 
-            with open(txt_path, 'r') as f:
-                txt = f.readlines()
-                assert len(txt) == 1, 'Text file contains to many lines. ({})'.format(txt_path)
-                txt = txt[0].split(' ', 2)[2]
+        # Skip SAx.WAV files, since they are repeated by every speaker in the dataset.
+        basename = os.path.basename(wav_path)
+        if 'SA1.WAV' == basename or 'SA2.WAV' == basename:
+            continue
 
-                txt = txt.lower()
-                txt = re.sub(pattern, '', txt).strip()
-                txt = txt.replace('  ', ' ')
+        with open(txt_path, 'r') as f:
+            txt = f.readlines()
+            assert len(txt) == 1, 'Text file contains to many lines. ({})'.format(txt_path)
+            txt = txt[0].split(' ', 2)[2]
 
-                wav_path = os.path.join(data_set_path, wav_path)
+            txt = txt.lower()
+            txt = re.sub(pattern, '', txt).strip()
+            txt = txt.replace('  ', ' ')
 
-                _output.append('{} {}\n'.format(wav_path, txt))
+            # Absolute path.
+            wav_path = os.path.join(dataset_path, wav_path)
 
-        return _output
+            # Relative path to `DATASET_PATH`.
+            wav_path = os.path.relpath(wav_path, DATASET_PATH)
 
-    train_txt_path = os.path.join(data_path, 'train_all.txt')
-    test_txt_path = os.path.join(data_path, 'test_all.txt')
+            output.append('{} {}\n'.format(wav_path, txt))
 
-    output = _timit_loader_helper(data_path, train_txt_path, pattern)
-    output += _timit_loader_helper(data_path, test_txt_path, pattern)
-
-    # Remove new line (`\n`) from last entry.
-    output[-1] = output[-1].strip()
+    # TODO: Do I need to strip \n or something?
     return output
 
 
 if __name__ == '__main__':
     __dry_run = False
+
     # TEDLIUM v2
     generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
     generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=__dry_run)

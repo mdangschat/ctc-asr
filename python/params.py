@@ -7,7 +7,7 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_testing',
                        """Directory where to write event logs and checkpoints.""")
 
 tf.flags.DEFINE_integer('batch_size', 4,

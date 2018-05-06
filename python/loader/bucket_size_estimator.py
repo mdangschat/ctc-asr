@@ -3,6 +3,7 @@ Estimate optimal bucket sizes for training, based on `train.txt` content.
 """
 
 import sys
+import os
 
 from tqdm import tqdm
 import numpy as np
@@ -11,8 +12,10 @@ from matplotlib import pyplot as plt
 from python.loader.load_sample import wav_length
 
 
-# Location of the train.txt file.
+# Path to train.txt file.
 TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
+# Path to dataset collection folder.
+DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
 
 def estimate_bucket_sizes(num_buckets=20):
@@ -37,6 +40,7 @@ def estimate_bucket_sizes(num_buckets=20):
     for line in tqdm(lines, desc='Reading audio files', total=len(lines), file=sys.stdout,
                      unit='files', dynamic_ncols=True):
         wav_path = line.split(' ', 1)[0]
+        wav_path = os.path.join(DATASET_PATH, wav_path)
         sample_len = wav_length(wav_path)
         lengths.append(sample_len)
     print()  # Clear line from tqdm progressbar.
