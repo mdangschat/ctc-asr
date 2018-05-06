@@ -185,8 +185,8 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
             2D Tensor with the original strings.
     """
     num_threads = 8
-    boundaries = [167, 250, 333, 405, 457, 490, 512, 530, 545, 557, 568, 578, 588, 597, 605, 614,
-                  622, 631, 643, 827]
+    boundaries = [91, 130, 176, 228, 276, 313, 348, 387, 428, 469, 502, 527, 548, 566, 582, 597,
+                  611, 625, 642, 916]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
