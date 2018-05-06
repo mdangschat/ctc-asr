@@ -191,6 +191,7 @@ def _tedlium_loader(data_path, target, pattern):
     for stm_file in tqdm(files, desc='Reading audio files', total=len(files), file=sys.stdout,
                          unit='files', dynamic_ncols=True):
         if os.path.splitext(stm_file)[1] != '.stm':
+            # This check is required, since there are swap files, etc. in the TEDLIUM dataset.
             print('Invalid .stm file found:', stm_file)
             continue
 
@@ -248,6 +249,8 @@ def _timit_loader(data_path, target, pattern):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    if target != 'test' and target != 'train':
+        raise ValueError('Timit only supports `train` and `test` targets.')
 
     def _timit_loader_helper(data_set_path, master_txt_path, _pattern):
         # Internal helper method to generate the TIMIT .txt file.
@@ -294,6 +297,16 @@ def _timit_loader(data_path, target, pattern):
 
 
 if __name__ == '__main__':
+    # TEDLIUM v2
     generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=False)
     generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=False)
     generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=False)
+
+    # TIMIT
+    generate_list(TIMIT_PATH, 'timit', 'test', dry_run=False)
+    generate_list(TIMIT_PATH, 'timit', 'train', dry_run=False)
+
+    # LibriSpeech ASR Corpus
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=False)
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'validate', dry_run=False)
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=False)

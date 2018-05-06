@@ -8,13 +8,24 @@ from tqdm import tqdm
 import numpy as np
 from matplotlib import pyplot as plt
 
-from python.loader.load_sample import load_sample_dummy
+from python.loader.load_sample import wav_length
 
 
+# Location of the train.txt file.
 TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 
 
 def estimate_bucket_sizes(num_buckets=20):
+    """Estimate optimal bucket sizes based on the samples in `train.txt` file.
+    Results are printed out or plotted.
+
+    Args:
+        num_buckets (int): Number of buckets.
+            Note that TensorFlow bucketing adds a smallest and largest bucket to the list.
+
+    Returns:
+        Nothing.
+    """
     # Estimate optimal bucket sizes.
 
     with open(TRAIN_TXT_PATH, 'r') as f:
@@ -26,7 +37,7 @@ def estimate_bucket_sizes(num_buckets=20):
     for line in tqdm(lines, desc='Reading audio files', total=len(lines), file=sys.stdout,
                      unit='files', dynamic_ncols=True):
         wav_path = line.split(' ', 1)[0]
-        sample_len = load_sample_dummy(wav_path)
+        sample_len = wav_length(wav_path)
         lengths.append(sample_len)
     print()  # Clear line from tqdm progressbar.
 
