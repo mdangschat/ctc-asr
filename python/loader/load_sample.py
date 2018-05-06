@@ -100,4 +100,5 @@ def wav_length(file_path):
 
     win_step = WIN_STEP  # Number of milliseconds between successive frames.
 
+    # The /2 is because `load_sample` skips every 2nd frame.
     return np.array(int(len(y) / sr / win_step) // 2, dtype=np.int32)
