@@ -60,7 +60,7 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
                 mean_ed_sum += mean_ed_batch
                 wer_sum += wer_batch
                 step += 1
-                print('{}: Batch {} results: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
+                print('{}: Batch {:5,d} results: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
                       .format(datetime.now(), step, loss_batch, mean_ed_batch, wer_batch))
 
             # Compute error rates.
