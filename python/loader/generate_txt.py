@@ -42,7 +42,7 @@ TIMIT_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'
 TXT_TARGET_PATH = '/home/marc/workspace/speech/data/'
 
 
-def generate_list(dataset_path, dataset_name, target, additional_output=False, dry_run=False):
+def generate_list(dataset_path, dataset_name, target, dry_run=False):
     """Generate *.txt files containing the audio path and the corresponding sentence.
     Generated files are being stored at `TXT_TARGET_PATH`.
 
@@ -56,9 +56,6 @@ def generate_list(dataset_path, dataset_name, target, additional_output=False, d
             `timit`, `libri_speech`, tedlium`
         target (str):
             'train' or 'test'
-        additional_output (bool): Optional, default False.
-            Convert the audio data to features and extract additional information.
-            Prints out optimal bucket sizes.
         dry_run (bool): Optional, default False.
             Dry run, do not create output.txt file.
 
@@ -94,7 +91,6 @@ def generate_list(dataset_path, dataset_name, target, additional_output=False, d
 
     # Write list to .txt file.
     print('> Writing {} lines of {} files to {}'.format(len(output), target, target_path))
-
     if not dry_run:
         # Delete the old file if it exists.
         utils.delete_file_if_exists(target_path)
