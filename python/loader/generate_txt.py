@@ -317,7 +317,6 @@ def _timit_loader(dataset_path, target, pattern):
 
             output.append('{} {}\n'.format(wav_path, txt))
 
-    # TODO: Do I need to strip \n or something?
     return output
 
 
