@@ -3,11 +3,11 @@
 import tensorflow as tf
 import numpy as np
 
-from s_labels import num_classes
+from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_gru_1',
                        """Directory where to write event logs and checkpoints.""")
 
 tf.flags.DEFINE_integer('batch_size', 4,
@@ -53,13 +53,15 @@ tf.flags.DEFINE_integer('log_frequency', 100,
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
 
-# Data set
+# Dataset
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_integer('num_examples_train', 132553,
+tf.flags.DEFINE_integer('num_examples_train', 230565,
                         """Number of examples in the training set.""")
-tf.flags.DEFINE_integer('num_examples_test', 5323,
+tf.flags.DEFINE_integer('num_examples_test', 8814,
                         """Number of examples in the testing/evaluation set.""")
+tf.flags.DEFINE_integer('num_examples_validate', 3210,
+                        """Number of examples in the validation set.""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 

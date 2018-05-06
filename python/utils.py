@@ -6,8 +6,8 @@ import numpy as np
 from git import Repo
 import tensorflow as tf
 
-from params import FLAGS, NP_FLOAT, TF_FLOAT
-from s_labels import itoc
+from python.params import FLAGS, NP_FLOAT, TF_FLOAT
+from python.s_labels import itoc
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):
@@ -56,6 +56,25 @@ def get_git_branch():
     return repo.active_branch.name
 
 
+def create_bidirectional_cells(num_units, num_layers, keep_prob=1.0):
+    """Create two lists of forward and backward cells that can be used to build
+    a BDLSTM stack.
+
+    Args:
+        num_units (int): Number of units within the RNN cell.
+        num_layers (int): Amount of cells to create for each list.
+        keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
+            no outputs will be dropped.
+
+    Returns:
+        [tf.nn.rnn_cell.LSTMCell]: List of forward cells.
+        [tf.nn.rnn_cell.LSTMCell]: List of backward cells.
+    """
+    _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(num_layers)]
+    _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(num_layers)]
+    return _fw_cells, _bw_cells
+
+
 def create_cell(num_units, keep_prob=1.0):
     """Create a RNN cell with added dropout wrapper.
 
@@ -67,31 +86,18 @@ def create_cell(num_units, keep_prob=1.0):
     Returns:
         tf.nn.rnn_cell.LSTMCell: RNN cell with dropout wrapper.
     """
-    # Can be: tf.nn.rnn_cell.RNNCell, tf.nn.rnn_cell.GRUCell, tf.nn.rnn_cell.LSTMCell
-    cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
+    # Can be: `tf.nn.rnn_cell.RNNCell`, `tf.nn.rnn_cell.GRUCell`, `tf.nn.rnn_cell.LSTMCell`.
+
+    # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LSTMCell
+    # cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
+
+    # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/GRUCell
+    cell = tf.nn.rnn_cell.GRUCell(num_units=num_units)
+
     return tf.nn.rnn_cell.DropoutWrapper(cell,
                                          input_keep_prob=keep_prob,
                                          output_keep_prob=keep_prob,
                                          seed=FLAGS.random_seed)
-
-
-def create_bidirectional_cells(num_units, _num_layers, keep_prob=1.0):
-    """Create two lists of forward and backward cells that can be used to build
-    a BDLSTM stack.
-
-    Args:
-        num_units (int): Number of units within the RNN cell.
-        _num_layers (int): Amount of cells to create for each list.
-        keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
-            no outputs will be dropped.
-
-    Returns:
-        [tf.nn.rnn_cell.LSTMCell]: List of forward cells.
-        [tf.nn.rnn_cell.LSTMCell]: List of backward cells.
-    """
-    _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
-    _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(_num_layers)]
-    return _fw_cells, _bw_cells
 
 
 def dense_to_text(decoded, originals):
@@ -328,6 +334,7 @@ class LoggerHook(tf.train.SessionRunHook):
             sec_per_batch = duration / float(FLAGS.log_frequency)
             batch_per_sec = float(FLAGS.log_frequency) / duration
 
-            print('{}: step {:,d}, loss={:.4f}, {:.1f} examples/sec ({:.3f} sec/batch) '
-                  '({:.1f} batch/sec)'.format(datetime.now(), global_step, loss_value,
-                                              examples_per_sec, sec_per_batch, batch_per_sec))
+            print('{:%Y-%m-%d %H:%M:%S}: step {:,d}, loss={:.4f}, '
+                  '{:.1f} examples/sec ({:.3f} sec/batch) ({:.1f} batch/sec)'
+                  .format(datetime.now(), global_step, loss_value, examples_per_sec,
+                          sec_per_batch, batch_per_sec))

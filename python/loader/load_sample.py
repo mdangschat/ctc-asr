@@ -5,7 +5,7 @@ import numpy as np
 import scipy.io.wavfile as wav
 import python_speech_features as psf
 
-from params import FLAGS, NP_FLOAT
+from python.params import FLAGS, NP_FLOAT
 
 
 NUM_MFCC = 13
@@ -74,7 +74,7 @@ def load_sample(file_path):
     return sample, sample_len
 
 
-def load_sample_dummy(file_path):
+def wav_length(file_path):
     """Return time units for a given audio file, corresponding to the number of units if
     the actual features from `load_sample()` where computed.
 

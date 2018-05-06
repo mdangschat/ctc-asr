@@ -1,5 +1,5 @@
 """Generate `train.txt` and `test.txt` for the `LibriSpeech`_ and
-`TIMIT`_ data sets.
+`TEDLIUMv2`_ and `TIMIT`_ datasets.
  Additionally some information about the data set can be printed out.
 
 Generated data format:
@@ -11,6 +11,9 @@ Generated data format:
 .. _LibriSpeech:
     http://openslr.org/12
 
+.. _TEDLIUMv2:
+    http://openslr.org/19
+
 .. _TIMIT:
     https://vcs.zwuenf.org/agct_data/timit
 """
@@ -20,97 +23,74 @@ import os
 import re
 
 from tqdm import tqdm
-import numpy as np
-from matplotlib import pyplot as plt
+from scipy.io import wavfile
 
-from loader import utils
-from loader.load_sample import load_sample_dummy
+from python.params import FLAGS
+from python.loader import utils
 
 
-# Path to the LibriSpeech ASR data set.
+# Path to the LibriSpeech ASR dataset.
 LIBRI_SPEECH_PATH = '/home/marc/workspace/speech/data/libri_speech/LibriSpeech/'
 
-# Path to the TIMIT data set.
+# Path to the TEDLIUMv2 dataset.
+TEDLIUM_PATH = '/home/marc/workspace/speech/data/tedlium/'
+
+# Path to the TIMIT dataset.
 TIMIT_PATH = '/home/marc/workspace/speech/data/timit/TIMIT/'
 
 # Where to generate the .txt files, e.g. /home/user/../data/<target>.txt
-TARGET_PATH = '/home/marc/workspace/speech/data/'
+TXT_TARGET_PATH = '/home/marc/workspace/speech/data/'
 
 
-def generate_list(data_path, target, loader, additional_output=False, dry_run=False):
+def generate_list(dataset_path, dataset_name, target, dry_run=False):
     """Generate *.txt files containing the audio path and the corresponding sentence.
-    Generated files are being stored at `TARGET_PATH`.
+    Generated files are being stored at `TXT_TARGET_PATH`.
 
     Return additional data set information, see below.
 
     Args:
-        data_path (str):
+        dataset_path (str):
             Path the data set. Must match the `loader`'s capabilities.
+        dataset_name (str):
+            Name of the dataset. Supported dataset's:
+            `timit`, `libri_speech`, tedlium`
         target (str):
             'train' or 'test'
-        loader (function):
-            Loader function for the given data set.
-            See `_libri_speech_loader` and `_timit_loader` for details.
-        additional_output (bool): Optional, default False.
-            Convert the audio data to features and extract additional information.
-            Prints out optimal bucket sizes.
         dry_run (bool): Optional, default False.
             Dry run, do not create output.txt file.
 
     Returns:
         Nothing.
     """
+    # Supported loaders.
+    loaders = {
+        'timit': _timit_loader,
+        'libri_speech': _libri_speech_loader,
+        'tedlium': _tedlium_loader
+    }
 
-    if target != 'test' and target != 'train':
+    if dataset_name not in loaders:
+        raise ValueError('"{}" is not a supported dataset.'.format(dataset_name))
+    else:
+        loader = loaders[dataset_name]
+
+    if target != 'test' and target != 'train' and target != 'validate':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
-    if not os.path.isdir(data_path):
-        raise ValueError('"{}" is not a directory.'.format(data_path))
+    if not os.path.isdir(dataset_path):
+        raise ValueError('"{}" is not a directory.'.format(dataset_path))
 
-    print('Starting to generate {}.txt file.'.format(target))
+    target_path = os.path.join(TXT_TARGET_PATH, '{}_{}.txt'.format(dataset_name, target))
+    print('Starting to generate {}.txt file.'.format(os.path.basename(target_path)))
 
     # RegEX filter pattern for valid characters.
     pattern = re.compile(r'[^a-z ]+')
 
     # Load the output string.
-    output = loader(data_path, target, pattern)
-
-    # Calculate additional information. Note: Time consuming.
-    if additional_output:
-        lengths = []
-        # Progressbar
-        for line in tqdm(output, desc='Reading audio files', total=len(output), file=sys.stdout,
-                         unit='files', dynamic_ncols=True):
-            wav_path = line.split(' ', 1)[0]
-            sample_len = load_sample_dummy(wav_path)
-            lengths.append(sample_len)
-        print()     # Clear line from tqdm progressbar.
-
-        lengths = np.array(lengths)
-        lengths = np.sort(lengths)
-        num_buckets = 20
-        step = len(lengths) // num_buckets
-        buckets = '['
-        for i in range(step, len(lengths), step):
-            buckets += '{}, '.format(lengths[i])
-        buckets = buckets[: -2] + ']'
-        print('Suggested buckets: ', buckets)
-
-        # Plot histogram.
-        plt.figure()
-        plt.hist(lengths, bins='auto', facecolor='green', alpha=0.75)
-
-        plt.title('{}: Sequence Length\'s Histogram'.format(target))
-        plt.ylabel('Count')
-        plt.xlabel('Length')
-        plt.grid(True)
-
-        plt.show()
+    output = loader(dataset_path, target, pattern)
 
     # Write list to .txt file.
-    target_path = os.path.join(TARGET_PATH, '{}.txt'.format(target))
     print('> Writing {} lines of {} files to {}'.format(len(output), target, target_path))
-
     if not dry_run:
         # Delete the old file if it exists.
         utils.delete_file_if_exists(target_path)
@@ -134,9 +114,18 @@ def _libri_speech_loader(data_path, target, pattern):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    # Folders for each target.
     train_folders = ['train-clean-100', 'train-clean-360']
-    test_folders = ['dev-clean', 'test-clean']
-    folders = train_folders if target is 'train' else test_folders
+    test_folders = ['test-clean']
+    validate_folders = ['dev-clean']
+
+    # Assign target folders.
+    if target == 'train':
+        folders = train_folders
+    elif target == 'test':
+        folders = test_folders
+    else:
+        folders = validate_folders
 
     output = []
     for folder in [os.path.join(data_path, f) for f in folders]:
@@ -145,7 +134,8 @@ def _libri_speech_loader(data_path, target, pattern):
                 # Get list of `.trans.txt` files.
                 trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
                 # Verify that a `*.trans.txt` file exists.
-                assert len(trans_txt_files) is 1, 'No .tans.txt file found: {}'.format(trans_txt_files)
+                assert len(trans_txt_files) == 1, 'No .tans.txt file found: {}'\
+                    .format(trans_txt_files)
 
                 # Absolute path.
                 trans_txt_path = os.path.join(root, trans_txt_files[0])
@@ -167,6 +157,88 @@ def _libri_speech_loader(data_path, target, pattern):
     return output
 
 
+def _tedlium_loader(data_path, target, pattern):
+    # TODO: Documentation
+    # Note: Since TEDLIUM data is one large .wav file per speaker, this method needs to create
+    #       several smaller part files. This takes some time.
+
+    def seconds_to_sample(seconds, sr=16000):
+        return int(seconds * sr)
+
+    def write_wav_part(data, path, start, end, sr=16000):
+        assert 0. <= start < (len(wav_data) / sr)
+        assert start < end <= (len(wav_data) / sr)
+
+        # print('Saving {:12,d}({:6.2f}s) to {:12,d}({:6.2f}s) at: {}'
+        #       .format(seconds_to_sample(start), start, seconds_to_sample(end), end, path))
+
+        utils.delete_file_if_exists(path)
+        wavfile.write(path, sr, data[seconds_to_sample(start): seconds_to_sample(end)])
+
+    target_folders = {
+        'validate': 'dev',
+        'test': 'test',
+        'train': 'train'
+    }
+    target_folder = os.path.join(data_path, 'TEDLIUM_release2', target_folders[target], 'stm')
+
+    # Flag that marks time segments that should be skipped.
+    ignore_flag = 'ignore_time_segment_in_scoring'
+
+    # RegEx pattern to extract TEDLIUM's .stm information's.
+    format_pattern = re.compile(
+        r"[.\w]+ [0-9] [.\w]+ ([0-9]+(?:\.[0-9]+)?) ([0-9]+(?:\.[0-9]+)?) <[\w,]+> ([\w ']+)")
+
+    files = os.listdir(target_folder)
+
+    output = []
+
+    for stm_file in tqdm(files, desc='Reading audio files', total=len(files), file=sys.stdout,
+                         unit='files', dynamic_ncols=True):
+        if os.path.splitext(stm_file)[1] != '.stm':
+            # This check is required, since there are swap files, etc. in the TEDLIUM dataset.
+            print('Invalid .stm file found:', stm_file)
+            continue
+
+        stm_file_path = os.path.join(target_folder, stm_file)
+        with open(stm_file_path, 'r') as f:
+            lines = f.readlines()
+
+            wav_path = os.path.join(data_path, 'TEDLIUM_release2', target_folders[target],
+                                    'sph', '{}.wav'.format(os.path.splitext(stm_file)[0]))
+            assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
+
+            # Load the audio data, to later split it into a part per speech segment.
+            (sampling_rate, wav_data) = wavfile.read(wav_path)
+            assert sampling_rate == FLAGS.sampling_rate
+
+            for i, line in enumerate(lines):
+                if ignore_flag in line:
+                    continue
+
+                res = re.search(format_pattern, line)
+                if res is None:
+                    raise RuntimeError('TEDLIUM loader error in file {}\nLine: {}'
+                                       .format(stm_file_path, line))
+
+                start_time = float(res.group(1))
+                end_time = float(res.group(2))
+                text = res.group(3)
+
+                # Create new partial .wav file.
+                part_path = '{}_{}.wav'.format(wav_path[: -4], i)
+                write_wav_part(wav_data, part_path, start_time, end_time)
+
+                # Sanitize lines.
+                text = text.lower()
+                # Remove ` '`. TEDLIUM transcribes `i'm` as `i 'm`.
+                text = text.replace(" '", '')
+                text = re.sub(pattern, '', text).replace('  ', ' ').strip()
+                output.append('{} {}\n'.format(part_path, text))
+
+    return output
+
+
 # noinspection PyUnusedLocal
 def _timit_loader(data_path, target, pattern):
     """Build the output string that can be written to the desired *.txt file.
@@ -182,6 +254,8 @@ def _timit_loader(data_path, target, pattern):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    if target != 'test' and target != 'train':
+        raise ValueError('Timit only supports `train` and `test` targets.')
 
     def _timit_loader_helper(data_set_path, master_txt_path, _pattern):
         # Internal helper method to generate the TIMIT .txt file.
@@ -228,10 +302,17 @@ def _timit_loader(data_path, target, pattern):
 
 
 if __name__ == '__main__':
-    # train.txt
-    generate_list(LIBRI_SPEECH_PATH, 'train', _libri_speech_loader,
-                  additional_output=False, dry_run=True)
+    __dry_run = False
+    # TEDLIUM v2
+    generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
+    generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=__dry_run)
+    generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=__dry_run)
 
-    # test.txt
-    generate_list(LIBRI_SPEECH_PATH, 'test', _libri_speech_loader,
-                  additional_output=False, dry_run=True)
+    # TIMIT
+    generate_list(TIMIT_PATH, 'timit', 'test', dry_run=__dry_run)
+    generate_list(TIMIT_PATH, 'timit', 'train', dry_run=__dry_run)
+
+    # LibriSpeech ASR Corpus
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=__dry_run)
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'validate', dry_run=__dry_run)
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=__dry_run)
