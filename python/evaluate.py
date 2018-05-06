@@ -60,7 +60,9 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
                 mean_ed_sum += mean_ed_batch
                 wer_sum += wer_batch
                 step += 1
-                print('{}: Batch {:5,d} results: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
+
+                print('{:%Y-%m-%d %H:%M:%S}: Batch {:5,d} results: loss={:7.3f}; '
+                      'mean_edit_distance={:5.3f}; WER={:5.3f}'
                       .format(datetime.now(), step, loss_batch, mean_ed_batch, wer_batch))
 
             # Compute error rates.
@@ -69,7 +71,7 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
             wer = wer_sum / num_iter
 
             print('Summarizing averages:')
-            print('{}: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
+            print('{:%Y-%m-%d %H:%M:%S}: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
                   .format(datetime.now(), avg_loss, mean_ed, wer))
 
             summary = tf.Summary()
@@ -77,9 +79,7 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
 
             summary.value.add(tag='loss/ctc_loss', simple_value=avg_loss)
             summary.value.add(tag='loss/mean_edit_distance', simple_value=mean_ed)
-            # summary.value.add(tag='loss/edit_distances', histo=eds)
             summary.value.add(tag='loss/word_error_rate', simple_value=wer)
-            # summary.value.add(tag='loss/word_error_rates', histo=wers)
 
             summary_writer.add_summary(summary, str(global_step))
 
