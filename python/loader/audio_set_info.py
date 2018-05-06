@@ -13,7 +13,7 @@ import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
 
-from loader.load_sample import load_sample
+from python.loader.load_sample import load_sample
 
 
 def sample_info(file_path):

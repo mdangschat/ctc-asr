@@ -81,7 +81,7 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
         raise ValueError('"{}" is not a directory.'.format(dataset_path))
 
     target_path = os.path.join(TXT_TARGET_PATH, '{}_{}.txt'.format(dataset_name, target))
-    print('Starting to generate {}.txt file.'.format(target))
+    print('Starting to generate {}.txt file.'.format(os.path.basename(target_path)))
 
     # RegEX filter pattern for valid characters.
     pattern = re.compile(r'[^a-z ]+')
@@ -114,9 +114,18 @@ def _libri_speech_loader(data_path, target, pattern):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    # Folders for each target.
     train_folders = ['train-clean-100', 'train-clean-360']
-    test_folders = ['dev-clean', 'test-clean']
-    folders = train_folders if target is 'train' else test_folders
+    test_folders = ['test-clean']
+    validate_folders = ['dev-clean']
+
+    # Assign target folders.
+    if target == 'train':
+        folders = train_folders
+    elif target == 'test':
+        folders = test_folders
+    else:
+        folders = validate_folders
 
     output = []
     for folder in [os.path.join(data_path, f) for f in folders]:
@@ -293,16 +302,17 @@ def _timit_loader(data_path, target, pattern):
 
 
 if __name__ == '__main__':
+    __dry_run = False
     # TEDLIUM v2
-    generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=False)
-    generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=False)
-    generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=False)
+    generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
+    generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=__dry_run)
+    generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=__dry_run)
 
     # TIMIT
-    generate_list(TIMIT_PATH, 'timit', 'test', dry_run=False)
-    generate_list(TIMIT_PATH, 'timit', 'train', dry_run=False)
+    generate_list(TIMIT_PATH, 'timit', 'test', dry_run=__dry_run)
+    generate_list(TIMIT_PATH, 'timit', 'train', dry_run=__dry_run)
 
     # LibriSpeech ASR Corpus
-    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=False)
-    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'validate', dry_run=False)
-    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=False)
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=__dry_run)
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'validate', dry_run=__dry_run)
+    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=__dry_run)

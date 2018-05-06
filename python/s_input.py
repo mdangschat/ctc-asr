@@ -8,9 +8,9 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from params import FLAGS, TF_FLOAT
-import s_labels
-from loader.load_sample import load_sample, NUM_MFCC
+from python.params import FLAGS, TF_FLOAT
+import python.s_labels as s_labels
+from python.loader.load_sample import load_sample, NUM_MFCC
 
 
 NUM_INPUTS = NUM_MFCC * 2
