@@ -107,8 +107,8 @@ def _libri_speech_loader(data_path, target, pattern):
     and test data is being merged into one .txt file.
 
     Args:
-        data_path (str): Base path of the data set.
-        target (str): 'train' or 'test'
+        data_path (str): Path of the data set.
+        target (str): 'train', 'test', or 'validate'
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
     Returns:
@@ -158,9 +158,20 @@ def _libri_speech_loader(data_path, target, pattern):
 
 
 def _tedlium_loader(data_path, target, pattern):
-    # TODO: Documentation
-    # Note: Since TEDLIUM data is one large .wav file per speaker, this method needs to create
-    #       several smaller part files. This takes some time.
+    """Build the output string that can be written to the desired *.txt file.
+
+     Note:
+         Since TEDLIUM data is one large .wav file per speaker. Therefore this method creates
+         several smaller partial .wav files. This takes some time.
+
+    Args:
+        data_path (str): Path of the data set.
+        target (str): 'train', 'test', or 'validate'
+        pattern (str): RegEx pattern that is used as whitelist for the written label texts.
+
+    Returns:
+        [str]: List containing the output string that can be written to *.txt file.
+    """
 
     def seconds_to_sample(seconds, sr=16000):
         return int(seconds * sr)
@@ -247,7 +258,7 @@ def _timit_loader(data_path, target, pattern):
     and test data is being merged into one .txt file.
 
     Args:
-        data_path (str): Base path of the data set.
+        data_path (str): Path of the data set.
         target (str): Not used at the moment for TIMIT data set. Set to `None`.
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 

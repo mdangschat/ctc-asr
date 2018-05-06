@@ -89,10 +89,10 @@ def create_cell(num_units, keep_prob=1.0):
     # Can be: `tf.nn.rnn_cell.RNNCell`, `tf.nn.rnn_cell.GRUCell`, `tf.nn.rnn_cell.LSTMCell`.
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LSTMCell
-    # cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
+    cell = tf.nn.rnn_cell.LSTMCell(num_units=num_units, use_peepholes=True)
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/GRUCell
-    cell = tf.nn.rnn_cell.GRUCell(num_units=num_units)
+    # cell = tf.nn.rnn_cell.GRUCell(num_units=num_units)
 
     return tf.nn.rnn_cell.DropoutWrapper(cell,
                                          input_keep_prob=keep_prob,

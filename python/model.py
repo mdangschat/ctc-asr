@@ -50,7 +50,6 @@ def inference(sequences, seq_length):
     # BDLSTM cell stack.
     with tf.variable_scope('bdlstm'):
         # Create a stack of RNN cells.
-        # stack = tf.nn.rnn_cell.MultiRNNCell([create_cell(num_hidden) for _ in range(num_layers)])
         fw_cells, bw_cells = utils.create_bidirectional_cells(FLAGS.num_units_lstm,
                                                               FLAGS.num_layers_lstm,
                                                               keep_prob=1.0)
@@ -124,8 +123,6 @@ def loss(logits, labels, seq_length):
 
 def decode(logits, seq_len, originals=None):
     """Decode a given inference (`logits`) and convert it to plaintext.
-
-    Review: `label_len` needed, instead of `seq_len`?
 
     Args:
         logits (tf.Tensor):
