@@ -8,7 +8,8 @@
 pacman -S tr
 ```
 
-## Setup Datasets
+## Datasets
+### Prepare Training Data
 ```shell
 cd project_root/data/
 
