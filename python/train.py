@@ -6,9 +6,9 @@ Note: No Python 2 compatibility is provided.
 
 import tensorflow as tf
 
-from params import FLAGS, get_parameters
-from utils import get_git_branch, get_git_revision_hash, LoggerHook
-import model
+from python.params import FLAGS, get_parameters
+from python.utils import get_git_branch, get_git_revision_hash, LoggerHook
+import python.model as model
 
 
 # General TensorFlow settings and setup.

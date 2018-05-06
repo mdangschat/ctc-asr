@@ -4,9 +4,9 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-from params import FLAGS, TF_FLOAT
-import utils
-import s_input
+from python.params import FLAGS, TF_FLOAT
+import python.utils as utils
+import python.s_input as s_input
 
 
 def inference(sequences, seq_length):

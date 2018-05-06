@@ -9,8 +9,8 @@ from datetime import datetime
 import numpy as np
 import tensorflow as tf
 
-from params import FLAGS
-import model
+from python.params import FLAGS
+import python.model as model
 
 
 def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
