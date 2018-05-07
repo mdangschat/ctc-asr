@@ -106,15 +106,14 @@ def loss(logits, labels, seq_length):
     """
     if FLAGS.use_warp_ctc:
         # https://github.com/baidu-research/warp-ctc
-        # Mozilla uses a TF fork to access warp ctc like this.
-        # See: <https://github.com/mozilla/tensorflow>
-        # noinspection PyUnresolvedReferences
-        # total_loss = tfc.wrapctc.wrap_ctc_loss(labels=labels,
-        #                                        inputs=logits,
-        #                                        sequence_length=seq_length)
+        flat_labels = tf.sparse_tensor_to_dense(labels)
+        flat_labels = tf.reshape(flat_labels, [-1])
+        flat_labels = tf.Print(flat_labels, [flat_labels], message='flat_labels ')
+        seq_length = tf.Print(seq_length, [seq_length], message='seq_length ')
 
+        # TODO: label_lengths is a placeholder!
         total_loss = warpctc.ctc(activations=logits,
-                                 flat_labels=labels,
+                                 flat_labels=flat_labels,
                                  label_lengths=seq_length,
                                  input_lengths=seq_length)
 
