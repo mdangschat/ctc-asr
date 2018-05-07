@@ -62,7 +62,7 @@ def display_sample_info(file_path, label=''):
     # Create info string.
     num_samples = y.shape[0]
     duration = rosa.get_duration(y=y, sr=sr)
-    info_str = 'Label="{}"\nPath={}\nDuration={:.3f}s with {:,d} Samples\n' \
+    info_str = 'Label: {}\nPath: {}\nDuration={:.3f}s with {:,d} Samples\n' \
                'Sampling Rate={:,d} Hz\nMin, Max=[{:.2f}, {:.2f}]'
     info_str = info_str.format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
     print(info_str)
@@ -157,13 +157,12 @@ def display_sample_info(file_path, label=''):
 
 
 if __name__ == '__main__':
-    _timit_base_path = '/home/marc/workspace/speech/data/'
-    _test_txt_path = os.path.join(_timit_base_path, 'timit_train.txt')
+    _test_txt_path = os.path.join('/home/marc/workspace/speech/data', 'train.txt')
     with open(_test_txt_path, 'r') as f:
         lines = f.readlines()
         line = lines[0]
         wav_path, txt = line.split(' ', 1)
-        wav_path = os.path.join(_timit_base_path, 'timit/TIMIT', wav_path)
+        wav_path = os.path.join('/home/marc/workspace/datasets/speech_data', wav_path)
         txt = txt.strip()
 
-    display_sample_info(wav_path, label=txt)
+        display_sample_info(wav_path, label=txt)
