@@ -248,8 +248,11 @@ def inputs_train():
     return sequences, seq_length, labels, originals
 
 
-def inputs():
+def inputs(target='test'):
     """Construct input for the speech training.
+
+    Args:
+        target (str): 'train' or 'validate'.
 
     Returns:
         tf.Tensor:
@@ -265,5 +268,8 @@ def inputs():
         tf.Tensor:
             2D Tensor with the original strings.
     """
+    if target != 'test' and target != 'validate':
+        raise ValueError('"{}" is not a valid target.'.format(target))
+
     sequences, seq_length, labels, originals = s_input.inputs(FLAGS.batch_size)
     return sequences, seq_length, labels, originals

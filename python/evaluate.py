@@ -13,8 +13,13 @@ from python.params import FLAGS
 import python.model as model
 
 
+# Which dataset *.txt file to use for evaluation. 'train' or 'validate'
+EVALUATION_DATASET = 'validate'
+
+
 def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
     """Run the evaluation once over all test inputs.
+
     TODO Documentation
 
     Args:
@@ -103,7 +108,7 @@ def evaluate(eval_dir):
     """
     with tf.Graph().as_default() as g:
         # Get evaluation sequences and ground truth.
-        sequences, seq_length, labels, originals = model.inputs()
+        sequences, seq_length, labels, originals = model.inputs(target=EVALUATION_DATASET)
 
         # Build a graph that computes the logits predictions from the inference model.
         logits = model.inference(sequences, seq_length)

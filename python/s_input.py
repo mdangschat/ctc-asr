@@ -94,17 +94,15 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
         return sequences, seq_length, labels, originals
 
 
-def inputs(batch_size, test_txt_path=TEST_TXT_PATH):
+def inputs(batch_size, target):
     """Construct input for speech evaluation. This method always returns unaltered data.
-
-    TODO train.txt vs. validate.txt vs. test.txt
 
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
-        test_txt_path (str):
-            Testing or validation .txt path.
+        target (str):
+            Which dataset to use. Supported: 'test' or 'validate'.
 
     Returns:
         tf.Tensor:
@@ -120,7 +118,14 @@ def inputs(batch_size, test_txt_path=TEST_TXT_PATH):
         tf.Tensor:
             2D Tensor with the original strings.
     """
-    return inputs_train(batch_size, train_txt_path=test_txt_path)
+    if target == 'test':
+        txt_path = TEST_TXT_PATH
+    elif target == 'validate':
+        txt_path = VALIDATE_TXT_PATH
+    else:
+        raise ValueError('Invalid target "{}".'.format(target))
+
+    return inputs_train(batch_size, train_txt_path=txt_path)
 
 
 def _read_file_list(txt_path):
