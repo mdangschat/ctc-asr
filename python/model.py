@@ -4,6 +4,8 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
+import warpctc_tensorflow as warpctc
+
 from python.params import FLAGS, TF_FLOAT
 import python.utils as utils
 import python.s_input as s_input
@@ -104,10 +106,18 @@ def loss(logits, labels, seq_length):
     """
     if FLAGS.use_warp_ctc:
         # https://github.com/baidu-research/warp-ctc
+        # Mozilla uses a TF fork to access warp ctc like this.
+        # See: <https://github.com/mozilla/tensorflow>
         # noinspection PyUnresolvedReferences
-        total_loss = tfc.wrapctc.wrap_ctc_loss(labels=labels,
-                                               inputs=logits,
-                                               sequence_length=seq_length)
+        # total_loss = tfc.wrapctc.wrap_ctc_loss(labels=labels,
+        #                                        inputs=logits,
+        #                                        sequence_length=seq_length)
+
+        total_loss = warpctc.ctc(activations=logits,
+                                 flat_labels=labels,
+                                 label_lengths=seq_length,
+                                 input_lengths=seq_length)
+
     else:
         # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
         total_loss = tf.nn.ctc_loss(labels=labels,
