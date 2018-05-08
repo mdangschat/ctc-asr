@@ -109,16 +109,16 @@ def loss(logits, seq_length, labels, label_length):
             1D float Tensor with size [1], containing the mean loss.
     """
     if FLAGS.use_warp_ctc:
-        # https://github.com/baidu-research/warp-ctc
+        # Labels need to be a 1D vector, with every label concatenated.
         flat_labels = tf.sparse_tensor_to_dense(labels)
         flat_labels = tf.reshape(flat_labels, [-1])
 
-        flat_label_length = tf.reshape(label_length, [-1])
-        # max_label_length = tf.reduce_max(flat_label_length)
-        # num_labels = tf.shape(label_length)[0]
+        # Remove padding from labels.
         partitions = tf.cast(tf.equal(flat_labels, 0), tf.int32)
-
         flat_labels, _ = tf.dynamic_partition(flat_labels, partitions, 2)
+
+        # `label_length` needs to be a 1D vector.
+        flat_label_length = tf.reshape(label_length, [-1])
 
         # flat_label_length = tf.tile([max_label_length], [num_labels])
         # seq_length = tf.Print(seq_length, [tf.reduce_sum(_)], message='THISSHOULDBENULL: ')
@@ -126,6 +126,7 @@ def loss(logits, seq_length, labels, label_length):
         # flat_label_length = tf.Print(flat_label_length, [flat_label_length], message='flat_label_length ')
         # flat_labels = tf.Print(flat_labels, [tf.shape(flat_labels), flat_labels], message='flat_labels ')
 
+        # https://github.com/baidu-research/warp-ctc
         total_loss = warpctc.ctc(activations=logits,
                                  flat_labels=flat_labels,
                                  label_lengths=flat_label_length,
