@@ -26,7 +26,7 @@ from tqdm import tqdm
 from scipy.io import wavfile
 
 from python.params import FLAGS
-from python.loader import utils
+from python.utils import storage
 
 
 # Dataset base path.
@@ -95,7 +95,7 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
     print('> Writing {} lines of {} files to {}'.format(len(output), target, target_path))
     if not dry_run:
         # Delete the old file if it exists.
-        utils.delete_file_if_exists(target_path)
+        storage.delete_file_if_exists(target_path)
 
         # Write data to the file.
         with open(target_path, 'w') as f:
@@ -190,7 +190,7 @@ def _tedlium_loader(dataset_path, target, pattern):
         # print('Saving {:12,d}({:6.2f}s) to {:12,d}({:6.2f}s) at: {}'
         #       .format(seconds_to_sample(start), start, seconds_to_sample(end), end, path))
 
-        utils.delete_file_if_exists(path)
+        storage.delete_file_if_exists(path)
         wavfile.write(path, sr, data[seconds_to_sample(start): seconds_to_sample(end)])
 
     target_folders = {

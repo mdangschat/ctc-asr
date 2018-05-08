@@ -5,7 +5,7 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT
-import python.utils as utils
+from python.utils import contrib
 import python.s_input as s_input
 
 
@@ -50,9 +50,9 @@ def inference(sequences, seq_length):
     # BDLSTM cell stack.
     with tf.variable_scope('bdlstm'):
         # Create a stack of RNN cells.
-        fw_cells, bw_cells = utils.create_bidirectional_cells(FLAGS.num_units_lstm,
-                                                              FLAGS.num_layers_lstm,
-                                                              keep_prob=1.0)
+        fw_cells, bw_cells = contrib.create_bidirectional_cells(FLAGS.num_units_lstm,
+                                                                FLAGS.num_layers_lstm,
+                                                                keep_prob=1.0)
 
         # `output` = [batch_size, time, num_hidden*2]
         # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
@@ -154,7 +154,7 @@ def decode(logits, seq_len, originals=None):
     originals = originals if originals is not None else np.array([], dtype=np.int32)
 
     # Translate decoded integer data back to character strings.
-    plaintext, plaintext_summary = tf.py_func(utils.dense_to_text, [dense, originals],
+    plaintext, plaintext_summary = tf.py_func(contrib.dense_to_text, [dense, originals],
                                               [tf.string, tf.string], name='py_dense_to_text')
 
     return decoded, plaintext, plaintext_summary
@@ -185,7 +185,7 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
     mean_edit_distance = tf.reduce_mean(edit_distances)
 
     # Word error rates for the batch and average word error rate (WER).
-    wers, wer = tf.py_func(utils.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
+    wers, wer = tf.py_func(contrib.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
                            name='py_wer_batch')
 
     return edit_distances, mean_edit_distance, wers, wer

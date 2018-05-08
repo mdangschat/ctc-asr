@@ -3,7 +3,6 @@
 import time
 from datetime import datetime
 import numpy as np
-from git import Repo
 import tensorflow as tf
 
 from python.params import FLAGS, NP_FLOAT, TF_FLOAT
@@ -34,26 +33,6 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
         tf.summary.scalar('estimated_lr', current_lr)
 
         return super(AdamOptimizerLogger, self)._apply_dense(grad, var)
-
-
-def get_git_revision_hash():
-    """Return the git revision id/hash.
-
-    Returns:
-        str: Git revision hash.
-    """
-    repo = Repo('.', search_parent_directories=True)
-    return repo.head.object.hexsha
-
-
-def get_git_branch():
-    """Return the active git branches name.
-
-    Returns:
-        str: Git branch.
-    """
-    repo = Repo('.', search_parent_directories=True)
-    return repo.active_branch.name
 
 
 def create_bidirectional_cells(num_units, num_layers, keep_prob=1.0):
