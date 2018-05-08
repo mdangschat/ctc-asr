@@ -27,14 +27,14 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sequences, seq_length, labels, originals = model.inputs_train()
+            sequences, seq_length, labels, label_length, originals = model.inputs_train()
 
         # Build the logits (prediction) graph.
         logits = model.inference(sequences, seq_length)
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate loss/cost.
-            loss = model.loss(logits, labels, seq_length)
+            loss = model.loss(logits, seq_length, labels, label_length)
             tf.summary.scalar('ctc_loss', loss)
 
             # Decode.

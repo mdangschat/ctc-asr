@@ -71,6 +71,7 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
 
         # Reinterpret the bytes of a string as a vector of numbers.
         label_queue = tf.decode_raw(label_queue, tf.int32)
+        label_length = tf.shape(label_queue)
 
         # Read the sample from disk and extract it's features.
         sample, sample_len = tf.py_func(load_sample, [sample_queue], [TF_FLOAT, tf.int32],
@@ -84,14 +85,17 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
         print('Generating training batches of size {}. Queue capacity is {}. '
               .format(batch_size, capacity))
 
-        sequences, seq_length, labels, originals = _generate_batch(
-            sample, sample_len, label_queue, originals_queue, batch_size, capacity)
+        batch = _generate_batch(sample, sample_len, label_queue, label_length,
+                                originals_queue, batch_size, capacity)
 
+        sequences, seq_length, labels, label_length, originals = batch
+
+        # TODO: If WarpCTC works, this should be moved to the `loss` function. Saves 2 conversions.
         # Convert the dense labels to sparse ones for the CTC loss function.
         # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
         labels = tfc.layers.dense_to_sparse(labels)
 
-        return sequences, seq_length, labels, originals
+        return sequences, seq_length, labels, label_length, originals
 
 
 def inputs(batch_size, target):
@@ -160,7 +164,7 @@ def _read_file_list(txt_path):
         return sample_paths, labels, originals
 
 
-def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
+def _generate_batch(sequence, seq_len, label, label_length, original, batch_size, capacity):
     """Construct a queued batch of sample sequences and labels.
 
     Args:
@@ -170,6 +174,8 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
             1D tensor of shape [1] with type int32.
         label (tf.Tensor):
             1D tensor of shape [<length label>] with type int32.
+        label_length (tf.Tensor):
+            TODO
         original (tf.Tensor):
             1D tensor of shape [<length original text>] with type tf.string.
             The original text.
@@ -191,6 +197,8 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
         tf.Tensor:
+            TODO
+        tf.Tensor:
             2D Tensor with the original strings.
     """
     num_threads = 8
@@ -198,9 +206,10 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
                   611, 626, 642, 1085]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
-    seq_length, (sequences, labels, originals) = tfc.training.bucket_by_sequence_length(
+    seq_length, (sequences, labels, label_length, originals) = \
+        tfc.training.bucket_by_sequence_length(
         input_length=seq_len,
-        tensors=[sequence, label, original],
+        tensors=[sequence, label, label_length, original],
         batch_size=batch_size,
         bucket_boundaries=boundaries,
         num_threads=num_threads,
@@ -215,4 +224,4 @@ def _generate_batch(sequence, seq_len, label, original, batch_size, capacity):
     summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
     tf.summary.image('sequence', summary_batch, max_outputs=1)
 
-    return sequences, seq_length, labels, originals
+    return sequences, seq_length, labels, label_length, originals

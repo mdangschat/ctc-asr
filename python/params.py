@@ -11,7 +11,7 @@ from python.s_labels import num_classes
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/warptest',
                        """Directory where to write event logs and checkpoints.""")
 
-tf.flags.DEFINE_integer('batch_size', 1,
+tf.flags.DEFINE_integer('batch_size', 8,
                         """(Maximum) Number of samples within a batch.""")
 
 # Learning rate.
@@ -31,7 +31,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_bool('use_warp_ctc', True,    # L8ER: Not implemented at the moment. See #23
+tf.flags.DEFINE_bool('use_warp_ctc', True,  # TODO: Default should probably be False
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
@@ -47,9 +47,9 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 250000,
+tf.flags.DEFINE_integer('max_steps', 10000,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 1,
+tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
@@ -73,7 +73,7 @@ tf.flags.DEFINE_string('eval_dir', '',
 
 
 # Miscellaneous
-tf.flags.DEFINE_bool('delete', False,
+tf.flags.DEFINE_bool('delete', True,
                      """Whether to delete old checkpoints, or resume training.""")
 tf.flags.DEFINE_integer('random_seed', 4711,
                         """TensorFlow random seed.""")

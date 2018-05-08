@@ -84,8 +84,10 @@ def inference(sequences, seq_length):
     return logits
 
 
-def loss(logits, labels, seq_length):
+def loss(logits, seq_length, labels, label_length):
     """Calculate the networks CTC loss.
+
+    TODO: Refactoring
 
     Args:
         logits (tf.Tensor):
@@ -100,6 +102,8 @@ def loss(logits, labels, seq_length):
         seq_length (tf.Tensor):
             1D int32 vector, size [batch_size]. The sequence lengths.
 
+        label_length (tf.Tensor): TODO
+
     Returns:
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
@@ -108,14 +112,27 @@ def loss(logits, labels, seq_length):
         # https://github.com/baidu-research/warp-ctc
         flat_labels = tf.sparse_tensor_to_dense(labels)
         flat_labels = tf.reshape(flat_labels, [-1])
-        flat_labels = tf.Print(flat_labels, [flat_labels], message='flat_labels ')
-        seq_length = tf.Print(seq_length, [seq_length], message='seq_length ')
 
-        # TODO: label_lengths is a placeholder!
+        flat_label_length = tf.reshape(label_length, [-1])
+        # max_label_length = tf.reduce_max(flat_label_length)
+        # num_labels = tf.shape(label_length)[0]
+        partitions = tf.cast(tf.equal(flat_labels, 0), tf.int32)
+
+        flat_labels, _ = tf.dynamic_partition(flat_labels, partitions, 2)
+
+        # flat_label_length = tf.tile([max_label_length], [num_labels])
+        # seq_length = tf.Print(seq_length, [tf.reduce_sum(_)], message='THISSHOULDBENULL: ')
+        # seq_length = tf.Print(seq_length, [seq_length], message='seq_length ')
+        # flat_label_length = tf.Print(flat_label_length, [flat_label_length], message='flat_label_length ')
+        # flat_labels = tf.Print(flat_labels, [tf.shape(flat_labels), flat_labels], message='flat_labels ')
+
         total_loss = warpctc.ctc(activations=logits,
                                  flat_labels=flat_labels,
-                                 label_lengths=seq_length,
-                                 input_lengths=seq_length)
+                                 label_lengths=flat_label_length,
+                                 input_lengths=seq_length,
+                                 blank_label=28)    # review is 28 my blank_label?
+
+        # total_loss = tf.Print(total_loss, [total_loss], message='total_loss ')
 
     else:
         # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
@@ -251,10 +268,13 @@ def inputs_train():
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
         tf.Tensor:
+            1D Tensor with label length for each label within the batch.
+            Shape is [batch_size], and type tf.int32.
+        tf.Tensor:
             2D Tensor with the original strings.
     """
-    sequences, seq_length, labels, originals = s_input.inputs_train(FLAGS.batch_size)
-    return sequences, seq_length, labels, originals
+    sequences, seq_length, labels, label_length, originals = s_input.inputs_train(FLAGS.batch_size)
+    return sequences, seq_length, labels, label_length, originals
 
 
 def inputs(target='test'):
@@ -280,5 +300,6 @@ def inputs(target='test'):
     if target != 'test' and target != 'validate':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
+    # TODO labels_length
     sequences, seq_length, labels, originals = s_input.inputs(FLAGS.batch_size)
     return sequences, seq_length, labels, originals
