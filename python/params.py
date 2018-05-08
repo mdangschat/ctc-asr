@@ -11,7 +11,7 @@ from python.s_labels import num_classes
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/warptest',
                        """Directory where to write event logs and checkpoints.""")
 
-tf.flags.DEFINE_integer('batch_size', 4,
+tf.flags.DEFINE_integer('batch_size', 1,
                         """(Maximum) Number of samples within a batch.""")
 
 # Learning rate.
@@ -49,7 +49,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging & Output
 tf.flags.DEFINE_integer('max_steps', 250000,
                         """Number of batches to run.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 1,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
