@@ -73,7 +73,7 @@ tf.flags.DEFINE_string('eval_dir', '',
                        directory `f'{FLAGS.train_dir}_eval'.""")
 
 # Miscellaneous
-tf.flags.DEFINE_bool('delete', True,
+tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
 tf.flags.DEFINE_integer('random_seed', 4711,
                         """TensorFlow random seed.""")

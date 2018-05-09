@@ -95,9 +95,10 @@ def loss(logits, seq_length, labels, label_length):
             [batch_size, max_time, num_classes]. If time_major == True (default), this will be a
             Tensor shaped: [max_time, batch_size, num_classes]. The logits.
 
-        labels (tf.SparseTensor):
+        labels (tf.SparseTensor or tf.Tensor):
             An int32 SparseTensor. labels.indices[i, :] == [b, t] means labels.values[i] stores the
             id for (batch b, time t). labels.values[i] must take on values in [0, num_labels).
+            TODO: Document OR case
 
         seq_length (tf.Tensor):
             1D int32 vector, size [batch_size]. The sequence lengths.
@@ -110,8 +111,7 @@ def loss(logits, seq_length, labels, label_length):
     """
     if FLAGS.use_warp_ctc:
         # Labels need to be a 1D vector, with every label concatenated.
-        flat_labels = tf.sparse_tensor_to_dense(labels)
-        flat_labels = tf.reshape(flat_labels, [-1])
+        flat_labels = tf.reshape(labels, [-1])
 
         # Remove padding from labels.
         partitions = tf.cast(tf.equal(flat_labels, 0), tf.int32)
@@ -191,9 +191,11 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
     """Calculate edit distance and word error rate.
 
     Args:
-        labels (tf.SparseTensor):
+        labels (tf.SparseTensor or tf.Tensor):
             Integer SparseTensor containing the target.
             With dense shape [batch_size, time (target)].
+            TODO: Document OR case.
+            Dense Tensors are converted into SparseTensors if `FLAGS.use_warp_ctc == True`.
         originals (tf.Tensor):
             String Tensor of shape [batch_size] with the original plaintext.
         decoded (tf.Tensor):
@@ -207,6 +209,9 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
         tf.Tensor: Word error rates for the batch.
         tf.Tensor: Word error rate.
     """
+    if FLAGS.use_warp_ctc:
+        labels = tfc.layers.dense_to_sparse(labels)
+
     # Edit distances and average edit distance.
     edit_distances = tf.edit_distance(decoded, labels)
     mean_edit_distance = tf.reduce_mean(edit_distances)

@@ -90,10 +90,10 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
 
         sequences, seq_length, labels, label_length, originals = batch
 
-        # TODO: If WarpCTC works, this should be moved to the `loss` function. Saves 2 conversions.
-        # Convert the dense labels to sparse ones for the CTC loss function.
-        # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
-        labels = tfc.layers.dense_to_sparse(labels)
+        if not FLAGS.use_warp_ctc:
+            # Convert the dense labels to sparse ones for the CTC loss function.
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
+            labels = tfc.layers.dense_to_sparse(labels)
 
         return sequences, seq_length, labels, label_length, originals
 
