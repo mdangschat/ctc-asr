@@ -20,7 +20,7 @@ TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 # Path to train.txt file.
 TEST_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
 # Path to validate.txt file.
-VALIDATE_TXT_PATH = '/home/marc/workspace/data/validate.txt'
+VALIDATE_TXT_PATH = '/home/marc/workspace/speech/data/validate.txt'
 # Path to dataset collection folder.
 DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
@@ -128,6 +128,7 @@ def inputs(batch_size, target):
         txt_path = VALIDATE_TXT_PATH
     else:
         raise ValueError('Invalid target "{}".'.format(target))
+    print('Using: ', txt_path)
 
     return inputs_train(batch_size, train_txt_path=txt_path)
 

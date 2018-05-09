@@ -306,6 +306,6 @@ def inputs(target='test'):
     if target != 'test' and target != 'validate':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
-    # TODO labels_length
-    sequences, seq_length, labels, originals = s_input.inputs(FLAGS.batch_size)
-    return sequences, seq_length, labels, originals
+    sequences, seq_length, labels, label_length, originals = s_input.inputs(FLAGS.batch_size,
+                                                                            target)
+    return sequences, seq_length, labels, label_length, originals

@@ -14,7 +14,7 @@ import python.model as model
 
 
 # Which dataset *.txt file to use for evaluation. 'train' or 'validate'
-EVALUATION_DATASET = 'validate'
+EVALUATION_TARGET = 'validate'
 
 
 def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
@@ -108,14 +108,15 @@ def evaluate(eval_dir):
     """
     with tf.Graph().as_default() as g:
         # Get evaluation sequences and ground truth.
-        sequences, seq_length, labels, originals = model.inputs(target=EVALUATION_DATASET)
+        sequences, seq_length, labels, label_length, originals = model.inputs(
+            target=EVALUATION_TARGET)
 
         # Build a graph that computes the logits predictions from the inference model.
         logits = model.inference(sequences, seq_length)
 
         with tf.name_scope('loss'):
             # Calculate error rates
-            loss_op = model.loss(logits, labels, seq_length)
+            loss_op = model.loss(logits, seq_length, labels, label_length)
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
