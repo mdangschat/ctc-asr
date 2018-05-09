@@ -35,8 +35,11 @@ def load_sample(file_path):
     # Load the audio files sample rate (`sr`) and data (`y`)
     (sr, y) = wav.read(file_path)
 
+    if len(y) < 401:
+        raise RuntimeError('Sample length () to short: {}'.format(len(y), file_path))
+
     if not sr == FLAGS.sampling_rate:
-        raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
+        raise RuntimeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
     win_len = 0.025      # Window length in ms.

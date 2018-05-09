@@ -75,7 +75,7 @@ tf.flags.DEFINE_string('eval_dir', '',
 # Miscellaneous
 tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
-tf.flags.DEFINE_integer('random_seed', 4711,
+tf.flags.DEFINE_integer('random_seed', 1337,    # TODO
                         """TensorFlow random seed.""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")

@@ -17,22 +17,28 @@ import python.model as model
 EVALUATION_TARGET = 'validate'
 
 
-def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
+def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
     """Run the evaluation once over all test inputs.
 
     TODO Documentation
 
     Args:
-        summary_writer (): Summary writer.
         loss_op ():
         mean_ed_op ():
         wer_op ():
         summary_op (): Summary operator.
+        summary_writer (): Summary writer.
 
     Returns:
         Nothing.
     """
-    with tf.Session() as sess:
+    # Session configuration.
+    session_config = tf.ConfigProto(
+        log_device_placement=FLAGS.log_device_placement,
+        gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
+    )
+
+    with tf.Session(config=session_config) as sess:
         checkpoint = tf.train.get_checkpoint_state(FLAGS.train_dir)
         if checkpoint and checkpoint.model_checkpoint_path:
             saver = tf.train.Saver()
@@ -42,7 +48,7 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
             # Extract global stop from checkpoint.
             global_step = checkpoint.model_checkpoint_path.split('/')[-1].split('-')[-1]
             global_step = str(global_step)
-            print('Loaded global step:', global_step)
+            print('Loaded global step: {}'.format(global_step))
         else:
             print('No checkpoint file found.')
             return
@@ -66,7 +72,7 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
                 wer_sum += wer_batch
                 step += 1
 
-                print('{:%Y-%m-%d %H:%M:%S}: Batch {:5,d} results: loss={:7.3f}; '
+                print('{:%Y-%m-%d %H:%M:%S}: Step {:5,d} results: loss={:7.3f}; '
                       'mean_edit_distance={:5.3f}; WER={:5.3f}'
                       .format(datetime.now(), step, loss_batch, mean_ed_batch, wer_batch))
 
@@ -94,7 +100,7 @@ def eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op):
 
         print('Stopping...')
         coord.request_stop()
-        coord.join(threads, stop_grace_period_secs=10)
+        coord.join(threads, stop_grace_period_secs=20)
 
 
 def evaluate(eval_dir):
@@ -106,38 +112,33 @@ def evaluate(eval_dir):
     Returns:
         Nothing.
     """
-    with tf.Graph().as_default() as g:
+    with tf.Graph().as_default() as graph:
         # Get evaluation sequences and ground truth.
-        sequences, seq_length, labels, label_length, originals = model.inputs(
-            target=EVALUATION_TARGET)
+        with tf.device('/cpu:0'):
+            sequences, seq_length, labels, label_length, originals = model.inputs(
+                target=EVALUATION_TARGET)
 
         # Build a graph that computes the logits predictions from the inference model.
         logits = model.inference(sequences, seq_length)
 
-        with tf.name_scope('loss'):
+        with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate error rates
-            # TODO WarpCTC crashes during evaluation. Awaiting fix. This is only a workaround.
-            if FLAGS.use_warp_ctc:
-                loss_op = tf.constant(-1)
-            else:
-                loss_op = model.loss(logits, seq_length, labels, label_length)
+            # TODO WarpCTC crashes during evaluation. Awaiting fix.
+            loss_op = model.loss(logits, seq_length, labels, label_length)
 
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
             # Error metrics for decoded text.
-            eds, mean_ed_op, wers, wer_op = model.decoded_error_rates(labels, originals, decoded,
-                                                                      plaintext)
-
-            # tf.summary.histogram('edit_distances', eds)
-            # tf.summary.histogram('word_error_rates', wers)
+            _, mean_ed_op, _, wer_op = model.decoded_error_rates(labels, originals, decoded,
+                                                                 plaintext)
 
             # Build the summary operation based on the TF collection of summaries.
             summary_op = tf.summary.merge_all()
-            summary_writer = tf.summary.FileWriter(eval_dir, g)
+            summary_writer = tf.summary.FileWriter(eval_dir, graph)
 
             # L8ER: Add continuous evaluation loop.
-            eval_once(summary_writer, loss_op, mean_ed_op, wer_op, summary_op)
+            evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer)
 
 
 # noinspection PyUnusedLocal
@@ -152,7 +153,7 @@ def main(argv=None):
         print('Deleting old evaluation data from: {}.'.format(eval_dir))
         tf.gfile.DeleteRecursively(eval_dir)
         tf.gfile.MakeDirs(eval_dir)
-    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:
+    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete or True:
         print('Resuming evaluation in: {}'.format(eval_dir))
     else:
         print('Starting a new evaluation in: {}'.format(eval_dir))

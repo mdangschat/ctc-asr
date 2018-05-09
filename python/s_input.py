@@ -160,6 +160,10 @@ def _read_file_list(txt_path):
             originals.append(label)
             label = [s_labels.ctoi(c) for c in label]
             label = np.array(label, dtype=np.int32).tostring()
+
+            if len(label) < 4:
+                raise RuntimeError('Label "{}" to short {}.'.format(label, len(label)))
+
             labels.append(label)
 
         return sample_paths, labels, originals
