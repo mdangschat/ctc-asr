@@ -8,10 +8,10 @@ from python.s_labels import num_classes
 
 # Constants describing the training process.
 # tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_2',
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/warptest',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_warp_1',
                        """Directory where to write event logs and checkpoints.""")
 
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
 
 # Learning rate.
@@ -31,7 +31,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_bool('use_warp_ctc', True,  # TODO: Default should probably be False
+tf.flags.DEFINE_bool('use_warp_ctc', True,  # TODO: Default should be False
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
@@ -43,11 +43,12 @@ tf.flags.DEFINE_integer('num_layers_lstm', 1,
                         """Number of stacked BDLSTM cells.""")
 tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
+
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
 # Logging & Output
-tf.flags.DEFINE_integer('max_steps', 10000,
+tf.flags.DEFINE_integer('max_steps', 250000,
                         """Number of batches to run.""")
 tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
@@ -71,7 +72,6 @@ tf.flags.DEFINE_string('eval_dir', '',
                        """If set, evaluation log data will be stored here, instead of the default
                        directory `f'{FLAGS.train_dir}_eval'.""")
 
-
 # Miscellaneous
 tf.flags.DEFINE_bool('delete', True,
                      """Whether to delete old checkpoints, or resume training.""")
@@ -82,6 +82,7 @@ tf.flags.DEFINE_boolean('log_device_placement', False,
 tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         """Allow TensorFlow to allocate VRAM as needed, 
                         as opposed to allocating the whole VRAM at program start.""")
+
 
 TF_FLOAT = tf.float32   # ctc_*** functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_*** functions don't support float64. See #13
