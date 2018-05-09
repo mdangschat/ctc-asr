@@ -57,7 +57,7 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
-        # Ensure that the random shuffling has good mixing properties.
+        # Set a sufficient bucket capacity.
         capacity = 512 + 4 * FLAGS.batch_size
 
         # Create an input queue that produces the file names to read.

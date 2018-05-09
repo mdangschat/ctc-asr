@@ -13,7 +13,7 @@ from python.params import FLAGS
 import python.model as model
 
 
-# Which dataset *.txt file to use for evaluation. 'train' or 'validate'
+# Which dataset *.txt file to use for evaluation. 'train' or 'validate'.
 EVALUATION_TARGET = 'validate'
 
 
@@ -116,7 +116,12 @@ def evaluate(eval_dir):
 
         with tf.name_scope('loss'):
             # Calculate error rates
-            loss_op = model.loss(logits, seq_length, labels, label_length)
+            # TODO WarpCTC crashes during evaluation. Awaiting fix. This is only a workaround.
+            if FLAGS.use_warp_ctc:
+                loss_op = tf.constant(-1)
+            else:
+                loss_op = model.loss(logits, seq_length, labels, label_length)
+
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
@@ -146,6 +151,7 @@ def main(argv=None):
     if tf.gfile.Exists(eval_dir) and FLAGS.delete:
         print('Deleting old evaluation data from: {}.'.format(eval_dir))
         tf.gfile.DeleteRecursively(eval_dir)
+        tf.gfile.MakeDirs(eval_dir)
     elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:
         print('Resuming evaluation in: {}'.format(eval_dir))
     else:
