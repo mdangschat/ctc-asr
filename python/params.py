@@ -96,7 +96,7 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); use_warp_ctc={}' \
+    s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); use_warp_ctc={}; ' \
         'BDLSTM (num_units={}, num_layers={}); ' \
         'Dense (num_units={}); ' \
         'Training (batch_size={}, max_steps={}, log_frequency={})'
