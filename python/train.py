@@ -7,7 +7,8 @@ Note: No Python 2 compatibility is provided.
 import tensorflow as tf
 
 from python.params import FLAGS, get_parameters
-from python.utils import get_git_branch, get_git_revision_hash, LoggerHook
+from python.utils import storage
+from python.utils.contrib import LoggerHook
 import python.model as model
 
 
@@ -18,7 +19,7 @@ tf.set_random_seed(FLAGS.random_seed)
 
 def train():
     """Train the network for a number of steps."""
-    print('Version: {} Branch: {}'.format(get_git_revision_hash(), get_git_branch()))
+    print('Version: {} Branch: {}'.format(storage.git_revision_hash(), storage.git_branch()))
     print('Parameters: ', get_parameters())
 
     with tf.Graph().as_default():
