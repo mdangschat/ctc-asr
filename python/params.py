@@ -68,14 +68,14 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Evaluation
-tf.flags.DEFINE_string('eval_dir', '',
+tf.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_2_warptest',
                        """If set, evaluation log data will be stored here, instead of the default
                        directory `f'{FLAGS.train_dir}_eval'.""")
 
 # Miscellaneous
 tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
-tf.flags.DEFINE_integer('random_seed', 1337,    # TODO
+tf.flags.DEFINE_integer('random_seed', 1337,
                         """TensorFlow random seed.""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
@@ -84,11 +84,10 @@ tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         as opposed to allocating the whole VRAM at program start.""")
 
 
+# Export names.
 TF_FLOAT = tf.float32   # ctc_*** functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_*** functions don't support float64. See #13
 
-
-# Export names.
 FLAGS = tf.flags.FLAGS
 
 

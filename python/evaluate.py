@@ -10,7 +10,12 @@ import numpy as np
 import tensorflow as tf
 
 from python.params import FLAGS
-import python.model as model
+# WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
+if FLAGS.use_warp_ctc:
+    FLAGS.use_warp_ctc = False
+    import python.model as model
+else:
+    import python.model as model
 
 
 # Which dataset *.txt file to use for evaluation. 'train' or 'validate'.
@@ -48,7 +53,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             # Extract global stop from checkpoint.
             global_step = checkpoint.model_checkpoint_path.split('/')[-1].split('-')[-1]
             global_step = str(global_step)
-            print('Loaded global step: {}'.format(global_step))
+            print('Loaded global step: {}, from checkpoint: {}'
+                  .format(global_step, FLAGS.train_dir))
         else:
             print('No checkpoint file found.')
             return
@@ -123,7 +129,6 @@ def evaluate(eval_dir):
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate error rates
-            # TODO WarpCTC crashes during evaluation. Awaiting fix.
             loss_op = model.loss(logits, seq_length, labels, label_length)
 
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
@@ -153,7 +158,7 @@ def main(argv=None):
         print('Deleting old evaluation data from: {}.'.format(eval_dir))
         tf.gfile.DeleteRecursively(eval_dir)
         tf.gfile.MakeDirs(eval_dir)
-    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete or True:
+    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:
         print('Resuming evaluation in: {}'.format(eval_dir))
     else:
         print('Starting a new evaluation in: {}'.format(eval_dir))

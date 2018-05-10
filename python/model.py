@@ -4,11 +4,12 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-import warpctc_tensorflow as warpctc
-
 from python.params import FLAGS, TF_FLOAT
 import python.utils as utils
 import python.s_input as s_input
+
+if FLAGS.use_warp_ctc:
+    import warpctc_tensorflow as warpctc
 
 
 def inference(sequences, seq_length):
@@ -120,8 +121,6 @@ def loss(logits, seq_length, labels, label_length):
         # `label_length` needs to be a 1D vector.
         flat_label_length = tf.reshape(label_length, [-1])
 
-        # flat_label_length = tf.tile([max_label_length], [num_labels])
-        # seq_length = tf.Print(seq_length, [tf.reduce_sum(_)], message='THISSHOULDBENULL: ')
         # seq_length = tf.Print(seq_length, [seq_length], message='seq_length ')
         # flat_label_length = tf.Print(flat_label_length, [flat_label_length], message='flat_label_length ')
         # flat_labels = tf.Print(flat_labels, [tf.shape(flat_labels), flat_labels], message='flat_labels ')
@@ -131,7 +130,7 @@ def loss(logits, seq_length, labels, label_length):
                                  flat_labels=flat_labels,
                                  label_lengths=flat_label_length,
                                  input_lengths=seq_length,
-                                 blank_label=28)    # review is 28 my blank_label?
+                                 blank_label=28)
 
         # total_loss = tf.Print(total_loss, [total_loss], message='total_loss ')
 
