@@ -1,17 +1,29 @@
-# Speech Recognition System
+# Single Stage Speech Recognition System using Connectionist Temporal Classification
 
+Automatic Speech Recognition (ASR) system implementation inspired by Baidu's
+[Deep Speech: Scaling up end-to-end speech recognition](https://arxiv.org/abs/1412.5567) paper.
 
-## Installation (Only Notes ATM)
+![TensorFlow Network Graph](images/graph.png)
 
-### Required Libraries
-```sh
-pacman -S tr
+## Installation (incomplete)
+```bash
+git clone https://vcs.zwuenf.org/mdangschat/speech.git
 ```
 
-## Datasets
-### Prepare Training Data
+### Install Required Libraries
+#### Arch Linux
 ```sh
-cd project_root/data/
+# This list is incomplete.
+pacaur -S tr
+
+# Install TensorFlow
+pacaur -S python-tensorflow-opt-cuda tensorbaord
+```
+
+
+## Prepare Datasets
+```sh
+cd <project_root>/data/
 
 cat *_train.txt > train.txt
 cat *_text.txt > text.txt
@@ -22,8 +34,8 @@ cat libri_speech_train.txt tedlium_train.txt > train.txt
 ```
 
 
-## Install with WarpCTC support
-
+## Compile and Install with WarpCTC-Support
+### Compile TensorFlow
 ```sh
 # Tensorflow
 git clone https://github.com/tensorflow/tensorflow
@@ -41,8 +53,11 @@ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 # Install or upgrade package.
 sudo pip install /tmp/tensorflow_pkg/tensorflow-X.X.X-cp35-cp35m-linux_x86_64.whl
 sudo pip install -U /tmp/tensorflow_pkg/tensorflow-X.X.X-cp35-cp35m-linux_x86_64.whl
+```
 
-# Warp CTC
+
+### Compile WarpCTC
+```sh
 # Back to base folder
 cd ..
 
@@ -70,6 +85,15 @@ python setup.py test
 Reference [Installing TensorFlow from Sources](https://www.tensorflow.org/install/install_sources) 
 and [TensorFlow binding for WarpCTC](https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding) 
 for further informations.
+
+
+## Training
+Start training by invoking `python/train.py`.
+
+
+## Evaluation
+Evaluate the current model by invoking `python/evaluate.py`.
+ 
 
 <!--
 # vim: ts=2:sw=2:et:
