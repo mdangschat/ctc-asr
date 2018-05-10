@@ -7,8 +7,7 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-# tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_2',
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_warp_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_2',
                        """Directory where to write event logs and checkpoints.""")
 
 tf.flags.DEFINE_integer('batch_size', 4,
@@ -31,7 +30,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_bool('use_warp_ctc', True,  # TODO: Default should be False
+tf.flags.DEFINE_bool('use_warp_ctc', False,
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
@@ -68,7 +67,7 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 # Evaluation
-tf.flags.DEFINE_string('eval_dir', '/home/marc/workspace/speech_checkpoints/ds_lstm_2_warptest',
+tf.flags.DEFINE_string('eval_dir', '',
                        """If set, evaluation log data will be stored here, instead of the default
                        directory `f'{FLAGS.train_dir}_eval'.""")
 
@@ -97,12 +96,12 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); ' \
+    s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); use_warp_ctc={}' \
         'BDLSTM (num_units={}, num_layers={}); ' \
         'Dense (num_units={}); ' \
         'Training (batch_size={}, max_steps={}, log_frequency={})'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
-                    FLAGS.learning_rate_decay_factor,
+                    FLAGS.learning_rate_decay_factor, FLAGS.use_warp_ctc,
                     FLAGS.num_units_lstm, FLAGS.num_layers_lstm,
                     FLAGS.num_units_dense,
                     FLAGS.batch_size, FLAGS.max_steps, FLAGS.log_frequency)

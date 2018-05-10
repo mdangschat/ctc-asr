@@ -88,8 +88,6 @@ def inference(sequences, seq_length):
 def loss(logits, seq_length, labels, label_length):
     """Calculate the networks CTC loss.
 
-    TODO: Refactoring
-
     Args:
         logits (tf.Tensor):
             3D float Tensor. If time_major == False, this will be a Tensor shaped:
@@ -98,13 +96,15 @@ def loss(logits, seq_length, labels, label_length):
 
         labels (tf.SparseTensor or tf.Tensor):
             An int32 SparseTensor. labels.indices[i, :] == [b, t] means labels.values[i] stores the
-            id for (batch b, time t). labels.values[i] must take on values in [0, num_labels).
-            TODO: Document OR case
+            id for (batch b, time t). labels.values[i] must take on values in [0, num_labels), if
+            `FLAGS.use_warp_ctc` is false.
+            Else, an int32 dense Tensor version of the above sparse version.
 
         seq_length (tf.Tensor):
             1D int32 vector, size [batch_size]. The sequence lengths.
 
-        label_length (tf.Tensor): TODO
+        label_length (tf.Tensor):
+            1D Tensor with the length of each label within the batch. Shape [batch_size].
 
     Returns:
         tf.Tensor:
@@ -120,10 +120,6 @@ def loss(logits, seq_length, labels, label_length):
 
         # `label_length` needs to be a 1D vector.
         flat_label_length = tf.reshape(label_length, [-1])
-
-        # seq_length = tf.Print(seq_length, [seq_length], message='seq_length ')
-        # flat_label_length = tf.Print(flat_label_length, [flat_label_length], message='flat_label_length ')
-        # flat_labels = tf.Print(flat_labels, [tf.shape(flat_labels), flat_labels], message='flat_labels ')
 
         # https://github.com/baidu-research/warp-ctc
         total_loss = warpctc.ctc(activations=logits,
@@ -153,8 +149,10 @@ def decode(logits, seq_len, originals=None):
     Args:
         logits (tf.Tensor):
             Logits Tensor of shape [time (input), batch_size, num_classes].
+
         seq_len (tf.Tensor):
             Tensor containing the batches sequence lengths of shape [batch_size].
+
         originals (tf.Tensor): Optional, default `None`.
             String Tensor of shape [batch_size] with the original plaintext.
 
@@ -165,7 +163,6 @@ def decode(logits, seq_len, originals=None):
     """
     # tf.nn.ctc_beam_search_decoder provides more accurate results, but is slower.
     # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_beam_search_decoder
-    # decoded, _ = tf.nn.ctc_greedy_decoder(inputs=logits, sequence_length=seq_len)
     decoded, _ = tf.nn.ctc_beam_search_decoder(inputs=logits,
                                                sequence_length=seq_len,
                                                beam_width=FLAGS.beam_width,
@@ -193,12 +190,14 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
         labels (tf.SparseTensor or tf.Tensor):
             Integer SparseTensor containing the target.
             With dense shape [batch_size, time (target)].
-            TODO: Document OR case.
             Dense Tensors are converted into SparseTensors if `FLAGS.use_warp_ctc == True`.
+
         originals (tf.Tensor):
             String Tensor of shape [batch_size] with the original plaintext.
+
         decoded (tf.Tensor):
             Integer tensor of the decoded output labels.
+
         decoded_texts (tf.Tensor)
             String tensor with the decoded output labels converted to normal text.
 
@@ -223,7 +222,7 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
 
 
 def train(_loss, global_step):
-    """Train op for the speech model.
+    """Train operator for the speech model.
 
     Create an optimizer and apply to all trainable variables.
 
@@ -249,8 +248,6 @@ def train(_loss, global_step):
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
     optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
                                        beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
-    # optimizer = s_utils.AdamOptimizerLogger(learning_rate=lr, beta1=FLAGS.adam_beta1,
-    #                                         beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
     # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
 
     tf.summary.scalar('learning_rate', lr)
@@ -262,49 +259,59 @@ def inputs_train():
     """Construct input for the speech training.
 
     Returns:
-        tf.Tensor:
+        tf.Tensor: `sequences`
             3D Tensor with sequence batch of shape [batch_size, time, data].
             Where time is equal to max(seq_len) for the bucket batch.
-        tf.Tensor:
+
+        tf.Tensor: `seq_len`
             1D Tensor with sequence lengths for each sequence within the batch.
             With shape [batch_size], and type tf.int32.
-        tf.Tensor:
+
+        tf.Tensor: `labels`
             2D Tensor with labels batch of shape [batch_size, max_label_len],
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
-        tf.Tensor:
+
+        tf.Tensor: `label_len`
             1D Tensor with label length for each label within the batch.
             Shape is [batch_size], and type tf.int32.
-        tf.Tensor:
+
+        tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    sequences, seq_length, labels, label_length, originals = s_input.inputs_train(FLAGS.batch_size)
-    return sequences, seq_length, labels, label_length, originals
+    sequences, seq_len, labels, label_len, originals = s_input.inputs_train(FLAGS.batch_size)
+    return sequences, seq_len, labels, label_len, originals
 
 
 def inputs(target='test'):
-    """Construct input for the speech training.
+    """Construct input for the speech evaluation.
 
     Args:
         target (str): 'train' or 'validate'.
 
     Returns:
-        tf.Tensor:
+        tf.Tensor: `sequences`
             3D Tensor with sequence batch of shape [batch_size, time, data].
             Where time is equal to max(seq_len) for the bucket batch.
-        tf.Tensor:
+
+        tf.Tensor: `seq_len`
             1D Tensor with sequence lengths for each sequence within the batch.
             With shape [batch_size], and type tf.int32.
-        tf.Tensor:
+
+        tf.Tensor: `labels`
             2D Tensor with labels batch of shape [batch_size, max_label_len],
             with max_label_len equal to max(len(label)) for the bucket batch.
             Type is tf.int32.
-        tf.Tensor:
+
+        tf.Tensor: `label_len`
+            1D Tensor with label length for each label within the batch.
+            Shape is [batch_size], and type tf.int32.
+
+        tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
     if target != 'test' and target != 'validate':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
-    sequences, seq_length, labels, label_length, originals = s_input.inputs(FLAGS.batch_size,
-                                                                            target)
-    return sequences, seq_length, labels, label_length, originals
+    sequences, seq_len, labels, label_len, originals = s_input.inputs(FLAGS.batch_size, target)
+    return sequences, seq_len, labels, label_len, originals
