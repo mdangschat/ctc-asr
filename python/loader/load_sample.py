@@ -12,13 +12,15 @@ NUM_MFCC = 13
 WIN_STEP = 0.0125
 
 
-def load_sample(file_path):
+def load_sample(file_path, normalize=True):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
-        file_path:
+        file_path (str or bytes):
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
+        normalize (bool):
+            Whether to normalize the generated features or not.
 
     Returns:
         np.ndarray:
@@ -72,7 +74,8 @@ def load_sample(file_path):
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
     # Sample normalization.
-    sample = (sample - np.mean(sample)) / np.std(sample)
+    if normalize:
+        sample = (sample - np.mean(sample)) / np.std(sample)
 
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len

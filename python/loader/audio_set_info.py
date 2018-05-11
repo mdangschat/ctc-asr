@@ -1,19 +1,56 @@
 """Testing environment for `librosa`_ functionality.
 Provides display options for audio files and their preprocessed features.
 
-TODO: Move away from librosa, use python_speech_features.
+L8ER: Update documentation.
+L8ER: Move away from librosa, use python_speech_features.
 
 .. _librosa:
     https://librosa.github.io/librosa/index.html
 """
 
 import os
+import sys
 import numpy as np
 import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
+from tqdm import tqdm
 
 from python.loader.load_sample import load_sample
+
+
+DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
+
+
+def calculate_dataset_stats(txt_path):
+    # L8ER: Document
+
+    # Read train.txt file.
+    with open(txt_path, 'r') as f:
+        lines = f.readlines()
+
+        means, stds = [], []    # Output buffers
+
+        for line in tqdm(lines, desc='Reading audio samples', total=len(lines), file=sys.stdout,
+                         unit='samples', dynamic_ncols=True):
+            wav_path, _ = line.split(' ', 1)
+
+            _, _, _, mean, std = sample_info(os.path.join(DATASETS_PATH, wav_path))
+            means.append(mean)
+            stds.append(std)
+
+        means = np.mean(np.array(means), axis=0)
+        stds = np.mean(np.array(stds), axis=0)
+
+        print()
+        print('Mean: min={}; max={}; mean={}'
+              .format(np.amin(means), np.amax(means), np.mean(means)))
+        print('[' + ', '.join(map(str, means)) + ']')
+
+        print()
+        print('STDs: min={}; max={}; mean={}'
+              .format(np.amin(stds), np.amax(stds), np.mean(stds)))
+        print('[' + ', '.join(map(str, stds)) + ']')
 
 
 def sample_info(file_path):
@@ -24,11 +61,16 @@ def sample_info(file_path):
         file_path: Audio file path.
 
     Returns:
-        (int, int, int): Pre processed sample length, maximum MFCC value, minimum MFCC value.
+        (int, int, int, [float], [float]):
+            Preprocessed sample length, maximum MFCC value, minimum MFCC value.
+             As well as  the mean feature value, and standard deviation, element wise per element
+             of the feature vector.
     """
-    mfcc, sample_len = load_sample(file_path)
+    mfcc, sample_len = load_sample(file_path, normalize=False)
+    mean = np.mean(mfcc, axis=0)
+    std = np.std(mfcc, axis=0)
 
-    return sample_len, np.amax(mfcc), np.amin(mfcc)
+    return sample_len, np.amax(mfcc), np.amin(mfcc), mean, std
 
 
 def display_sample_info(file_path, label=''):
@@ -158,11 +200,16 @@ def display_sample_info(file_path, label=''):
 
 if __name__ == '__main__':
     _test_txt_path = os.path.join('/home/marc/workspace/speech/data', 'train.txt')
-    with open(_test_txt_path, 'r') as f:
-        lines = f.readlines()
-        line = lines[0]
-        wav_path, txt = line.split(' ', 1)
-        wav_path = os.path.join('/home/marc/workspace/datasets/speech_data', wav_path)
-        txt = txt.strip()
 
-        display_sample_info(wav_path, label=txt)
+    # Display specific sample infos.
+    # with open(_test_txt_path, 'r') as f:
+    #     _lines = f.readlines()
+    #     _line = _lines[0]
+    #     _wav_path, txt = _line.split(' ', 1)
+    #     _wav_path = os.path.join('/home/marc/workspace/datasets/speech_data', _wav_path)
+    #     _txt = txt.strip()
+    #
+    #     display_sample_info(_wav_path, label=_txt)
+
+    # Display dataset stats.
+    calculate_dataset_stats(_test_txt_path)
