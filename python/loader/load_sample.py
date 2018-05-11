@@ -11,16 +11,38 @@ from python.params import FLAGS, NP_FLOAT
 NUM_MFCC = 13
 WIN_STEP = 0.0125
 
+# Mean and standard deviation values for normalization, according to `audio_set_info.py`.
+__mean = [16.132103, -3.6725218, -6.214568, 3.6258953, -5.182402, -6.5299315, -7.6537876,
+          -7.588856, -2.4014165, -0.76039016, -1.9804145, -1.3311814, -2.3036666, -0.0026071146,
+          -0.002590179, 0.00046233408, -0.001012096, 0.0015143902, 0.006454269, 0.002413451,
+          0.003715786, 0.0010370067, 0.001035958, 0.0012486908, 0.0006853765, 0.0014591864]
+GLOBAL_MEAN = np.array(__mean, dtype=NP_FLOAT).reshape([NUM_MFCC * 2, 1])
+__std = [3.0267246, 15.91595, 12.820962, 14.812205, 13.836283, 13.642111, 13.663327, 13.3519,
+         12.499178, 12.373922, 11.249535, 10.477264, 9.673518, 0.62283206, 3.8496592, 3.2401998,
+         3.3933964, 3.4643414, 3.610391, 3.605239, 3.6947887, 3.5006487, 3.472887, 3.197436,
+         3.0140827, 2.8059297]
+GLOBAL_STD = np.array(__std, dtype=NP_FLOAT).reshape([NUM_MFCC * 2, 1])
 
-def load_sample(file_path, normalize=True):
+
+def load_sample(file_path, normalize='global'):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
         file_path (str or bytes):
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
-        normalize (bool):
-            Whether to normalize the generated features or not.
+        normalize (str or None):
+            Whether to normalize the generated features or not. Supported types are:
+
+                'global': Uses global mean and standard deviation values from `train.txt`.
+                The normalization is being applied element wise.
+                ([sample] - [mean]^T) / [std]^T
+                Where brackets denote matrices or vectors.
+
+                'local': Uses only the mean and standard deviation of the current sample.
+                The normalization is being applied by ([sample] - mean_scalar) / std_scalar
+
+                None: No normalization.
 
     Returns:
         np.ndarray:
@@ -74,8 +96,16 @@ def load_sample(file_path, normalize=True):
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
     # Sample normalization.
-    if normalize:
+    if normalize is None:
+        pass
+    elif normalize == 'global':
+        print('sample:', sample.shape)
+        print('GLOBAL_MEAN', GLOBAL_MEAN.shape)
+        sample = (sample - GLOBAL_MEAN) / GLOBAL_STD
+    elif normalize == 'local':
         sample = (sample - np.mean(sample)) / np.std(sample)
+    else:
+        raise ValueError('Invalid normalization method "{}".'.format(normalize))
 
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
