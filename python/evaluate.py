@@ -43,6 +43,13 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
         gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
     )
 
+    if EVALUATION_TARGET == 'test':
+        num_target_samples = FLAGS.num_examples_test
+    elif EVALUATION_TARGET == 'validate':
+        num_target_samples = FLAGS.num_examples_validate
+    else:
+        raise ValueError('Invalid target "{}"'.format(EVALUATION_TARGET))
+
     with tf.Session(config=session_config) as sess:
         checkpoint = tf.train.get_checkpoint_state(FLAGS.train_dir)
         if checkpoint and checkpoint.model_checkpoint_path:
@@ -66,7 +73,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
-            num_iter = int(math.ceil(FLAGS.num_examples_test / FLAGS.batch_size))
+            num_iter = int(math.ceil(num_target_samples / FLAGS.batch_size))
             loss_sum, mean_ed_sum, wer_sum = 0., 0., 0.
             step = 0
 
