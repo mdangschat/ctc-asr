@@ -19,7 +19,7 @@ else:
 
 
 # Which dataset *.txt file to use for evaluation. 'train' or 'validate'.
-EVALUATION_TARGET = 'validate'
+EVALUATION_TARGET = 'test'
 
 
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
@@ -73,7 +73,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
-            num_iter = int(math.ceil(num_target_samples / FLAGS.batch_size))
+            num_iter = int(math.floor(num_target_samples / FLAGS.batch_size))
             loss_sum, mean_ed_sum, wer_sum = 0., 0., 0.
             step = 0
 
