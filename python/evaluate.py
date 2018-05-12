@@ -132,7 +132,7 @@ def evaluate(eval_dir):
                 target=EVALUATION_TARGET)
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits = model.inference(sequences, seq_length)
+        logits = model.inference(sequences, seq_length, training=False)
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate error rates

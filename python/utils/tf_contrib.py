@@ -35,7 +35,7 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
         return super(AdamOptimizerLogger, self)._apply_dense(grad, var)
 
 
-def create_bidirectional_cells(num_units, num_layers, keep_prob=1.0):
+def bidirectional_cells(num_units, num_layers, keep_prob=1.0):
     """Create two lists of forward and backward cells that can be used to build
     a BDLSTM stack.
 

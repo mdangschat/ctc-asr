@@ -13,7 +13,7 @@ tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_
 tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
 
-# Learning rate.
+# Learning Rate.
 tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
@@ -21,7 +21,7 @@ tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
 tf.flags.DEFINE_integer('steps_per_decay', 50000,
                         """Number of epochs after which learning rate decays.""")
 
-# Optimizer.
+# Adam Optimizer.
 tf.flags.DEFINE_float('adam_beta1', 0.9,
                       """Adam optimizer beta_1 power.""")
 tf.flags.DEFINE_float('adam_beta2', 0.999,
@@ -35,6 +35,12 @@ tf.flags.DEFINE_bool('use_warp_ctc', False,
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
 
+# Dropout.
+tf.flags.DEFINE_float('lstm_dropout_rate', 0.1,
+                      """Dropout rate for the RNN cell layers.""")
+tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
+                      """Dropout rate for dense layers.""")
+
 # Layer and activation options.
 tf.flags.DEFINE_integer('num_units_lstm', 2048,
                         """Number of hidden units in each of the BDLSTM cells.""")
@@ -46,7 +52,7 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
-# Logging & Output
+# Logging and Output.
 tf.flags.DEFINE_integer('max_steps', 250000,
                         """Number of batches to run.""")
 tf.flags.DEFINE_integer('log_frequency', 100,
@@ -54,24 +60,24 @@ tf.flags.DEFINE_integer('log_frequency', 100,
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
 
-# Dataset
+# Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
 tf.flags.DEFINE_integer('num_examples_train', 229222,
-                        """Number of examples in the training set.""")
+                        """Number of examples in the training set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_test', 3775,
-                        """Number of examples in the testing/evaluation set.""")
+                        """Number of examples in the testing/evaluation set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_validate', 3210,
-                        """Number of examples in the validation set.""")
+                        """Number of examples in the validation set. `validate.txt`""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
-# Evaluation
+# Evaluation.
 tf.flags.DEFINE_string('eval_dir', '',
                        """If set, evaluation log data will be stored here, instead of the default
                        directory `f'{FLAGS.train_dir}_eval'.""")
 
-# Miscellaneous
+# Miscellaneous.
 tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
 tf.flags.DEFINE_integer('random_seed', 1337,

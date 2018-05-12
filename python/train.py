@@ -8,7 +8,7 @@ import tensorflow as tf
 
 from python.params import FLAGS, get_parameters
 from python.utils import storage
-from python.utils.contrib import LoggerHook
+from python.utils.tf_contrib import LoggerHook
 import python.model as model
 
 
