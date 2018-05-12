@@ -113,7 +113,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
 
         print('Stopping...')
         coord.request_stop()
-        coord.join(threads, stop_grace_period_secs=20)
+        coord.join(threads, stop_grace_period_secs=120)
 
 
 def evaluate(eval_dir):
