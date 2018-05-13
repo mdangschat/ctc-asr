@@ -39,48 +39,24 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
 
-        means, stds = [], []    # Output buffers
+        features = []   # Output buffer.
 
         for line in tqdm(lines, desc='Reading audio samples', total=len(lines), file=sys.stdout,
                          unit='samples', dynamic_ncols=True):
             wav_path, _ = line.split(' ', 1)
 
-            _, _, _, mean, std = sample_info(os.path.join(DATASETS_PATH, wav_path))
-            means.append(mean)
-            stds.append(std)
+            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), normalize=None)
+            features.append(feature)
 
-        means = np.mean(np.array(means), axis=0)
-        stds = np.mean(np.array(stds), axis=0)
+        # Reduce the [num_samples, time, num_features] to [total_time, num_features] array.
+        features = np.concatenate(features)
 
-        print()
-        print('Mean: min={}; max={}; mean={}'
-              .format(np.amin(means), np.amax(means), np.mean(means)))
-        print('[' + ', '.join(map(str, means)) + ']')
-
-        print()
-        print('STDs: min={}; max={}; mean={}'
-              .format(np.amin(stds), np.amax(stds), np.mean(stds)))
-        print('[' + ', '.join(map(str, stds)) + ']')
-
-
-def sample_info(file_path):
-    """Load a given audio file and pre process it with `loader.load_sample.load_sample()`,
-    then extract some additional statistics.
-
-    Args:
-        file_path: Audio file path.
-
-    Returns:
-        (int, int, int, [float], [float]):
-            Preprocessed sample length, maximum MFCC value, minimum MFCC value.
-             As well as  the mean feature value, and standard deviation, element wise per element
-             of the feature vector.
-    """
-    mfcc, sample_len = load_sample(file_path, normalize=None)
-    mean = np.mean(mfcc, axis=0)
-    std = np.std(mfcc, axis=0)
-
-    return sample_len, np.amax(mfcc), np.amin(mfcc), mean, std
+        print('mean = {}'.format(np.mean(features)))
+        means = np.mean(features, axis=0)
+        print('mean_vector = [' + ', '.join(map(str, means)) + ']')
+        print('SD = {}'.format(np.std(features)))
+        stds = np.std(features, axis=0)
+        print('SD_vector = [' + ', '.join(map(str, stds)) + ']')
 
 
 def display_sample_info(file_path, label=''):
