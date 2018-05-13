@@ -1,7 +1,8 @@
-"""Testing environment for `librosa`_ functionality.
-Provides display options for audio files and their preprocessed features.
+"""Provides display options for audio files and their preprocessed features.
 
-L8ER: Update documentation.
+Note that the network does not use `librosa`_ anymore, because it has problems
+with concurrent sample loading. This module has not been updated yet.
+
 L8ER: Move away from librosa, use python_speech_features.
 
 .. _librosa:
@@ -10,6 +11,7 @@ L8ER: Move away from librosa, use python_speech_features.
 
 import os
 import sys
+
 import numpy as np
 import librosa as rosa
 from librosa import display
@@ -23,7 +25,15 @@ DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
 
 
 def calculate_dataset_stats(txt_path):
-    # L8ER: Document
+    """Gather mean and standard deviation values. Averaged for every file in the training txt
+    data file.
+
+    Args:
+        txt_path (str): Path to the `train.txt`.
+
+    Returns:
+        Nothing.
+    """
 
     # Read train.txt file.
     with open(txt_path, 'r') as f:
@@ -66,7 +76,7 @@ def sample_info(file_path):
              As well as  the mean feature value, and standard deviation, element wise per element
              of the feature vector.
     """
-    mfcc, sample_len = load_sample(file_path, normalize=False)
+    mfcc, sample_len = load_sample(file_path, normalize=None)
     mean = np.mean(mfcc, axis=0)
     std = np.std(mfcc, axis=0)
 

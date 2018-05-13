@@ -8,8 +8,8 @@ import python_speech_features as psf
 from python.params import FLAGS, NP_FLOAT
 
 
-NUM_MFCC = 13
-WIN_STEP = 0.0125
+NUM_MFCC = 13           # Number of MFCC features to extract.
+__WIN_STEP = 0.0125     # The step between successive windows in seconds.
 
 # Mean and standard deviation values for normalization, according to `audio_set_info.py`.
 __mean = [16.132103, -3.6725218, -6.214568, 3.6258953, -5.182402, -6.5299315, -7.6537876,
@@ -68,7 +68,7 @@ def load_sample(file_path, normalize='global'):
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
     win_len = 0.025      # Window length in ms.
-    win_step = WIN_STEP  # Number of milliseconds between successive frames.
+    win_step = __WIN_STEP  # Number of milliseconds between successive frames.
     f_max = sr / 2.      # Maximum frequency (Nyquist rate).
     f_min = 64.          # Minimum frequency.
     n_fft = 512          # Number of samples in a frame.
@@ -133,9 +133,8 @@ def wav_length(file_path):
     if not sr == FLAGS.sampling_rate:
         raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
 
+    # Load audio data from drive.
     (sr, y) = wav.read(file_path)
 
-    win_step = WIN_STEP  # Number of milliseconds between successive frames.
-
     # The /2 is because `load_sample` skips every 2nd frame.
-    return np.array(int(len(y) / sr / win_step) // 2, dtype=np.int32)
+    return np.array(int(len(y) / sr / __WIN_STEP) // 2, dtype=np.int32)

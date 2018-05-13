@@ -18,7 +18,7 @@ TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
 
-def estimate_bucket_sizes(num_buckets=20):
+def estimate_bucket_sizes(num_buckets=32):
     """Estimate optimal bucket sizes based on the samples in `train.txt` file.
     Results are printed out or plotted.
 
@@ -29,8 +29,6 @@ def estimate_bucket_sizes(num_buckets=20):
     Returns:
         Nothing.
     """
-    # Estimate optimal bucket sizes.
-
     with open(TRAIN_TXT_PATH, 'r') as f:
         lines = f.readlines()
 
