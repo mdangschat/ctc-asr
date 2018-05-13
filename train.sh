@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Start the training process via `nohup`. See `man nohup`.
+
 file="nohup.out"
 if [ -e "$file" ]
 then
