@@ -26,7 +26,7 @@ __global_std = [6.96959, 14.574528, 12.609958, 14.011562, 13.47211, 13.417353, 1
 __global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
 
 
-def load_sample(file_path, normalize='global'):
+def load_sample(file_path, normalize='global', normalize_signal=True):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
@@ -47,6 +47,9 @@ def load_sample(file_path, normalize='global'):
 
                 False: No normalization is being applied.
 
+        normalize_signal (bool):
+            Whether to apply (`True`) RMS normalization on the wav signal or not.
+
     Returns:
         np.ndarray:
             2D array with [time, num_features] shape, containing float.
@@ -62,7 +65,8 @@ def load_sample(file_path, normalize='global'):
     # Load the audio files sample rate (`sr`) and data (`y`)
     (sr, y) = wav.read(file_path)
 
-    y = normalize_signal(y)
+    if normalize_signal:
+        y = signal_normalization(y)
 
     if len(y) < 401:
         raise RuntimeError('Sample length () to short: {}'.format(len(y), file_path))
@@ -145,7 +149,7 @@ def wav_length(file_path):
     return np.array(int(len(y) / sr / __WIN_STEP) // 2, dtype=np.int32)
 
 
-def normalize_signal(y):
+def signal_normalization(y):
     """Normalize signal by dividing it by its Root Mean Square.
     Formula taken from:
     <https://dsp.stackexchange.com/questions/26396/normalization-of-a-signal-in-matlab>
