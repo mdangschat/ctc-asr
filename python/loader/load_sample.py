@@ -12,16 +12,18 @@ NUM_MFCC = 13           # Number of MFCC features to extract.
 __WIN_STEP = 0.0125     # The step between successive windows in seconds.
 
 # Mean and standard deviation values for normalization, according to `sd_estimator.py`.
-__mean = [16.132103, -3.6725218, -6.214568, 3.6258953, -5.182402, -6.5299315, -7.6537876,
-          -7.588856, -2.4014165, -0.76039016, -1.9804145, -1.3311814, -2.3036666, -0.0026071146,
-          -0.002590179, 0.00046233408, -0.001012096, 0.0015143902, 0.006454269, 0.002413451,
-          0.003715786, 0.0010370067, 0.001035958, 0.0012486908, 0.0006853765, 0.0014591864]
-__GLOBAL_MEAN = np.array(__mean, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
-__std = [3.0267246, 15.91595, 12.820962, 14.812205, 13.836283, 13.642111, 13.663327, 13.3519,
-         12.499178, 12.373922, 11.249535, 10.477264, 9.673518, 0.62283206, 3.8496592, 3.2401998,
-         3.3933964, 3.4643414, 3.610391, 3.605239, 3.6947887, 3.5006487, 3.472887, 3.197436,
-         3.0140827, 2.8059297]
-__GLOBAL_STD = np.array(__std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
+__global_mean = [5.53072, -4.129051, -5.6504126, 4.540432, -4.8545675, -5.8160844, -6.2034,
+                 -6.325581, -2.2667503, -0.65439355, -1.8615158, -1.3312981, -1.9747268,
+                 -0.0013710762, -0.0014467032, 0.00040519686, -0.000103923936, 0.0011232576,
+                 0.0034771718, 0.0011236193, 0.0018236473, 0.000598786, 0.0005832029,
+                 0.0005433287, 0.000266594, 0.00078069617]
+__global_mean = np.array(__global_mean, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
+
+__global_std = [6.96959, 14.574528, 12.609958, 14.011562, 13.47211, 13.417353, 13.422076, 12.961798,
+                11.911209, 11.70496, 10.502284, 10.01195, 9.194318, 0.60037535, 3.6021419,
+                2.9033747, 3.0421114, 3.1100776, 3.2515237, 3.2137492, 3.3154788, 3.0945556,
+                3.061127, 2.7794676, 2.6139154, 2.4488971]
+__global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
 
 
 def load_sample(file_path, normalize='global'):
@@ -100,7 +102,7 @@ def load_sample(file_path, normalize='global'):
         pass
     elif normalize == 'global':
         # Option 'global' is applied element wise.
-        sample = (sample - __GLOBAL_MEAN) / __GLOBAL_STD
+        sample = (sample - __global_mean) / __global_std
     elif normalize == 'local':
         # Option 'local' uses scalar values.
         sample = (sample - np.mean(sample)) / np.std(sample)
