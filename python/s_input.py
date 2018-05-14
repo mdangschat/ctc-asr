@@ -60,7 +60,7 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Set a sufficient bucket capacity.
-        capacity = 512 + 4 * FLAGS.batch_size
+        capacity = 1024 + (4 * FLAGS.batch_size)
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
