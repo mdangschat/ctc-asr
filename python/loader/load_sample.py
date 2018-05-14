@@ -33,7 +33,8 @@ def load_sample(file_path, normalize='global'):
         file_path (str or bytes):
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
-        normalize (str or None):
+
+        normalize (str or bool):
             Whether to normalize the generated features or not. Supported types are:
 
                 'global': Uses global mean and standard deviation values from `train.txt`.
@@ -44,7 +45,7 @@ def load_sample(file_path, normalize='global'):
                 'local': Uses only the mean and standard deviation of the current sample.
                 The normalization is being applied by ([sample] - mean_scalar) / std_scalar
 
-                None: No normalization.
+                False: No normalization is being applied.
 
     Returns:
         np.ndarray:
@@ -60,6 +61,8 @@ def load_sample(file_path, normalize='global'):
 
     # Load the audio files sample rate (`sr`) and data (`y`)
     (sr, y) = wav.read(file_path)
+
+    y = normalize_signal(y)
 
     if len(y) < 401:
         raise RuntimeError('Sample length () to short: {}'.format(len(y), file_path))
@@ -140,3 +143,12 @@ def wav_length(file_path):
 
     # The /2 is because `load_sample` skips every 2nd frame.
     return np.array(int(len(y) / sr / __WIN_STEP) // 2, dtype=np.int32)
+
+
+def normalize_signal(y):
+    # TODO: Document
+    # Normalize signal by dividing by Root Mean Square.
+    # Formula taken from:
+    # https://dsp.stackexchange.com/questions/26396/normalization-of-a-signal-in-matlab
+
+    return y / np.sqrt(np.sum(np.abs(y) ** 2) / y.shape[0])
