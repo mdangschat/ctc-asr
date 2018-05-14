@@ -10,53 +10,14 @@ L8ER: Move away from librosa, use python_speech_features.
 """
 
 import os
-import sys
 
 import numpy as np
 import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
-from tqdm import tqdm
-
-from python.loader.load_sample import load_sample
 
 
 DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
-
-
-def calculate_dataset_stats(txt_path):
-    """Gather mean and standard deviation values. Averaged for every file in the training txt
-    data file.
-
-    Args:
-        txt_path (str): Path to the `train.txt`.
-
-    Returns:
-        Nothing.
-    """
-
-    # Read train.txt file.
-    with open(txt_path, 'r') as f:
-        lines = f.readlines()
-
-        features = []   # Output buffer.
-
-        for line in tqdm(lines, desc='Reading audio samples', total=len(lines), file=sys.stdout,
-                         unit='samples', dynamic_ncols=True):
-            wav_path, _ = line.split(' ', 1)
-
-            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), normalize=None)
-            features.append(feature)
-
-        # Reduce the [num_samples, time, num_features] to [total_time, num_features] array.
-        features = np.concatenate(features)
-
-        print('mean = {}'.format(np.mean(features)))
-        means = np.mean(features, axis=0)
-        print('mean_vector = [' + ', '.join(map(str, means)) + ']')
-        print('SD = {}'.format(np.std(features)))
-        stds = np.std(features, axis=0)
-        print('SD_vector = [' + ', '.join(map(str, stds)) + ']')
 
 
 def display_sample_info(file_path, label=''):
@@ -187,15 +148,12 @@ def display_sample_info(file_path, label=''):
 if __name__ == '__main__':
     _test_txt_path = os.path.join('/home/marc/workspace/speech/data', 'train.txt')
 
-    # Display specific sample infos.
-    # with open(_test_txt_path, 'r') as f:
-    #     _lines = f.readlines()
-    #     _line = _lines[0]
-    #     _wav_path, txt = _line.split(' ', 1)
-    #     _wav_path = os.path.join('/home/marc/workspace/datasets/speech_data', _wav_path)
-    #     _txt = txt.strip()
-    #
-    #     display_sample_info(_wav_path, label=_txt)
+    # Display specific sample info's.
+    with open(_test_txt_path, 'r') as f:
+        _lines = f.readlines()
+        _line = _lines[0]
+        _wav_path, txt = _line.split(' ', 1)
+        _wav_path = os.path.join('/home/marc/workspace/datasets/speech_data', _wav_path)
+        _txt = txt.strip()
 
-    # Display dataset stats.
-    calculate_dataset_stats(_test_txt_path)
+        display_sample_info(_wav_path, label=_txt)

@@ -11,7 +11,7 @@ from python.params import FLAGS, NP_FLOAT
 NUM_MFCC = 13           # Number of MFCC features to extract.
 __WIN_STEP = 0.0125     # The step between successive windows in seconds.
 
-# Mean and standard deviation values for normalization, according to `audio_set_info.py`.
+# Mean and standard deviation values for normalization, according to `sd_estimator.py`.
 __mean = [16.132103, -3.6725218, -6.214568, 3.6258953, -5.182402, -6.5299315, -7.6537876,
           -7.588856, -2.4014165, -0.76039016, -1.9804145, -1.3311814, -2.3036666, -0.0026071146,
           -0.002590179, 0.00046233408, -0.001012096, 0.0015143902, 0.006454269, 0.002413451,
