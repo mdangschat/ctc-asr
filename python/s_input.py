@@ -188,7 +188,7 @@ def _generate_batch(sequence, seq_len, label, label_len, original, batch_size, c
         batch_size=batch_size,
         bucket_boundaries=boundaries,
         num_threads=num_threads,
-        capacity=capacity // len(boundaries),
+        capacity=capacity,
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
         allow_smaller_final_batch=False
