@@ -146,9 +146,14 @@ def wav_length(file_path):
 
 
 def normalize_signal(y):
-    # TODO: Document
-    # Normalize signal by dividing by Root Mean Square.
-    # Formula taken from:
-    # https://dsp.stackexchange.com/questions/26396/normalization-of-a-signal-in-matlab
+    """Normalize signal by dividing it by its Root Mean Square.
+    Formula taken from:
+    <https://dsp.stackexchange.com/questions/26396/normalization-of-a-signal-in-matlab>
 
+    Args:
+        y (np.ndarray): The signal data.
+
+    Returns:
+        np.ndarray: 1D normalized signal.
+    """
     return y / np.sqrt(np.sum(np.abs(y) ** 2) / y.shape[0])
