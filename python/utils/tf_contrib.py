@@ -1,6 +1,8 @@
 """Utility and helper methods for TensorFlow speech learning."""
 
+import math
 import time
+
 from datetime import datetime
 import numpy as np
 import tensorflow as tf
@@ -313,7 +315,9 @@ class LoggerHook(tf.train.SessionRunHook):
             sec_per_batch = duration / float(FLAGS.log_frequency)
             batch_per_sec = float(FLAGS.log_frequency) / duration
 
-            print('{:%Y-%m-%d %H:%M:%S}: Step {:,d}; loss={:.4f}; '
+            print('{:%Y-%m-%d %H:%M:%S}: Epoch {:,d} (step={:,d}); loss={:.4f}; '
                   '{:.1f} examples/sec ({:.3f} sec/batch) ({:.1f} batch/sec)'
-                  .format(datetime.now(), global_step + 1, loss_value, examples_per_sec,
-                          sec_per_batch, batch_per_sec))
+                  .format(datetime.now(), int(math.floor(
+                        global_step * FLAGS.batch_size / FLAGS.num_examples_train)),
+                        global_step, loss_value, examples_per_sec,
+                        sec_per_batch, batch_per_sec))

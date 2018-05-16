@@ -5,6 +5,7 @@ Note: No Python 2 compatibility is provided.
 """
 
 import tensorflow as tf
+from datetime import datetime
 
 from python.params import FLAGS, get_parameters
 from python.utils import storage
@@ -17,10 +18,19 @@ tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(FLAGS.random_seed)
 
 
-def train():
-    """Train the network for a number of steps."""
+def train(shuffle):
+    """Train the network for a number of steps.
+
+    TODO Document
+
+    Args:
+        shuffle (bool): TODO
+    """
     print('Version: {} Branch: {}'.format(storage.git_revision_hash(), storage.git_branch()))
     print('Parameters: ', get_parameters())
+
+    max_steps_1st_epoch = FLAGS.num_examples_train // FLAGS.batch_size
+    max_steps_total = max_steps_1st_epoch * FLAGS.max_epochs
 
     with tf.Graph().as_default():
         global_step = tf.train.get_or_create_global_step()
@@ -28,7 +38,7 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sequences, seq_length, labels, label_length, originals = model.inputs_train()
+            sequences, seq_length, labels, label_length, originals = model.inputs_train(shuffle)
 
         # Build the logits (prediction) graph.
         logits = model.inference(sequences, seq_length)
@@ -66,20 +76,24 @@ def train():
                                                        summary_writer=file_writer,
                                                        summary_op=summary_op)
 
+        # Stop after steps hook.
+        last_step = max_steps_total if shuffle else max_steps_1st_epoch
+        stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
+
         # Session hooks.
         session_hooks = [
-                # Requests stop at a specified step.
-                tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
-                # Monitors the loss tensor and stops training if loss is NaN.
-                tf.train.NanTensorHook(loss),
-                # Summary saver hook.
-                summary_saver_hook,
-                # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
-                # Deactivated `TraceHook`, because it's computational intensive.
-                # TraceHook(file_writer, FLAGS.log_frequency * 5),
-                # LoggingHook.
-                LoggerHook(loss)
-            ]
+            # Requests stop at a specified step.
+            stop_step_hook,
+            # Monitors the loss tensor and stops training if loss is NaN.
+            tf.train.NanTensorHook(loss),
+            # Summary saver hook.
+            summary_saver_hook,
+            # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
+            # Deactivated `TraceHook`, because it's computational intensive.
+            # TraceHook(file_writer, FLAGS.log_frequency * 5),
+            # LoggingHook.
+            LoggerHook(loss)
+        ]
 
         # The MonitoredTrainingSession takes care of session initialization, session resumption,
         # creating checkpoints, and some basic error handling.
@@ -99,14 +113,19 @@ def train():
             config=session_config
         )
 
+        current_global_step = -1
         with session:
             while not session.should_stop():
                 try:
-                    session.run([train_op])
+                    result = session.run([train_op])
+                    current_global_step = result[0][-1]
 
                 except tf.errors.OutOfRangeError:
-                    print('All batches fed. Stopping.')
-                    break
+                    print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
+
+        current_global_step += 1    # Offset accounts for TF sometimes starts counting from 0 or 1.
+        if max_steps_1st_epoch <= current_global_step < max_steps_total:
+            train(True)
 
 
 # noinspection PyUnusedLocal
@@ -123,8 +142,8 @@ def main(argv=None):
         print('Starting a new training run in: {}'.format(FLAGS.train_dir))
         tf.gfile.MakeDirs(FLAGS.train_dir)
 
-    # Start training.
-    train()
+    # Start training. `shuffle=False` indicates that the 1st epoch uses SortaGrad.
+    train(shuffle=False)
 
 
 if __name__ == '__main__':

@@ -20,18 +20,21 @@ TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 # Path to train.txt file.
 TEST_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
 # Path to validate.txt file.
-VALIDATE_TXT_PATH = '/home/marc/workspace/speech/data/validate.txt'
+VALIDATE_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
 # Path to dataset collection folder.
 DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
 
-def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
+def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
     """Construct input for speech training.
 
     Args:
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
+
+        shuffle (bool): TODO SortaGrad, doc
+
         train_txt_path (str):
             Path to `train.txt` file.
 
@@ -53,7 +56,7 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
     """
     sample_list, label_list, original_list = _read_file_list(train_txt_path)
 
-    with tf.name_scope('input'):
+    with tf.variable_scope('input', reuse=tf.AUTO_REUSE):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
@@ -66,8 +69,8 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
             [file_names, labels, originals],
             capacity=capacity,
-            num_epochs=None,
-            shuffle=True,
+            num_epochs=None if shuffle else 1,  # SortaGrad: 1st epoch goes over sorted inputs.
+            shuffle=shuffle,
             seed=FLAGS.random_seed
         )
 
@@ -89,15 +92,24 @@ def inputs_train(batch_size, train_txt_path=TRAIN_TXT_PATH):
         print('Generating training batches of size {}. Queue capacity is {}. '
               .format(batch_size, capacity))
 
-        batch = _generate_batch(sequence, seq_len, label_queue, label_len, originals_queue,
-                                batch_size, capacity)
+        if shuffle:
+            batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len,
+                                           originals_queue, batch_size, capacity)
+        else:
+            batch = _generate_sorted_batch(sequence, seq_len, label_queue, label_len,
+                                           originals_queue, batch_size)
 
         sequences, seq_length, labels, label_len, originals = batch
 
+        # Convert the dense labels to sparse ones for the CTC-loss function.
         if not FLAGS.use_warp_ctc:
-            # Convert the dense labels to sparse ones for the CTC-loss function.
             # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
             labels = tfc.layers.dense_to_sparse(labels)
+
+        # Add input vectors to TensorBoard summary.
+        batch_size_t = tf.shape(sequences)[0]
+        summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
+        tf.summary.image('sequence', summary_batch, max_outputs=1)
 
         return sequences, seq_length, labels, label_len, originals
 
@@ -136,10 +148,27 @@ def inputs(batch_size, target):
         raise ValueError('Invalid target "{}".'.format(target))
     print('Using: ', txt_path)
 
-    return inputs_train(batch_size, train_txt_path=txt_path)
+    return inputs_train(batch_size, shuffle=True, train_txt_path=txt_path)
 
 
-def _generate_batch(sequence, seq_len, label, label_len, original, batch_size, capacity):
+def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_size):
+    # TODO: Document
+    num_threads = 2
+
+    sequences, seq_len, labels, label_len, originals = tf.train.batch(
+        tensors=[sequence, seq_len, label, label_len, original],
+        batch_size=batch_size,
+        num_threads=num_threads,
+        capacity=256,
+        enqueue_many=False,
+        shapes=None,
+        dynamic_pad=True,
+        allow_smaller_final_batch=False
+    )
+    return sequences, seq_len, labels, label_len, originals
+
+
+def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_size, capacity):
     """Construct a queued batch of sample sequences and labels.
 
     Args:
@@ -155,9 +184,9 @@ def _generate_batch(sequence, seq_len, label, label_len, original, batch_size, c
             1D tensor of shape [<length original text>] with type tf.string.
             The original text.
         batch_size (int):
-            (Maximum) number of samples per batch.
+            Number of samples per batch.
         capacity (int):
-            The maximum number of minibatches in the top queue,
+            The maximum number of mini-batches in the top queue,
             and also the maximum number of elements within each bucket.
 
     Returns:
@@ -193,12 +222,6 @@ def _generate_batch(sequence, seq_len, label, label_len, original, batch_size, c
         dynamic_pad=True,
         allow_smaller_final_batch=False
     )
-
-    # Add input vectors to TensorBoard summary.
-    batch_size_t = tf.shape(sequences)[0]
-    summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
-    tf.summary.image('sequence', summary_batch, max_outputs=1)
-
     return sequences, seq_len, labels, label_len, originals
 
 

@@ -1,5 +1,7 @@
 """Collection of hyper parameters, network layout, and reporting options."""
 
+import math
+
 import tensorflow as tf
 import numpy as np
 
@@ -7,19 +9,19 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_2norm_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/s_1',
                        """Directory where to write event logs and checkpoints.""")
 
 tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 1e-3,
+tf.flags.DEFINE_float('learning_rate', 6e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
                       """Learning rate decay factor.""")
 tf.flags.DEFINE_integer('steps_per_decay', 50000,
-                        """Number of epochs after which learning rate decays.""")
+                        """Number of steps after which learning rate decays.""")
 
 # Adam Optimizer.
 tf.flags.DEFINE_float('adam_beta1', 0.9,
@@ -53,9 +55,8 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
 # Logging and Output.
-# [Deep Speech 1] uses 15 to 20 epochs. 229222samples // 4batch_size * 20epochs = 1146100steps
-tf.flags.DEFINE_integer('max_steps', 1000000,
-                        """Number of steps/batches to run.""")
+tf.flags.DEFINE_integer('max_epochs', 20,
+                        """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
 tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
@@ -106,9 +107,11 @@ def get_parameters():
     s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); use_warp_ctc={}; ' \
         'BDLSTM (num_units={}, num_layers={}); ' \
         'Dense (num_units={}); ' \
-        'Training (batch_size={}, max_steps={}, log_frequency={})'
+        'Training (batch_size={}, max_epochs={} ({} steps), log_frequency={})'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
                     FLAGS.learning_rate_decay_factor, FLAGS.use_warp_ctc,
                     FLAGS.num_units_lstm, FLAGS.num_layers_lstm,
                     FLAGS.num_units_dense,
-                    FLAGS.batch_size, FLAGS.max_steps, FLAGS.log_frequency)
+                    FLAGS.batch_size, FLAGS.max_epochs,
+                    math.floor(FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size),
+                    FLAGS.log_frequency)
