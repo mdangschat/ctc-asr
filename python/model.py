@@ -251,6 +251,7 @@ def train(_loss, global_step):
                                     FLAGS.steps_per_decay,
                                     FLAGS.learning_rate_decay_factor,
                                     staircase=True)
+    lr = tf.maximum(lr, 1e-6)   # Set the minimum learning rate.
 
     # Select a gradient optimizer.
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
