@@ -4,8 +4,6 @@ Tested with Python 3.5 and 3.6.
 Note: No Python 2 compatibility is provided.
 """
 
-import math
-
 import tensorflow as tf
 from datetime import datetime
 
@@ -48,6 +46,7 @@ def train(shuffle):
             tf.summary.scalar('ctc_loss', loss)
 
             # Decode.
+            originals = tf.Print(originals, [originals])
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 

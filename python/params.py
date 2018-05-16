@@ -55,9 +55,8 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
 # Logging and Output.
-# [Deep Speech 1] uses 15 to 20 epochs. 229222samples // 4batch_size * 20epochs = 1146100steps
-tf.flags.DEFINE_integer('max_epochs', 4,
-                        """Number of steps/batches to run.""")
+tf.flags.DEFINE_integer('max_epochs', 2,
+                        """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
 tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
