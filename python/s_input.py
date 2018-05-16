@@ -67,7 +67,7 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
             [file_names, labels, originals],
             capacity=capacity,
-            num_epochs=None, #None if shuffle else 1,  # SortaGrad: 1st epoch goes over sorted inputs.
+            num_epochs=None if shuffle else 1,  # SortaGrad: 1st epoch goes over sorted inputs.
             shuffle=shuffle,
             seed=FLAGS.random_seed
         )
@@ -91,11 +91,11 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
               .format(batch_size, capacity))
 
         if shuffle:
-            batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len, originals_queue,
-                                           batch_size, capacity)
+            batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len,
+                                           originals_queue, batch_size, capacity)
         else:
-            batch = _generate_sorted_batch(sequence, seq_len, label_queue, label_len, originals_queue,
-                                           batch_size)
+            batch = _generate_sorted_batch(sequence, seq_len, label_queue, label_len,
+                                           originals_queue, batch_size)
 
         sequences, seq_length, labels, label_len, originals = batch
 
@@ -151,13 +151,13 @@ def inputs(batch_size, target):
 
 def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_size):
     # TODO: Document
-    num_threads = 1
+    num_threads = 2
 
     sequences, seq_len, labels, label_len, originals = tf.train.batch(
         tensors=[sequence, seq_len, label, label_len, original],
         batch_size=batch_size,
         num_threads=num_threads,
-        capacity=128,
+        capacity=256,
         enqueue_many=False,
         shapes=None,
         dynamic_pad=True,

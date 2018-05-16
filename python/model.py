@@ -262,10 +262,10 @@ def train(_loss, global_step):
 
     tf.summary.scalar('learning_rate', lr)
 
-    return optimizer.minimize(_loss, global_step=global_step)
+    return optimizer.minimize(_loss, global_step=global_step), global_step
 
 
-def inputs_train_shuffle():
+def inputs_train(shuffle):
     """Construct input for the speech training.
 
     # TODO: Document
@@ -292,38 +292,7 @@ def inputs_train_shuffle():
             2D Tensor with the original strings.
     """
     sequences, seq_len, labels, label_len, originals = \
-        s_input.inputs_train(FLAGS.batch_size, shuffle=True)
-    return sequences, seq_len, labels, label_len, originals
-
-
-def inputs_train_sorted():
-    """Construct input for the speech training.
-
-    # TODO: Document
-
-    Returns:
-        tf.Tensor: `sequences`
-            3D Tensor with sequence batch of shape [batch_size, time, data].
-            Where time is equal to max(seq_len) for the bucket batch.
-
-        tf.Tensor: `seq_len`
-            1D Tensor with sequence lengths for each sequence within the batch.
-            With shape [batch_size], and type tf.int32.
-
-        tf.Tensor: `labels`
-            2D Tensor with labels batch of shape [batch_size, max_label_len],
-            with max_label_len equal to max(len(label)) for the bucket batch.
-            Type is tf.int32.
-
-        tf.Tensor: `label_len`
-            1D Tensor with label length for each label within the batch.
-            Shape is [batch_size], and type tf.int32.
-
-        tf.Tensor: `originals`
-            2D Tensor with the original strings.
-    """
-    sequences, seq_len, labels, label_len, originals = \
-        s_input.inputs_train(FLAGS.batch_size, shuffle=False)
+        s_input.inputs_train(FLAGS.batch_size, shuffle=shuffle)
     return sequences, seq_len, labels, label_len, originals
 
 

@@ -32,7 +32,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_integer('beam_width', 512,
+tf.flags.DEFINE_integer('beam_width', 16,
                         """Beam width used in the CTC `beam_search_decoder`.""")
 tf.flags.DEFINE_bool('use_warp_ctc', False,
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
@@ -44,11 +44,11 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_integer('num_units_lstm', 256,
+tf.flags.DEFINE_integer('num_units_lstm', 128,
                         """Number of hidden units in each of the BDLSTM cells.""")
 tf.flags.DEFINE_integer('num_layers_lstm', 1,
                         """Number of stacked BDLSTM cells.""")
-tf.flags.DEFINE_integer('num_units_dense', 512,
+tf.flags.DEFINE_integer('num_units_dense', 128,
                         """Number of units per dense layer.""")
 
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
@@ -56,7 +56,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 
 # Logging and Output.
 # [Deep Speech 1] uses 15 to 20 epochs. 229222samples // 4batch_size * 20epochs = 1146100steps
-tf.flags.DEFINE_integer('max_epochs', 2,
+tf.flags.DEFINE_integer('max_epochs', 4,
                         """Number of steps/batches to run.""")
 tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
