@@ -11,12 +11,14 @@ from python.s_labels import num_classes
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/s_1',
                        """Directory where to write event logs and checkpoints.""")
-
 tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
+tf.flags.DEFINE_bool('use_cudnn', False,
+                     """Whether to use Nvidia cuDNN implementations or (False) the default 
+                     TensorFlow version.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 6e-4,
+tf.flags.DEFINE_float('learning_rate', 1e-3,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
                       """Learning rate decay factor.""")
@@ -44,10 +46,10 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_integer('num_units_lstm', 2048,
-                        """Number of hidden units in each of the BDLSTM cells.""")
-tf.flags.DEFINE_integer('num_layers_lstm', 1,
-                        """Number of stacked BDLSTM cells.""")
+tf.flags.DEFINE_integer('num_units_rnn', 2048,
+                        """Number of hidden units in each of the RNN cells.""")
+tf.flags.DEFINE_integer('num_layers_rnn', 1,
+                        """Number of stacked RNN cells.""")
 tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
 
@@ -105,12 +107,12 @@ def get_parameters():
         (str): Training parameters.
     """
     s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); use_warp_ctc={}; ' \
-        'BDLSTM (num_units={}, num_layers={}); ' \
+        'RNN (num_units={}, num_layers={}); ' \
         'Dense (num_units={}); ' \
         'Training (batch_size={}, max_epochs={} ({} steps), log_frequency={})'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
                     FLAGS.learning_rate_decay_factor, FLAGS.use_warp_ctc,
-                    FLAGS.num_units_lstm, FLAGS.num_layers_lstm,
+                    FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
                     FLAGS.num_units_dense,
                     FLAGS.batch_size, FLAGS.max_epochs,
                     math.floor(FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size),

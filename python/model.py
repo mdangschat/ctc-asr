@@ -59,24 +59,42 @@ def inference(sequences, seq_length, training=True):
 
     # BDLSTM cell stack.
     with tf.variable_scope('rnn'):
-        keep_prob = 1.0 - FLAGS.lstm_dropout_rate if training else 1.0
-        # Create a stack of RNN cells.
-        fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_lstm,
-                                                            FLAGS.num_layers_lstm,
-                                                            keep_prob=keep_prob)
+        if not FLAGS.use_cudnn:
+            keep_prob = 1.0 - FLAGS.lstm_dropout_rate if training else 1.0
+            # Create a stack of RNN cells.
+            fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_rnn,
+                                                                FLAGS.num_layers_rnn,
+                                                                keep_prob=keep_prob)
 
-        # `output` = [batch_size, time, num_hidden*2]
-        # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
-        bdlstm, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
-                                                               inputs=dense3,
-                                                               dtype=TF_FLOAT,
-                                                               sequence_length=seq_length,
-                                                               parallel_iterations=64,  # review
-                                                               time_major=False)
+            # `output` = [batch_size, time, num_hidden*2]
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
+            rnn4, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
+                                                                 inputs=dense3,
+                                                                 dtype=TF_FLOAT,
+                                                                 sequence_length=seq_length,
+                                                                 parallel_iterations=64,  # review
+                                                                 time_major=False)
+        else:
+            # TODO cuDNN RNNs only support time major inputs.
+
+            rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
+                                             num_units=FLAGS.num_units_rnn,
+                                             input_mode='linear_input',
+                                             direction='bidirectional',
+                                             dropout=FLAGS.lstm_dropout_rate,
+                                             seed=FLAGS.random_seed,
+                                             dtype=TF_FLOAT,
+                                             kernel_initializer=initializer,
+                                             bias_initializer=None,
+                                             name=None)
+
+            rnn4, _ = rnn(dense3)
+
+            # TODO Verify that time major is correct.
 
     # Dense4
     with tf.variable_scope('dense4'):
-        dense4 = tf.layers.dense(bdlstm, FLAGS.num_units_dense,
+        dense4 = tf.layers.dense(rnn4, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
