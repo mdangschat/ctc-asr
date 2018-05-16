@@ -25,14 +25,12 @@ EVALUATION_TARGET = 'test'
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
     """Run the evaluation once over all test inputs.
 
-    TODO Documentation
-
     Args:
-        loss_op ():
-        mean_ed_op ():
-        wer_op ():
-        summary_op (): Summary operator.
-        summary_writer (): Summary writer.
+        loss_op (tf.Tensor): CTC loss operator.
+        mean_ed_op (tf.Tensor): Mean Edit Distance operator.
+        wer_op (tf.Tensor): Word Error Rate operator.
+        summary_op (tf.Tensor): Summary merge operator.
+        summary_writer (tf.FileWriter): Summary writer.
 
     Returns:
         Nothing.

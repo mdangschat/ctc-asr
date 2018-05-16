@@ -26,7 +26,7 @@ __global_std = [6.96959, 14.574528, 12.609958, 14.011562, 13.47211, 13.417353, 1
 __global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
 
 
-def load_sample(file_path, normalize='global', normalize_signal=True):
+def load_sample(file_path, normalize_sample='global', normalize_signal=True):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
@@ -34,15 +34,16 @@ def load_sample(file_path, normalize='global', normalize_signal=True):
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
 
-        normalize (str or bool):
-            Whether to normalize the generated features or not. Supported types are:
+        normalize_sample (str or bool):
+            Whether to normalize the generated features with the stated method or not.
+            Please consult `sample_normalization` for a complete list of normalization methods.
 
                 'global': Uses global mean and standard deviation values from `train.txt`.
                 The normalization is being applied element wise.
                 ([sample] - [mean]^T) / [std]^T
                 Where brackets denote matrices or vectors.
 
-                'local': Uses only the mean and standard deviation of the current sample.
+                'local_scalar': Uses only the mean and standard deviation of the current sample.
                 The normalization is being applied by ([sample] - mean_scalar) / std_scalar
 
                 False: No normalization is being applied.
@@ -105,16 +106,7 @@ def load_sample(file_path, normalize='global', normalize_signal=True):
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
     # Sample normalization.
-    if normalize is None:
-        pass
-    elif normalize == 'global':
-        # Option 'global' is applied element wise.
-        sample = (sample - __global_mean) / __global_std
-    elif normalize == 'local':
-        # Option 'local' uses scalar values.
-        sample = (sample - np.mean(sample)) / np.std(sample)
-    else:
-        raise ValueError('Invalid normalization method "{}".'.format(normalize))
+    sample = sample_normalization(sample, normalize_sample)
 
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
@@ -161,3 +153,40 @@ def signal_normalization(y):
         np.ndarray: 1D normalized signal.
     """
     return y / np.sqrt(np.sum(np.abs(y) ** 2) / y.shape[0])
+
+
+def sample_normalization(features, method):
+    """Normalize the given feature vector `y`, with the stated normalization `method`.
+
+    Args:
+        features (np.ndarray): The signal array
+        method (str or bool): Normalization method.
+
+            'global': Uses global mean and standard deviation values from `train.txt`.
+                The normalization is being applied element wise.
+                ([sample] - [mean]^T) / [std]^T
+                Where brackets denote matrices or vectors.
+
+            'local': Use local (in sample) mean and standard deviation values, and apply the
+                normalization element wise, like in `global`.
+
+            'local_scalar': Uses only the mean and standard deviation of the current sample.
+                The normalization is being applied by ([sample] - mean_scalar) / std_scalar
+
+            False: No normalization is being applied.
+
+    Returns:
+        np.ndarray: The normalized feature vector.
+    """
+    if method is None:
+        return features
+    elif method == 'global':
+        # Option 'global' is applied element wise.
+        return (features - __global_mean) / __global_std
+    elif method == 'local':
+        return (features - np.mean(features, axis=0)) / np.std(features, axis=0)
+    elif method == 'local_scalar':
+        # Option 'local' uses scalar values.
+        return (features - np.mean(features)) / np.std(features)
+    else:
+        raise ValueError('Invalid normalization method "{}".'.format(method))

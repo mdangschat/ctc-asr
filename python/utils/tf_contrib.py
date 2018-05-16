@@ -315,5 +315,5 @@ class LoggerHook(tf.train.SessionRunHook):
 
             print('{:%Y-%m-%d %H:%M:%S}: Step {:,d}; loss={:.4f}; '
                   '{:.1f} examples/sec ({:.3f} sec/batch) ({:.1f} batch/sec)'
-                  .format(datetime.now(), global_step, loss_value, examples_per_sec,
+                  .format(datetime.now(), global_step + 1, loss_value, examples_per_sec,
                           sec_per_batch, batch_per_sec))
