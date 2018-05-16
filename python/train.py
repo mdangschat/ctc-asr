@@ -22,6 +22,9 @@ def train(shuffle):
     """Train the network for a number of steps.
 
     TODO Document
+
+    Args:
+        shuffle (bool): TODO
     """
     print('Version: {} Branch: {}'.format(storage.git_revision_hash(), storage.git_branch()))
     print('Parameters: ', get_parameters())

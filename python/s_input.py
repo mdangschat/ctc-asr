@@ -16,11 +16,11 @@ from python.loader.load_sample import load_sample, NUM_MFCC
 # Number of features per window.
 NUM_INPUTS = NUM_MFCC * 2
 # Path to train.txt file.
-TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/timit_train.txt'     # TODO train.txt
+TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 # Path to train.txt file.
-TEST_TXT_PATH = '/home/marc/workspace/speech/data/timit_test.txt'       # TODO test.txt
+TEST_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
 # Path to validate.txt file.
-VALIDATE_TXT_PATH = '/home/marc/workspace/speech/data/timit_test.txt'   # TODO validate.txt
+VALIDATE_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
 # Path to dataset collection folder.
 DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
@@ -32,7 +32,9 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
         batch_size (int):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
+
         shuffle (bool): TODO SortaGrad, doc
+
         train_txt_path (str):
             Path to `train.txt` file.
 
