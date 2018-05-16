@@ -26,8 +26,8 @@ def train(shuffle):
     print('Version: {} Branch: {}'.format(storage.git_revision_hash(), storage.git_branch()))
     print('Parameters: ', get_parameters())
 
-    max_steps_epoch_1 = FLAGS.num_examples_train // FLAGS.batch_size
-    max_steps_total = max_steps_epoch_1 * FLAGS.max_epochs
+    max_steps_1st_epoch = FLAGS.num_examples_train // FLAGS.batch_size
+    max_steps_total = max_steps_1st_epoch * FLAGS.max_epochs
 
     with tf.Graph().as_default():
         global_step = tf.train.get_or_create_global_step()
@@ -46,7 +46,6 @@ def train(shuffle):
             tf.summary.scalar('ctc_loss', loss)
 
             # Decode.
-            originals = tf.Print(originals, [originals])
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
@@ -75,7 +74,7 @@ def train(shuffle):
                                                        summary_op=summary_op)
 
         # Stop after steps hook.
-        last_step = max_steps_total if shuffle else max_steps_epoch_1
+        last_step = max_steps_total if shuffle else max_steps_1st_epoch
         stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
 
         # Session hooks.
@@ -121,9 +120,8 @@ def train(shuffle):
                 except tf.errors.OutOfRangeError:
                     print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
 
-        current_global_step += 1    # This offset should correct for
-        print('DEBUG:', max_steps_epoch_1, current_global_step, max_steps_total)
-        if max_steps_epoch_1 <= current_global_step < max_steps_total:
+        current_global_step += 1    # Offset accounts for TF sometimes starts counting from 0 or 1.
+        if max_steps_1st_epoch <= current_global_step < max_steps_total:
             train(True)
 
 

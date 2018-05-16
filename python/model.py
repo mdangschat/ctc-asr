@@ -270,30 +270,13 @@ def inputs_train(shuffle):
 
     # TODO: Document
 
+    Args:
+        shuffle (bool): TODO
+
     Returns:
-        tf.Tensor: `sequences`
-            3D Tensor with sequence batch of shape [batch_size, time, data].
-            Where time is equal to max(seq_len) for the bucket batch.
-
-        tf.Tensor: `seq_len`
-            1D Tensor with sequence lengths for each sequence within the batch.
-            With shape [batch_size], and type tf.int32.
-
-        tf.Tensor: `labels`
-            2D Tensor with labels batch of shape [batch_size, max_label_len],
-            with max_label_len equal to max(len(label)) for the bucket batch.
-            Type is tf.int32.
-
-        tf.Tensor: `label_len`
-            1D Tensor with label length for each label within the batch.
-            Shape is [batch_size], and type tf.int32.
-
-        tf.Tensor: `originals`
-            2D Tensor with the original strings.
+        See `s_input.inputs_train()`.
     """
-    sequences, seq_len, labels, label_len, originals = \
-        s_input.inputs_train(FLAGS.batch_size, shuffle=shuffle)
-    return sequences, seq_len, labels, label_len, originals
+    return s_input.inputs_train(FLAGS.batch_size, shuffle=shuffle)
 
 
 def inputs(target='test'):
@@ -303,28 +286,9 @@ def inputs(target='test'):
         target (str): 'train' or 'validate'.
 
     Returns:
-        tf.Tensor: `sequences`
-            3D Tensor with sequence batch of shape [batch_size, time, data].
-            Where time is equal to max(seq_len) for the bucket batch.
-
-        tf.Tensor: `seq_len`
-            1D Tensor with sequence lengths for each sequence within the batch.
-            With shape [batch_size], and type tf.int32.
-
-        tf.Tensor: `labels`
-            2D Tensor with labels batch of shape [batch_size, max_label_len],
-            with max_label_len equal to max(len(label)) for the bucket batch.
-            Type is tf.int32.
-
-        tf.Tensor: `label_len`
-            1D Tensor with label length for each label within the batch.
-            Shape is [batch_size], and type tf.int32.
-
-        tf.Tensor: `originals`
-            2D Tensor with the original strings.
+        See `s_input.inputs()`.
     """
     if target != 'test' and target != 'validate':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
-    sequences, seq_len, labels, label_len, originals = s_input.inputs(FLAGS.batch_size, target)
-    return sequences, seq_len, labels, label_len, originals
+    return s_input.inputs(FLAGS.batch_size, target)
