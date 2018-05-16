@@ -58,7 +58,7 @@ def inference(sequences, seq_length, training=True):
         dense3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate, training=training)
 
     # BDLSTM cell stack.
-    with tf.variable_scope('bdlstm'):
+    with tf.variable_scope('rnn'):
         keep_prob = 1.0 - FLAGS.lstm_dropout_rate if training else 1.0
         # Create a stack of RNN cells.
         fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_lstm,
