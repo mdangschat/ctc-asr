@@ -1,5 +1,7 @@
 """Collection of hyper parameters, network layout, and reporting options."""
 
+import math
+
 import tensorflow as tf
 import numpy as np
 
@@ -7,7 +9,7 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/ds_2norm_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/sorta_grad',
                        """Directory where to write event logs and checkpoints.""")
 
 tf.flags.DEFINE_integer('batch_size', 4,
@@ -30,7 +32,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       """Adam optimizer epsilon.""")
 
 # CTC loss and decoder.
-tf.flags.DEFINE_integer('beam_width', 1024,
+tf.flags.DEFINE_integer('beam_width', 512,
                         """Beam width used in the CTC `beam_search_decoder`.""")
 tf.flags.DEFINE_bool('use_warp_ctc', False,
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
@@ -42,11 +44,11 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_integer('num_units_lstm', 2048,
+tf.flags.DEFINE_integer('num_units_lstm', 256,
                         """Number of hidden units in each of the BDLSTM cells.""")
 tf.flags.DEFINE_integer('num_layers_lstm', 1,
                         """Number of stacked BDLSTM cells.""")
-tf.flags.DEFINE_integer('num_units_dense', 2048,
+tf.flags.DEFINE_integer('num_units_dense', 512,
                         """Number of units per dense layer.""")
 
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
@@ -54,21 +56,24 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 
 # Logging and Output.
 # [Deep Speech 1] uses 15 to 20 epochs. 229222samples // 4batch_size * 20epochs = 1146100steps
-tf.flags.DEFINE_integer('max_steps', 1000000,
+tf.flags.DEFINE_integer('max_epochs', 2,
                         """Number of steps/batches to run.""")
 tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
 
-# Dataset.
+# Dataset.  TODO: revert TIMIT sample count
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_integer('num_examples_train', 229222,
+# tf.flags.DEFINE_integer('num_examples_train', 229222,
+tf.flags.DEFINE_integer('num_examples_train', 3696,
                         """Number of examples in the training set. `test.txt`""")
-tf.flags.DEFINE_integer('num_examples_test', 3775,
+# tf.flags.DEFINE_integer('num_examples_test', 3775,
+tf.flags.DEFINE_integer('num_examples_test', 1344,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
-tf.flags.DEFINE_integer('num_examples_validate', 3210,
+# tf.flags.DEFINE_integer('num_examples_validate', 3210,
+tf.flags.DEFINE_integer('num_examples_validate', 1344,
                         """Number of examples in the validation set. `validate.txt`""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
@@ -106,9 +111,11 @@ def get_parameters():
     s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); use_warp_ctc={}; ' \
         'BDLSTM (num_units={}, num_layers={}); ' \
         'Dense (num_units={}); ' \
-        'Training (batch_size={}, max_steps={}, log_frequency={})'
+        'Training (batch_size={}, max_epochs={} ({} steps), log_frequency={})'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
                     FLAGS.learning_rate_decay_factor, FLAGS.use_warp_ctc,
                     FLAGS.num_units_lstm, FLAGS.num_layers_lstm,
                     FLAGS.num_units_dense,
-                    FLAGS.batch_size, FLAGS.max_steps, FLAGS.log_frequency)
+                    FLAGS.batch_size, FLAGS.max_epochs,
+                    math.floor(FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size),
+                    FLAGS.log_frequency)

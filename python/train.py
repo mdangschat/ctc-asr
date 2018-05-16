@@ -4,6 +4,8 @@ Tested with Python 3.5 and 3.6.
 Note: No Python 2 compatibility is provided.
 """
 
+import math
+
 import tensorflow as tf
 
 from python.params import FLAGS, get_parameters
@@ -28,7 +30,13 @@ def train():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sequences, seq_length, labels, label_length, originals = model.inputs_train()
+            # TODO Document
+            inputs = tf.cond(
+                # global_step > int(math.floor((FLAGS.num_examples_train / FLAGS.batch_size))),
+                global_step > 200,
+                lambda: model.inputs_train_shuffle, lambda: model.inputs_train_sorted
+            )
+            sequences, seq_length, labels, label_length, originals = inputs
 
         # Build the logits (prediction) graph.
         logits = model.inference(sequences, seq_length)
@@ -69,7 +77,8 @@ def train():
         # Session hooks.
         session_hooks = [
                 # Requests stop at a specified step.
-                tf.train.StopAtStepHook(last_step=FLAGS.max_steps),
+                tf.train.StopAtStepHook(last_step=math.floor(
+                    FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size)),
                 # Monitors the loss tensor and stops training if loss is NaN.
                 tf.train.NanTensorHook(loss),
                 # Summary saver hook.
