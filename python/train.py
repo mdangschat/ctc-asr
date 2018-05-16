@@ -19,12 +19,15 @@ tf.set_random_seed(FLAGS.random_seed)
 
 
 def train(shuffle):
-    """Train the network for a number of steps.
-
-    TODO Document
+    """Train the network for a number of steps. Uses SortaGrad to start training (first epoch)
+     on short sequences, and increase their length throughout the first epoch. After that it
+     uses shuffled inputs.
+     This leads to a very low loss at the beginning of training, and also much faster computation
+     times at the start of the first epoch.
 
     Args:
-        shuffle (bool): TODO
+        shuffle (bool): Whether to use sorted inputs or shuffled inputs for training.
+            See SortaGrad approach [Deep Speech 2].
     """
     print('Version: {} Branch: {}'.format(storage.git_revision_hash(), storage.git_branch()))
     print('Parameters: ', get_parameters())

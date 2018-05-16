@@ -268,10 +268,8 @@ def train(_loss, global_step):
 def inputs_train(shuffle):
     """Construct input for the speech training.
 
-    # TODO: Document
-
     Args:
-        shuffle (bool): TODO
+        shuffle (bool): Shuffle data or not. See `s_input.inputs_train()`.
 
     Returns:
         See `s_input.inputs_train()`.

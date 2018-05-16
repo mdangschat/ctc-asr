@@ -33,7 +33,10 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
 
-        shuffle (bool): TODO SortaGrad, doc
+        shuffle (bool):
+            Default (`False`) create batches from samples in the order they are listed in
+            the .txt file. Else (`True`) shuffle input order. This also uses bucketing, to
+            only combine samples of similar sequence length into a batch.
 
         train_txt_path (str):
             Path to `train.txt` file.
@@ -152,7 +155,39 @@ def inputs(batch_size, target):
 
 
 def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_size):
-    # TODO: Document
+    """Construct a queued batch of sample sequences and labels.
+
+    Args:
+        sequence (tf.Tensor):
+            2D tensor of shape [time, NUM_INPUTS] with type float.
+        seq_len (tf.Tensor):
+            1D tensor of shape [1] with type int32.
+        label (tf.Tensor):
+            1D tensor of shape [<length label>] with type int32.
+        label_len (tf.Tensor):
+            tf.int32 Tensor, containing the length of the `label` Tensor.
+        original (tf.Tensor):
+            1D tensor of shape [<length original text>] with type tf.string.
+            The original text.
+        batch_size (int):
+            Number of samples per batch.
+
+    Returns:
+        tf.Tensor: `sequences`
+            3D Tensor with sequence batch of shape [batch_size, time, data].
+            Where time is equal to max(seq_len) for the bucket batch.
+        tf.Tensor: `seq_len`
+            1D Tensor with sequence lengths for each sequence within the batch.
+            With shape [batch_size], and type tf.int32.
+        tf.Tensor: `labels`
+            2D Tensor with labels batch of shape [batch_size, max_label_len],
+            with max_label_len equal to max(len(label)) for the bucket batch.
+            Type is tf.int32.
+        tf.Tensor: `label_len`
+            tf.int32 Tensor, containing the length of each of the labels within the batch.
+        tf.Tensor: `originals`
+            2D Tensor with the original strings.
+    """
     num_threads = 2
 
     sequences, seq_len, labels, label_len, originals = tf.train.batch(
@@ -169,7 +204,7 @@ def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_
 
 
 def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_size, capacity):
-    """Construct a queued batch of sample sequences and labels.
+    """Construct a queued batch of sample sequences and labels using buckets.
 
     Args:
         sequence (tf.Tensor):
