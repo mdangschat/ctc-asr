@@ -9,18 +9,18 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/s_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/s_2',
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
-tf.flags.DEFINE_bool('use_cudnn', False,
+tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 1e-3,
+tf.flags.DEFINE_float('learning_rate', 5e-4,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
 tf.flags.DEFINE_integer('steps_per_decay', 50000,
                         """Number of steps after which learning rate decays.""")
@@ -67,11 +67,11 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_integer('num_examples_train', 229222,
+tf.flags.DEFINE_integer('num_examples_train', 225378,
                         """Number of examples in the training set. `test.txt`""")
-tf.flags.DEFINE_integer('num_examples_test', 3775,
+tf.flags.DEFINE_integer('num_examples_test', 2620,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
-tf.flags.DEFINE_integer('num_examples_validate', 3210,
+tf.flags.DEFINE_integer('num_examples_validate', 2703,
                         """Number of examples in the validation set. `validate.txt`""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
