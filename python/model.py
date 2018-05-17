@@ -60,7 +60,7 @@ def inference(sequences, seq_length, training=True):
     # RNN layers
     with tf.variable_scope('rnn'):
         if not FLAGS.use_cudnn:
-            keep_prob = 1.0 - FLAGS.lstm_dropout_rate if training else 1.0
+            keep_prob = 1.0 - FLAGS.rnn_dropout_rate if training else 1.0
             # Create a stack of RNN cells.
             fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_rnn,
                                                                 FLAGS.num_layers_rnn,
@@ -82,10 +82,10 @@ def inference(sequences, seq_length, training=True):
                                              num_units=FLAGS.num_units_rnn,
                                              input_mode='linear_input',
                                              direction='bidirectional',
-                                             dropout=FLAGS.lstm_dropout_rate,
+                                             dropout=FLAGS.rnn_dropout_rate,
                                              seed=FLAGS.random_seed,
                                              dtype=TF_FLOAT,
-                                             kernel_initializer=initializer,
+                                             kernel_initializer=initializer,    # TODO Try None
                                              bias_initializer=None)
 
             rnn4, _ = rnn(dense3)
