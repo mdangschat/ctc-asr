@@ -79,7 +79,6 @@ tedlium/TEDLIUM_release2/dev/sph/ElizabethGilbert_2009_83.wav dangerously fright
 tedlium/TEDLIUM_release2/dev/sph/ElizabethGilbert_2009_84.wav continue to show up for your piece of it whatever that might be if your job is to dance do your dance if the divine cockeyed genius assigned to your case decides to let some sort of wonderment be glimpsed
 tedlium/TEDLIUM_release2/dev/sph/ElizabethGilbert_2009_85.wav for just one moment through your efforts then ole and if not do your dance anyhow
 tedlium/TEDLIUM_release2/dev/sph/ElizabethGilbert_2009_86.wav and ole to you nonetheless i believe this and i feel that we must teach it ole to you nonetheless just for having the sheer human love and stubbornness to keep showing up
-tedlium/TEDLIUM_release2/dev/sph/ElizabethGilbert_2009_87.wav thank you
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_1.wav i want to start out by asking you to think back to when you were a kid playing with blocks as you figured out how to reach out and grasp pick them up and move them around you were actually learning how to think and solve problems by understanding and manipulating spatial relationships
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_2.wav spatial reasoning is deeply connected to how we understand a lot of the world around us so
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_3.wav as a computer scientist inspired by this utility of our interactions with physical objects along with my adviser pattie and my collaborator jeevan kalanithi i started to wonder
@@ -95,7 +94,6 @@ tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_12.wav like pouring a color t
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_14.wav there are also some neat possibilities for education like language math and logic games where we want to give people the ability to try things quickly and view the results immediately so here im
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_16.wav this is a fibonacci sequence that im making with a simple equation program here we have a word game thats kind of like a mash up between scrabble and boggle basically in every round you get a randomly assigned letter on each siftable
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_17.wav and as you try to make words it checks against a dictionary then after about thirty seconds it reshuffles and you have a new set of letters and new possibilities to try
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_19.wav thank you
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_21.wav so these are some kids that came on a field trip to the media lab and i managed to get them to try it out and shoot a video
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_23.wav they really loved it and one of the interesting things about this kind of application is that you dont have to give people many instructions all you have to say is make words and they know exactly what to do
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_25.wav so heres another few people trying it out
@@ -105,13 +103,9 @@ tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_30.wav now this is an interac
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_31.wav and he can bring new characters into the scene just by lifting the siftables off the table that have that character shown on them here hes bringing the sun out
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_32.wav the sun is rising
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_34.wav now hes brought a tractor into the scene
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_36.wav the orange tractor
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_37.wav good job yeah
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_38.wav so by shaking the siftables and putting them next to each other he can make the characters interact
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_40.wav inventing his own narrative
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_41.wav hello
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_42.wav its an open ended story and he gets to decide how it unfolds
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_44.wav fly away cat
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_46.wav so the last example i have time to show you today is a music sequencing and live performance tool that weve built recently in which siftables act as sounds like lead bass and drums
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_47.wav each of these has four different variations you get to choose which one you want to use and you can inject these sounds into a sequence that you can assemble into the pattern that you want
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_48.wav and you inject it by just bumping up the sound siftable against a sequence siftable there are effects that you can control live like reverb and filter you attach it to a particular sound and then tilt to adjust it
@@ -125,7 +119,6 @@ tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_59.wav i can speed up the who
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_60.wav and now ill attach the filter to the bass for some more expression
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_62.wav i can rearrange the sequence while it plays i dont have to plan it out in advance but i can improvise changing it making it longer or shorter as i go
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_63.wav and now finally i can fade the whole sequence out using the volume siftable tilted to the left
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_65.wav thank you so
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_67.wav as you can see my passion is for making new human computer interfaces that are a better match to the way our brains and bodies work and today i had time to show you
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_68.wav one point in this new design space and a few of the possibilities that were working to bring out of the laboratory
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_69.wav so the thought i want to leave you with is that were on the cusp of this new generation of tools for interacting with digital media that are going to bring information into our world on our terms thank you very much i look forward to talking with all of you
@@ -209,7 +202,6 @@ tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_78.wav now you must understand t
 tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_79.wav this mans grandfather was not intimidated by the arctic night or the blizzard that was blowing he simply slipped outside pulled down his sealskin trousers and defecated into his hand and as the feces began to freeze
 tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_80.wav he shaped it into the form of a blade he put a spray of saliva on the edge of the shit knife and as it finally froze solid he butchered a dog with it he skinned the dog and improvised a harness
 tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_81.wav took the ribcage of the dog and improvised a sled harnessed up an adjacent dog and disappeared over the ice floes shit knife in belt talk about getting by with nothing
-tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_82.wav and
 tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_83.wav this in many ways is a symbol of the resilience of the inuit people and of all indigenous people around the world the canadian government in april of nineteen ninety nine gave back to total control of the inuit an area of land larger than california and texas put together its our new homeland its called nunavut its an independent territory they control all mineral resources an amazing example of how a nation state can reach reach seek restitution with its people
 tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_84.wav and finally in the end i think its pretty obvious at least to all of all us whove travelled in these remote reaches of the planet to realize that theyre not remote at all theyre homelands of somebody
 tedlium/TEDLIUM_release2/dev/sph/WadeDavis_2003_85.wav they represent branches of the human imagination that go back to the dawn of time and for all of us the dreams of these children like the dreams of our own children become part of
@@ -267,7 +259,6 @@ tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_30.wav not when and not wha
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_31.wav and i assign twenty percent less work than i used to and its not because theyre less smart and its not because theyre less diligent its because they are preoccupied
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_32.wav asking themselves should i get married or not should i get married now should i get married later should i have kids first or a career first
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_33.wav all of these are consuming questions and theyre going to answer these questions whether or not it means not doing all the work i assign and not getting a good grade in my courses and indeed they should these are important questions to answer
-tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_35.wav work
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_36.wav we are blessed as carl was pointing out with the technology that enables us to work every minute of every day from any place on the planet except the randolph hotel
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_38.wav there is one corner by the way that im not going to tell anybody about where you actually where the where the hi wifi works im not telling you about it because i want to use it
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_39.wav so what this means this incredible freedom of choice we have with respect to work is that we have to make a decision again and again and again about whether
@@ -376,13 +367,11 @@ tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_39.wav notre dame cathe
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_40.wav and and and cross user social experience that way and of course a by product of all of that is immensely rich virtual models of of every interesting part of the earth
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_41.wav collected not just from from overhead flights and from satellite images and so on but from the collective memory thank you so much
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_43.wav do i do i understand this do i understand this right that what what your software is going to allow is that at some point really within the next few years
-tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_44.wav all the pictures
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_45.wav that are shared by anyone across the world are going to basically link together
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_46.wav yes what this is really doing is discovering its creating hyperlinks if you will between between images
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_47.wav and its doing that based on the content inside the images and that gets really exciting when you think about the richness of the semantic information that a lot of those images have like when you do a web search for images
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_48.wav you type in phrases and the text on the web page is is carrying a lot of information about what that picture is of now what if that picture links to all of your pictures then the amount of semantic interconnection and the amount of richness that comes out of that is really huge its a classic network effect
 tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_49.wav blaise that is truly incredible congratulations
-tedlium/TEDLIUM_release2/dev/sph/BlaiseAguerayArcas_2007_50.wav thanks so much
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_1.wav last year i showed these two slides so that demonstrate that the arctic ice cap which for most of the last three million years has been the size of the lower forty eight states has shrunk by forty percent
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_2.wav but this understates the seriousness of this particular problem because it doesnt show the thickness of the ice the arctic ice cap is in a sense the beating heart of the global climate system it expands in winter and contracts in summer the next slide i show you will be
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_3.wav a rapid fast forward of whats happened over the last twenty five years the permanent ice is marked in red and as you see it expands to the dark blue thats the annual ice in winter and it contracts in summer
@@ -410,7 +399,6 @@ tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_29.wav let me be clear about it al 
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_30.wav so the alliance for climate protection has launched two campaigns this is one of them part of one of them
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_31.wav coalergy we view climate change as a very serious threat to our business thats why weve made it our primary goal to spend a large sum of money on an advertising effort to help bring out and complicate the truth about coal
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_32.wav the fact is coal isnt dirty we think its clean
-tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_34.wav smells good too
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_36.wav so dont worry about climate change leave that up to us
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_38.wav clean coal youve heard a lot about it so lets take a tour of this state of the art clean coal facility
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_40.wav amazing the machinery is kind of loud but thats the sound of clean coal technology
