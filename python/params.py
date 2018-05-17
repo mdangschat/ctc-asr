@@ -106,10 +106,10 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rage (lr={}, steps_per_decay={}, decay_factor={}); use_warp_ctc={}; ' \
-        'RNN (num_units={}, num_layers={}); ' \
-        'Dense (num_units={}); ' \
-        'Training (batch_size={}, max_epochs={} ({} steps), log_frequency={})'
+    s = 'Learning Rage (lr={}, steps_per_decay={:,d}, decay_factor={}); use_warp_ctc={}; ' \
+        'RNN (num_units={:,d}, num_layers={:,d}); ' \
+        'Dense (num_units={:,d}); ' \
+        'Training (batch_size={}, max_epochs={:,d} ({:,d} steps), log_frequency={:,d})'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
                     FLAGS.learning_rate_decay_factor, FLAGS.use_warp_ctc,
                     FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
