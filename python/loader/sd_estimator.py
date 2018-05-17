@@ -35,7 +35,8 @@ def calculate_dataset_stats(txt_path):
                          unit='samples', dynamic_ncols=True):
             wav_path, _ = line.split(' ', 1)
 
-            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), normalize_sample=False)
+            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path),
+                                     normalize_features=False, normalize_signal=False)
             features.append(feature)
 
         # Reduce the [num_samples, time, num_features] to [total_time, num_features] array.

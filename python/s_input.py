@@ -188,7 +188,7 @@ def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    num_threads = 2
+    num_threads = 4
 
     sequences, seq_len, labels, label_len, originals = tf.train.batch(
         tensors=[sequence, seq_len, label, label_len, original],
@@ -241,8 +241,8 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
             2D Tensor with the original strings.
     """
     num_threads = 8
-    boundaries = [74, 101, 127, 155, 187, 220, 252, 280, 303, 324, 346, 370, 395, 421, 447, 471,
-                  492, 510, 526, 539, 551, 562, 572, 582, 591, 601, 610, 618, 627, 637, 656, 916]
+    boundaries = [88, 113, 139, 169, 201, 234, 264, 290, 312, 332, 354, 378, 403, 429, 454, 477,
+                  497, 514, 529, 542, 554, 564, 574, 583, 592, 602, 610, 619, 628, 638, 657, 1085]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_len, (sequences, labels, label_len, originals) = \

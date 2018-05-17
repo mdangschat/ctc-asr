@@ -26,7 +26,7 @@ __global_std = [6.96959, 14.574528, 12.609958, 14.011562, 13.47211, 13.417353, 1
 __global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
 
 
-def load_sample(file_path, normalize_sample='local', normalize_signal=True):
+def load_sample(file_path, normalize_features='global', normalize_signal=False):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
@@ -34,7 +34,7 @@ def load_sample(file_path, normalize_sample='local', normalize_signal=True):
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
 
-        normalize_sample (str or bool):
+        normalize_features (str or bool):
             Whether to normalize the generated features with the stated method or not.
             Please consult `sample_normalization` for a complete list of normalization methods.
 
@@ -106,7 +106,7 @@ def load_sample(file_path, normalize_sample='local', normalize_signal=True):
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
     # Sample normalization.
-    sample = sample_normalization(sample, normalize_sample)
+    sample = sample_normalization(sample, normalize_features)
 
     # `sample` = [time, num_features], `sample_len`: scalar
     return sample, sample_len
@@ -143,7 +143,7 @@ def wav_length(file_path):
 
 def signal_normalization(y):
     """Normalize signal by dividing it by its Root Mean Square.
-    Formula taken from:
+    Formula from:
     <https://dsp.stackexchange.com/questions/26396/normalization-of-a-signal-in-matlab>
 
     Args:
@@ -152,7 +152,8 @@ def signal_normalization(y):
     Returns:
         np.ndarray: 1D normalized signal.
     """
-    return y / np.sqrt(np.sum(np.abs(y) ** 2) / y.shape[0])
+    # TODO: RuntimeWarning: invalid value encountered in sqrt
+    return y / np.sqrt(np.sum(np.fabs(y) ** 2) / y.shape[0])
 
 
 def sample_normalization(features, method):
@@ -178,7 +179,7 @@ def sample_normalization(features, method):
     Returns:
         np.ndarray: The normalized feature vector.
     """
-    if method is None:
+    if not method:
         return features
     elif method == 'global':
         # Option 'global' is applied element wise.
