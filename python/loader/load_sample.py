@@ -26,7 +26,7 @@ __global_std = [6.96959, 14.574528, 12.609958, 14.011562, 13.47211, 13.417353, 1
 __global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
 
 
-def load_sample(file_path, normalize_sample='global', normalize_signal=True):
+def load_sample(file_path, normalize_sample='local', normalize_signal=True):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
