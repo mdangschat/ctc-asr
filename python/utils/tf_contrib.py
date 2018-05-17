@@ -37,20 +37,22 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
         return super(AdamOptimizerLogger, self)._apply_dense(grad, var)
 
 
-def bidirectional_cells(num_units, num_layers, keep_prob=1.0):
+def bidirectional_cells(num_units, num_layers, dropout=1.0):
     """Create two lists of forward and backward cells that can be used to build
     a BDLSTM stack.
 
     Args:
         num_units (int): Number of units within the RNN cell.
         num_layers (int): Amount of cells to create for each list.
-        keep_prob (float): Probability [0, 1] to keep an output. It it's constant 1
+        dropout (float): Probability [0, 1] to drop an output. If it's constant 0
             no outputs will be dropped.
 
     Returns:
         [tf.nn.rnn_cell.LSTMCell]: List of forward cells.
         [tf.nn.rnn_cell.LSTMCell]: List of backward cells.
     """
+    keep_prob = min(1.0, max(0.0, 1.0 - dropout))
+
     _fw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(num_layers)]
     _bw_cells = [create_cell(num_units, keep_prob=keep_prob) for _ in range(num_layers)]
     return _fw_cells, _bw_cells

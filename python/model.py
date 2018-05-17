@@ -63,14 +63,14 @@ def inference(sequences, seq_length, training=True):
 
     # RNN layers
     with tf.variable_scope('rnn'):
+        dropout_rate = FLAGS.rnn_dropout_rate if training else 0.0
+
         if not FLAGS.use_cudnn:
-            keep_prob = 1.0 - FLAGS.rnn_dropout_rate if training else 1.0
             # Create a stack of RNN cells.
             fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_rnn,
                                                                 FLAGS.num_layers_rnn,
-                                                                keep_prob=keep_prob)
+                                                                dropout=dropout_rate)
 
-            # `output` = [batch_size, time, num_hidden*2]
             # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
             rnn4, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
                                                                  inputs=dense3,
@@ -88,10 +88,10 @@ def inference(sequences, seq_length, training=True):
                                              num_units=FLAGS.num_units_rnn,
                                              input_mode='linear_input',
                                              direction='bidirectional',
-                                             dropout=FLAGS.rnn_dropout_rate,
+                                             dropout=dropout_rate,
                                              seed=FLAGS.random_seed,
                                              dtype=TF_FLOAT,
-                                             kernel_initializer=initializer,    # TODO Try None
+                                             kernel_initializer=initializer,
                                              bias_initializer=None)
 
             rnn4, _ = rnn(dense3)

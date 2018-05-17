@@ -110,7 +110,8 @@ def get_parameters():
         'RNN (num_units={:,d}, num_layers={:,d}); ' \
         'Dense (num_units={:,d}); ' \
         'Decoding (beam_width={:,d});' \
-        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps), log_frequency={:,d})'
+        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} max_steps / {:,d} steps_per_epoch), ' \
+        'log_frequency={:,d})'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
                     FLAGS.learning_rate_decay_factor, FLAGS.use_warp_ctc,
                     FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
@@ -118,4 +119,5 @@ def get_parameters():
                     FLAGS.beam_width,
                     FLAGS.batch_size, FLAGS.max_epochs,
                     math.floor(FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size),
+                    FLAGS.num_examples_train,
                     FLAGS.log_frequency)
