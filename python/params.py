@@ -18,7 +18,7 @@ tf.flags.DEFINE_bool('use_cudnn', True,
                      TensorFlow version.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 5e-4,
+tf.flags.DEFINE_float('learning_rate', 1e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
@@ -109,11 +109,13 @@ def get_parameters():
     s = 'Learning Rage (lr={}, steps_per_decay={:,d}, decay_factor={}); use_warp_ctc={}; ' \
         'RNN (num_units={:,d}, num_layers={:,d}); ' \
         'Dense (num_units={:,d}); ' \
-        'Training (batch_size={}, max_epochs={:,d} ({:,d} steps), log_frequency={:,d})'
+        'Decoding (beam_width={:,d});' \
+        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps), log_frequency={:,d})'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay,
                     FLAGS.learning_rate_decay_factor, FLAGS.use_warp_ctc,
                     FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
                     FLAGS.num_units_dense,
+                    FLAGS.beam_width,
                     FLAGS.batch_size, FLAGS.max_epochs,
                     math.floor(FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size),
                     FLAGS.log_frequency)
