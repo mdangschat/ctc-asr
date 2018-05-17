@@ -18,9 +18,9 @@ tf.flags.DEFINE_bool('use_cudnn', True,
                      TensorFlow version.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 1e-3,
+tf.flags.DEFINE_float('learning_rate', 5e-4,
                       """Initial learning rate.""")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
 tf.flags.DEFINE_integer('steps_per_decay', 50000,
                         """Number of steps after which learning rate decays.""")

@@ -57,7 +57,7 @@ def inference(sequences, seq_length, training=True):
         dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
         dense3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate, training=training)
 
-    # BDLSTM cell stack.
+    # RNN layers
     with tf.variable_scope('rnn'):
         if not FLAGS.use_cudnn:
             keep_prob = 1.0 - FLAGS.lstm_dropout_rate if training else 1.0
@@ -74,7 +74,7 @@ def inference(sequences, seq_length, training=True):
                                                                  sequence_length=seq_length,
                                                                  parallel_iterations=64,  # review
                                                                  time_major=False)
-        else:
+        else:   # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
             dense3 = tfc.rnn.transpose_batch_time(dense3)
 
