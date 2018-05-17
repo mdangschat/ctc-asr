@@ -32,12 +32,14 @@ def inference(sequences, seq_length, training=True):
 
     # Dense1
     with tf.variable_scope('dense1'):
+        # TODO: sequences = []
         dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
         dense1 = tf.minimum(dense1, FLAGS.relu_cutoff)
         dense1 = tf.layers.dropout(dense1, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: dense1 = []
 
     # Dense2
     with tf.variable_scope('dense2'):
@@ -47,6 +49,7 @@ def inference(sequences, seq_length, training=True):
                                  kernel_regularizer=regularizer)
         dense2 = tf.minimum(dense2, FLAGS.relu_cutoff)
         dense2 = tf.layers.dropout(dense2, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: dense2 = []
 
     # Dense3
     with tf.variable_scope('dense3'):
@@ -56,6 +59,7 @@ def inference(sequences, seq_length, training=True):
                                  kernel_regularizer=regularizer)
         dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
         dense3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate, training=training)
+        # dense3 = [batch_size, time, num_units_dense]
 
     # RNN layers
     with tf.variable_scope('rnn'):
@@ -74,6 +78,8 @@ def inference(sequences, seq_length, training=True):
                                                                  sequence_length=seq_length,
                                                                  parallel_iterations=64,  # review
                                                                  time_major=False)
+            # TODO: rnn4 = []
+
         else:   # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
             dense3 = tfc.rnn.transpose_batch_time(dense3)
@@ -89,9 +95,8 @@ def inference(sequences, seq_length, training=True):
                                              bias_initializer=None)
 
             rnn4, _ = rnn(dense3)
-
-            # TODO Verify that time major is correct.
             rnn4 = tfc.rnn.transpose_batch_time(rnn4)
+            # rnn4 = [batch_size, time, num_units_rnn * 2]
 
     # Dense4
     with tf.variable_scope('dense4'):
@@ -101,6 +106,7 @@ def inference(sequences, seq_length, training=True):
                                  kernel_regularizer=regularizer)
         dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
         dense4 = tf.layers.dropout(dense4, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: dense4 = []
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because most TensorFlow loss functions perform
@@ -109,7 +115,7 @@ def inference(sequences, seq_length, training=True):
         logits = tf.layers.dense(dense4, FLAGS.num_classes, kernel_initializer=initializer)
         logits = tfc.rnn.transpose_batch_time(logits)
 
-    # `logits` = [time, batch_size, NUM_CLASSES]
+    # logits = [time, batch_size, NUM_CLASSES]
     return logits
 
 
