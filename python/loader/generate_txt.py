@@ -83,13 +83,16 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
         raise ValueError('"{}" is not a directory.'.format(dataset_path))
 
     target_path = os.path.join(TXT_TARGET_PATH, '{}_{}.txt'.format(dataset_name, target))
-    print('Starting to generate {} file.'.format(os.path.basename(target_path)))
+    print('Starting to generate: {}'.format(os.path.basename(target_path)))
 
     # RegEX filter pattern for valid characters.
     pattern = re.compile(r'[^a-z ]+')
 
-    # Load the output string.
+    # Load the output string. Format ['/path/s.wav label text\n', ...]
     output = loader(dataset_path, target, pattern)
+
+    # Filter out labels that are only shorter than 2 characters.
+    output = list(filter(lambda x: len((x.split(' ', 1)[-1]).strip()) >= 2, output))
 
     # Write list to .txt file.
     print('> Writing {} lines of {} files to {}'.format(len(output), target, target_path))
@@ -257,12 +260,13 @@ def _tedlium_loader(dataset_path, target, pattern):
                 # Remove ` '`. TEDLIUM transcribes `i'm` as `i 'm`.
                 text = text.replace(" '", '')
                 text = re.sub(pattern, '', text).replace('  ', ' ').strip()
+                if len(text.split(' ')) < 4:
+                    continue
                 output.append('{} {}\n'.format(part_path, text))
 
     return output
 
 
-# noinspection PyUnusedLocal
 def _timit_loader(dataset_path, target, pattern):
     """Build the output string that can be written to the desired *.txt file.
 
