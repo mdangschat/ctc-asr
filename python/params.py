@@ -13,7 +13,7 @@ tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/s_2
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
-tf.flags.DEFINE_bool('use_cudnn', False,
+tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
 
