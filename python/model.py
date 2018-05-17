@@ -75,7 +75,8 @@ def inference(sequences, seq_length, training=True):
                                                                  parallel_iterations=64,  # review
                                                                  time_major=False)
         else:
-            # TODO cuDNN RNNs only support time major inputs.
+            # cuDNN RNNs only support time major inputs.
+            dense3 = tfc.rnn.transpose_batch_time(dense3)
 
             rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
                                              num_units=FLAGS.num_units_rnn,
@@ -85,12 +86,12 @@ def inference(sequences, seq_length, training=True):
                                              seed=FLAGS.random_seed,
                                              dtype=TF_FLOAT,
                                              kernel_initializer=initializer,
-                                             bias_initializer=None,
-                                             name=None)
+                                             bias_initializer=None)
 
             rnn4, _ = rnn(dense3)
 
             # TODO Verify that time major is correct.
+            rnn4 = tfc.rnn.transpose_batch_time(rnn4)
 
     # Dense4
     with tf.variable_scope('dense4'):
