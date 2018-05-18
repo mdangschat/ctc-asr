@@ -12,30 +12,26 @@ if FLAGS.use_warp_ctc:
     import warpctc_tensorflow as warpctc
 
 
-def inference(sequences, seq_length, training=True):
+def inference(sequences, training=True):
     """Build the speech model.
 
     Args:
         sequences (tf.Tensor):
             3D float Tensor with input sequences. [batch_size, time, NUM_INPUTS]
-        seq_length (tf.Tensor):
-            1D int Tensor with sequence length. [batch_size]
         training (bool):
             If `True` apply dropout else if `False` the data is passed through unaltered.
 
     Returns:
-        tf.Tensor:
+        tf.Tensor: `logits`
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
+        tf.Tensor: `seq_length`
+            1D Tensor containing approximated sequence lengths.
     """
     initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
     regularizer = tfc.layers.l2_regularizer(0.0046875)
 
-    print('sequence shape:', sequences.shape)
     # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
     sequences = tf.reshape(sequences, [sequences.shape[0], -1, sequences.shape[2], 1])
-    print('sequence shape reshaped:', sequences.shape)
-    # sequences = tf.Print(sequences, [tf.shape(sequences), seq_length], message='sequences ',
-    #                      summarize=50)
 
     # Conv1
     with tf.variable_scope('conv'):
@@ -46,7 +42,7 @@ def inference(sequences, seq_length, training=True):
                                  strides=[2, 2],
                                  padding='SAME',
                                  activation=tf.nn.relu,
-                                 kernel_initializer=tf.glorot_normal_initializer(),  # TODO try None
+                                 kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
         conv1 = tf.minimum(conv1, FLAGS.relu_cutoff)
         # conv1 = tf.layers.dropout(conv1, rate=FLAGS.dense_dropout_rate, training=training)
@@ -57,9 +53,6 @@ def inference(sequences, seq_length, training=True):
         # Where W_i is the input width, K_w the kernel width, and S_w the stride width.
         # Height (H) is calculated analog to width (W).
         # conv1 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time/2, 40, NUM_FILTERS]
-
-        # conv1 = tf.Print(conv1, [tf.shape(conv1)], message='conv1 ', summarize=5)
-        print('conv1.shape:', conv1.shape)
 
         # Conv2
         conv2 = tf.layers.conv2d(inputs=conv1,
@@ -73,8 +66,6 @@ def inference(sequences, seq_length, training=True):
         conv2 = tf.minimum(conv2, FLAGS.relu_cutoff)
         # conv2 = tf.layers.dropout(conv2, rate=FLAGS.dense_dropout_rate, training=training)
         # conv2 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time, 20, NUM_FILTERS]
-        # conv2 = tf.Print(conv2, [tf.shape(conv2)], message='conv2 ', summarize=5)
-        print('conv2.shape:', conv2.shape)
 
         # Conv3
         conv3 = tf.layers.conv2d(inputs=conv2,
@@ -94,6 +85,7 @@ def inference(sequences, seq_length, training=True):
         conv3 = tf.reshape(conv3, [conv3.shape[0], -1, 10 * FLAGS.num_conv_filters[2]])
 
     # Update seq_length to convolutions. shape[1] = time steps; shape[0] = batch_size
+    # Review if the above estimate can be changed with an exact calculation.
     seq_length = tf.tile([tf.shape(conv3)[1]], [tf.shape(conv3)[0]])
 
     # RNN layers
