@@ -26,7 +26,7 @@ __global_std = [6.99935, 14.969187, 12.69888, 14.14844, 13.50252, 13.42672, 13.4
 __global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
 
 
-def load_sample(file_path, normalize_features='local', normalize_signal=False):
+def load_sample(file_path, normalize_features='global', normalize_signal=False):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
@@ -38,15 +38,18 @@ def load_sample(file_path, normalize_features='local', normalize_signal=False):
             Whether to normalize the generated features with the stated method or not.
             Please consult `sample_normalization` for a complete list of normalization methods.
 
-                'global': Uses global mean and standard deviation values from `train.txt`.
+            'global': Uses global mean and standard deviation values from `train.txt`.
                 The normalization is being applied element wise.
                 ([sample] - [mean]^T) / [std]^T
                 Where brackets denote matrices or vectors.
 
-                'local_scalar': Uses only the mean and standard deviation of the current sample.
+            'local': Use local (in sample) mean and standard deviation values, and apply the
+                normalization element wise, like in `global`.
+
+            'local_scalar': Uses only the mean and standard deviation of the current sample.
                 The normalization is being applied by ([sample] - mean_scalar) / std_scalar
 
-                False: No normalization is being applied.
+            False: No normalization is being applied.
 
         normalize_signal (bool):
             Whether to apply (`True`) RMS normalization on the wav signal or not.
