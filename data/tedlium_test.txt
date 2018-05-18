@@ -166,7 +166,6 @@ tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_27.wav and maintains the s
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_28.wav approaches in asking the question
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_30.wav how have you been feeling lately or how was your trip to albania or something like that those are two very different entities the experiencing self
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_31.wav and the and the remembering self and getting confused between them is part of the mess of the notion of happiness
-tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_33.wav now the remembering self
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_34.wav is a storyteller and that really starts with a basic
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_35.wav response of our memory it starts immediately we dont only tell stories when we set out to tell stories our memory tells us stories that is what we get to keep from our experiences is a story
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_36.wav and let me begin with one example
@@ -185,7 +184,6 @@ tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_49.wav now what you could 
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_50.wav cause the patient to suffer but just a little and much less than before and if you do that for a couple of minutes you have made the experiencing self of patient a worse off
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_51.wav and you have the remembering self of patient a and lot better off because now you have endowed patient a
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_52.wav with a better story about his experience
-tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_54.wav what defines a story
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_55.wav and that is true of the stories that memory delivers for us and its also true of the stories that we make up what defines a story are changes significant moments and endings endings are very very important and in this case you know the ending dominated
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_57.wav now the experiencing self lives its life
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_58.wav continuously it has moments of experience one after the other and you can ask what happens to these moments and the answer is really straightforward
@@ -275,7 +273,6 @@ tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_157.wav goes very differen
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_158.wav to measure the experience happiness of the population this is going to be i think within the next decade or two part of national statistics
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_159.wav well it seems to me this issue will or at least should be
 tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_160.wav the most interesting policy discussion to track over the next few years thank you so much for inventing behavioral economics
-tedlium/TEDLIUM_release2/test/sph/DanielKahneman_2010_161.wav thank you danny kahneman
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_1.wav for some time i have been interested in the placebo effect which might seem like an odd thing for a magician to be interested in unless you think of it in the terms that i do which is something fake
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_2.wav is believed in enough by somebody that it becomes something real in other words sugar pills have a measurable effect in certain kinds of studies the placebo effect just because the person thinks
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_3.wav that whats happening to them is a pharmaceutical or some sort of a for pain management for example if they believe it enough there is a measurable effect in the body called the placebo effect something fake becomes something real because of someones perception of it
@@ -289,7 +286,6 @@ tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_12.wav and the knife does not c
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_14.wav so this is a trick that i often teach to young children that are interested in magic because you can learn a great deal about deception by studying this very even though its a very simple trick methodologically probably many of you in the room know this trick what happens is this i hold the knife in my hand
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_15.wav i say im going to grab hold of my wrist to make sure nothing goes up or down my sleeve that is a lie the reason im holding onto my wrist is because thats actually the secret
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_16.wav of the illusion in a moment when my hand moves from facing you to being away from you this finger right here my index finger is just going to shift from where it is to a position
-tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_17.wav pointing out like this
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_19.wav someone who didnt have a childhood is out there
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_21.wav so it goes like this from here right and as i move around my finger shifts so we could talk about why this is deceptive why you dont notice there are only three fingers down here because the mind and the way it processes information it doesnt count one two three it groups them but thats not really what this is about right and then i open my hand up obviously its clinging there not by animal magnetism but by
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_22.wav chicanery my index finger being there and then when i close my finger same thing as i move back
@@ -321,7 +317,6 @@ tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_62.wav and i can twist that aro
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_63.wav people in the back or people on video years from now watching this will go well yeah that looks kind of neat in
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_64.wav some sort of effect there but if it were real he would be see theres a hole there and a hole there if it were real he would be bleeding
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_65.wav let me work up some blood for you
-tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_67.wav yes there it is
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_69.wav normally now i would take the needle out i would clean off my arm and i would show you that there are no wounds but i think in this context and with the idea of
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_70.wav taking something fake and making it into something real im just going to leave it there and walk off the stage
 tedlium/TEDLIUM_release2/test/sph/EricMead_2009P_72.wav i will be seeing you several times over the next few days i hope youre looking forward to that thank you very much
@@ -376,7 +371,6 @@ tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_18.wav so this is really import
 tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_19.wav time magazine person of the year bringing up all of them so looking at these people i can see that the majority come from government
 tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_20.wav some have come from natural sciences
 tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_21.wav some fewer still have come from business
-tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_23.wav theres my boss and
 tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_25.wav one has come from music
 tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_27.wav and interestingly enough bono is also a ted prize winner
 tedlium/TEDLIUM_release2/test/sph/GaryFlake_2010_28.wav so we can go jump and take a look at all the ted prize winners so you see were navigating the web for the first time as if its actually a web not page to page but at a higher level of abstraction
@@ -624,7 +618,6 @@ tedlium/TEDLIUM_release2/test/sph/BillGates_2010_109.wav and drive we need to go
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_110.wav just discuss the co two they should discuss this innovation agenda and youd be stunned at the ridiculously low levels of spending
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_111.wav on these innovative approaches we do need the market incentives co two tax cap and trade something that gets that price signal out there
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_112.wav we need to get the message out we need to have this dialogue be a more rational more understandable dialogue including the steps that the government takes this is an important wish but it is one i think we can achieve thank you
-tedlium/TEDLIUM_release2/test/sph/BillGates_2010_114.wav thank you thank you
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_116.wav thank you just so i understand more about about terrapower right
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_117.wav i mean first of all what can you give a sense of what scale of investment this is
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_118.wav to to actually do the software buy the supercomputer hire all the great scientists which weve done thats only tens of millions and even once we test our materials out
@@ -656,7 +649,6 @@ tedlium/TEDLIUM_release2/test/sph/BillGates_2010_145.wav so much greater in the 
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_146.wav the modular people thats a different approach theres a liquid type reactor which seems a little hard but maybe they say that about us
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_148.wav and so there there are different ones but the beauty of this is a molecule of uranium has a million times as much energy as a molecule of say coal
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_150.wav and so if you can deal with the negatives which are essentially the radiation the footprint and cost the potential in terms of effect on land and various things is almost in a class of its own
-tedlium/TEDLIUM_release2/test/sph/BillGates_2010_152.wav if this doesnt work
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_154.wav then what do we have to start taking emergency measures to try and keep the temperature of the earth stable
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_155.wav yeah if you get into that situation its like
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_157.wav youve been over eating and youre about to have a heart attack you know then then then where do you go you may need heart surgery or something there is a line of research on whats called geoengineering
@@ -672,7 +664,6 @@ tedlium/TEDLIUM_release2/test/sph/BillGates_2010_168.wav that has to do with a g
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_169.wav thats not necessarily the worst case and there are people in the rich world who look at ipcc and say okay you know that that isnt that big of a deal the fact is its that uncertain part
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_170.wav that should move us towards this but my dream here is that if you can make it economic and meet the co two constraints then the skeptics say okay
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_171.wav i dont care that it doesnt put out co two i kind of wish it did put out co two but i guess ill accept it because its cheaper
-tedlium/TEDLIUM_release2/test/sph/BillGates_2010_172.wav than whats come before
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_176.wav is that would be your response to the the the bjorn lomborg argument that basically if you if you spend all this energy trying to solve the co two problem its going to take away all your other goals of trying to rid the world of poverty and malaria and so forth its its its a stupid waste of the earths resources to put money towards that when there are better things we can do
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_177.wav yeah well the actual spending on the r and d piece you know say the u s should spend ten billion a year more than it is right now its not that dramatic it shouldnt take away from other things the thing you get into big money on
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_178.wav and this reasonable people can disagree is when you have something thats non economic and youre trying to fund that that to me mostly is a waste unless youre very close and youre just funding the learning curve and its going to get very cheap i believe we should try you know more
@@ -683,7 +674,6 @@ tedlium/TEDLIUM_release2/test/sph/BillGates_2010_182.wav getting more discussed 
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_183.wav hes making the r and d point and and so there is a a a thread of something that i i think is appropriate the r and d piece its crazy how little its funded
 tedlium/TEDLIUM_release2/test/sph/BillGates_2010_185.wav well bill i suspect i i speak on the behalf of most people here to say i really hope your wish comes true thank you so much
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_1.wav so ive known a lot of fish in my life
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_2.wav ive loved only two
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_3.wav that first one was a
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_4.wav it was more like a passionate affair
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_5.wav it was a beautiful fish
@@ -707,7 +697,6 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_35.wav its got a feed conversio
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_36.wav not very sustainable doesnt taste very good either
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_40.wav was a company trying to do it right i wanted to support them
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_42.wav the day before the event i called the head of pr for the company
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_43.wav lets call him don
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_44.wav don i said just to get the facts straight you guys are famous for for farming so far out to sea you you dont pollute thats right he said were so far out
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_45.wav the waste from our fish gets distributed
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_46.wav not concentrated and then he added
@@ -726,7 +715,6 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_69.wav well he mentioned some a
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_70.wav and some fish meals and then he said chicken pellets
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_72.wav i said chicken pellets he said yeah feathers skin
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_74.wav bone meal scraps dried and processed into feed
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_75.wav i said what percentage
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_76.wav of your feed is chicken
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_78.wav thinking you know two percent
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_80.wav well its about thirty percent he said
@@ -737,16 +725,13 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_89.wav i fell out of love with 
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_91.wav no not because im some self righteous goody two shoes foodie
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_95.wav no i fell out of love with this fish because i swear to god after that conversation the fish tasted like chicken
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_99.wav its a different kind of love story
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_101.wav its the romantic kind
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_103.wav the kind where the more you get to know your fish you love the fish
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_105.wav i first ate it at a restaurant in southern spain
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_107.wav a journalist friend had been talking about this fish for a long time
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_108.wav she kind of set us up
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_110.wav ok it came to the table a bright
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_111.wav almost shimmering white color
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_113.wav the chef had overcooked it like twice over ok amazingly it was still delicious
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_115.wav who can make a fish taste good
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_117.wav after its been overcooked
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_118.wav i cant but this guy can
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_119.wav lets call him miguel actually his name is miguel
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_121.wav and no he didnt cook the fish and hes not a chef at least in the way that you and i understand it
@@ -765,13 +750,11 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_144.wav they reversed the flow 
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_146.wav instead of pushing water out
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_147.wav they used the channels to pull water back in they flooded the canals
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_149.wav they created a twenty seven thousand acre fish farm
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_150.wav bass mullet shrimp eel
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_151.wav and in the process miguel and this company
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_152.wav completely reversed the ecological destruction
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_154.wav the farms incredible i mean youve never seen anything like this
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_156.wav you stare out at a horizon that is a million miles away and all you see are flooded canals and this thick rich marshland
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_158.wav i was there not long ago with miguel
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_160.wav hes an amazing guy
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_162.wav like three parts charles darwin and one part crocodile dundee
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_165.wav there we are slogging through the wetlands
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_167.wav and im panting and sweating got mud up to my knees and miguels calmly conducting a biology lecture
@@ -782,7 +765,6 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_174.wav it turns out miguel spe
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_176.wav i asked him how he became such an expert on fish he said fish
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_178.wav i didnt know anything about fish
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_179.wav im an expert in relationships
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_180.wav and then hes off
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_181.wav launching into more talk about rare birds and algaes and strange aquatic plants and dont get me wrong that was really fascinating you know the biotic community unplugged kind of thing you know its great
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_182.wav but i was in love and my head
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_183.wav was swooning over that overcooked piece of delicious fish i had the night before so i interrupted him i said miguel what makes your fish taste so good
@@ -793,14 +775,12 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_189.wav well he goes on to tell
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_191.wav its such a rich system
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_193.wav that the fish are eating what theyd be eating in the wild
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_195.wav the plant biomass the phytoplankton the zooplankton its what feeds the fish the system is so healthy its totally self renewing there
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_196.wav there is no feed
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_197.wav ever heard of a farm that doesnt feed its animals
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_199.wav later that day i was driving around this property with miguel and i asked him i said for a place that seems so natural
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_201.wav unlike like any fish any farm id ever been at
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_203.wav how do you measure success
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_205.wav at that moment it was as if a film director called for a set change and we rounded the corner and saw the most amazing sight thousands and thousands of pink flamingos
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_207.wav a literal pink carpet for as far as you could see
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_209.wav thats success he said
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_211.wav look at their bellies pink theyre feasting
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_213.wav feasting i was totally confused i said miguel arent they feasting on your fish
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_217.wav we lose twenty percent of our fish and fish eggs to birds
@@ -843,7 +823,6 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_288.wav by the success of its p
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_290.wav and then i realized when he says
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_291.wav a farm that has no impurities he made a big understatement because the water that flows through that farm comes in from the guadalquivir river
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_293.wav its a river that carries with it all the things that rivers tend to carry these days
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_295.wav chemical contaminants pesticide runoff
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_297.wav and when it works its way through the system
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_299.wav and leaves the water is cleaner than when it entered
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_301.wav the system is so healthy it purifies the water
@@ -853,7 +832,6 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_307.wav but a farm thats litera
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_309.wav and not just for those fish
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_311.wav but for you and me as well because when that water leaves it dumps out into the atlantic
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_313.wav a drop in the ocean i know but ill take it and so should you
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_315.wav because this love story
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_317.wav however romantic is also instructive
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_318.wav you might say its a recipe for the future of good food
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_320.wav whether were talking about bass or beef cattle
@@ -871,13 +849,11 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_338.wav no not because we alrea
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_342.wav will go hungry today one billion thats more than ever before
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_344.wav because of gross inequalities in distribution not tonnage
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_346.wav no i dont love this question because its determined the logic of our food system for the last fifty years
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_348.wav feed grain to herbivores
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_350.wav pesticides to monocultures chemicals to soil chicken to fish
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_352.wav and all along agribusiness has simply asked
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_354.wav if were feeding more people more cheaply how terrible could that be
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_356.wav thats been the motivation its been the justification its been the business plan
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_358.wav of american agriculture we should call it what it is
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_360.wav a business in liquidation
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_362.wav a business thats quickly eroding ecological capital that makes that very production possible
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_363.wav thats not a business and it isnt agriculture
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_364.wav our bread basket is threatened today not because of diminishing supply but because of diminishing resources
@@ -895,7 +871,6 @@ tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_386.wav of on the job experienc
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_388.wav farms that arent worlds unto themselves
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_390.wav restore instead of deplete farms that farm extensively instead of just intensively
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_392.wav farmers that are not just producers but experts in relationships
-tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_393.wav because theyre the ones
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_394.wav that are experts in flavor too
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_396.wav and if im going to be really honest
 tedlium/TEDLIUM_release2/test/sph/DanBarber_2010_398.wav theyre a better chef than ill ever be
@@ -1032,7 +1007,6 @@ tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_40.wav they were exactly l
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_41.wav and it it just disturbed me so much but then i thought you know lets be honest were at a point in this world
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_42.wav where we dont have the same relationship to progress that we used to we talk about it ambivalently we talk about it in ironic terms with little quotes around it progress
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_44.wav okay there are reasons for that and i think we know what those reasons are weve lost faith in institutions in authority and sometimes in science itself and there theres no reason we shouldnt have you can just say a few names and people will understand
-tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_45.wav chernobyl bhopal the challenger
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_46.wav vioxx weapons of mass destruction hanging chads
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_47.wav i mean you know you can choose your list
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_48.wav there are questions and problems with the people we used to believe were always right so be skeptical
@@ -1087,7 +1061,6 @@ tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_107.wav the most mindless 
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_108.wav proponents of genetically engineered food and the organic elite its an idiotic debate it has to stop its a debate about words about metaphors
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_109.wav its ideology its not science
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_110.wav every single thing we eat every grain of rice every sprig of parsley every brussel sprout has been modified by man you know there werent tangerines in the garden of eden
-tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_111.wav there wasnt any cantaloupe
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_112.wav there werent christmas trees we made it all we made it over the last eleven thousand years
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_114.wav and some of it worked and some of it didnt we got rid of the stuff that didnt now we can do it in a more precise way and there are risks
 tedlium/TEDLIUM_release2/test/sph/MichaelSpecter_2010_115.wav absolutely but we can put something like vitamin a into rice and that stuff can help millions of people millions of people prolong their lives
