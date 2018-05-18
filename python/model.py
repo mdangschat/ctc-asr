@@ -30,6 +30,8 @@ def inference(sequences, seq_length, training=True):
     initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
     regularizer = tfc.layers.l2_regularizer(0.0046875)
 
+    sequences = tf.Print(sequences, [tf.shape(sequences)], message='sequences ')
+
     # TODO: If conv layers don't change in parameters from layer to layer, wrap them in a helper.
     # Conv1
     with tf.variable_scope('conv1'):
@@ -46,6 +48,7 @@ def inference(sequences, seq_length, training=True):
         conv1 = tf.minimum(conv1, FLAGS.relu_cutoff)
         conv1 = tf.layers.dropout(conv1, rate=FLAGS.dense_dropout_rate, training=training)
         # TODO: conv1 = []
+        conv1 = tf.Print(conv1, [tf.shape(conv1)], message='conv1 ')
 
     with tf.variable_scope('conv2'):
         conv2 = tf.layers.conv2d(inputs=conv1,
@@ -59,6 +62,7 @@ def inference(sequences, seq_length, training=True):
         conv2 = tf.minimum(conv2, FLAGS.relu_cutoff)
         conv2 = tf.layers.dropout(conv2, rate=FLAGS.dense_dropout_rate, training=training)
         # TODO: conv2 = []
+        conv2 = tf.Print(conv2, [tf.shape(conv2)], message='conv2 ')
 
     with tf.variable_scope('conv1'):
         conv3 = tf.layers.conv2d(inputs=conv2,
@@ -72,6 +76,7 @@ def inference(sequences, seq_length, training=True):
         conv3 = tf.minimum(conv3, FLAGS.relu_cutoff)
         conv3 = tf.layers.dropout(conv3, rate=FLAGS.dense_dropout_rate, training=training)
         # TODO: conv3 = []
+        conv3 = tf.Print(conv3, [tf.shape(conv3)], message='conv3 ')
 
     # RNN layers
     with tf.variable_scope('rnn'):
