@@ -103,12 +103,12 @@ def train(shuffle):
         # creating checkpoints, and some basic error handling.
         session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
-            save_checkpoint_steps=FLAGS.log_frequency * 20,
+            save_checkpoint_steps=FLAGS.log_frequency * 10,
             # The frequency, in number of global steps, that the summaries are written to disk
             # using a default summary saver.
             save_summaries_steps=FLAGS.log_frequency,   # Review needed when using SummarySaverHook?
             # The frequency, in number of global steps, that the global_step/sec is logged.
-            log_step_count_steps=FLAGS.log_frequency * 20,
+            log_step_count_steps=FLAGS.log_frequency * 10,
             # Attach hooks to session.
             hooks=session_hooks,
             # Number of seconds given to threads to stop after close() has been called.

@@ -91,7 +91,7 @@ def inference(sequences, seq_length, training=True):
                                              dropout=dropout_rate,
                                              seed=FLAGS.random_seed,
                                              dtype=TF_FLOAT,
-                                             kernel_initializer=initializer,
+                                             kernel_initializer=None,   # TODO initializer,
                                              bias_initializer=None)
 
             rnn4, _ = rnn(dense3)

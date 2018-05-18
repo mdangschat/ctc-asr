@@ -59,7 +59,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging and Output.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 250,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
