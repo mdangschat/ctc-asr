@@ -8,8 +8,8 @@ import python_speech_features as psf
 from python.params import FLAGS, NP_FLOAT
 
 
-NUM_MFCC = 13           # Number of MFCC features to extract.
-__WIN_STEP = 0.0125     # The step between successive windows in seconds.
+NUM_MFCC = 29           # Number of MFCC features to extract.
+__WIN_STEP = 0.010      # The step between successive windows in seconds.
 
 # Mean and standard deviation values for normalization, according to `sd_estimator.py`.
 __global_mean = [5.542525, -3.9271812, -5.6456695, 4.4572716, -4.9022646, -5.9256926, -6.3959913,
@@ -103,9 +103,7 @@ def load_sample(file_path, normalize_features='global', normalize_signal=False):
     # Data type.
     sample = sample.astype(NP_FLOAT)
 
-    # Skip every 2nd time frame.
-    sample = sample[:: 2, :]
-
+    # Get length of the sample.
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
     # Sample normalization.
@@ -140,8 +138,7 @@ def wav_length(file_path):
     # Load audio data from drive.
     (sr, y) = wav.read(file_path)
 
-    # The /2 is because `load_sample` skips every 2nd frame.
-    return np.array(int(len(y) / sr / __WIN_STEP) // 2, dtype=np.int32)
+    return np.array(int(len(y) / sr / __WIN_STEP), dtype=np.int32)
 
 
 def signal_normalization(y):

@@ -30,36 +30,48 @@ def inference(sequences, seq_length, training=True):
     initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
     regularizer = tfc.layers.l2_regularizer(0.0046875)
 
-    # Dense1
-    with tf.variable_scope('dense1'):
+    # TODO: If conv layers don't change in parameters from layer to layer, wrap them in a helper.
+    # Conv1
+    with tf.variable_scope('conv1'):
         # TODO: sequences = []
-        dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
+        # https://www.tensorflow.org/api_docs/python/tf/layers/conv2d
+        conv1 = tf.layers.conv2d(inputs=sequences,
+                                 filters=FLAGS.num_conv_filters,
+                                 kernel_size=[3, 7],
+                                 strides=[2, 4],
+                                 padding='SAME',
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=tf.glorot_normal_initializer(),  # TODO try None
+                                 kernel_regularizer=regularizer)
+        conv1 = tf.minimum(conv1, FLAGS.relu_cutoff)
+        conv1 = tf.layers.dropout(conv1, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: conv1 = []
+
+    with tf.variable_scope('conv2'):
+        conv2 = tf.layers.conv2d(inputs=conv1,
+                                 filters=FLAGS.num_conv_filters,
+                                 kernel_size=[3, 7],
+                                 strides=[2, 4],
+                                 padding='SAME',
                                  activation=tf.nn.relu,
                                  kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
-        dense1 = tf.minimum(dense1, FLAGS.relu_cutoff)
-        dense1 = tf.layers.dropout(dense1, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense1 = []
+        conv2 = tf.minimum(conv2, FLAGS.relu_cutoff)
+        conv2 = tf.layers.dropout(conv2, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: conv2 = []
 
-    # Dense2
-    with tf.variable_scope('dense2'):
-        dense2 = tf.layers.dense(dense1, FLAGS.num_units_dense,
+    with tf.variable_scope('conv1'):
+        conv3 = tf.layers.conv2d(inputs=conv2,
+                                 filters=FLAGS.num_conv_filters,
+                                 kernel_size=[3, 7],
+                                 strides=[2, 4],
+                                 padding='SAME',
                                  activation=tf.nn.relu,
-                                 kernel_initializer=initializer,
+                                 kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
-        dense2 = tf.minimum(dense2, FLAGS.relu_cutoff)
-        dense2 = tf.layers.dropout(dense2, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense2 = []
-
-    # Dense3
-    with tf.variable_scope('dense3'):
-        dense3 = tf.layers.dense(dense2, FLAGS.num_units_dense,
-                                 activation=tf.nn.relu,
-                                 kernel_initializer=initializer,
-                                 kernel_regularizer=regularizer)
-        dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
-        dense3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate, training=training)
-        # dense3 = [batch_size, time, num_units_dense]
+        conv3 = tf.minimum(conv3, FLAGS.relu_cutoff)
+        conv3 = tf.layers.dropout(conv3, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: conv3 = []
 
     # RNN layers
     with tf.variable_scope('rnn'):
@@ -73,7 +85,7 @@ def inference(sequences, seq_length, training=True):
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
             rnn4, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
-                                                                 inputs=dense3,
+                                                                 inputs=conv3,
                                                                  dtype=TF_FLOAT,
                                                                  sequence_length=seq_length,
                                                                  parallel_iterations=64,  # review
@@ -82,8 +94,9 @@ def inference(sequences, seq_length, training=True):
 
         else:   # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
-            dense3 = tfc.rnn.transpose_batch_time(dense3)
+            dense3 = tfc.rnn.transpose_batch_time(conv3)
 
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
             rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
                                              num_units=FLAGS.num_units_rnn,
                                              input_mode='linear_input',
@@ -91,8 +104,8 @@ def inference(sequences, seq_length, training=True):
                                              dropout=dropout_rate,
                                              seed=FLAGS.random_seed,
                                              dtype=TF_FLOAT,
-                                             kernel_initializer=None,   # TODO initializer,
-                                             bias_initializer=None)
+                                             kernel_initializer=None,   # Glorot Uniform Initializer
+                                             bias_initializer=None)     # Constant 0.0 Initializer
 
             rnn4, _ = rnn(dense3)
             rnn4 = tfc.rnn.transpose_batch_time(rnn4)
