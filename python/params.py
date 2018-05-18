@@ -11,14 +11,14 @@ from python.s_labels import num_classes
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/c_1',
                        """Directory where to write event logs and checkpoints.""")
-tf.flags.DEFINE_integer('batch_size', 4,
+tf.flags.DEFINE_integer('batch_size', 8,
                         """(Maximum) Number of samples within a batch.""")
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 1e-4,
+tf.flags.DEFINE_float('learning_rate', 1e-5,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
@@ -36,7 +36,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
 # CTC loss and decoder.
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
-tf.flags.DEFINE_bool('use_warp_ctc', False,
+tf.flags.DEFINE_bool('use_warp_ctc', True,
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 
 # Dropout.
@@ -46,8 +46,8 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_integer('num_conv_filters', 128,
-                        """Number of filters each convolutional layer should produce.""")
+tf.flags.DEFINE_multi_integer('num_conv_filters', [32, 64, 96],
+                              """Number of filters for each convolutional layer.""")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         """Number of hidden units in each of the RNN cells.""")
 tf.flags.DEFINE_integer('num_layers_rnn', 1,
@@ -61,7 +61,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging and Output.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
-tf.flags.DEFINE_integer('log_frequency', 250,
+tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
@@ -110,7 +110,7 @@ def get_parameters():
     """
     s = 'Learning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
         'GPU-Options (use_warp_ctc={}; use_cudnn={});\n' \
-        'Conv (num_filters={:,d});\n' \
+        'Conv (num_filters={});\n' \
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \

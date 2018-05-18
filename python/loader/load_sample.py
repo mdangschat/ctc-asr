@@ -8,8 +8,8 @@ import python_speech_features as psf
 from python.params import FLAGS, NP_FLOAT
 
 
-NUM_MFCC = 29           # Number of MFCC features to extract.
-__WIN_STEP = 0.010      # The step between successive windows in seconds.
+NUM_FEATURES = 80        # Number of features to extract.
+WIN_STEP = 0.010         # The step between successive windows in seconds.
 
 # Mean and standard deviation values for normalization, according to `sd_estimator.py`.
 __global_mean = [5.542525, -3.9271812, -5.6456695, 4.4572716, -4.9022646, -5.9256926, -6.3959913,
@@ -17,22 +17,24 @@ __global_mean = [5.542525, -3.9271812, -5.6456695, 4.4572716, -4.9022646, -5.925
                  -0.0013444357, -0.0014212646, 0.00041854507, -8.154545e-05, 0.0011094797,
                  0.0034053407, 0.0010864179, 0.0017922536, 0.00059169036, 0.00057138246,
                  0.00053512416, 0.00025640224, 0.00076659914]
-__global_mean = np.array(__global_mean, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
+# __global_mean = np.array(__global_mean, dtype=NP_FLOAT).reshape([1, NUM_FEATURES * 2])
 
 __global_std = [6.99935, 14.969187, 12.69888, 14.14844, 13.50252, 13.42672, 13.453245, 12.993643,
                 11.983593, 11.735456, 10.524341, 10.057626, 9.19024, 0.61269754, 3.6294684,
                 2.9271908, 3.0644813, 3.134199, 3.2718139, 3.2308598, 3.3299055, 3.1096613,
                 3.067856, 2.7884452, 2.625627, 2.4543297]
-__global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_MFCC * 2])
+# __global_std = np.array(__global_std, dtype=NP_FLOAT).reshape([1, NUM_FEATURES * 2])
 
 
-def load_sample(file_path, normalize_features='global', normalize_signal=False):
+def load_sample(file_path, feature_type='mel', normalize_features='local', normalize_signal=False):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
         file_path (str or bytes):
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
+
+        feature_type (str): Type of features to generate. Options are 'mel' and 'mfcc'.
 
         normalize_features (str or bool):
             Whether to normalize the generated features with the stated method or not.
@@ -80,27 +82,20 @@ def load_sample(file_path, normalize_features='global', normalize_signal=False):
                            .format(sr, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    win_len = 0.025      # Window length in ms.
-    win_step = __WIN_STEP  # Number of milliseconds between successive frames.
-    f_max = sr / 2.      # Maximum frequency (Nyquist rate).
-    f_min = 64.          # Minimum frequency.
-    n_fft = 512          # Number of samples in a frame.
-    n_mfcc = NUM_MFCC    # Number of Mel cepstral coefficients to extract.
-    n_filters = 26       # Number of Mel bins to generate.
+    win_len = 0.025         # Window length in ms.
+    win_step = WIN_STEP     # Number of milliseconds between successive frames.
+    f_max = sr / 2.         # Maximum frequency (Nyquist rate).
+    f_min = 64.             # Minimum frequency.
+    n_fft = 1024            # Number of samples in a frame.
 
-    # Compute MFCC features from the mel spectrogram.
-    mfcc = psf.mfcc(signal=y, samplerate=sr, winlen=win_len, winstep=win_step,
-                    numcep=n_mfcc, nfilt=n_filters, nfft=n_fft,
-                    lowfreq=f_min, highfreq=f_max,
-                    preemph=0.97, ceplifter=22, appendEnergy=True)
+    if feature_type == 'mfcc':
+        sample = _mfcc(y, sr, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max)
+    elif feature_type == 'mel':
+        sample = _mel(y, sr, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max)
+    else:
+        raise ValueError('Unsupported feature type "{}".'.format(feature_type))
 
-    # And the first-order differences (delta features).
-    mfcc_delta = psf.delta(mfcc, 2)
-
-    # Combine MFCC with MFCC_delta
-    sample = np.concatenate([mfcc, mfcc_delta], axis=1)
-
-    # Data type.
+    # Make sure that data type matches TensorFlow type.
     sample = sample.astype(NP_FLOAT)
 
     # Get length of the sample.
@@ -109,8 +104,40 @@ def load_sample(file_path, normalize_features='global', normalize_signal=False):
     # Sample normalization.
     sample = sample_normalization(sample, normalize_features)
 
-    # `sample` = [time, num_features], `sample_len`: scalar
+    # sample = [time, NUM_FEATURES], sample_len: scalar
     return sample, sample_len
+
+
+def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
+    # L8ER Documentation
+
+    if num_features % 2 != 0:
+        raise ValueError('num_features not a multiple of 2.')
+
+    # Compute MFCC features.
+    mfcc = psf.mfcc(signal=y, samplerate=sr, winlen=win_len, winstep=win_step,
+                    numcep=num_features // 2, nfilt=26, nfft=n_fft,
+                    lowfreq=f_min, highfreq=f_max,
+                    preemph=0.97, ceplifter=22, appendEnergy=True)
+
+    # And the first-order differences (delta features).
+    mfcc_delta = psf.delta(mfcc, 2)
+
+    # Combine MFCC with MFCC_delta
+    return np.concatenate([mfcc, mfcc_delta], axis=1)
+
+
+def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
+    # L8ER Documentation
+
+    # 2 values. The first is a numpy array of size (NUMFRAMES by nfilt) containing features.
+    # Each row holds 1 feature vector. The second return value is the energy in each frame
+    # (total energy, unwindowed)
+    mel, power = psf.fbank(signal=y, samplerate=sr, winlen=win_len,
+                           winstep=win_step, nfilt=num_features - 1, nfft=n_fft,
+                           lowfreq=f_min, highfreq=f_max, preemph=0.97)
+    power = np.reshape(power, [-1, 1])
+    return np.hstack([mel, power])
 
 
 def wav_length(file_path):
@@ -138,7 +165,7 @@ def wav_length(file_path):
     # Load audio data from drive.
     (sr, y) = wav.read(file_path)
 
-    return np.array(int(len(y) / sr / __WIN_STEP), dtype=np.int32)
+    return np.array(int(len(y) / sr / WIN_STEP), dtype=np.int32)
 
 
 def signal_normalization(y):

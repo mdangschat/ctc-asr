@@ -30,53 +30,69 @@ def inference(sequences, seq_length, training=True):
     initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
     regularizer = tfc.layers.l2_regularizer(0.0046875)
 
-    sequences = tf.Print(sequences, [tf.shape(sequences)], message='sequences ')
+    print('sequence shape:', sequences.shape)
+    # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
+    sequences = tf.reshape(sequences, [sequences.shape[0], -1, sequences.shape[2], 1])
+    print('sequence shape reshaped:', sequences.shape)
+    # sequences = tf.Print(sequences, [tf.shape(sequences), seq_length], message='sequences ',
+    #                      summarize=50)
 
-    # TODO: If conv layers don't change in parameters from layer to layer, wrap them in a helper.
     # Conv1
     with tf.variable_scope('conv1'):
-        # TODO: sequences = []
         # https://www.tensorflow.org/api_docs/python/tf/layers/conv2d
         conv1 = tf.layers.conv2d(inputs=sequences,
-                                 filters=FLAGS.num_conv_filters,
-                                 kernel_size=[3, 7],
-                                 strides=[2, 4],
+                                 filters=FLAGS.num_conv_filters[0],
+                                 kernel_size=[11, 41],
+                                 strides=[2, 2],
                                  padding='SAME',
                                  activation=tf.nn.relu,
                                  kernel_initializer=tf.glorot_normal_initializer(),  # TODO try None
                                  kernel_regularizer=regularizer)
         conv1 = tf.minimum(conv1, FLAGS.relu_cutoff)
-        conv1 = tf.layers.dropout(conv1, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: conv1 = []
-        conv1 = tf.Print(conv1, [tf.shape(conv1)], message='conv1 ')
+        # conv1 = tf.layers.dropout(conv1, rate=FLAGS.dense_dropout_rate, training=training)
 
+        # Convolutional layer output shapes:
+        # Conv 'VALID' outout width (W) is calculated by: W = (W_i - K_w) // S_w + 1
+        # Conv 'SAME' outout width (W) is calculated by: W = (W_i - K_w + 2*(K_w//2)) // S_w + 1
+        # Where W_i is the input width, K_w the kernel width, and S_w the stride width.
+        # Height (H) is calculated analog to width (W).
+        # conv1 = [batch_size, W, H, NUM_CHANNELS]
+
+        # conv1 = tf.Print(conv1, [tf.shape(conv1)], message='conv1 ', summarize=5)
+
+    # Conv2
     with tf.variable_scope('conv2'):
         conv2 = tf.layers.conv2d(inputs=conv1,
-                                 filters=FLAGS.num_conv_filters,
-                                 kernel_size=[3, 7],
-                                 strides=[2, 4],
+                                 filters=FLAGS.num_conv_filters[1],
+                                 kernel_size=[11, 21],
+                                 strides=[1, 2],
                                  padding='SAME',
                                  activation=tf.nn.relu,
                                  kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
         conv2 = tf.minimum(conv2, FLAGS.relu_cutoff)
-        conv2 = tf.layers.dropout(conv2, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: conv2 = []
-        conv2 = tf.Print(conv2, [tf.shape(conv2)], message='conv2 ')
+        # conv2 = tf.layers.dropout(conv2, rate=FLAGS.dense_dropout_rate, training=training)
+        # conv2 = [batch_size, W, H, NUM_CHANNELS]
 
-    with tf.variable_scope('conv1'):
+    # Conv3
+    with tf.variable_scope('conv3'):
         conv3 = tf.layers.conv2d(inputs=conv2,
-                                 filters=FLAGS.num_conv_filters,
-                                 kernel_size=[3, 7],
-                                 strides=[2, 4],
+                                 filters=FLAGS.num_conv_filters[2],
+                                 kernel_size=[11, 21],
+                                 strides=[1, 2],
                                  padding='SAME',
                                  activation=tf.nn.relu,
                                  kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
         conv3 = tf.minimum(conv3, FLAGS.relu_cutoff)
-        conv3 = tf.layers.dropout(conv3, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: conv3 = []
-        conv3 = tf.Print(conv3, [tf.shape(conv3)], message='conv3 ')
+        # conv3 = tf.layers.dropout(conv3, rate=FLAGS.dense_dropout_rate, training=training)
+        # conv3 = [batch_size, W, H, NUM_CHANNELS]
+        # conv3 = tf.Print(conv3, [tf.shape(conv3)], message='conv3 ', summarize=5)
+        print('conv3.shape:', conv3.shape)
+        conv3 = tf.reshape(conv3, [conv3.shape[0], -1, 96])
+        print('conv3.shape:', conv3.shape)
+        # conv3 = tf.Print(conv3, [tf.shape(conv3)], message='conv3 fin ', summarize=5)
+        # REVIEW conv3 = [batch_size, W, H, NUM_CHANNELS]
 
     # RNN layers
     with tf.variable_scope('rnn'):
@@ -95,7 +111,7 @@ def inference(sequences, seq_length, training=True):
                                                                  sequence_length=seq_length,
                                                                  parallel_iterations=64,  # review
                                                                  time_major=False)
-            # TODO: rnn4 = []
+            # REVIEW: rnn4 = []
 
         else:   # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
@@ -124,7 +140,7 @@ def inference(sequences, seq_length, training=True):
                                  kernel_regularizer=regularizer)
         dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
         dense4 = tf.layers.dropout(dense4, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense4 = []
+        # REVIEW: dense4 = []
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because most TensorFlow loss functions perform
@@ -297,10 +313,10 @@ def train(_loss, global_step):
     lr = tf.maximum(lr, 1e-6)   # Set the minimum learning rate.
 
     # Select a gradient optimizer.
-    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.99)
+    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.99)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    # optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
-    #                                    beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
+    optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
+                                       beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
     # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
 
     tf.summary.scalar('learning_rate', lr)
