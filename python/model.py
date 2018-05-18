@@ -279,10 +279,10 @@ def train(_loss, global_step):
     lr = tf.maximum(lr, 1e-6)   # Set the minimum learning rate.
 
     # Select a gradient optimizer.
-    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9)
+    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.99)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
-                                       beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
+    # optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
+    #                                    beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
     # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
 
     tf.summary.scalar('learning_rate', lr)
