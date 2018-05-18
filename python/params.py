@@ -11,7 +11,7 @@ from python.s_labels import num_classes
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/c_1',
                        """Directory where to write event logs and checkpoints.""")
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
@@ -36,7 +36,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
 # CTC loss and decoder.
 tf.flags.DEFINE_integer('beam_width', 1024,
                         """Beam width used in the CTC `beam_search_decoder`.""")
-tf.flags.DEFINE_bool('use_warp_ctc', True,
+tf.flags.DEFINE_bool('use_warp_ctc', False,
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 
 # Dropout.
@@ -46,11 +46,11 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_multi_integer('num_conv_filters', [32, 64, 96],
+tf.flags.DEFINE_multi_integer('num_conv_filters', [32, 32, 96],
                               """Number of filters for each convolutional layer.""")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         """Number of hidden units in each of the RNN cells.""")
-tf.flags.DEFINE_integer('num_layers_rnn', 1,
+tf.flags.DEFINE_integer('num_layers_rnn', 3,
                         """Number of stacked RNN cells.""")
 tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
@@ -69,7 +69,7 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_integer('num_examples_train', 225378,
+tf.flags.DEFINE_integer('num_examples_train', 223303,
                         """Number of examples in the training set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_test', 2620,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
@@ -114,7 +114,7 @@ def get_parameters():
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \
-        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} max_steps / ' \
+        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps / ' \
         '{:,d} steps_per_epoch), log_frequency={:,d});\n'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                     FLAGS.use_warp_ctc, FLAGS.use_cudnn,

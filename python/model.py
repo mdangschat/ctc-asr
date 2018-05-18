@@ -38,7 +38,7 @@ def inference(sequences, seq_length, training=True):
     #                      summarize=50)
 
     # Conv1
-    with tf.variable_scope('conv1'):
+    with tf.variable_scope('conv'):
         # https://www.tensorflow.org/api_docs/python/tf/layers/conv2d
         conv1 = tf.layers.conv2d(inputs=sequences,
                                  filters=FLAGS.num_conv_filters[0],
@@ -56,12 +56,12 @@ def inference(sequences, seq_length, training=True):
         # Conv 'SAME' outout width (W) is calculated by: W = (W_i - K_w + 2*(K_w//2)) // S_w + 1
         # Where W_i is the input width, K_w the kernel width, and S_w the stride width.
         # Height (H) is calculated analog to width (W).
-        # conv1 = [batch_size, W, H, NUM_CHANNELS]
+        # conv1 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time/2, 40, NUM_FILTERS]
 
         # conv1 = tf.Print(conv1, [tf.shape(conv1)], message='conv1 ', summarize=5)
+        print('conv1.shape:', conv1.shape)
 
-    # Conv2
-    with tf.variable_scope('conv2'):
+        # Conv2
         conv2 = tf.layers.conv2d(inputs=conv1,
                                  filters=FLAGS.num_conv_filters[1],
                                  kernel_size=[11, 21],
@@ -72,10 +72,11 @@ def inference(sequences, seq_length, training=True):
                                  kernel_regularizer=regularizer)
         conv2 = tf.minimum(conv2, FLAGS.relu_cutoff)
         # conv2 = tf.layers.dropout(conv2, rate=FLAGS.dense_dropout_rate, training=training)
-        # conv2 = [batch_size, W, H, NUM_CHANNELS]
+        # conv2 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time, 20, NUM_FILTERS]
+        # conv2 = tf.Print(conv2, [tf.shape(conv2)], message='conv2 ', summarize=5)
+        print('conv2.shape:', conv2.shape)
 
-    # Conv3
-    with tf.variable_scope('conv3'):
+        # Conv3
         conv3 = tf.layers.conv2d(inputs=conv2,
                                  filters=FLAGS.num_conv_filters[2],
                                  kernel_size=[11, 21],
@@ -86,13 +87,14 @@ def inference(sequences, seq_length, training=True):
                                  kernel_regularizer=regularizer)
         conv3 = tf.minimum(conv3, FLAGS.relu_cutoff)
         # conv3 = tf.layers.dropout(conv3, rate=FLAGS.dense_dropout_rate, training=training)
-        # conv3 = [batch_size, W, H, NUM_CHANNELS]
-        # conv3 = tf.Print(conv3, [tf.shape(conv3)], message='conv3 ', summarize=5)
-        print('conv3.shape:', conv3.shape)
-        conv3 = tf.reshape(conv3, [conv3.shape[0], -1, 96])
-        print('conv3.shape:', conv3.shape)
-        # conv3 = tf.Print(conv3, [tf.shape(conv3)], message='conv3 fin ', summarize=5)
-        # REVIEW conv3 = [batch_size, W, H, NUM_CHANNELS]
+        # conv3 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time, 10, NUM_FILTERS]
+
+        # Reshape to: conv3 = [batch_size, time, 10 * NUM_FILTERS], where 10 is the number of
+        # frequencies left over from convolutions.
+        conv3 = tf.reshape(conv3, [conv3.shape[0], -1, 10 * FLAGS.num_conv_filters[2]])
+
+    # Update seq_length to convolutions. shape[1] = time steps; shape[0] = batch_size
+    seq_length = tf.tile([tf.shape(conv3)[1]], [tf.shape(conv3)[0]])
 
     # RNN layers
     with tf.variable_scope('rnn'):
@@ -150,7 +152,7 @@ def inference(sequences, seq_length, training=True):
         logits = tfc.rnn.transpose_batch_time(logits)
 
     # logits = [time, batch_size, NUM_CLASSES]
-    return logits
+    return logits, seq_length
 
 
 def loss(logits, seq_length, labels, label_length):

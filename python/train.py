@@ -45,7 +45,7 @@ def train(shuffle):
             sequences, seq_length, labels, label_length, originals = model.inputs_train(shuffle)
 
         # Build the logits (prediction) graph.
-        logits = model.inference(sequences, seq_length)
+        logits, seq_length = model.inference(sequences, seq_length)
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate loss/cost.

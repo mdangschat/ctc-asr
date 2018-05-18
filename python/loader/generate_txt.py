@@ -260,7 +260,8 @@ def _tedlium_loader(dataset_path, target, pattern):
                 # Remove ` '`. TEDLIUM transcribes `i'm` as `i 'm`.
                 text = text.replace(" '", '')
                 text = re.sub(pattern, '', text).replace('  ', ' ').strip()
-                if len(text.split(' ')) < 4:
+                # Remove labels with less than 5 words.
+                if len(text.split(' ')) < 5:
                     continue
                 output.append('{} {}\n'.format(part_path, text))
 
@@ -327,7 +328,7 @@ def _timit_loader(dataset_path, target, pattern):
 if __name__ == '__main__':
     __dry_run = False
 
-    # TEDLIUM v2
+    # TEDLIUMv2
     generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
     generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=__dry_run)
     generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=__dry_run)
