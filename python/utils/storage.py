@@ -25,6 +25,17 @@ def git_branch():
     return repo.active_branch.name
 
 
+def git_latest_tag():
+    """Return the latest added git tag.
+
+    Returns:
+        str: Git tag.
+    """
+    repo = Repo('.', search_parent_directories=True)
+    tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
+    return tags[-1].name
+
+
 def delete_file_if_exists(path):
     """Delete the file for the given path, if it exists.
 

@@ -29,7 +29,8 @@ def train(shuffle):
         shuffle (bool): Whether to use sorted inputs or shuffled inputs for training.
             See SortaGrad approach [Deep Speech 2].
     """
-    print('Version: {} Branch: {}'.format(storage.git_revision_hash(), storage.git_branch()))
+    print('Version: {} Branch: {} Commit: {}'
+          .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
     print('Parameters: ', get_parameters())
 
     max_steps_1st_epoch = FLAGS.num_examples_train // FLAGS.batch_size
@@ -107,7 +108,7 @@ def train(shuffle):
             # using a default summary saver.
             save_summaries_steps=FLAGS.log_frequency,   # Review needed when using SummarySaverHook?
             # The frequency, in number of global steps, that the global_step/sec is logged.
-            log_step_count_steps=FLAGS.log_frequency * 10,
+            log_step_count_steps=FLAGS.log_frequency * 20,
             # Attach hooks to session.
             hooks=session_hooks,
             # Number of seconds given to threads to stop after close() has been called.
