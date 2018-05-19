@@ -13,9 +13,13 @@ tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/c_1
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('batch_size', 4,
                         """(Maximum) Number of samples within a batch.""")
+
+# Performance.
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
+tf.flags.DEFINE_integer('num_threads', 2,
+                        """Number of threads used to preload data.""")
 
 # Learning Rate.
 tf.flags.DEFINE_float('learning_rate', 1e-5,
@@ -50,7 +54,7 @@ tf.flags.DEFINE_multi_integer('num_conv_filters', [32, 32, 96],
                               """Number of filters for each convolutional layer.""")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         """Number of hidden units in each of the RNN cells.""")
-tf.flags.DEFINE_integer('num_layers_rnn', 3,
+tf.flags.DEFINE_integer('num_layers_rnn', 1,
                         """Number of stacked RNN cells.""")
 tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
@@ -86,11 +90,11 @@ tf.flags.DEFINE_string('eval_dir', '',
 # Miscellaneous.
 tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
-tf.flags.DEFINE_integer('random_seed', 1337,
+tf.flags.DEFINE_integer('random_seed', 47111,
                         """TensorFlow random seed.""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
-tf.flags.DEFINE_boolean('allow_vram_growth', True,
+tf.flags.DEFINE_boolean('allow_vram_growth', False,
                         """Allow TensorFlow to allocate VRAM as needed, 
                         as opposed to allocating the whole VRAM at program start.""")
 

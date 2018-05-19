@@ -64,7 +64,7 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Set a sufficient bucket capacity.
-        capacity = 1024 + (4 * FLAGS.batch_size)
+        capacity = 512 + (4 * FLAGS.batch_size)
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
@@ -186,12 +186,10 @@ def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    num_threads = 8
-
     sequences, seq_len, labels, label_len, originals = tf.train.batch(
         tensors=[sequence, seq_len, label, label_len, original],
         batch_size=batch_size,
-        num_threads=num_threads,
+        num_threads=FLAGS.num_threads,
         capacity=128,
         enqueue_many=False,
         shapes=None,
@@ -238,7 +236,6 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    num_threads = 8
     boundaries = [235, 299, 368, 445, 525, 605, 678, 738, 791, 843, 898, 957,
                   1019, 1083, 1145, 1202, 1249, 1291, 1327, 1359, 1387, 1414,
                   1438, 1461, 1484, 1506, 1527, 1549, 1571, 1596, 1644, 2272]
@@ -250,7 +247,7 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
         tensors=[sequence, label, label_len, original],
         batch_size=batch_size,
         bucket_boundaries=boundaries,
-        num_threads=num_threads,
+        num_threads=FLAGS.num_threads,
         capacity=capacity // len(boundaries),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
