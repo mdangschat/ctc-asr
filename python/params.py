@@ -9,20 +9,20 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/c_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/3c3r2d_1',
                        """Directory where to write event logs and checkpoints.""")
-tf.flags.DEFINE_integer('batch_size', 4,
+tf.flags.DEFINE_integer('batch_size', 8,
                         """(Maximum) Number of samples within a batch.""")
 
 # Performance.
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
-tf.flags.DEFINE_integer('num_threads', 2,
+tf.flags.DEFINE_integer('num_threads', 4,
                         """Number of threads used to preload data.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 1e-5,
+tf.flags.DEFINE_float('learning_rate', 1e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
@@ -54,7 +54,7 @@ tf.flags.DEFINE_multi_integer('num_conv_filters', [32, 32, 96],
                               """Number of filters for each convolutional layer.""")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         """Number of hidden units in each of the RNN cells.""")
-tf.flags.DEFINE_integer('num_layers_rnn', 1,
+tf.flags.DEFINE_integer('num_layers_rnn', 3,
                         """Number of stacked RNN cells.""")
 tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
@@ -65,7 +65,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging and Output.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 200,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
