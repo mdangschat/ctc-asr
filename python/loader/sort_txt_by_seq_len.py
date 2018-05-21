@@ -53,6 +53,7 @@ def _sort_txt_by_seq_len(txt_path):
     with open(txt_path, 'r') as f:
         assert len(f.readlines()) == read_length, \
             'Something went wrong writing the data back to file.'
+        print('Successfully sorted {} lines of {}'.format(read_length, txt_path))
 
 
 if __name__ == '__main__':

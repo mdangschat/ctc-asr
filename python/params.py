@@ -9,24 +9,24 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/c_1',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/3c3r2d_1',
                        """Directory where to write event logs and checkpoints.""")
-tf.flags.DEFINE_integer('batch_size', 4,
+tf.flags.DEFINE_integer('batch_size', 8,
                         """(Maximum) Number of samples within a batch.""")
 
 # Performance.
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
-tf.flags.DEFINE_integer('num_threads', 2,
+tf.flags.DEFINE_integer('num_threads', 4,
                         """Number of threads used to preload data.""")
 
 # Learning Rate.
-tf.flags.DEFINE_float('learning_rate', 1e-5,
+tf.flags.DEFINE_float('learning_rate', 1e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_integer('steps_per_decay', 50000,
+tf.flags.DEFINE_integer('steps_per_decay', 100000,
                         """Number of steps after which learning rate decays.""")
 
 # Adam Optimizer.
@@ -50,11 +50,11 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_multi_integer('num_conv_filters', [32, 32, 96],
+tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               """Number of filters for each convolutional layer.""")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         """Number of hidden units in each of the RNN cells.""")
-tf.flags.DEFINE_integer('num_layers_rnn', 1,
+tf.flags.DEFINE_integer('num_layers_rnn', 3,
                         """Number of stacked RNN cells.""")
 tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
@@ -65,7 +65,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging and Output.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 200,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
@@ -73,7 +73,7 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_integer('num_examples_train', 223303,
+tf.flags.DEFINE_integer('num_examples_train', 224647,
                         """Number of examples in the training set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_test', 2620,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
@@ -114,7 +114,7 @@ def get_parameters():
     """
     s = 'Learning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
         'GPU-Options (use_warp_ctc={}; use_cudnn={});\n' \
-        'Conv (num_filters={});\n' \
+        'Conv (conv_filters={});\n' \
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \
@@ -122,7 +122,7 @@ def get_parameters():
         '{:,d} steps_per_epoch), log_frequency={:,d});\n'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                     FLAGS.use_warp_ctc, FLAGS.use_cudnn,
-                    FLAGS.num_conv_filters,
+                    FLAGS.conv_filters,
                     FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
                     FLAGS.num_units_dense,
                     FLAGS.beam_width,

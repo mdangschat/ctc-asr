@@ -83,9 +83,9 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
                 wer_sum += wer_batch
                 step += 1
 
-                print('{:%Y-%m-%d %H:%M:%S}: Step {:5,d} results: loss={:7.3f}; '
+                print('{:%Y-%m-%d %H:%M:%S}: Step {:5,d}/{:,d} Results: loss={:7.3f}; '
                       'mean_edit_distance={:5.3f}; WER={:5.3f}'
-                      .format(datetime.now(), step, loss_batch, mean_ed_batch, wer_batch))
+                      .format(datetime.now(), step, num_iter, loss_batch, mean_ed_batch, wer_batch))
 
             # Compute error rates.
             avg_loss = loss_sum / num_iter
@@ -126,11 +126,11 @@ def evaluate(eval_dir):
     with tf.Graph().as_default() as graph:
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
-            sequences, seq_length, labels, label_length, originals = model.inputs(
+            sequences, _, labels, label_length, originals = model.inputs(
                 target=EVALUATION_TARGET)
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits = model.inference(sequences, seq_length, training=False)
+        logits, seq_length = model.inference(sequences, training=False)
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate error rates
