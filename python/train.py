@@ -8,8 +8,7 @@ import tensorflow as tf
 from datetime import datetime
 
 from python.params import FLAGS, get_parameters
-from python.utils import storage
-from python.utils.tf_contrib import LoggerHook
+from python.util import storage, tf_contrib
 import python.model as model
 
 
@@ -97,7 +96,7 @@ def train(shuffle):
             # Deactivated `TraceHook`, because it's computational intensive.
             # TraceHook(file_writer, FLAGS.log_frequency * 5),
             # LoggingHook.
-            LoggerHook(loss)
+            tf_contrib.LoggerHook(loss)
         ]
 
         # The MonitoredTrainingSession takes care of session initialization, session resumption,

@@ -10,7 +10,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from python.loader.load_sample import load_sample
-from python.utils.storage import delete_file_if_exists
+from python.util.storage import delete_file_if_exists
 
 
 # Path to train.txt file.
@@ -19,7 +19,7 @@ TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
 
-def estimate_bucket_sizes(num_buckets=32, max_length=2000):
+def estimate_bucket_sizes(num_buckets=32, max_length=1750):
     """Estimate optimal bucket sizes based on the samples in `train.txt` file.
     Results are printed out or plotted.
     Optional, if `max_length` is greater than `0`, audio examples with feature vectors longer than

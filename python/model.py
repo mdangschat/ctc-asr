@@ -5,8 +5,7 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT
-from python.utils import tf_contrib
-from python.utils import error_metrics
+from python.util import tf_contrib, error_metrics
 import python.s_input as s_input
 
 if FLAGS.use_warp_ctc:
