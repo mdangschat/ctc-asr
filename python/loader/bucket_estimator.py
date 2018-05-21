@@ -9,7 +9,7 @@ from tqdm import tqdm
 import numpy as np
 from matplotlib import pyplot as plt
 
-from python.loader.load_sample import wav_length
+from python.loader.load_sample import wav_features_length
 
 
 # Path to train.txt file.
@@ -39,7 +39,7 @@ def estimate_bucket_sizes(num_buckets=32):
                      unit='files', dynamic_ncols=True):
         wav_path = line.split(' ', 1)[0]
         wav_path = os.path.join(DATASET_PATH, wav_path)
-        sample_len = wav_length(wav_path)
+        sample_len = wav_features_length(wav_path)
         lengths.append(sample_len)
     print()  # Clear line from tqdm progressbar.
 

@@ -140,7 +140,7 @@ def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
     return np.hstack([mel, power])
 
 
-def wav_length(file_path):
+def wav_features_length(file_path):
     """Return time units for a given audio file, corresponding to the number of units if
     the actual features from `load_sample()` where computed.
 
@@ -156,16 +156,10 @@ def wav_length(file_path):
     if not path.isfile(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
-    # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
-    (sr, y) = wav.read(file_path)
-
-    if not sr == FLAGS.sampling_rate:
-        raise TypeError('Sampling rate of {} found, expected {}.'.format(sr, FLAGS.sampling_rate))
-
     # Load audio data from drive.
     (sr, y) = wav.read(file_path)
 
-    return np.array(int(len(y) / sr / WIN_STEP), dtype=np.int32)
+    return np.array(int(len(y) // sr / WIN_STEP), dtype=np.int32)
 
 
 def signal_normalization(y):
