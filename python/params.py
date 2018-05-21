@@ -26,7 +26,7 @@ tf.flags.DEFINE_float('learning_rate', 1e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_integer('steps_per_decay', 100000,
+tf.flags.DEFINE_integer('steps_per_decay', 75000,
                         """Number of steps after which learning rate decays.""")
 
 # Adam Optimizer.
@@ -118,8 +118,8 @@ def get_parameters():
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \
-        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps / ' \
-        '{:,d} steps_per_epoch), log_frequency={:,d});\n'
+        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps; ' \
+        '{:,d} examples_per_epoch), log_frequency={:,d});\n'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                     FLAGS.use_warp_ctc, FLAGS.use_cudnn,
                     FLAGS.conv_filters,
