@@ -140,28 +140,6 @@ def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
     return np.hstack([mel, power])
 
 
-def wav_features_length(file_path):
-    """Return time units for a given audio file, corresponding to the number of units if
-    the actual features from `load_sample()` where computed.
-
-    Args:
-        file_path: Audio file path.
-
-    Returns:
-        np.ndarray: Number of time steps of feature extracted audio file.
-    """
-    if type(file_path) is not str:
-        file_path = str(file_path, 'utf-8')
-
-    if not path.isfile(file_path):
-        raise ValueError('"{}" does not exist.'.format(file_path))
-
-    # Load audio data from drive.
-    (sr, y) = wav.read(file_path)
-
-    return np.array(int(len(y) // sr / WIN_STEP), dtype=np.int32)
-
-
 def signal_normalization(y):
     """Normalize signal by dividing it by its Root Mean Square.
     Formula from:

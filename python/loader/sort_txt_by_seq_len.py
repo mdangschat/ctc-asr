@@ -8,7 +8,7 @@ import sys
 from tqdm import tqdm
 
 from python.util import storage
-from python.loader.load_sample import wav_features_length
+from python.loader.load_sample import load_sample
 
 
 DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
@@ -35,7 +35,7 @@ def _sort_txt_by_seq_len(txt_path):
                          unit='samples', dynamic_ncols=True):
             wav_path, label = line.split(' ', 1)
 
-            length = int(wav_features_length(os.path.join(DATASETS_PATH, wav_path)))
+            length = int(load_sample(os.path.join(DATASETS_PATH, wav_path))[1])
             buffer.append((length, wav_path, label))
 
         # Sort.
