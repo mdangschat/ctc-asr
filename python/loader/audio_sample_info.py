@@ -151,15 +151,15 @@ def display_sample_info(file_path, label=''):
     print('mel.shape:', mel.shape)
     mel = np.swapaxes(mel, 0, 1)
 
-    plt.figure(figsize=(12, 6))
-    plt.subplot(1, 2, 1)
+    plt.figure(figsize=(12, 8))
+    plt.subplot(2, 1, 1)
     display.specshow(mfcc, sr=16000, x_axis='time', y_axis='linear', hop_length=ls.WIN_STEP * 16000)
     # plt.set_cmap('magma')
     plt.xticks(rotation=295)
     plt.colorbar(format='%+2.0f')
     plt.title('MFCC')
 
-    plt.subplot(1, 2, 2)
+    plt.subplot(2, 1, 2)
     display.specshow(mel, sr=16000, x_axis='time', y_axis='linear', hop_length=ls.WIN_STEP * 16000)
     # plt.set_cmap('magma')
     plt.xticks(rotation=295)

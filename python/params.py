@@ -73,9 +73,9 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_integer('num_examples_train', 224647,
+tf.flags.DEFINE_integer('num_examples_train', 275449,
                         """Number of examples in the training set. `test.txt`""")
-tf.flags.DEFINE_integer('num_examples_test', 2620,
+tf.flags.DEFINE_integer('num_examples_test', 3679,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_validate', 2703,
                         """Number of examples in the validation set. `validate.txt`""")
@@ -119,7 +119,7 @@ def get_parameters():
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \
         'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps; ' \
-        '{:,d} examples_per_epoch), log_frequency={:,d});\n'
+        '{:,d} steps_per_epoch), log_frequency={:,d});\n'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                     FLAGS.use_warp_ctc, FLAGS.use_cudnn,
                     FLAGS.conv_filters,
@@ -128,4 +128,4 @@ def get_parameters():
                     FLAGS.beam_width,
                     FLAGS.batch_size, FLAGS.max_epochs,
                     math.floor(FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size),
-                    FLAGS.num_examples_train, FLAGS.log_frequency)
+                    int(FLAGS.num_examples_train // FLAGS.batch_size), FLAGS.log_frequency)

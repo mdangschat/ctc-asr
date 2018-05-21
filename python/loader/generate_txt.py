@@ -111,11 +111,21 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
 
 
 def _common_voice_loader(dataset_path, target, pattern):
-    # TODO: Document
-    # Downvotes must be at maximum 1/5 of upvotes.
-    # valid_accents = ['us', 'england', 'canada', 'australia']
-    # Accepting samples with only 1 upvote at the moment.
+    """Build the output string that can be written to the desired *.txt file.
 
+    Uses only the valid datasets, additional constraints are:
+    * Downvotes must be at maximum 1/5 of upvotes.
+    * Valid accents are: 'us', 'england', 'canada', 'australia'.
+    * Accepting samples with only 1 upvote at the moment.
+
+    Args:
+        dataset_path (str): Path of the data set.
+        target (str): 'train', 'test', or 'validate'
+        pattern (str): RegEx pattern that is used as whitelist for the written label texts.
+
+    Returns:
+        [str]: List containing the output string that can be written to *.txt file.
+    """
     # Folders for each target.
     train_folders = ['cv-valid-train']
     test_folders = ['cv-valid-test']
@@ -157,8 +167,8 @@ def _common_voice_loader(dataset_path, target, pattern):
                             storage.delete_file_if_exists(wav_path)
                             # Convert .mp3 file into .wav file, reduce volume to 0.95,
                             # downsample to 16kHz and mono sound.
-                            subprocess.call(['sox', '-v', '0.95', mp3_path, '-e', 'mu-law',
-                                             '-r', '16k', wav_path, 'remix', '1'])
+                            subprocess.call(['sox', '-v', '0.95', mp3_path, '-r', '16k',
+                                             wav_path, 'remix', '1'])
                             assert os.path.isfile(wav_path)
 
                             # Add dataset relative to dataset path, label to .txt file buffer.
