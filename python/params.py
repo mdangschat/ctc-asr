@@ -50,7 +50,7 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_multi_integer('num_conv_filters', [32, 32, 96],
+tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               """Number of filters for each convolutional layer.""")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         """Number of hidden units in each of the RNN cells.""")
@@ -114,7 +114,7 @@ def get_parameters():
     """
     s = 'Learning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
         'GPU-Options (use_warp_ctc={}; use_cudnn={});\n' \
-        'Conv (num_filters={});\n' \
+        'Conv (conv_filters={});\n' \
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \
@@ -122,7 +122,7 @@ def get_parameters():
         '{:,d} steps_per_epoch), log_frequency={:,d});\n'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                     FLAGS.use_warp_ctc, FLAGS.use_cudnn,
-                    FLAGS.num_conv_filters,
+                    FLAGS.conv_filters,
                     FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
                     FLAGS.num_units_dense,
                     FLAGS.beam_width,

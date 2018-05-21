@@ -6,6 +6,7 @@ import tensorflow.contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT
 from python.utils import tf_contrib
+from python.utils import error_metrics
 import python.s_input as s_input
 
 if FLAGS.use_warp_ctc:
@@ -33,62 +34,11 @@ def inference(sequences, training=True):
     # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
     sequences = tf.reshape(sequences, [sequences.shape[0], -1, sequences.shape[2], 1])
 
-    # Conv1
+    # Convolutional layers.
     with tf.variable_scope('conv'):
-        # https://www.tensorflow.org/api_docs/python/tf/layers/conv2d
-        conv1 = tf.layers.conv2d(inputs=sequences,
-                                 filters=FLAGS.num_conv_filters[0],
-                                 kernel_size=[11, 41],
-                                 strides=[2, 2],
-                                 padding='SAME',
-                                 activation=tf.nn.relu,
-                                 kernel_initializer=tf.glorot_normal_initializer(),
-                                 kernel_regularizer=regularizer)
-        conv1 = tf.minimum(conv1, FLAGS.relu_cutoff)
-        # conv1 = tf.layers.dropout(conv1, rate=FLAGS.dense_dropout_rate, training=training)
+        conv_output, seq_length = tf_contrib.conv_layers(sequences)
 
-        # Convolutional layer output shapes:
-        # Conv 'VALID' outout width (W) is calculated by: W = (W_i - K_w) // S_w + 1
-        # Conv 'SAME' outout width (W) is calculated by: W = (W_i - K_w + 2*(K_w//2)) // S_w + 1
-        # Where W_i is the input width, K_w the kernel width, and S_w the stride width.
-        # Height (H) is calculated analog to width (W).
-        # conv1 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time/2, 40, NUM_FILTERS]
-
-        # Conv2
-        conv2 = tf.layers.conv2d(inputs=conv1,
-                                 filters=FLAGS.num_conv_filters[1],
-                                 kernel_size=[11, 21],
-                                 strides=[1, 2],
-                                 padding='SAME',
-                                 activation=tf.nn.relu,
-                                 kernel_initializer=tf.glorot_normal_initializer(),
-                                 kernel_regularizer=regularizer)
-        conv2 = tf.minimum(conv2, FLAGS.relu_cutoff)
-        # conv2 = tf.layers.dropout(conv2, rate=FLAGS.dense_dropout_rate, training=training)
-        # conv2 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time, 20, NUM_FILTERS]
-
-        # Conv3
-        conv3 = tf.layers.conv2d(inputs=conv2,
-                                 filters=FLAGS.num_conv_filters[2],
-                                 kernel_size=[11, 21],
-                                 strides=[1, 2],
-                                 padding='SAME',
-                                 activation=tf.nn.relu,
-                                 kernel_initializer=tf.glorot_normal_initializer(),
-                                 kernel_regularizer=regularizer)
-        conv3 = tf.minimum(conv3, FLAGS.relu_cutoff)
-        # conv3 = tf.layers.dropout(conv3, rate=FLAGS.dense_dropout_rate, training=training)
-        # conv3 = [batch_size, W, H, NUM_CHANNELS] = [batch_size, ~time, 10, NUM_FILTERS]
-
-        # Reshape to: conv3 = [batch_size, time, 10 * NUM_FILTERS], where 10 is the number of
-        # frequencies left over from convolutions.
-        conv3 = tf.reshape(conv3, [conv3.shape[0], -1, 10 * FLAGS.num_conv_filters[2]])
-
-    # Update seq_length to convolutions. shape[1] = time steps; shape[0] = batch_size
-    # Review if the above estimate can be changed with an exact calculation.
-    seq_length = tf.tile([tf.shape(conv3)[1]], [tf.shape(conv3)[0]])
-
-    # RNN layers
+    # RNN layers.
     with tf.variable_scope('rnn'):
         dropout_rate = FLAGS.rnn_dropout_rate if training else 0.0
 
@@ -100,7 +50,7 @@ def inference(sequences, training=True):
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
             rnn4, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
-                                                                 inputs=conv3,
+                                                                 inputs=conv_output,
                                                                  dtype=TF_FLOAT,
                                                                  sequence_length=seq_length,
                                                                  parallel_iterations=64,  # review
@@ -109,7 +59,7 @@ def inference(sequences, training=True):
 
         else:   # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
-            dense3 = tfc.rnn.transpose_batch_time(conv3)
+            dense3 = tfc.rnn.transpose_batch_time(conv_output)
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
             rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
@@ -239,7 +189,7 @@ def decode(logits, seq_len, originals=None):
     originals = originals if originals is not None else np.array([], dtype=np.int32)
 
     # Translate decoded integer data back to character strings.
-    plaintext, plaintext_summary = tf.py_func(tf_contrib.dense_to_text, [dense, originals],
+    plaintext, plaintext_summary = tf.py_func(error_metrics.dense_to_text, [dense, originals],
                                               [tf.string, tf.string], name='py_dense_to_text')
 
     return decoded, plaintext, plaintext_summary
@@ -277,8 +227,8 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
     mean_edit_distance = tf.reduce_mean(edit_distances)
 
     # Word error rates for the batch and average word error rate (WER).
-    wers, wer = tf.py_func(tf_contrib.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
-                           name='py_wer_batch')
+    wers, wer = tf.py_func(error_metrics.wer_batch, [originals, decoded_texts],
+                           [TF_FLOAT, TF_FLOAT], name='py_wer_batch')
 
     return edit_distances, mean_edit_distance, wers, wer
 
