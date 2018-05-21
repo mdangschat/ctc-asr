@@ -21,6 +21,8 @@ Generated data format:
 import sys
 import os
 import re
+import csv
+import subprocess
 
 from tqdm import tqdm
 from scipy.io import wavfile
@@ -38,6 +40,8 @@ LIBRI_SPEECH_PATH = os.path.join(DATASET_PATH, 'libri_speech/LibriSpeech')
 TEDLIUM_PATH = os.path.join(DATASET_PATH, 'tedlium')
 # Path to the TIMIT dataset.
 TIMIT_PATH = os.path.join(DATASET_PATH, 'timit/TIMIT')
+# Path to the Mozilla Common Voice dataset.
+COMMON_VOICE_PATH = os.path.join(DATASET_PATH, 'common_voice/cv_corpus_v1')
 
 # Where to generate the .txt files, e.g. /home/user/../data/<target>.txt
 TXT_TARGET_PATH = '/home/marc/workspace/speech/data/'
@@ -68,7 +72,8 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
     loaders = {
         'timit': _timit_loader,
         'libri_speech': _libri_speech_loader,
-        'tedlium': _tedlium_loader
+        'tedlium': _tedlium_loader,
+        'common_voice': _common_voice_loader
     }
 
     if dataset_name not in loaders:
@@ -103,6 +108,64 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
         # Write data to the file.
         with open(target_path, 'w') as f:
             f.writelines(output)
+
+
+def _common_voice_loader(dataset_path, target, pattern):
+    # TODO: Document
+    # Downvotes must be at maximum 1/5 of upvotes.
+    # valid_accents = ['us', 'england', 'canada', 'australia']
+    # Accepting samples with only 1 upvote at the moment.
+
+    # Folders for each target.
+    train_folders = ['cv-valid-train']
+    test_folders = ['cv-valid-test']
+    validate_folders = ['cv-valid-dev']
+
+    # Assign target folders.
+    if target == 'train':
+        folders = train_folders
+    elif target == 'test':
+        folders = test_folders
+    else:
+        folders = validate_folders
+
+    # Define valid accents. Review if '' should be accepted as well.
+    valid_accents = ['us', 'england', 'canada', 'australia']
+
+    output = []
+    for folder in folders:
+        # Open .csv file.
+        with open('{}.csv'.format(os.path.join(dataset_path, folder))) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            csv_lines = list(csv_reader)
+            # print('csv_header:', csv_lines[0])
+
+            for line in csv_lines[1:]:
+                # Cleanup label text.
+                text = re.sub(pattern, '', line[1]).strip().replace('  ', ' ')
+                # Enfore min label length.
+                if len(text) > 1:
+                    # Review: Accept only 2 upvote examples, like documented?
+                    # Check upvotes vs downvotes.
+                    if int(line[2]) >= 1 and int(line[3]) / int(line[2]) <= 1/5:
+                        # Check if speaker accent is valid.
+                        if line[6] in valid_accents:
+                            mp3_path = os.path.join(dataset_path, line[0])
+                            assert os.path.isfile(mp3_path)
+                            wav_path = '{}.wav'.format(mp3_path[:-4])
+
+                            storage.delete_file_if_exists(wav_path)
+                            # Convert .mp3 file into .wav file, reduce volume to 0.95,
+                            # downsample to 16kHz and mono sound.
+                            subprocess.call(['sox', '-v', '0.95', mp3_path, '-e', 'mu-law',
+                                             '-r', '16k', wav_path, 'remix', '1'])
+                            assert os.path.isfile(wav_path)
+
+                            # Add dataset relative to dataset path, label to .txt file buffer.
+                            wav_path = os.path.relpath(wav_path, DATASET_PATH)
+                            output.append('{} {}\n'.format(wav_path, text))
+
+    return output
 
 
 def _libri_speech_loader(dataset_path, target, pattern):
@@ -329,15 +392,20 @@ if __name__ == '__main__':
     __dry_run = False
 
     # TEDLIUMv2
-    generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
-    generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=__dry_run)
-    generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=__dry_run)
+    # generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
+    # generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=__dry_run)
+    # generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=__dry_run)
 
     # TIMIT
-    generate_list(TIMIT_PATH, 'timit', 'test', dry_run=__dry_run)
-    generate_list(TIMIT_PATH, 'timit', 'train', dry_run=__dry_run)
+    # generate_list(TIMIT_PATH, 'timit', 'test', dry_run=__dry_run)
+    # generate_list(TIMIT_PATH, 'timit', 'train', dry_run=__dry_run)
 
     # LibriSpeech ASR Corpus
-    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=__dry_run)
-    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'validate', dry_run=__dry_run)
-    generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=__dry_run)
+    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=__dry_run)
+    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'validate', dry_run=__dry_run)
+    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=__dry_run)
+
+    # Mozilla Common Voice
+    generate_list(COMMON_VOICE_PATH, 'common_voice', 'test', dry_run=__dry_run)
+    generate_list(COMMON_VOICE_PATH, 'common_voice', 'validate', dry_run=__dry_run)
+    generate_list(COMMON_VOICE_PATH, 'common_voice', 'train', dry_run=__dry_run)

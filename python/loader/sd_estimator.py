@@ -4,6 +4,7 @@ Calculate mean and standard deviation for a given training txt file.
 
 import os
 import sys
+import random
 
 import numpy as np
 from tqdm import tqdm
@@ -28,6 +29,8 @@ def calculate_dataset_stats(txt_path):
     # Read train.txt file.
     with open(txt_path, 'r') as f:
         lines = f.readlines()
+        random.shuffle(lines)
+        lines = lines[: 2 ** 17]
 
         features = []   # Output buffer.
 
