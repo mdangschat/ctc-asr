@@ -26,7 +26,7 @@ tf.flags.DEFINE_float('learning_rate', 1e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_integer('steps_per_decay', 50000,
+tf.flags.DEFINE_integer('steps_per_decay', 100000,
                         """Number of steps after which learning rate decays.""")
 
 # Adam Optimizer.
