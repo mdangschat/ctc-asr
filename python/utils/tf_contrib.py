@@ -22,15 +22,15 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
         v = self.get_slot(var, 'v')
         beta1_power, beta2_power = self._get_beta_accumulators()
 
-        m_hat = m / (1. - beta1_power)
-        v_hat = v / (1. - beta2_power)
+        m_hat = m / (1.0 - beta1_power)
+        v_hat = v / (1.0 - beta2_power)
 
         step = m_hat / (v_hat ** 0.5 + self._epsilon_t)
 
         # Use a histogram summary to monitor it during training.
         tf.summary.histogram('step', step)
 
-        current_lr = self._lr_t * tf.sqrt(1. - beta2_power) / (1. - beta1_power)
+        current_lr = self._lr_t * tf.sqrt(1.0 - beta2_power) / (1.0 - beta1_power)
         tf.summary.scalar('estimated_lr', current_lr)
 
         return super(AdamOptimizerLogger, self)._apply_dense(grad, var)
@@ -59,11 +59,11 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
         [batch_size, time, 10 * NUM_FILTERS]
     where 10 is the number of frequencies left over from convolutions.
 
-    Args:
-        sequences ():
-        filters ():
-        kernel_sizes ():
-        strides ():
+    Args:       TODO: Document
+        sequences (tf.Tensor):
+        filters (Tuple[int]):
+        kernel_sizes (Tuple[Tuple[int, int]]):
+        strides (Tuple[Tuple[int, int]]):
         kernel_initializer ():
         kernel_regularizer ():
 
@@ -83,7 +83,9 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
                          'the same number of elements.')
 
     output = sequences
-    for i, _filter, kernel_size, stride in enumerate(zip(filters, kernel_sizes, strides)):
+    for i, tmp in enumerate(zip(filters, kernel_sizes, strides)):
+        _filter, kernel_size, stride = tmp
+
         output = tf.layers.conv2d(inputs=output,
                                   filters=_filter,
                                   kernel_size=kernel_size,
@@ -92,19 +94,20 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
                                   activation=tf.nn.relu,
                                   kernel_initializer=kernel_initializer,
                                   kernel_regularizer=kernel_regularizer)
+
         output = tf.minimum(output, FLAGS.relu_cutoff)
         # output = tf.layers.dropout(output, rate=FLAGS.dense_dropout_rate, training=training)
 
-        # Reshape to: conv3 = [batch_size, time, 10 * NUM_FILTERS], where 10 is the number of
-        # frequencies left over from convolutions.
-        output = tf.reshape(output, [output.shape[0], -1, 10 * FLAGS.num_conv_filters[2]])
+    # Reshape to: conv3 = [batch_size, time, 10 * NUM_FILTERS], where 10 is the number of
+    # frequencies left over from convolutions.
+    output = tf.reshape(output, [output.shape[0], -1, 10 * filters[-1]])
 
-        # Update seq_length to convolutions. shape[1] = time steps; shape[0] = batch_size
-        # Note that the shortest samples within a batch are stretched to the convolutional
-        # length of the longest one.
-        seq_length = tf.tile([tf.shape(output)[1]], [tf.shape(output)[0]])
+    # Update seq_length to convolutions. shape[1] = time steps; shape[0] = batch_size
+    # Note that the shortest samples within a batch are stretched to the convolutional
+    # length of the longest one.
+    seq_length = tf.tile([tf.shape(output)[1]], [tf.shape(output)[0]])
 
-        return output, seq_length
+    return output, seq_length
 
 
 def bidirectional_cells(num_units, num_layers, dropout=1.0):
