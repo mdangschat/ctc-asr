@@ -34,7 +34,7 @@ def load_sample(file_path, feature_type='mel', normalize_features='local', norma
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
 
-        feature_type (str): Type of features to generate. Options are 'mel' and 'mfcc'.
+        feature_type (str): Type of features to generate. Options are `'mel'` and `'mfcc'`.
 
         normalize_features (str or bool):
             Whether to normalize the generated features with the stated method or not.
@@ -129,15 +129,24 @@ def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
 
 def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
     # L8ER Documentation
+    # TODO: Cleanup and Refactoring.
 
     # 2 values. The first is a numpy array of size (NUMFRAMES by nfilt) containing features.
     # Each row holds 1 feature vector. The second return value is the energy in each frame
     # (total energy, unwindowed)
-    mel, power = psf.fbank(signal=y, samplerate=sr, winlen=win_len,
-                           winstep=win_step, nfilt=num_features - 1, nfft=n_fft,
-                           lowfreq=f_min, highfreq=f_max, preemph=0.97)
-    power = np.reshape(power, [-1, 1])
-    return np.hstack([mel, power])
+    # mel, power = psf.fbank(signal=y, samplerate=sr, winlen=win_len,
+    #                        winstep=win_step, nfilt=num_features - 1, nfft=n_fft,
+    #                        lowfreq=f_min, highfreq=f_max, preemph=0.97,
+    #                        winfunc=lambda x: np.ones((x,)))
+    #
+    # # Append power.
+    # power = np.reshape(power, [-1, 1])
+    # return np.hstack([np.log(mel), power])
+
+    mel = psf.logfbank(signal=y, samplerate=sr, winlen=win_len,
+                       winstep=win_step, nfilt=num_features, nfft=n_fft,
+                       lowfreq=f_min, highfreq=f_max, preemph=0.97)
+    return mel
 
 
 def signal_normalization(y):

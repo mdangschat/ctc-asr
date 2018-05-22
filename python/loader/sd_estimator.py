@@ -30,6 +30,7 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
         random.shuffle(lines)
+        random.shuffle(lines)
         lines = lines[: 2 ** 16]
 
         features = []   # Output buffer.
@@ -38,7 +39,7 @@ def calculate_dataset_stats(txt_path):
                          unit='samples', dynamic_ncols=True):
             wav_path, _ = line.split(' ', 1)
 
-            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path),
+            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
                                      normalize_features=False, normalize_signal=False)
             features.append(feature)
 
