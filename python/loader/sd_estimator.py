@@ -30,7 +30,7 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
         random.shuffle(lines)
-        lines = lines[: 2 ** 17]
+        lines = lines[: 2 ** 16]
 
         features = []   # Output buffer.
 
