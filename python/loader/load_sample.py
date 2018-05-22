@@ -121,8 +121,21 @@ def load_sample(file_path, feature_type='mel', normalize_features='local', norma
 
 
 def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
-    # L8ER Documentation
+    """Convert a wav signal into Mel Frequency Cepstral Coefficients.
 
+    Args:
+        y (np.ndarray): Wav signal.
+        sr (int):  Sampling rate.
+        win_len (float): Window length in seconds.
+        win_step (float): Window stride in seconds.
+        num_features (int): Number of features to generate.
+        n_fft (int): Number of Fast Fourier Transforms.
+        f_min (float): Minimum frequency to consider.
+        f_max (float): Maximum frequency to consider.
+
+    Returns:
+        np.ndarray: MFCC feature vectors. Shape: [time, num_features]
+    """
     if num_features % 2 != 0:
         raise ValueError('num_features not a multiple of 2.')
 
@@ -140,21 +153,21 @@ def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
 
 
 def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
-    # L8ER Documentation
-    # TODO: Cleanup and Refactoring.
+    """Convert a wav signal into a logarithmically scaled mel filterbank.
 
-    # 2 values. The first is a numpy array of size (NUMFRAMES by nfilt) containing features.
-    # Each row holds 1 feature vector. The second return value is the energy in each frame
-    # (total energy, unwindowed)
-    # mel, power = psf.fbank(signal=y, samplerate=sr, winlen=win_len,
-    #                        winstep=win_step, nfilt=num_features - 1, nfft=n_fft,
-    #                        lowfreq=f_min, highfreq=f_max, preemph=0.97,
-    #                        winfunc=lambda x: np.ones((x,)))
-    #
-    # # Append power.
-    # power = np.reshape(power, [-1, 1])
-    # return np.hstack([np.log(mel), power])
+    Args:
+        y (np.ndarray): Wav signal.
+        sr (int):  Sampling rate.
+        win_len (float): Window length in seconds.
+        win_step (float): Window stride in seconds.
+        num_features (int): Number of features to generate.
+        n_fft (int): Number of Fast Fourier Transforms.
+        f_min (float): Minimum frequency to consider.
+        f_max (float): Maximum frequency to consider.
 
+    Returns:
+        np.ndarray: Mel-filterbank. Shape: [time, num_features]
+    """
     mel = psf.logfbank(signal=y, samplerate=sr, winlen=win_len,
                        winstep=win_step, nfilt=num_features, nfft=n_fft,
                        lowfreq=f_min, highfreq=f_max, preemph=0.97)

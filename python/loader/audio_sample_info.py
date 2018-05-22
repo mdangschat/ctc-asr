@@ -3,8 +3,6 @@
 Note that the network does not use `librosa`_ anymore, because it has problems
 with concurrent sample loading. This module has not been updated yet.
 
-L8ER: Move away from librosa, use python_speech_features.
-
 .. _librosa:
     https://librosa.github.io/librosa/index.html
 """

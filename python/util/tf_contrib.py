@@ -59,13 +59,19 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
         [batch_size, time, 10 * NUM_FILTERS]
     where 10 is the number of frequencies left over from convolutions.
 
-    Args:       TODO: Document
+    Args:
         sequences (tf.Tensor):
+            The input sequences.
         filters (Tuple[int]):
+            Tuple of number of filters per convolutional layers.
         kernel_sizes (Tuple[Tuple[int, int]]):
+            Tuple of tuples of height and width values. One tuple per convolutional layer.
         strides (Tuple[Tuple[int, int]]):
-        kernel_initializer ():
-        kernel_regularizer ():
+            Tuple of tuples of x and y stride values. One tuple per convolutional layer.
+        kernel_initializer (tf.Tensor):
+            TensorFlow kernel initializer.
+        kernel_regularizer (tf.Tensor):
+            TensorFlow kernel regularizer.
 
     Returns:
         tf.Tensor: `output`
