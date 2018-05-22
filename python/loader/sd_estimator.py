@@ -31,7 +31,7 @@ def calculate_dataset_stats(txt_path):
         lines = f.readlines()
         random.shuffle(lines)
         random.shuffle(lines)
-        lines = lines[: 2 ** 16]
+        lines = lines[: 2 ** 15]
 
         features = []   # Output buffer.
 
@@ -41,6 +41,8 @@ def calculate_dataset_stats(txt_path):
 
             feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
                                      normalize_features=False, normalize_signal=False)
+            assert len(feature) > 1
+
             features.append(feature)
 
         # Reduce the [num_samples, time, num_features] to [total_time, num_features] array.
