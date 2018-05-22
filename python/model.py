@@ -48,17 +48,17 @@ def inference(sequences, training=True):
                                                                 dropout=dropout_rate)
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
-            rnn4, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
-                                                                 inputs=conv_output,
-                                                                 dtype=TF_FLOAT,
-                                                                 sequence_length=seq_length,
-                                                                 parallel_iterations=64,  # review
-                                                                 time_major=False)
-            # REVIEW: rnn4 = []
+            rnn_output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
+                                                                       inputs=conv_output,
+                                                                       dtype=TF_FLOAT,
+                                                                       sequence_length=seq_length,
+                                                                       parallel_iterations=64,
+                                                                       time_major=False)
+            # rnn_output = [batch_size, time, num_units_rnn * 2]
 
         else:   # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
-            dense3 = tfc.rnn.transpose_batch_time(conv_output)
+            conv_output = tfc.rnn.transpose_batch_time(conv_output)
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
             rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
@@ -71,19 +71,20 @@ def inference(sequences, training=True):
                                              kernel_initializer=None,   # Glorot Uniform Initializer
                                              bias_initializer=None)     # Constant 0.0 Initializer
 
-            rnn4, _ = rnn(dense3)
-            rnn4 = tfc.rnn.transpose_batch_time(rnn4)
-            # rnn4 = [batch_size, time, num_units_rnn * 2]
+            rnn_output, _ = rnn(conv_output)
+            rnn_output = tfc.rnn.transpose_batch_time(rnn_output)
+            # rnn_output = [batch_size, time, num_units_rnn * 2]
 
     # Dense4
     with tf.variable_scope('dense4'):
-        dense4 = tf.layers.dense(rnn4, FLAGS.num_units_dense,
+        dense4 = tf.layers.dense(rnn_output, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
         dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
         dense4 = tf.layers.dropout(dense4, rate=FLAGS.dense_dropout_rate, training=training)
-        # REVIEW: dense4 = []
+        # dense4 = [batch_size, conv_time, num_units_dense]
+        dense4 = tf.Print(dense4, [tf.shape(dense4)], message='dense4 ')
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because most TensorFlow loss functions perform
