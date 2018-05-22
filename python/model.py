@@ -84,7 +84,6 @@ def inference(sequences, training=True):
         dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
         dense4 = tf.layers.dropout(dense4, rate=FLAGS.dense_dropout_rate, training=training)
         # dense4 = [batch_size, conv_time, num_units_dense]
-        dense4 = tf.Print(dense4, [tf.shape(dense4)], message='dense4 ')
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because most TensorFlow loss functions perform
