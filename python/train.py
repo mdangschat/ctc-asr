@@ -26,7 +26,10 @@ def train(shuffle):
 
     Args:
         shuffle (bool): Whether to use sorted inputs or shuffled inputs for training.
-            See SortaGrad approach [Deep Speech 2].
+            See SortaGrad approach as documented in `Deep Speech 2`_.
+
+    .. _`Deep Speech 2`:
+        https://arxiv.org/abs/1512.02595
     """
     print('Version: {} Branch: {} Commit: {}'
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
@@ -117,19 +120,23 @@ def train(shuffle):
             config=session_config
         )
 
-        current_global_step = -1
         with session:
+            current_global_step = session.run([global_step])
+            print('current_global_step=', current_global_step)  # TODO
+            current_global_step += 1  # Offset accounts for TF counting from 0.
+
+            # Switch to shuffle if the first epoch has finished. See SortaGrad.
+            if not shuffle and current_global_step >= max_steps_1st_epoch:
+                session.close()
+                train(True)
+                return
+
             while not session.should_stop():
                 try:
-                    result = session.run([train_op])
-                    current_global_step = result[0][-1]
+                    session.run([train_op])
 
                 except tf.errors.OutOfRangeError:
                     print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
-
-        current_global_step += 1    # Offset accounts for TF sometimes starts counting from 0 or 1.
-        if max_steps_1st_epoch <= current_global_step < max_steps_total:
-            train(True)
 
 
 # noinspection PyUnusedLocal

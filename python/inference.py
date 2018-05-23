@@ -19,8 +19,23 @@ WAV_FILE = '/home/marc/workspace/datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR
 
 
 def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph):
-    # TODO Document
+    """Restore model from latest checkpoint and run the inference for the provided `sequence`.
 
+    Args:
+        logits_op (tf.Tensor):
+            Logits operator.
+        decoded_op (tf.Tensor):
+            Decoded operator.
+        plaintext_op (tf.Tensor):
+            Plaintext operator.
+        sequences (List[np.ndarray]):
+            Python list of 2D numpy arrays, each containing audio features.
+        sequences_ph (tf.Tensor):
+            Placeholder for the input sequences.
+
+    Returns:
+        Nothing.
+    """
     # Session configuration.
     session_config = tf.ConfigProto(
         log_device_placement=False,
@@ -65,23 +80,28 @@ def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph
 
 
 def transcribe():
-    # TODO Document
+    """Load an audio file and prepare the TensorFlow graph for inference.
+
+    Returns:
+        Nothing.
+    """
     assert os.path.isfile(WAV_FILE)
 
-    with tf.Graph().as_default() as graph:
+    with tf.Graph().as_default():
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
+            # Load audio file into tensor.
             sequences, _ = load_sample(WAV_FILE)
             sequences = [sequences] * FLAGS.batch_size
             sequences_ph = tf.placeholder(dtype=TF_FLOAT,
                                           shape=[FLAGS.batch_size, None, NUM_FEATURES])
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits, seq_length = model.inference(sequences_ph, training=False)
+        logits_op, seq_length = model.inference(sequences_ph, training=False)
 
-        decoded, plaintext, _ = model.decode(logits, seq_length, originals=None)
+        decoded_op, plaintext_op, _ = model.decode(logits_op, seq_length, originals=None)
 
-        transcribe_once(logits, decoded, plaintext, sequences, sequences_ph)
+        transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph)
 
 
 # noinspection PyUnusedLocal

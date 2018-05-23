@@ -264,7 +264,7 @@ def train(_loss, global_step):
 
     tf.summary.scalar('learning_rate', lr)
 
-    return optimizer.minimize(_loss, global_step=global_step), global_step
+    return optimizer.minimize(_loss, global_step=global_step)
 
 
 def inputs_train(shuffle):
