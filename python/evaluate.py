@@ -18,7 +18,7 @@ else:
     import python.model as model
 
 
-# Which dataset *.txt file to use for evaluation. 'train' or 'validate'.
+# Which dataset *.txt file to use for evaluation. 'test' or 'validate'.
 EVALUATION_TARGET = 'test'
 
 
@@ -156,7 +156,8 @@ def main(argv=None):
     """TensorFlow starting routine."""
 
     # Determine evaluation log directory.
-    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_eval'.format(FLAGS.train_dir)
+    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}'\
+        .format(FLAGS.train_dir, EVALUATION_TARGET)
 
     # Delete old evaluation data if requested.
     if tf.gfile.Exists(eval_dir) and FLAGS.delete:
