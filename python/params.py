@@ -112,7 +112,7 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
+    s = '\nLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
         'GPU-Options (use_warp_ctc={}; use_cudnn={});\n' \
         'Conv (conv_filters={});\n' \
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
