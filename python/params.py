@@ -9,20 +9,24 @@ from python.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/s_4',
+tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/3c3r2d_1',
                        """Directory where to write event logs and checkpoints.""")
-tf.flags.DEFINE_integer('batch_size', 4,
+tf.flags.DEFINE_integer('batch_size', 8,
                         """(Maximum) Number of samples within a batch.""")
+
+# Performance.
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
+tf.flags.DEFINE_integer('num_threads', 4,
+                        """Number of threads used to preload data.""")
 
 # Learning Rate.
 tf.flags.DEFINE_float('learning_rate', 1e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
                       """Learning rate decay factor.""")
-tf.flags.DEFINE_integer('steps_per_decay', 50000,
+tf.flags.DEFINE_integer('steps_per_decay', 75000,
                         """Number of steps after which learning rate decays.""")
 
 # Adam Optimizer.
@@ -46,11 +50,15 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_integer('num_units_rnn', 2650,
-                        """Number of hidden units in each of the RNN cells.""")
-tf.flags.DEFINE_integer('num_layers_rnn', 1,
+tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
+                              """Number of filters for each convolutional layer.""")
+
+tf.flags.DEFINE_integer('num_layers_rnn', 3,
                         """Number of stacked RNN cells.""")
-tf.flags.DEFINE_integer('num_units_dense', 2650,
+tf.flags.DEFINE_integer('num_units_rnn', 2048,
+                        """Number of hidden units in each of the RNN cells.""")
+
+tf.flags.DEFINE_integer('num_units_dense', 2048,
                         """Number of units per dense layer.""")
 
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
@@ -59,7 +67,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging and Output.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
-tf.flags.DEFINE_integer('log_frequency', 250,
+tf.flags.DEFINE_integer('log_frequency', 100,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
@@ -67,9 +75,9 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-tf.flags.DEFINE_integer('num_examples_train', 225378,
+tf.flags.DEFINE_integer('num_examples_train', 272537,
                         """Number of examples in the training set. `test.txt`""")
-tf.flags.DEFINE_integer('num_examples_test', 2620,
+tf.flags.DEFINE_integer('num_examples_test', 3679,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_validate', 2703,
                         """Number of examples in the validation set. `validate.txt`""")
@@ -84,11 +92,11 @@ tf.flags.DEFINE_string('eval_dir', '',
 # Miscellaneous.
 tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
-tf.flags.DEFINE_integer('random_seed', 1337,
+tf.flags.DEFINE_integer('random_seed', 47111,
                         """TensorFlow random seed.""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")
-tf.flags.DEFINE_boolean('allow_vram_growth', True,
+tf.flags.DEFINE_boolean('allow_vram_growth', False,
                         """Allow TensorFlow to allocate VRAM as needed, 
                         as opposed to allocating the whole VRAM at program start.""")
 
@@ -106,18 +114,20 @@ def get_parameters():
     Returns:
         (str): Training parameters.
     """
-    s = 'Learning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
+    s = '\nLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
         'GPU-Options (use_warp_ctc={}; use_cudnn={});\n' \
+        'Conv (conv_filters={});\n' \
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \
-        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} max_steps / ' \
+        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps; ' \
         '{:,d} steps_per_epoch), log_frequency={:,d});\n'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                     FLAGS.use_warp_ctc, FLAGS.use_cudnn,
+                    FLAGS.conv_filters,
                     FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
                     FLAGS.num_units_dense,
                     FLAGS.beam_width,
                     FLAGS.batch_size, FLAGS.max_epochs,
                     math.floor(FLAGS.max_epochs * FLAGS.num_examples_train / FLAGS.batch_size),
-                    FLAGS.num_examples_train, FLAGS.log_frequency)
+                    int(FLAGS.num_examples_train // FLAGS.batch_size), FLAGS.log_frequency)

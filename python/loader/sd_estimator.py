@@ -4,6 +4,7 @@ Calculate mean and standard deviation for a given training txt file.
 
 import os
 import sys
+import random
 
 import numpy as np
 from tqdm import tqdm
@@ -28,6 +29,9 @@ def calculate_dataset_stats(txt_path):
     # Read train.txt file.
     with open(txt_path, 'r') as f:
         lines = f.readlines()
+        random.shuffle(lines)
+        random.shuffle(lines)
+        lines = lines[: 2 ** 15]
 
         features = []   # Output buffer.
 
@@ -35,8 +39,10 @@ def calculate_dataset_stats(txt_path):
                          unit='samples', dynamic_ncols=True):
             wav_path, _ = line.split(' ', 1)
 
-            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path),
+            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
                                      normalize_features=False, normalize_signal=False)
+            assert len(feature) > 1
+
             features.append(feature)
 
         # Reduce the [num_samples, time, num_features] to [total_time, num_features] array.

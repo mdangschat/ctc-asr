@@ -3,8 +3,6 @@
 Note that the network does not use `librosa`_ anymore, because it has problems
 with concurrent sample loading. This module has not been updated yet.
 
-L8ER: Move away from librosa, use python_speech_features.
-
 .. _librosa:
     https://librosa.github.io/librosa/index.html
 """
@@ -15,6 +13,8 @@ import numpy as np
 import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
+
+from python.loader import load_sample as ls
 
 
 DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
@@ -36,7 +36,6 @@ def display_sample_info(file_path, label=''):
         raise ValueError('{} does not exist.'.format(file_path))
 
     # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
-    # y, sr = rosa.load(file_path, sr=None, mono=True)
     y, sr = rosa.load(file_path, sr=None, mono=True)
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
@@ -141,6 +140,31 @@ def display_sample_info(file_path, label=''):
     plt.colorbar(format='%+2.0f dB')
     plt.title('Mel spectrogram')
 
+    # Import project used features (python speech features).
+    normalize_features = 'global'
+    mfcc = ls.load_sample(file_path, feature_type='mfcc', normalize_features=normalize_features,
+                          normalize_signal=False)[0]
+    mfcc = np.swapaxes(mfcc, 0, 1)
+
+    mel = ls.load_sample(file_path, feature_type='mel', normalize_features=normalize_features,
+                         normalize_signal=False)[0]
+    mel = np.swapaxes(mel, 0, 1)
+
+    plt.figure(figsize=(12, 8))
+    plt.subplot(2, 1, 1)
+    display.specshow(mfcc, sr=16000, x_axis='time', y_axis='linear', hop_length=ls.WIN_STEP * 16000)
+    # plt.set_cmap('magma')
+    plt.xticks(rotation=295)
+    plt.colorbar(format='%+2.0f')
+    plt.title('MFCC')
+
+    plt.subplot(2, 1, 2)
+    display.specshow(mel, sr=16000, x_axis='time', y_axis='linear', hop_length=ls.WIN_STEP * 16000)
+    # plt.set_cmap('magma')
+    plt.xticks(rotation=295)
+    plt.colorbar(format='%+2.0f')
+    plt.title('Mel')
+
     plt.tight_layout()
     plt.show()
 
@@ -151,7 +175,8 @@ if __name__ == '__main__':
     # Display specific sample info's.
     with open(_test_txt_path, 'r') as f:
         _lines = f.readlines()
-        _line = _lines[0]
+        _line = _lines[len(_lines) // 5]
+        # _line = _lines[1]
         _wav_path, txt = _line.split(' ', 1)
         _wav_path = os.path.join('/home/marc/workspace/datasets/speech_data', _wav_path)
         _txt = txt.strip()

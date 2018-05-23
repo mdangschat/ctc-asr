@@ -8,8 +8,7 @@ import tensorflow as tf
 from datetime import datetime
 
 from python.params import FLAGS, get_parameters
-from python.utils import storage
-from python.utils.tf_contrib import LoggerHook
+from python.util import storage, tf_contrib
 import python.model as model
 
 
@@ -27,7 +26,10 @@ def train(shuffle):
 
     Args:
         shuffle (bool): Whether to use sorted inputs or shuffled inputs for training.
-            See SortaGrad approach [Deep Speech 2].
+            See SortaGrad approach as documented in `Deep Speech 2`_.
+
+    .. _`Deep Speech 2`:
+        https://arxiv.org/abs/1512.02595
     """
     print('Version: {} Branch: {} Commit: {}'
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
@@ -42,10 +44,11 @@ def train(shuffle):
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            sequences, seq_length, labels, label_length, originals = model.inputs_train(shuffle)
+            # Note that _ is `seq_length`, which is calculated in `inference()` for now.
+            sequences, _, labels, label_length, originals = model.inputs_train(shuffle)
 
         # Build the logits (prediction) graph.
-        logits = model.inference(sequences, seq_length)
+        logits, seq_length = model.inference(sequences)
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate loss/cost.
@@ -96,7 +99,7 @@ def train(shuffle):
             # Deactivated `TraceHook`, because it's computational intensive.
             # TraceHook(file_writer, FLAGS.log_frequency * 5),
             # LoggingHook.
-            LoggerHook(loss)
+            tf_contrib.LoggerHook(loss)
         ]
 
         # The MonitoredTrainingSession takes care of session initialization, session resumption,
@@ -104,9 +107,9 @@ def train(shuffle):
         session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
             save_checkpoint_steps=FLAGS.log_frequency * 10,
-            # The frequency, in number of global steps, that the summaries are written to disk
-            # using a default summary saver.
-            save_summaries_steps=FLAGS.log_frequency,   # Review needed when using SummarySaverHook?
+            # Don't use the sessions default summary saver.
+            save_summaries_steps=None,
+            save_checkpoint_secs=None,
             # The frequency, in number of global steps, that the global_step/sec is logged.
             log_step_count_steps=FLAGS.log_frequency * 10,
             # Attach hooks to session.
@@ -117,19 +120,23 @@ def train(shuffle):
             config=session_config
         )
 
-        current_global_step = -1
         with session:
-            while not session.should_stop():
-                try:
-                    result = session.run([train_op])
-                    current_global_step = result[0][-1]
+            current_global_step = session.run(global_step)
+            current_global_step += 1  # Offset accounts for TF counting from 0.
 
-                except tf.errors.OutOfRangeError:
-                    print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
+            if (shuffle and current_global_step >= max_steps_1st_epoch) or \
+               (not shuffle and current_global_step < max_steps_1st_epoch):
+                while not session.should_stop():
+                    try:
+                        _, current_global_step = session.run([train_op, global_step])
 
-        current_global_step += 1    # Offset accounts for TF sometimes starts counting from 0 or 1.
-        if max_steps_1st_epoch <= current_global_step < max_steps_total:
-            train(True)
+                    except tf.errors.OutOfRangeError:
+                        print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
+
+    # Switch to shuffle if the first epoch has finished. See SortaGrad.
+    current_global_step += 1
+    if not shuffle and current_global_step >= max_steps_1st_epoch:
+        train(True)
 
 
 # noinspection PyUnusedLocal

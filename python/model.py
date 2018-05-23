@@ -5,63 +5,39 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT
-from python.utils import tf_contrib
+from python.util import tf_contrib, error_metrics
 import python.s_input as s_input
 
 if FLAGS.use_warp_ctc:
     import warpctc_tensorflow as warpctc
 
 
-def inference(sequences, seq_length, training=True):
+def inference(sequences, training=True):
     """Build the speech model.
 
     Args:
         sequences (tf.Tensor):
             3D float Tensor with input sequences. [batch_size, time, NUM_INPUTS]
-        seq_length (tf.Tensor):
-            1D int Tensor with sequence length. [batch_size]
         training (bool):
             If `True` apply dropout else if `False` the data is passed through unaltered.
 
     Returns:
-        tf.Tensor:
+        tf.Tensor: `logits`
             Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
+        tf.Tensor: `seq_length`
+            1D Tensor containing approximated sequence lengths.
     """
     initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
     regularizer = tfc.layers.l2_regularizer(0.0046875)
 
-    # Dense1
-    with tf.variable_scope('dense1'):
-        # TODO: sequences = []
-        dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
-                                 activation=tf.nn.relu,
-                                 kernel_initializer=tf.glorot_normal_initializer(),
-                                 kernel_regularizer=regularizer)
-        dense1 = tf.minimum(dense1, FLAGS.relu_cutoff)
-        dense1 = tf.layers.dropout(dense1, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense1 = []
+    # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
+    sequences = tf.reshape(sequences, [sequences.shape[0], -1, sequences.shape[2], 1])
 
-    # Dense2
-    with tf.variable_scope('dense2'):
-        dense2 = tf.layers.dense(dense1, FLAGS.num_units_dense,
-                                 activation=tf.nn.relu,
-                                 kernel_initializer=initializer,
-                                 kernel_regularizer=regularizer)
-        dense2 = tf.minimum(dense2, FLAGS.relu_cutoff)
-        dense2 = tf.layers.dropout(dense2, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense2 = []
+    # Convolutional layers.
+    with tf.variable_scope('conv'):
+        conv_output, seq_length = tf_contrib.conv_layers(sequences)
 
-    # Dense3
-    with tf.variable_scope('dense3'):
-        dense3 = tf.layers.dense(dense2, FLAGS.num_units_dense,
-                                 activation=tf.nn.relu,
-                                 kernel_initializer=initializer,
-                                 kernel_regularizer=regularizer)
-        dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
-        dense3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate, training=training)
-        # dense3 = [batch_size, time, num_units_dense]
-
-    # RNN layers
+    # RNN layers.
     with tf.variable_scope('rnn'):
         dropout_rate = FLAGS.rnn_dropout_rate if training else 0.0
 
@@ -72,18 +48,19 @@ def inference(sequences, seq_length, training=True):
                                                                 dropout=dropout_rate)
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
-            rnn4, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
-                                                                 inputs=dense3,
-                                                                 dtype=TF_FLOAT,
-                                                                 sequence_length=seq_length,
-                                                                 parallel_iterations=64,  # review
-                                                                 time_major=False)
-            # TODO: rnn4 = []
+            rnn_output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
+                                                                       inputs=conv_output,
+                                                                       dtype=TF_FLOAT,
+                                                                       sequence_length=seq_length,
+                                                                       parallel_iterations=64,
+                                                                       time_major=False)
+            # rnn_output = [batch_size, time, num_units_rnn * 2]
 
         else:   # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
-            dense3 = tfc.rnn.transpose_batch_time(dense3)
+            conv_output = tfc.rnn.transpose_batch_time(conv_output)
 
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
             rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
                                              num_units=FLAGS.num_units_rnn,
                                              input_mode='linear_input',
@@ -91,22 +68,22 @@ def inference(sequences, seq_length, training=True):
                                              dropout=dropout_rate,
                                              seed=FLAGS.random_seed,
                                              dtype=TF_FLOAT,
-                                             kernel_initializer=None,   # TODO initializer,
-                                             bias_initializer=None)
+                                             kernel_initializer=None,   # Glorot Uniform Initializer
+                                             bias_initializer=None)     # Constant 0.0 Initializer
 
-            rnn4, _ = rnn(dense3)
-            rnn4 = tfc.rnn.transpose_batch_time(rnn4)
-            # rnn4 = [batch_size, time, num_units_rnn * 2]
+            rnn_output, _ = rnn(conv_output)
+            rnn_output = tfc.rnn.transpose_batch_time(rnn_output)
+            # rnn_output = [batch_size, time, num_units_rnn * 2]
 
     # Dense4
     with tf.variable_scope('dense4'):
-        dense4 = tf.layers.dense(rnn4, FLAGS.num_units_dense,
+        dense4 = tf.layers.dense(rnn_output, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=initializer,
                                  kernel_regularizer=regularizer)
         dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
         dense4 = tf.layers.dropout(dense4, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense4 = []
+        # dense4 = [batch_size, conv_time, num_units_dense]
 
     # Logits: layer(XW + b),
     # We don't apply softmax here because most TensorFlow loss functions perform
@@ -116,7 +93,7 @@ def inference(sequences, seq_length, training=True):
         logits = tfc.rnn.transpose_batch_time(logits)
 
     # logits = [time, batch_size, NUM_CLASSES]
-    return logits
+    return logits, seq_length
 
 
 def loss(logits, seq_length, labels, label_length):
@@ -187,7 +164,7 @@ def decode(logits, seq_len, originals=None):
         seq_len (tf.Tensor):
             Tensor containing the batches sequence lengths of shape [batch_size].
 
-        originals (tf.Tensor): Optional, default `None`.
+        originals (tf.Tensor or None): Optional, default `None`.
             String Tensor of shape [batch_size] with the original plaintext.
 
     Returns:
@@ -211,7 +188,7 @@ def decode(logits, seq_len, originals=None):
     originals = originals if originals is not None else np.array([], dtype=np.int32)
 
     # Translate decoded integer data back to character strings.
-    plaintext, plaintext_summary = tf.py_func(tf_contrib.dense_to_text, [dense, originals],
+    plaintext, plaintext_summary = tf.py_func(error_metrics.dense_to_text, [dense, originals],
                                               [tf.string, tf.string], name='py_dense_to_text')
 
     return decoded, plaintext, plaintext_summary
@@ -249,8 +226,8 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
     mean_edit_distance = tf.reduce_mean(edit_distances)
 
     # Word error rates for the batch and average word error rate (WER).
-    wers, wer = tf.py_func(tf_contrib.wer_batch, [originals, decoded_texts], [TF_FLOAT, TF_FLOAT],
-                           name='py_wer_batch')
+    wers, wer = tf.py_func(error_metrics.wer_batch, [originals, decoded_texts],
+                           [TF_FLOAT, TF_FLOAT], name='py_wer_batch')
 
     return edit_distances, mean_edit_distance, wers, wer
 
@@ -263,6 +240,7 @@ def train(_loss, global_step):
     Args:
         _loss (tf.Tensor):
             Scalar Tensor of type float containing total loss from the loss() function.
+
         global_step (tf.Tensor):
             Scalar Tensor of type int32 counting the number of training steps processed.
 
@@ -279,15 +257,15 @@ def train(_loss, global_step):
     lr = tf.maximum(lr, 1e-6)   # Set the minimum learning rate.
 
     # Select a gradient optimizer.
-    optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.99)
+    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.99)
     # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    # optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
-    #                                    beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
+    optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
+                                       beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
     # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
 
     tf.summary.scalar('learning_rate', lr)
 
-    return optimizer.minimize(_loss, global_step=global_step), global_step
+    return optimizer.minimize(_loss, global_step=global_step)
 
 
 def inputs_train(shuffle):

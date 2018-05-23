@@ -10,11 +10,9 @@ from tensorflow import contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT
 import python.s_labels as s_labels
-from python.loader.load_sample import load_sample, NUM_MFCC
+from python.loader.load_sample import load_sample, NUM_FEATURES
 
 
-# Number of features per window.
-NUM_INPUTS = NUM_MFCC * 2
 # Path to train.txt file.
 TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 # Path to train.txt file.
@@ -66,7 +64,7 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
         originals = tf.convert_to_tensor(original_list, dtype=tf.string)
 
         # Set a sufficient bucket capacity.
-        capacity = 1024 + (4 * FLAGS.batch_size)
+        capacity = 512 + (4 * FLAGS.batch_size)
 
         # Create an input queue that produces the file names to read.
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
@@ -89,7 +87,7 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
 
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
-        sequence.set_shape([None, NUM_INPUTS])
+        sequence.set_shape([None, NUM_FEATURES])
         seq_len.set_shape([])    # Shape for scalar is [].
 
         print('Generating training batches of size {}. Queue capacity is {}. '
@@ -111,7 +109,7 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
 
         # Add input vectors to TensorBoard summary.
         batch_size_t = tf.shape(sequences)[0]
-        summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_INPUTS, 1])
+        summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_FEATURES, 1])
         tf.summary.image('sequence', summary_batch, max_outputs=1)
 
         return sequences, seq_length, labels, label_len, originals
@@ -188,13 +186,11 @@ def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    num_threads = 4
-
     sequences, seq_len, labels, label_len, originals = tf.train.batch(
         tensors=[sequence, seq_len, label, label_len, original],
         batch_size=batch_size,
-        num_threads=num_threads,
-        capacity=256,
+        num_threads=FLAGS.num_threads,
+        capacity=128,
         enqueue_many=False,
         shapes=None,
         dynamic_pad=True,
@@ -240,9 +236,9 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    num_threads = 8
-    boundaries = [88, 113, 139, 169, 201, 234, 264, 290, 312, 332, 354, 378, 403, 429, 454, 477,
-                  497, 514, 529, 542, 554, 564, 574, 583, 592, 602, 610, 619, 628, 638, 657, 1085]
+    boundaries = [210, 249, 282, 315, 347, 384, 426, 469, 520, 576, 641,
+                  707, 768, 827, 891, 962, 1038, 1114, 1187, 1246, 1296,
+                  1339, 1375, 1408, 1438, 1466, 1493, 1520, 1546, 1573, 1607]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_len, (sequences, labels, label_len, originals) = \
@@ -251,7 +247,7 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
         tensors=[sequence, label, label_len, original],
         batch_size=batch_size,
         bucket_boundaries=boundaries,
-        num_threads=num_threads,
+        num_threads=FLAGS.num_threads,
         capacity=capacity // len(boundaries),
         # Pads smaller batch elements (sequence and label) to the size of the longest one.
         dynamic_pad=True,
