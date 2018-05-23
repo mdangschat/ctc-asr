@@ -1,14 +1,11 @@
 """Transcribe a given audio file."""
 
 import os
-import math
-from datetime import datetime
 
-import numpy as np
 import tensorflow as tf
 
-from python.params import FLAGS
-from python.loader.load_sample import load_sample
+from python.params import FLAGS, TF_FLOAT
+from python.loader.load_sample import load_sample, NUM_FEATURES
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False
@@ -21,7 +18,7 @@ else:
 WAV_FILE = '/home/marc/workspace/datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV'
 
 
-def transcribe_once(logits_op, decoded_op, plaintext_op):
+def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph):
     # TODO Document
 
     # Session configuration.
@@ -53,20 +50,16 @@ def transcribe_once(logits_op, decoded_op, plaintext_op):
             for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
-            num_iter = 1
-
             if not coord.should_stop():
-                logits, decoded, plaintext = sess.run([logits_op, decoded_op, plaintext_op])
+                logits, decoded, plaintext = sess.run([logits_op, decoded_op, plaintext_op],
+                                                      feed_dict={sequences_ph: sequences})
 
-                print('logits:', logits.shape, logits)
-                print('decoded:', decoded.shape, decoded)
-                print('plaintext:', plaintext.shape, plaintext)
+                print('Transcriptions {}:\n{}'.format(plaintext.shape, plaintext))
 
         except Exception as e:
             print('EXCEPTION:', e, ', type:', type(e))
             coord.request_stop(e)
 
-        print('Stopping...')
         coord.request_stop()
         coord.join(threads, stop_grace_period_secs=120)
 
@@ -79,13 +72,16 @@ def transcribe():
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
             sequences, _ = load_sample(WAV_FILE)
+            sequences = [sequences] * FLAGS.batch_size
+            sequences_ph = tf.placeholder(dtype=TF_FLOAT,
+                                          shape=[FLAGS.batch_size, None, NUM_FEATURES])
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits, seq_length = model.inference(sequences, training=False)
+        logits, seq_length = model.inference(sequences_ph, training=False)
 
         decoded, plaintext, _ = model.decode(logits, seq_length, originals=None)
 
-        transcribe_once(logits, decoded, plaintext)
+        transcribe_once(logits, decoded, plaintext, sequences, sequences_ph)
 
 
 # noinspection PyUnusedLocal
