@@ -39,7 +39,8 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
 def conv_layers(sequences, filters=FLAGS.conv_filters,
                 kernel_sizes=((11, 41), (11, 21), (11, 21)),
                 strides=((2, 2), (1, 2), (1, 2)),
-                kernel_initializer=tf.glorot_normal_initializer(), kernel_regularizer=None):
+                kernel_initializer=tf.glorot_normal_initializer(), kernel_regularizer=None,
+                training=True):
     """Add 2D convolutional layers to the network's graph. New sequence length are being calculated.
 
     Convolutional layer output shapes:
@@ -72,6 +73,8 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
             TensorFlow kernel initializer.
         kernel_regularizer (tf.Tensor):
             TensorFlow kernel regularizer.
+        training (bool):
+            `FLAGS.conv_dropout_rate` is being applied during training only.
 
     Returns:
         tf.Tensor: `output`
@@ -102,7 +105,7 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
                                   kernel_regularizer=kernel_regularizer)
 
         output = tf.minimum(output, FLAGS.relu_cutoff)
-        # output = tf.layers.dropout(output, rate=FLAGS.dense_dropout_rate, training=training)
+        output = tf.layers.dropout(output, rate=FLAGS.conv_dropout_rate, training=training)
 
     # Reshape to: conv3 = [batch_size, time, 10 * NUM_FILTERS], where 10 is the number of
     # frequencies left over from convolutions.

@@ -44,6 +44,8 @@ tf.flags.DEFINE_bool('use_warp_ctc', False,
                      """Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.""")
 
 # Dropout.
+tf.flags.DEFINE_float('conv_dropout_rate', 0.0,
+                      """Dropout rate for convolutional layers.""")
 tf.flags.DEFINE_float('rnn_dropout_rate', 0.0,
                       """Dropout rate for the RNN cell layers.""")
 tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
