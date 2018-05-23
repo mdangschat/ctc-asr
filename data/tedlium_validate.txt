@@ -101,10 +101,8 @@ tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_27.wav thats our youngest bet
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_29.wav turns out all he wanted to do was to stack the siftables up so to him they were just blocks
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_30.wav now this is an interactive cartoon application and we wanted to build a learning tool for language learners and this is felix actually
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_31.wav and he can bring new characters into the scene just by lifting the siftables off the table that have that character shown on them here hes bringing the sun out
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_32.wav the sun is rising
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_34.wav now hes brought a tractor into the scene
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_38.wav so by shaking the siftables and putting them next to each other he can make the characters interact
-tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_40.wav inventing his own narrative
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_42.wav its an open ended story and he gets to decide how it unfolds
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_46.wav so the last example i have time to show you today is a music sequencing and live performance tool that weve built recently in which siftables act as sounds like lead bass and drums
 tedlium/TEDLIUM_release2/dev/sph/DavidMerrill_2009_47.wav each of these has four different variations you get to choose which one you want to use and you can inject these sounds into a sequence that you can assemble into the pattern that you want
@@ -303,7 +301,6 @@ tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_85.wav the reason i felt wo
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_86.wav i had very low exp i had no particular expectations when they only came in one flavor when they came in a hundred flavors damn it one of them shouldve been perfect and what i got was good but it wasnt perfect and so i compared what i got to what i expected
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_87.wav and what i got was disappointing in comparison to what i expected adding options to peoples lives
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_88.wav cant help but increase the expectations people have about how good those options will be and what thats going to produce is less satisfaction with results even when theyre good results nobody in the world of marketing knows this
-tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_89.wav cause if they did
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_90.wav you wouldnt all know what this was about the truth is more like this
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_92.wav the reason that everything was better back when everything was worse is that when everything was worse it was actually possible for people to have experiences that were a pleasant surprise
 tedlium/TEDLIUM_release2/dev/sph/BarrySchwartz_2005G_93.wav nowadays the world we live in we affluent industrialized citizens with perfection the expectation the best you can ever hope for is that this stuff is as good as you expect it to be
@@ -387,7 +384,6 @@ tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_14.wav cropped up on top some under
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_15.wav in the himalayas the third largest mass of ice at the top you see new lakes which a few years ago were glaciers forty percent of all the people in the world get half of their drinking water from that melting flow in the andes this glacier is the source of drinking water for this city
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_16.wav the flows have increased but when they go away so does much of the drinking water in california there has been a forty percent decline in the sierra snowpack this is hitting the reservoirs and the predictions as youve read are serious this drying around the world has lead to a dramatic increase in fires
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_17.wav and the disasters around the world have been increasing at an absolutely extraordinary and unprecedented rate four times as many in the last thirty years as in the previous seventy five this is a completely unsustainable pattern if you look at in the context of history you can see
-tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_18.wav what this is doing
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_19.wav in the last five years weve added seventy million tons of co two every twenty four hours twenty five million tons every day to the oceans
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_20.wav look carefully at the area of the eastern pacific from the americas extending westward and on either side of the indian subcontinent where there is a radical depletion of oxygen in the oceans
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_21.wav the biggest single cause of global warming along with deforestation which is twenty percent of it is the burning of fossil fuels oil is a problem
@@ -416,7 +412,6 @@ tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_54.wav futures over here wind sun a
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_56.wav new investments to create high paying jobs
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_58.wav repower america its time to get real
 tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_59.wav there is an old african proverb that says if you want to go quickly go alone if you want to go far go together we need to go far quickly
-tedlium/TEDLIUM_release2/dev/sph/AlGore_2009_60.wav thank you very much
 tedlium/TEDLIUM_release2/dev/sph/CraigVenter_2008_1.wav you know ive talked about some of these projects before about the human genome and what that might mean and discovering new sets of genes were actually starting at a new point weve been digitizing biology
 tedlium/TEDLIUM_release2/dev/sph/CraigVenter_2008_2.wav and now were trying to go from that digital code
 tedlium/TEDLIUM_release2/dev/sph/CraigVenter_2008_3.wav into a new phase of biology with designing and synthesizing life so weve always been trying to ask big questions
