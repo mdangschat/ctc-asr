@@ -164,7 +164,7 @@ def decode(logits, seq_len, originals=None):
         seq_len (tf.Tensor):
             Tensor containing the batches sequence lengths of shape [batch_size].
 
-        originals (tf.Tensor): Optional, default `None`.
+        originals (tf.Tensor or None): Optional, default `None`.
             String Tensor of shape [batch_size] with the original plaintext.
 
     Returns:
