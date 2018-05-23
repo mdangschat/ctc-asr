@@ -83,7 +83,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
                 wer_sum += wer_batch
                 step += 1
 
-                print('{:%Y-%m-%d %H:%M:%S}: Step {:5,d}/{:,d} Results: loss={:7.3f}; '
+                print('{:%Y-%m-%d %H:%M:%S}: Step {:5,d} of {:,d} Results: loss={:7.3f}; '
                       'mean_edit_distance={:5.3f}; WER={:5.3f}'
                       .format(datetime.now(), step, num_iter, loss_batch, mean_ed_batch, wer_batch))
 
