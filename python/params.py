@@ -46,11 +46,11 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
-tf.flags.DEFINE_integer('num_units_rnn', 2048,
+tf.flags.DEFINE_integer('num_units_rnn', 2650,
                         """Number of hidden units in each of the RNN cells.""")
 tf.flags.DEFINE_integer('num_layers_rnn', 1,
                         """Number of stacked RNN cells.""")
-tf.flags.DEFINE_integer('num_units_dense', 2048,
+tf.flags.DEFINE_integer('num_units_dense', 2650,
                         """Number of units per dense layer.""")
 
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
