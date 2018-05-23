@@ -107,9 +107,9 @@ def train(shuffle):
         session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
             save_checkpoint_steps=FLAGS.log_frequency * 10,
-            # The frequency, in number of global steps, that the summaries are written to disk
-            # using a default summary saver.
-            save_summaries_steps=FLAGS.log_frequency,   # Review needed when using SummarySaverHook?
+            # Don't use the sessions default summary saver.
+            save_summaries_steps=None,
+            save_checkpoint_secs=None,
             # The frequency, in number of global steps, that the global_step/sec is logged.
             log_step_count_steps=FLAGS.log_frequency * 10,
             # Attach hooks to session.
@@ -121,22 +121,22 @@ def train(shuffle):
         )
 
         with session:
-            current_global_step = session.run([global_step])
-            print('current_global_step=', current_global_step)  # TODO
+            current_global_step = session.run(global_step)
             current_global_step += 1  # Offset accounts for TF counting from 0.
 
-            # Switch to shuffle if the first epoch has finished. See SortaGrad.
-            if not shuffle and current_global_step >= max_steps_1st_epoch:
-                session.close()
-                train(True)
-                return
+            if (shuffle and current_global_step >= max_steps_1st_epoch) or \
+               (not shuffle and current_global_step < max_steps_1st_epoch):
+                while not session.should_stop():
+                    try:
+                        _, current_global_step = session.run([train_op, global_step])
 
-            while not session.should_stop():
-                try:
-                    session.run([train_op])
+                    except tf.errors.OutOfRangeError:
+                        print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
 
-                except tf.errors.OutOfRangeError:
-                    print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
+    # Switch to shuffle if the first epoch has finished. See SortaGrad.
+    current_global_step += 1
+    if not shuffle and current_global_step >= max_steps_1st_epoch:
+        train(True)
 
 
 # noinspection PyUnusedLocal

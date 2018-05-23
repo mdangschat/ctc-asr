@@ -1,6 +1,7 @@
 """Helper methods to load audio files."""
 
-from os import path
+import os
+
 import numpy as np
 import scipy.io.wavfile as wav
 import python_speech_features as psf
@@ -77,14 +78,14 @@ def load_sample(file_path, feature_type='mel', normalize_features='local', norma
     if type(file_path) is not str:
         file_path = str(file_path, 'utf-8')
 
-    if not path.isfile(file_path):
+    if not os.path.isfile(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
     # Load the audio files sample rate (`sr`) and data (`y`)
     (sr, y) = wav.read(file_path)
 
     if normalize_signal:
-        y = signal_normalization(y)
+        y = _signal_normalization(y)
 
     if len(y) < 401:
         raise RuntimeError('Sample length () to short: {}'.format(len(y), file_path))
@@ -114,7 +115,7 @@ def load_sample(file_path, feature_type='mel', normalize_features='local', norma
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
     # Sample normalization.
-    sample = sample_normalization(sample, normalize_features)
+    sample = _sample_normalization(sample, normalize_features)
 
     # sample = [time, NUM_FEATURES], sample_len: scalar
     return sample, sample_len
@@ -174,10 +175,13 @@ def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
     return mel
 
 
-def signal_normalization(y):
+def _signal_normalization(y):
     """Normalize signal by dividing it by its Root Mean Square.
+
     Formula from:
     <https://dsp.stackexchange.com/questions/26396/normalization-of-a-signal-in-matlab>
+
+    TODO: RuntimeWarning: invalid value encountered in sqrt.
 
     Args:
         y (np.ndarray): The signal data.
@@ -185,11 +189,10 @@ def signal_normalization(y):
     Returns:
         np.ndarray: 1D normalized signal.
     """
-    # TODO: RuntimeWarning: invalid value encountered in sqrt
     return y / np.sqrt(np.sum(np.fabs(y) ** 2) / y.shape[0])
 
 
-def sample_normalization(features, method):
+def _sample_normalization(features, method):
     """Normalize the given feature vector `y`, with the stated normalization `method`.
 
     Args:

@@ -240,6 +240,7 @@ def train(_loss, global_step):
     Args:
         _loss (tf.Tensor):
             Scalar Tensor of type float containing total loss from the loss() function.
+
         global_step (tf.Tensor):
             Scalar Tensor of type int32 counting the number of training steps processed.
 
