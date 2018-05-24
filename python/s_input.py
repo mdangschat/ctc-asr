@@ -236,9 +236,11 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    boundaries = [210, 249, 282, 315, 347, 384, 426, 469, 520, 576, 641,
-                  707, 768, 827, 891, 962, 1038, 1114, 1187, 1246, 1296,
-                  1339, 1375, 1408, 1438, 1466, 1493, 1520, 1546, 1573, 1607]
+    boundaries = [181, 210, 231, 249, 265, 282, 299, 315, 331, 347, 366, 384, 405, 426, 448, 469,
+                  493, 520, 548, 576, 608, 641, 674, 707, 738, 768, 798, 827, 859, 891, 925, 962,
+                  999, 1038, 1076, 1114, 1151, 1187, 1217, 1246, 1272, 1296, 1318, 1339, 1358, 1375,
+                  1392, 1408, 1423, 1438, 1452, 1466, 1480, 1493, 1507, 1520, 1533, 1546, 1560,
+                  1573, 1588, 1607, 1641]
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_len, (sequences, labels, label_len, originals) = \
