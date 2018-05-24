@@ -18,7 +18,7 @@ else:
     import python.model as model
 
 
-# Which dataset *.txt file to use for evaluation. 'test' or 'validate'.
+# Which dataset *.txt file to use for evaluation. 'test' or 'dev'.
 EVALUATION_TARGET = 'test'
 
 
@@ -43,8 +43,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
 
     if EVALUATION_TARGET == 'test':
         num_target_samples = FLAGS.num_examples_test
-    elif EVALUATION_TARGET == 'validate':
-        num_target_samples = FLAGS.num_examples_validate
+    elif EVALUATION_TARGET == 'dev':
+        num_target_samples = FLAGS.num_examples_dev
     else:
         raise ValueError('Invalid target "{}"'.format(EVALUATION_TARGET))
 

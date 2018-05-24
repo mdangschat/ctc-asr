@@ -81,8 +81,8 @@ tf.flags.DEFINE_integer('num_examples_train', 272537,
                         """Number of examples in the training set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_test', 3679,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
-tf.flags.DEFINE_integer('num_examples_validate', 2703,
-                        """Number of examples in the validation set. `validate.txt`""")
+tf.flags.DEFINE_integer('num_examples_dev', 2703,
+                        """Number of examples in the validation set. `dev.txt`""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 

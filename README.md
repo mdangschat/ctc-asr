@@ -29,7 +29,7 @@ cd <project_root>/data/
 
 cat *_train.txt > train.txt
 cat *_text.txt > text.txt
-cat *_validate.txt > validate.txt
+cat *_dev.txt > dev.txt
 
 # Alternatively, only use the desired datasets.
 cat libri_speech_train.txt tedlium_train.txt > train.txt

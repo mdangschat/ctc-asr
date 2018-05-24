@@ -60,7 +60,7 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
             Name of the dataset. Supported dataset's:
             'timit', 'libri_speech', 'tedlium'
         target (str):
-            'train', 'test', or 'validate'
+            'train', 'test', or 'dev'
         dry_run (bool):
             Optional, default False.
             Dry running does not create output.txt files.
@@ -81,7 +81,7 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
     else:
         loader = loaders[dataset_name]
 
-    if target != 'test' and target != 'train' and target != 'validate':
+    if target != 'test' and target != 'train' and target != 'dev':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
     if not os.path.isdir(dataset_path):
@@ -120,7 +120,7 @@ def _common_voice_loader(dataset_path, target, pattern):
 
     Args:
         dataset_path (str): Path of the data set.
-        target (str): 'train', 'test', or 'validate'
+        target (str): 'train', 'test', or 'dev'
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
     Returns:
@@ -129,7 +129,7 @@ def _common_voice_loader(dataset_path, target, pattern):
     # Folders for each target.
     train_folders = ['cv-valid-train']
     test_folders = ['cv-valid-test']
-    validate_folders = ['cv-valid-dev']
+    dev_folders = ['cv-valid-dev']
 
     # Assign target folders.
     if target == 'train':
@@ -137,7 +137,7 @@ def _common_voice_loader(dataset_path, target, pattern):
     elif target == 'test':
         folders = test_folders
     else:
-        folders = validate_folders
+        folders = dev_folders
 
     # Define valid accents. Review if '' should be accepted as well.
     valid_accents = ['us', 'england', 'canada', 'australia']
@@ -183,7 +183,7 @@ def _libri_speech_loader(dataset_path, target, pattern):
 
     Args:
         dataset_path (str): Path of the data set.
-        target (str): 'train', 'test', or 'validate'
+        target (str): 'train', 'test', or 'dev'
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
     Returns:
@@ -192,7 +192,7 @@ def _libri_speech_loader(dataset_path, target, pattern):
     # Folders for each target.
     train_folders = ['train-clean-100', 'train-clean-360']
     test_folders = ['test-clean']
-    validate_folders = ['dev-clean']
+    dev_folders = ['dev-clean']
 
     # Assign target folders.
     if target == 'train':
@@ -200,7 +200,7 @@ def _libri_speech_loader(dataset_path, target, pattern):
     elif target == 'test':
         folders = test_folders
     else:
-        folders = validate_folders
+        folders = dev_folders
 
     output = []
     for folder in [os.path.join(dataset_path, f) for f in folders]:
@@ -249,7 +249,7 @@ def _tedlium_loader(dataset_path, target, pattern):
 
     Args:
         dataset_path (str): Path of the data set.
-        target (str): 'train', 'test', or 'validate'
+        target (str): 'train', 'test', or 'dev'
         pattern (str): RegEx pattern that is used as whitelist for the written label texts.
 
     Returns:
@@ -270,7 +270,7 @@ def _tedlium_loader(dataset_path, target, pattern):
         wavfile.write(path, sr, data[seconds_to_sample(start): seconds_to_sample(end)])
 
     target_folders = {
-        'validate': 'dev',
+        'dev': 'dev',
         'test': 'test',
         'train': 'train'
     }
@@ -403,7 +403,7 @@ if __name__ == '__main__':
 
     # TEDLIUMv2
     # generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
-    # generate_list(TEDLIUM_PATH, 'tedlium', 'validate', dry_run=__dry_run)
+    # generate_list(TEDLIUM_PATH, 'tedlium', 'dev', dry_run=__dry_run)
     # generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=__dry_run)
 
     # TIMIT
@@ -412,10 +412,10 @@ if __name__ == '__main__':
 
     # LibriSpeech ASR Corpus
     # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=__dry_run)
-    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'validate', dry_run=__dry_run)
+    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'dev', dry_run=__dry_run)
     # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=__dry_run)
 
     # Mozilla Common Voice
     generate_list(COMMON_VOICE_PATH, 'common_voice', 'test', dry_run=__dry_run)
-    generate_list(COMMON_VOICE_PATH, 'common_voice', 'validate', dry_run=__dry_run)
+    generate_list(COMMON_VOICE_PATH, 'common_voice', 'dev', dry_run=__dry_run)
     generate_list(COMMON_VOICE_PATH, 'common_voice', 'train', dry_run=__dry_run)

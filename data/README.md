@@ -5,8 +5,8 @@
 [LibriSpeech ASR Corpus](http://openslr.org/12), [TED-LIUM v2](http://www.openslr.org/19/), 
 [Mozilla Common Voice](https://voice.mozilla.org/en), and 
 [TIMIT](https://catalog.ldc.upenn.edu/ldc93s1) have been used.
-`train.txt` is sorted by feature sequence length in ascending order, while `validate.txt` and 
-`test.txt` is unsorted.
+`train.txt` is sorted by feature sequence length in ascending order, while `dev.txt` and 
+`test.txt` are unsorted.
 
 
 ## `train.txt`
@@ -20,8 +20,8 @@ Examples that are longer than 2500 feature vectors have been removed.
 * `common_voice_train.txt`
 
 
-## `validate.txt`
-* `libri_speech_validate.txt`
+## `dev.txt`
+* `libri_speech_dev.txt`
 
 
 ## `test.txt`

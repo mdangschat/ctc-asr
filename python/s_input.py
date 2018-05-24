@@ -17,8 +17,8 @@ from python.loader.load_sample import load_sample, NUM_FEATURES
 TRAIN_TXT_PATH = './data/train.txt'
 # Path to train.txt file.
 TEST_TXT_PATH = './data/test.txt'
-# Path to validate.txt file.
-VALIDATE_TXT_PATH = './data/validate.txt'
+# Path to dev.txt file.
+DEV_TXT_PATH = './data/dev.txt'
 # Path to dataset collection folder.
 DATASET_PATH = '../datasets/speech_data/'
 
@@ -123,7 +123,7 @@ def inputs(batch_size, target):
             (Maximum) number of samples per batch.
             See: _generate_batch() and `allow_smaller_final_batch=True`
         target (str):
-            Which dataset to use. Supported: 'test' or 'validate'.
+            Which dataset to use. Supported: 'test' or 'dev'.
 
     Returns:
         tf.Tensor: `sequences`
@@ -143,8 +143,8 @@ def inputs(batch_size, target):
     """
     if target == 'test':
         txt_path = TEST_TXT_PATH
-    elif target == 'validate':
-        txt_path = VALIDATE_TXT_PATH
+    elif target == 'dev':
+        txt_path = DEV_TXT_PATH
     else:
         raise ValueError('Invalid target "{}".'.format(target))
     print('Using: ', txt_path)

@@ -284,12 +284,12 @@ def inputs(target='test'):
     """Construct input for the speech evaluation.
 
     Args:
-        target (str): 'train' or 'validate'.
+        target (str): 'train' or 'dev'.
 
     Returns:
         See `s_input.inputs()`.
     """
-    if target != 'test' and target != 'validate':
+    if target != 'test' and target != 'dev':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
     return s_input.inputs(FLAGS.batch_size, target)
