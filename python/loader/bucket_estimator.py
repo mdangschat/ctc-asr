@@ -4,6 +4,7 @@ Estimate optimal bucket sizes for training, based on `train.txt` content.
 
 import sys
 import os
+import random
 
 from tqdm import tqdm
 import numpy as np
@@ -37,6 +38,7 @@ def estimate_bucket_sizes(num_buckets=64, max_length=1750):
     """
     with open(TRAIN_TXT_PATH, 'r') as f:
         lines = f.readlines()
+        random.shuffle(lines)   # To ge a more precise estimated duration.
 
     overlength_counter = 0
     lengths = []
