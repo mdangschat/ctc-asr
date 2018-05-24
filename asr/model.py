@@ -4,16 +4,16 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-from python.params import FLAGS, TF_FLOAT
-from python.util import tf_contrib, error_metrics
-import python.s_input as s_input
+from asr.params import FLAGS, TF_FLOAT
+from asr.util import tf_contrib, error_metrics
+import asr.s_input as s_input
 
 if FLAGS.use_warp_ctc:
     import warpctc_tensorflow as warpctc
 
 
 def inference(sequences, training=True):
-    """Build the speech model.
+    """Build the asr model.
 
     Args:
         sequences (tf.Tensor):
@@ -233,7 +233,7 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
 
 
 def train(_loss, global_step):
-    """Train operator for the speech model.
+    """Train operator for the asr model.
 
     Create an optimizer and apply to all trainable variables.
 
@@ -269,7 +269,7 @@ def train(_loss, global_step):
 
 
 def inputs_train(shuffle):
-    """Construct input for the speech training.
+    """Construct input for the asr training.
 
     Args:
         shuffle (bool): Shuffle data or not. See `s_input.inputs_train()`.
@@ -281,7 +281,7 @@ def inputs_train(shuffle):
 
 
 def inputs(target='test'):
-    """Construct input for the speech evaluation.
+    """Construct input for the asr evaluation.
 
     Args:
         target (str): 'train' or 'dev'.

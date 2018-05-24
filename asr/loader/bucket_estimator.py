@@ -10,14 +10,14 @@ from tqdm import tqdm
 import numpy as np
 from matplotlib import pyplot as plt
 
-from python.loader.load_sample import load_sample
-from python.util.storage import delete_file_if_exists
+from asr.loader.load_sample import load_sample
+from asr.util.storage import delete_file_if_exists
 
 
 # Path to train.txt file.
-TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
+TRAIN_TXT_PATH = './data/train.txt'
 # Path to dataset collection folder.
-DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
+DATASET_PATH = '../datasets/speech_data/'
 
 
 def estimate_bucket_sizes(num_buckets=64, max_length=1750):

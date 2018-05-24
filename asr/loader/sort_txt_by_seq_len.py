@@ -7,11 +7,11 @@ import sys
 
 from tqdm import tqdm
 
-from python.util import storage
-from python.loader.load_sample import load_sample
+from asr.util import storage
+from asr.loader.load_sample import load_sample
 
 
-DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
+DATASETS_PATH = '../datasets/speech_data'
 
 
 def _sort_txt_by_seq_len(txt_path):
@@ -58,7 +58,7 @@ def _sort_txt_by_seq_len(txt_path):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _txt_path = os.path.join('/home/marc/workspace/speech/data', 'train.txt')
+    _txt_path = os.path.join('./data', 'train.txt')
 
     # Display dataset stats.
     _sort_txt_by_seq_len(_txt_path)

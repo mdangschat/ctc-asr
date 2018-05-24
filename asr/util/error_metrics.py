@@ -2,8 +2,8 @@
 
 import numpy as np
 
-from python.params import NP_FLOAT
-from python.s_labels import itoc
+from asr.params import NP_FLOAT
+from asr.s_labels import itoc
 
 
 def dense_to_text(decoded, originals):

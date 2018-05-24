@@ -27,12 +27,12 @@ import subprocess
 from tqdm import tqdm
 from scipy.io import wavfile
 
-from python.params import FLAGS
-from python.util import storage
+from asr.params import FLAGS
+from asr.util import storage
 
 
 # Dataset base path.
-DATASET_PATH = '/home/marc/workspace/datasets/speech_data'
+DATASET_PATH = '../datasets/speech_data'
 
 # Path to the LibriSpeech ASR dataset.
 LIBRI_SPEECH_PATH = os.path.join(DATASET_PATH, 'libri_speech/LibriSpeech')
@@ -44,7 +44,7 @@ TIMIT_PATH = os.path.join(DATASET_PATH, 'timit/TIMIT')
 COMMON_VOICE_PATH = os.path.join(DATASET_PATH, 'common_voice/cv_corpus_v1')
 
 # Where to generate the .txt files, e.g. /home/user/../data/<target>.txt
-TXT_TARGET_PATH = '/home/marc/workspace/speech/data/'
+TXT_TARGET_PATH = './data/'
 
 
 def generate_list(dataset_path, dataset_name, target, dry_run=False):
@@ -304,7 +304,7 @@ def _tedlium_loader(dataset_path, target, pattern):
                                     'sph', '{}.wav'.format(os.path.splitext(stm_file)[0]))
             assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
-            # Load the audio data, to later split it into a part per speech segment.
+            # Load the audio data, to later split it into a part per audio segment.
             (sampling_rate, wav_data) = wavfile.read(wav_path)
             assert sampling_rate == FLAGS.sampling_rate
 

@@ -1,4 +1,4 @@
-"""Evaluate the trained speech model.
+"""Evaluate the trained asr model.
 
 L8ER: Add accuracy table.
 """
@@ -9,13 +9,13 @@ from datetime import datetime
 import numpy as np
 import tensorflow as tf
 
-from python.params import FLAGS
+from asr.params import FLAGS
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False
-    import python.model as model
+    import asr.model as model
 else:
-    import python.model as model
+    import asr.model as model
 
 
 # Which dataset *.txt file to use for evaluation. 'test' or 'dev'.
@@ -115,7 +115,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
 
 
 def evaluate(eval_dir):
-    """Evaluate the speech model.
+    """Evaluate the asr model.
 
     Args:
         eval_dir (str): Path where to store evaluation summaries.

@@ -9,10 +9,10 @@ import random
 import numpy as np
 from tqdm import tqdm
 
-from python.loader.load_sample import load_sample
+from asr.loader.load_sample import load_sample
 
 
-DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
+DATASETS_PATH = '../datasets/speech_data'
 
 
 def calculate_dataset_stats(txt_path):
@@ -58,7 +58,7 @@ def calculate_dataset_stats(txt_path):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _test_txt_path = os.path.join('/home/marc/workspace/speech/data', 'train.txt')
+    _test_txt_path = os.path.join('./data', 'train.txt')
 
     # Display dataset stats.
     calculate_dataset_stats(_test_txt_path)

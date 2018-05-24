@@ -7,7 +7,7 @@ from datetime import datetime
 
 import tensorflow as tf
 
-from python.params import FLAGS, TF_FLOAT
+from asr.params import FLAGS, TF_FLOAT
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):

@@ -1,4 +1,4 @@
-"""Train the speech model.
+"""Train the asr model.
 
 Tested with Python 3.5 and 3.6.
 Note: No Python 2 compatibility is provided.
@@ -7,9 +7,9 @@ Note: No Python 2 compatibility is provided.
 import tensorflow as tf
 from datetime import datetime
 
-from python.params import FLAGS, get_parameters
-from python.util import storage, tf_contrib
-import python.model as model
+from asr.params import FLAGS, get_parameters
+from asr.util import storage, tf_contrib
+import asr.model as model
 
 
 # General TensorFlow settings and setup.

@@ -4,18 +4,18 @@ import os
 
 import tensorflow as tf
 
-from python.params import FLAGS, TF_FLOAT
-from python.loader.load_sample import load_sample, NUM_FEATURES
+from asr.params import FLAGS, TF_FLOAT
+from asr.loader.load_sample import load_sample, NUM_FEATURES
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False
-    import python.model as model
+    import asr.model as model
 else:
-    import python.model as model
+    import asr.model as model
 
 
 # File to transcribe.
-WAV_FILE = '/home/marc/workspace/datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV'
+WAV_FILE = '../datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV'
 
 
 def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph):

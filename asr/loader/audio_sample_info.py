@@ -14,7 +14,7 @@ import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
 
-from python.loader import load_sample as ls
+from asr.loader import load_sample as ls
 
 
 DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
@@ -140,7 +140,7 @@ def display_sample_info(file_path, label=''):
     plt.colorbar(format='%+2.0f dB')
     plt.title('Mel spectrogram')
 
-    # Import project used features (python speech features).
+    # Import project used features (python_speech_features).
     normalize_features = 'global'
     mfcc = ls.load_sample(file_path, feature_type='mfcc', normalize_features=normalize_features,
                           normalize_signal=False)[0]
@@ -170,7 +170,7 @@ def display_sample_info(file_path, label=''):
 
 
 if __name__ == '__main__':
-    _test_txt_path = os.path.join('/home/marc/workspace/speech/data', 'train.txt')
+    _test_txt_path = os.path.join('./data', 'train.txt')
 
     # Display specific sample info's.
     with open(_test_txt_path, 'r') as f:
@@ -178,7 +178,7 @@ if __name__ == '__main__':
         _line = _lines[len(_lines) // 5]
         # _line = _lines[1]
         _wav_path, txt = _line.split(' ', 1)
-        _wav_path = os.path.join('/home/marc/workspace/datasets/speech_data', _wav_path)
+        _wav_path = os.path.join('../datasets/speech_data', _wav_path)
         _txt = txt.strip()
 
         display_sample_info(_wav_path, label=_txt)

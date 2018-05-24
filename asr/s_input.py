@@ -8,9 +8,9 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from python.params import FLAGS, TF_FLOAT
-import python.s_labels as s_labels
-from python.loader.load_sample import load_sample, NUM_FEATURES
+from asr.params import FLAGS, TF_FLOAT
+import asr.s_labels as s_labels
+from asr.loader.load_sample import load_sample, NUM_FEATURES
 
 
 # Path to train.txt file.
@@ -24,7 +24,7 @@ DATASET_PATH = '../datasets/speech_data/'
 
 
 def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
-    """Construct input for speech training.
+    """Construct input for asr training.
 
     Args:
         batch_size (int):
@@ -116,7 +116,7 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
 
 
 def inputs(batch_size, target):
-    """Construct input for speech evaluation. This method always returns unaltered data.
+    """Construct input for asr evaluation. This method always returns unaltered data.
 
     Args:
         batch_size (int):

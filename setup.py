@@ -1,13 +1,13 @@
 from setuptools import setup
 
 setup(
-    name='speech',
+    name='asr',
     version='v0.0.3',
     packages=['', 'util', 'loader'],
-    package_dir={'': 'python'},
-    url='https://vcs.zwuenf.org/mdangschat/speech',
+    package_dir={'': 'asr'},
+    url='https://vcs.zwuenf.org/mdangschat/asr',
     license='',
     author='Marc Dangschat',
     author_email='dangschat@fh-muenster.de',
-    description='TensorFlow speech recognition system.'
+    description='TensorFlow asr recognition system.'
 )
