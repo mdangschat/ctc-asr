@@ -19,7 +19,7 @@ TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
 DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
 
 
-def estimate_bucket_sizes(num_buckets=32, max_length=1750):
+def estimate_bucket_sizes(num_buckets=64, max_length=1750):
     """Estimate optimal bucket sizes based on the samples in `train.txt` file.
     Results are printed out or plotted.
     Optional, if `max_length` is greater than `0`, audio examples with feature vectors longer than
