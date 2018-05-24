@@ -17,7 +17,7 @@ from matplotlib import pyplot as plt
 from asr.loader import load_sample as ls
 
 
-DATASETS_PATH = '/home/marc/workspace/datasets/speech_data'
+DATASETS_PATH = '../datasets/speech_data'
 
 
 def display_sample_info(file_path, label=''):
