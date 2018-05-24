@@ -34,9 +34,10 @@ def train(shuffle):
     print('Version: {} Branch: {} Commit: {}'
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
     print('Parameters: ', get_parameters())
+    print('SortaGrad active: ', shuffle)
 
-    max_steps_1st_epoch = FLAGS.num_examples_train // FLAGS.batch_size
-    max_steps_total = max_steps_1st_epoch * FLAGS.max_epochs
+    max_steps_epoch = FLAGS.num_examples_train // FLAGS.batch_size
+    max_steps_total = max_steps_epoch * FLAGS.max_epochs
 
     with tf.Graph().as_default():
         global_step = tf.train.get_or_create_global_step()
@@ -84,7 +85,7 @@ def train(shuffle):
                                                        summary_op=summary_op)
 
         # Stop after steps hook.
-        last_step = max_steps_total if shuffle else max_steps_1st_epoch
+        last_step = max_steps_total if shuffle else max_steps_epoch
         stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
 
         # Session hooks.
@@ -124,18 +125,20 @@ def train(shuffle):
             current_global_step = session.run(global_step)
             current_global_step += 1  # Offset accounts for TF counting from 0.
 
-            if (shuffle and current_global_step >= max_steps_1st_epoch) or \
-               (not shuffle and current_global_step < max_steps_1st_epoch):
+            if (shuffle and current_global_step >= max_steps_epoch) or \
+               (not shuffle and current_global_step < max_steps_epoch):
                 while not session.should_stop():
                     try:
                         _, current_global_step = session.run([train_op, global_step])
 
                     except tf.errors.OutOfRangeError:
-                        print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'.format(datetime.now()))
+                        print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'
+                              .format(datetime.now()))
+                        break
 
     # Switch to shuffle if the first epoch has finished. See SortaGrad.
     current_global_step += 1
-    if not shuffle and current_global_step >= max_steps_1st_epoch:
+    if not shuffle and current_global_step >= max_steps_epoch:
         train(True)
 
 
