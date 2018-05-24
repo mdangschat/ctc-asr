@@ -14,13 +14,13 @@ from python.loader.load_sample import load_sample, NUM_FEATURES
 
 
 # Path to train.txt file.
-TRAIN_TXT_PATH = '/home/marc/workspace/speech/data/train.txt'
+TRAIN_TXT_PATH = './data/train.txt'
 # Path to train.txt file.
-TEST_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
+TEST_TXT_PATH = './data/test.txt'
 # Path to validate.txt file.
-VALIDATE_TXT_PATH = '/home/marc/workspace/speech/data/test.txt'
+VALIDATE_TXT_PATH = './data/validate.txt'
 # Path to dataset collection folder.
-DATASET_PATH = '/home/marc/workspace/datasets/speech_data/'
+DATASET_PATH = '../datasets/speech_data/'
 
 
 def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
