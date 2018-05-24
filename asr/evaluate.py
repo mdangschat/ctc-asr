@@ -19,7 +19,7 @@ else:
 
 
 # Which dataset *.txt file to use for evaluation. 'test' or 'dev'.
-EVALUATION_TARGET = 'test'
+EVALUATION_TARGET = 'dev'
 
 
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
