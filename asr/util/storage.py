@@ -22,7 +22,11 @@ def git_branch():
         str: Git branch.
     """
     repo = Repo('.', search_parent_directories=True)
-    return repo.active_branch.name
+    try:
+        branch_name = repo.active_branch.name
+    except TypeError:
+        branch_name = 'DETACHED HEAD'
+    return branch_name
 
 
 def git_latest_tag():
