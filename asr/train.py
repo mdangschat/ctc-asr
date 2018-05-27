@@ -34,7 +34,7 @@ def train(shuffle):
     print('Version: {} Branch: {} Commit: {}'
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
     print('Parameters: ', get_parameters())
-    print('SortaGrad active: ', shuffle)
+    print('SortaGrad shuffle active: ', shuffle)
 
     max_steps_epoch = FLAGS.num_examples_train // FLAGS.batch_size
     max_steps_total = max_steps_epoch * FLAGS.max_epochs
