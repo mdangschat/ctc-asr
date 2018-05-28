@@ -23,6 +23,12 @@ pacaur -S python-tensorflow-opt-cuda tensorbaord
 ```
 
 
+#### Ubuntu 16.04
+```sh
+sudo apt install python3-tk
+```
+
+
 ## Prepare Datasets
 ```sh
 cd <project_root>/data/
