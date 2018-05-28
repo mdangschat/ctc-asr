@@ -1,7 +1,7 @@
 """Train the asr model.
 
 Tested with Python 3.5 and 3.6.
-Note: No Python 2 compatibility is provided.
+Note: No Python 2 compatibility is being provided.
 """
 
 import tensorflow as tf
