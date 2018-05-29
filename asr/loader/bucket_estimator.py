@@ -82,7 +82,6 @@ def __estimate_bucket_size(line):
 
     _, sample_len = load_sample(wav_path, feature_type='mel',
                                 normalize_features=False, normalize_signal=False)
-
     return sample_len
 
 
