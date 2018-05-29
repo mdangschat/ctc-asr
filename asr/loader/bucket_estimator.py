@@ -4,14 +4,15 @@ Estimate optimal bucket sizes for training, based on `train.txt` content.
 
 import sys
 import os
+import time
 import random
 
+from multiprocessing import Pool, Lock
 from tqdm import tqdm
 import numpy as np
 from matplotlib import pyplot as plt
 
 from asr.loader.load_sample import load_sample
-from asr.util.storage import delete_file_if_exists
 
 
 # Path to train.txt file.
@@ -20,7 +21,7 @@ TRAIN_TXT_PATH = './data/train.txt'
 DATASET_PATH = '../datasets/speech_data/'
 
 
-def estimate_bucket_sizes(num_buckets=64, max_length=1750):
+def estimate_bucket_sizes(num_buckets=64):
     """Estimate optimal bucket sizes based on the samples in `train.txt` file.
     Results are printed out or plotted.
     Optional, if `max_length` is greater than `0`, audio examples with feature vectors longer than
@@ -29,9 +30,6 @@ def estimate_bucket_sizes(num_buckets=64, max_length=1750):
     Args:
         num_buckets (int): Number of buckets.
             Note that TensorFlow bucketing adds a smallest and largest bucket to the list.
-        max_length (int): Maximum feature vector length of a preprocessed audio example.
-            Longer ones are being removed from the .txt file.
-            Set to `0` to disable removal.
 
     Returns:
         Nothing.
@@ -40,43 +38,28 @@ def estimate_bucket_sizes(num_buckets=64, max_length=1750):
         lines = f.readlines()
         random.shuffle(lines)   # To ge a more precise estimated duration.
 
-    overlength_counter = 0
-    lengths = []
-    tmp_lines = []
+    # Setup threadpool.
+    num_processes = 8
+    total_tasks = len(lines)
+    sample_lengths = []
+    lock = Lock()
+    start_time = time.time()
 
-    # Progressbar
-    for line in tqdm(lines, desc='Reading audio files', total=len(lines), file=sys.stdout,
-                     unit='files', dynamic_ncols=True):
-        wav_path, label = line.split(' ', 1)
-        wav_path = os.path.join(DATASET_PATH, wav_path)
-        _, sample_len = load_sample(wav_path, feature_type='mel',
-                                    normalize_features=False, normalize_signal=False)
+    with Pool(processes=num_processes) as pool:
+        for sample_len in tqdm(
+                pool.imap_unordered(__estimate_bucket_size, lines, chunksize=8),
+                desc='Reading audio files', total=total_tasks, file=sys.stdout,
+                unit='files', dynamic_ncols=True):
+            lock.acquire()
+            sample_lengths.append(sample_len)
+            lock.release()
 
-        if max_length > 0:
-            if sample_len < max_length:
-                lengths.append(sample_len)
-                tmp_lines.append(line)
-            else:
-                overlength_counter += 1
+    sample_lengths = np.array(sample_lengths)
 
-        else:
-            lengths.append(sample_len)
-            tmp_lines.append(line)
+    print('Evaluated {:,d} examples in {:.3f}s.'.
+          format(len(sample_lengths), time.time() - start_time))
 
-    print()  # Clear line from tqdm progressbar.
-
-    # Write reduced data back to .txt file, if selected.
-    if max_length > 0:
-        print('{} examples have a length greater than {} and have been removed from .txt file.'
-              .format(overlength_counter, max_length))
-
-        delete_file_if_exists(TRAIN_TXT_PATH)
-        with open(TRAIN_TXT_PATH, 'w') as f:
-            f.writelines(tmp_lines)
-
-    print('Evaluated {} examples.'.format(len(lengths)))
-    lengths = np.array(lengths)
-    lengths = np.sort(lengths)
+    lengths = np.sort(sample_lengths)
     step = len(lengths) // num_buckets
     buckets = '['
     for i in range(step, len(lengths), step):
@@ -94,6 +77,16 @@ def estimate_bucket_sizes(num_buckets=64, max_length=1750):
     plt.grid(True)
 
     plt.show()
+
+
+def __estimate_bucket_size(line):
+    wav_path, label = line.split(' ', 1)
+    wav_path = os.path.join(DATASET_PATH, wav_path)
+
+    _, sample_len = load_sample(wav_path, feature_type='mel',
+                                normalize_features=False, normalize_signal=False)
+
+    return sample_len
 
 
 if __name__ == '__main__':
