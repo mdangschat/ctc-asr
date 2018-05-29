@@ -134,6 +134,8 @@ def train(shuffle):
                     except tf.errors.OutOfRangeError:
                         print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'
                               .format(datetime.now()))
+                        # If `run` isn't successful, global step isn't being updated.
+                        current_global_step += 1
                         break
 
     # Switch to shuffle if the first epoch has finished. See SortaGrad.
