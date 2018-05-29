@@ -114,7 +114,7 @@ def load_sample(file_path, feature_type='mel', normalize_features='local', norma
     if not os.path.isfile(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
-    # Load the audio files sample rate (`sr`) and data (`y`)
+    # Load the audio files sample rate (`sr`) and data (`y`).
     (sr, y) = wav.read(file_path)
 
     if normalize_signal:
