@@ -9,6 +9,8 @@ import random
 from multiprocessing import Pool, Lock
 from tqdm import tqdm
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 from asr.loader.load_sample import load_sample
