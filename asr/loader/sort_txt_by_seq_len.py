@@ -48,7 +48,7 @@ def _sort_txt_by_seq_len(txt_path, max_length=1700):
         # Sort by sequence length.
         buffer = sorted(buffer, key=lambda x: x[0])
 
-        # Remove samples longer than x points.
+        # Remove samples longer than `max_length` points.
         if max_length > 0:
             original_length = len(buffer)
             buffer = [s for s in buffer if s[0] < 1750]
