@@ -6,6 +6,7 @@ import os
 import sys
 import random
 
+from multiprocessing import Pool, Lock
 import numpy as np
 from tqdm import tqdm
 
@@ -33,27 +34,40 @@ def calculate_dataset_stats(txt_path):
         random.shuffle(lines)
         lines = lines[: 2 ** 15]
 
+        # Setup threadpool.
+        num_processes = 8
+        lock = Lock()
         features = []   # Output buffer.
 
-        for line in tqdm(lines, desc='Reading audio samples', total=len(lines), file=sys.stdout,
-                         unit='samples', dynamic_ncols=True):
-            wav_path, _ = line.split(' ', 1)
-
-            feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
-                                     normalize_features=False, normalize_signal=False)
-            assert len(feature) > 1
-
-            features.append(feature)
+        with Pool(processes=num_processes) as pool:
+            for feature in tqdm(
+                pool.imap_unordered(__stat_calculator, lines, chunksize=8),
+                    desc='Reading audio samples', total=len(lines), file=sys.stdout,
+                    unit='samples', dynamic_ncols=True):
+                lock.acquire()
+                features.append(feature)
+                lock.release()
 
         # Reduce the [num_samples, time, num_features] to [total_time, num_features] array.
         features = np.concatenate(features)
 
         print('mean = {}'.format(np.mean(features)))
+        print('std = {}'.format(np.std(features)))
         means = np.mean(features, axis=0)
-        print('mean_vector = [' + ', '.join(map(str, means)) + ']')
-        print('SD = {}'.format(np.std(features)))
+        print('__mean = [' + ', '.join(map(str, means)) + ']')
         stds = np.std(features, axis=0)
-        print('SD_vector = [' + ', '.join(map(str, stds)) + ']')
+        print('__std = [' + ', '.join(map(str, stds)) + ']')
+
+
+def __stat_calculator(line):
+    # Python multiprocessing helper method.
+    wav_path, _ = line.split(' ', 1)
+
+    feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
+                             normalize_features=False, normalize_signal=False)
+    assert len(feature) > 1
+
+    return feature
 
 
 if __name__ == '__main__':

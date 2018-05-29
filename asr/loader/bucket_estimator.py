@@ -4,7 +4,6 @@ Estimate optimal bucket sizes for training, based on `train.txt` content.
 
 import sys
 import os
-import time
 import random
 
 from multiprocessing import Pool, Lock
@@ -40,15 +39,13 @@ def estimate_bucket_sizes(num_buckets=64):
 
     # Setup threadpool.
     num_processes = 8
-    total_tasks = len(lines)
-    sample_lengths = []
     lock = Lock()
-    start_time = time.time()
+    sample_lengths = []     # Output buffer.
 
     with Pool(processes=num_processes) as pool:
         for sample_len in tqdm(
                 pool.imap_unordered(__estimate_bucket_size, lines, chunksize=8),
-                desc='Reading audio files', total=total_tasks, file=sys.stdout,
+                desc='Reading audio files', total=len(lines), file=sys.stdout,
                 unit='files', dynamic_ncols=True):
             lock.acquire()
             sample_lengths.append(sample_len)
@@ -56,8 +53,7 @@ def estimate_bucket_sizes(num_buckets=64):
 
     sample_lengths = np.array(sample_lengths)
 
-    print('Evaluated {:,d} examples in {:.3f}s.'.
-          format(len(sample_lengths), time.time() - start_time))
+    print('Evaluated {:,d} examples.'.format(len(sample_lengths)))
 
     lengths = np.sort(sample_lengths)
     step = len(lengths) // num_buckets
@@ -80,6 +76,7 @@ def estimate_bucket_sizes(num_buckets=64):
 
 
 def __estimate_bucket_size(line):
+    # Python multiprocessing helper method.
     wav_path, label = line.split(' ', 1)
     wav_path = os.path.join(DATASET_PATH, wav_path)
 
