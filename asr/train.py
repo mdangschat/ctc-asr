@@ -143,7 +143,7 @@ def train(shuffle):
         )
 
         with session:
-            current_global_step = session.run(global_step)
+            current_global_step = tf.train.global_step(session, global_step)
             current_global_step += 1  # Offset accounts for TF counting from 0.
 
             if (shuffle and current_global_step >= max_steps_epoch) or \
