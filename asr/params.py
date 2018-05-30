@@ -18,7 +18,7 @@ tf.flags.DEFINE_integer('batch_size', 8,
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
                      TensorFlow version.""")
-tf.flags.DEFINE_integer('num_threads', 4,
+tf.flags.DEFINE_integer('num_threads', 8,
                         """Number of threads used to preload data.""")
 
 # Learning Rate.
@@ -69,7 +69,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 # Logging and Output.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 256,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
@@ -94,7 +94,7 @@ tf.flags.DEFINE_string('eval_dir', '',
 # Miscellaneous.
 tf.flags.DEFINE_bool('delete', False,
                      """Whether to delete old checkpoints, or resume training.""")
-tf.flags.DEFINE_integer('random_seed', 47111,
+tf.flags.DEFINE_integer('random_seed', 4711,
                         """TensorFlow random seed.""")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         """Whether to log device placement.""")

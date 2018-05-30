@@ -77,6 +77,22 @@ def train(shuffle):
             gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
         )
 
+        # Checkpoint saver hook.
+        checkpoint_saver = tf.train.Saver(
+            # Note: cuDNN RNNs do not support distributed saving of parameters.
+            sharded=False,
+            allow_empty=True,
+            max_to_keep=50,
+            save_relative_paths=True
+        )
+
+        checkpoint_saver_hook = tf.train.CheckpointSaverHook(
+            checkpoint_dir=FLAGS.train_dir,
+            save_secs=None,
+            save_steps=FLAGS.log_frequency * 10,
+            saver=checkpoint_saver
+        )
+
         # Summary hook.
         summary_op = tf.summary.merge_all()
         file_writer = tf.summary.FileWriterCache.get(FLAGS.train_dir)
@@ -94,6 +110,8 @@ def train(shuffle):
             stop_step_hook,
             # Monitors the loss tensor and stops training if loss is NaN.
             tf.train.NanTensorHook(loss),
+            # Checkpoint saver hook.
+            checkpoint_saver_hook,
             # Summary saver hook.
             summary_saver_hook,
             # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
@@ -107,12 +125,15 @@ def train(shuffle):
         # creating checkpoints, and some basic error handling.
         session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
-            save_checkpoint_steps=FLAGS.log_frequency * 10,
+            save_checkpoint_steps=None,
+            save_checkpoint_secs=None,
             # Don't use the sessions default summary saver.
             save_summaries_steps=None,
-            save_checkpoint_secs=None,
+            save_summaries_secs=None,
             # The frequency, in number of global steps, that the global_step/sec is logged.
             log_step_count_steps=FLAGS.log_frequency * 10,
+            # Set session scaffolding.
+            scaffold=tf.train.Scaffold(saver=checkpoint_saver),
             # Attach hooks to session.
             hooks=session_hooks,
             # Number of seconds given to threads to stop after close() has been called.
