@@ -7,6 +7,9 @@ import sys
 
 from multiprocessing import Pool, Lock
 from tqdm import tqdm
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
 
 from asr.util import storage
 from asr.loader.load_sample import load_sample
@@ -15,11 +18,14 @@ from asr.loader.load_sample import load_sample
 DATASETS_PATH = '../datasets/speech_data'
 
 
-def _sort_txt_by_seq_len(txt_path, max_length=1700):
+def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
     """Sort a train.txt like file by it's audio files sequence length.
+    Additionally outputs longer than `max_length` are being discarded from the given TXT file.
+    Also it prints out optimal bucket sizes after computation.
 
     Args:
         txt_path (str): Path to the `train.txt`.
+        num_buckets (int): Number ob buckets to split the input into.
         max_length (int): Positive integer. Max length for a feature vector to keep.
             Set to `0` to keep everything.
 
@@ -53,6 +59,24 @@ def _sort_txt_by_seq_len(txt_path, max_length=1700):
             original_length = len(buffer)
             buffer = [s for s in buffer if s[0] < 1750]
             print('Removed {:,d} samples from training.'.format(original_length - len(buffer)))
+
+        # Calculate optimal bucket sizes.
+        lengths = [l[0] for l in buffer]
+        step = len(lengths) // num_buckets
+        buckets = '['
+        for i in range(step, len(lengths), step):
+            buckets += '{}, '.format(lengths[i])
+        buckets = buckets[: -2] + ']'
+        print('Suggested buckets: ', buckets)
+
+        # Plot histogram of feature vector length distribution.
+        plt.figure()
+        plt.hist(lengths, bins='auto', facecolor='green', alpha=0.75)
+        plt.title('Sequence Length\'s Histogram')
+        plt.ylabel('Count')
+        plt.xlabel('Length')
+        plt.grid(True)
+        plt.show()
 
         # Remove sequence length.
         buffer = ['{} {}'.format(p, l) for _, p, l in buffer]
