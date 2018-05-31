@@ -3,7 +3,8 @@
 Automatic Speech Recognition (ASR) system implementation inspired by Baidu's
 [Deep Speech: Scaling up end-to-end speech recognition](https://arxiv.org/abs/1412.5567) paper.
 
-![TensorFlow Network Graph](images/network-architecture.png)
+![Modified Network Architecture](images/network-architecture.png)
+![Deep Speech 1 Network Architecture](images/ds1-network-architecture.png)
 
 ## Installation (incomplete)
 ```bash
