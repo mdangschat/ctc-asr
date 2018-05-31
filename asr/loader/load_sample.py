@@ -222,7 +222,8 @@ def _signal_normalization(y):
     Returns:
         np.ndarray: 1D normalized signal.
     """
-    return y / np.sqrt(np.sum(np.fabs(y) ** 2) / y.shape[0])
+    # return y / np.sqrt(np.sum(np.fabs(y) ** 2) / y.shape[0])
+    raise NotImplementedError('load_sample.py > _signal_normalization()')
 
 
 def _feature_normalization(features, method, global_mean=__global_mean_mel,
