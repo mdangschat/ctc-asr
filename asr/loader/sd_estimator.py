@@ -26,7 +26,6 @@ def calculate_dataset_stats(txt_path):
     Returns:
         Nothing.
     """
-
     # Read train.txt file.
     with open(txt_path, 'r') as f:
         lines = f.readlines()
@@ -41,7 +40,7 @@ def calculate_dataset_stats(txt_path):
 
         with Pool(processes=num_processes) as pool:
             for feature in tqdm(
-                pool.imap_unordered(__stat_calculator, lines, chunksize=8),
+                pool.imap_unordered(__stat_calculator, lines, chunksize=4),
                     desc='Reading audio samples', total=len(lines), file=sys.stdout,
                     unit='samples', dynamic_ncols=True):
                 lock.acquire()

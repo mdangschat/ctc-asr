@@ -32,7 +32,6 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
     Returns:
         Nothing.
     """
-
     # Read train.txt file.
     with open(txt_path, 'r') as f:
         lines = f.readlines()
@@ -44,7 +43,7 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
         buffer = []   # Output buffer.
 
         with Pool(processes=num_processes) as pool:
-            for result in tqdm(pool.imap_unordered(__feature_length, lines, chunksize=8),
+            for result in tqdm(pool.imap_unordered(__feature_length, lines, chunksize=4),
                                desc='Reading audio samples', total=len(lines), file=sys.stdout,
                                unit='samples', dynamic_ncols=True):
                 lock.acquire()
