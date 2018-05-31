@@ -69,7 +69,7 @@ __global_std_mfcc = [3.7248473, 3.896349, 4.0420074, 4.152798, 4.2421, 4.302436,
 __global_std_mfcc = np.array(__global_std_mfcc, dtype=NP_FLOAT).reshape([1, NUM_FEATURES])
 
 
-def load_sample(file_path, feature_type='mel', normalize_features='local', normalize_signal=False):
+def load_sample(file_path, feature_type='mel', normalize_features='local'):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
@@ -96,9 +96,6 @@ def load_sample(file_path, feature_type='mel', normalize_features='local', norma
 
             False: No normalization is being applied.
 
-        normalize_signal (bool):
-            Whether to apply (`True`) RMS normalization on the wav signal or not.
-
     Returns:
         np.ndarray:
             2D array with [time, num_features] shape, containing float.
@@ -113,9 +110,6 @@ def load_sample(file_path, feature_type='mel', normalize_features='local', norma
 
     # Load the audio files sample rate (`sr`) and data (`y`).
     (sr, y) = wav.read(file_path)
-
-    if normalize_signal:
-        y = _signal_normalization(y)
 
     if len(y) < 401:
         raise RuntimeError('Sample length () to short: {}'.format(len(y), file_path))
@@ -206,24 +200,6 @@ def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
                        winstep=win_step, nfilt=num_features, nfft=n_fft,
                        lowfreq=f_min, highfreq=f_max, preemph=0.97)
     return mel
-
-
-def _signal_normalization(y):
-    """Normalize signal by dividing it by its Root Mean Square.
-
-    Formula from:
-    <https://dsp.stackexchange.com/questions/26396/normalization-of-a-signal-in-matlab>
-
-    TODO: RuntimeWarning: invalid value encountered in sqrt.
-
-    Args:
-        y (np.ndarray): The signal data.
-
-    Returns:
-        np.ndarray: 1D normalized signal.
-    """
-    # return y / np.sqrt(np.sum(np.fabs(y) ** 2) / y.shape[0])
-    raise NotImplementedError('load_sample.py > _signal_normalization()')
 
 
 def _feature_normalization(features, method, global_mean=__global_mean_mel,
