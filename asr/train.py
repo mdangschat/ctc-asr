@@ -32,6 +32,8 @@ def train(shuffle):
     .. _`Deep Speech 2`:
         https://arxiv.org/abs/1512.02595
     """
+    run_evaluation = False
+
     print('Version: {} Branch: {} Commit: {}'
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
     print('Parameters: ', get_parameters())
@@ -149,6 +151,8 @@ def train(shuffle):
 
             if (shuffle and current_global_step >= max_steps_epoch) or \
                (not shuffle and current_global_step < max_steps_epoch):
+                run_evaluation = True
+
                 while not session.should_stop():
                     try:
                         _, current_global_step = session.run([train_op, global_step])
@@ -161,7 +165,8 @@ def train(shuffle):
                         break
 
     # Validate results after each epoch.
-    evaluate()
+    if run_evaluation:
+        evaluate()
 
     # Switch to shuffle if the first epoch has finished. See SortaGrad.
     current_global_step += 1

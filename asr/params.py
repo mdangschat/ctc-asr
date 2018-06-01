@@ -12,12 +12,12 @@ from asr.s_labels import num_classes
 tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/3c3r2d_1',
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('batch_size', 8,
-                        """(Maximum) Number of samples within a batch.""")
+                        """Number of samples within a batch.""")
 
 # Performance.
 tf.flags.DEFINE_bool('use_cudnn', True,
                      """Whether to use Nvidia cuDNN implementations or (False) the default 
-                     TensorFlow version.""")
+                     TensorFlow implementation.""")
 tf.flags.DEFINE_integer('num_threads', 8,
                         """Number of threads used to preload data.""")
 
@@ -77,13 +77,11 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")
-# tf.flags.DEFINE_integer('num_examples_train', 272537,
-tf.flags.DEFINE_integer('num_examples_train', 537,
+tf.flags.DEFINE_integer('num_examples_train', 272537,
                         """Number of examples in the training set. `test.txt`""")
 tf.flags.DEFINE_integer('num_examples_test', 3679,
                         """Number of examples in the testing/evaluation set. `test.txt`""")
-# tf.flags.DEFINE_integer('num_examples_dev', 2703,
-tf.flags.DEFINE_integer('num_examples_dev', 271,
+tf.flags.DEFINE_integer('num_examples_dev', 2703,
                         """Number of examples in the validation set. `dev.txt`""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
