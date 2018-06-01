@@ -15,7 +15,11 @@ else:
 
 
 # File to transcribe.
-WAV_FILE = '../datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV'
+# WAV_PATHS = ['../datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV']
+WAV_PATHS = ['/tmp/examples/audio1_16.wav',
+             '/tmp/examples/donald_mono_16.wav',
+             '/tmp/poop/gt.wav',
+             '/tmp/poop/youdontunderstandme.wav']
 
 
 def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph):
@@ -79,19 +83,22 @@ def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph
         coord.join(threads, stop_grace_period_secs=120)
 
 
-def transcribe():
+def transcribe(wav_file):
     """Load an audio file and prepare the TensorFlow graph for inference.
+
+    Args:
+        wav_file (str): Path to WAV file.
 
     Returns:
         Nothing.
     """
-    assert os.path.isfile(WAV_FILE)
+    assert os.path.isfile(wav_file)
 
     with tf.Graph().as_default():
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
             # Load audio file into tensor.
-            sequences, _ = load_sample(WAV_FILE)
+            sequences, _ = load_sample(wav_file)
             sequences = [sequences] * FLAGS.batch_size
             sequences_ph = tf.placeholder(dtype=TF_FLOAT,
                                           shape=[FLAGS.batch_size, None, NUM_FEATURES])
@@ -107,7 +114,8 @@ def transcribe():
 # noinspection PyUnusedLocal
 def main(argv=None):
     """TensorFlow starting routine."""
-    transcribe()
+    for wav_path in WAV_PATHS:
+        transcribe(wav_path)
 
 
 if __name__ == '__main__':
