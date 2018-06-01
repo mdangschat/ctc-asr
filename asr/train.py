@@ -85,7 +85,7 @@ def train(shuffle):
             # Note: cuDNN RNNs do not support distributed saving of parameters.
             sharded=False,
             allow_empty=True,
-            max_to_keep=250,
+            max_to_keep=10,
             save_relative_paths=True
         )
 
