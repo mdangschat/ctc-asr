@@ -160,7 +160,7 @@ def train(shuffle):
                         current_global_step += 1
                         break
 
-    # TODO Validate results after each epoch.
+    # Validate results after each epoch.
     evaluate()
 
     # Switch to shuffle if the first epoch has finished. See SortaGrad.

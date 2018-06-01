@@ -3,9 +3,7 @@
 L8ER: Add accuracy table.
 """
 
-import math
 from datetime import datetime
-
 import numpy as np
 import tensorflow as tf
 
@@ -46,14 +44,17 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
     elif EVALUATION_TARGET == 'dev':
         num_target_samples = FLAGS.num_examples_dev
     else:
-        raise ValueError('Invalid target "{}"'.format(EVALUATION_TARGET))
+        raise ValueError('Invalid evaluation target: "{}"'.format(EVALUATION_TARGET))
 
     with tf.Session(config=session_config) as sess:
         checkpoint = tf.train.get_checkpoint_state(FLAGS.train_dir)
         if checkpoint and checkpoint.model_checkpoint_path:
-            saver = tf.train.Saver()
+            # Initialize network.
+            init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
+            sess.run(init_op)
 
             # Restore from checkpoint.
+            saver = tf.train.Saver()
             saver.restore(sess, checkpoint.model_checkpoint_path)
             # Extract global stop from checkpoint.
             global_step = checkpoint.model_checkpoint_path.split('/')[-1].split('-')[-1]
@@ -71,7 +72,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             for qr in tf.get_collection(tf.GraphKeys.QUEUE_RUNNERS):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True, start=True))
 
-            num_iter = int(math.floor(num_target_samples / FLAGS.batch_size))
+            num_iter = num_target_samples // FLAGS.batch_size
             loss_sum, mean_ed_sum, wer_sum = 0., 0., 0.
             step = 0
 
@@ -147,7 +148,7 @@ def evaluate(eval_dir):
             summary_op = tf.summary.merge_all()
             summary_writer = tf.summary.FileWriter(eval_dir, graph)
 
-            # L8ER: Add continuous evaluation loop.
+            # Maybe: Add continuous evaluation loop.
             evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer)
 
 
