@@ -10,6 +10,7 @@ from datetime import datetime
 from asr.params import FLAGS, get_parameters
 from asr.util import storage, tf_contrib
 import asr.model as model
+from asr.evaluate import main as evaluate
 
 
 # General TensorFlow settings and setup.
@@ -82,14 +83,14 @@ def train(shuffle):
             # Note: cuDNN RNNs do not support distributed saving of parameters.
             sharded=False,
             allow_empty=True,
-            max_to_keep=50,
+            max_to_keep=250,
             save_relative_paths=True
         )
 
         checkpoint_saver_hook = tf.train.CheckpointSaverHook(
             checkpoint_dir=FLAGS.train_dir,
             save_secs=None,
-            save_steps=FLAGS.log_frequency * 10,
+            save_steps=FLAGS.log_frequency * 20,
             saver=checkpoint_saver
         )
 
@@ -131,7 +132,7 @@ def train(shuffle):
             save_summaries_steps=None,
             save_summaries_secs=None,
             # The frequency, in number of global steps, that the global_step/sec is logged.
-            log_step_count_steps=FLAGS.log_frequency * 10,
+            log_step_count_steps=FLAGS.log_frequency * 20,
             # Set session scaffolding.
             scaffold=tf.train.Scaffold(saver=checkpoint_saver),
             # Attach hooks to session.
@@ -158,6 +159,9 @@ def train(shuffle):
                         # If `run` isn't successful, global step isn't being updated.
                         current_global_step += 1
                         break
+
+    # TODO Validate results after each epoch.
+    evaluate()
 
     # Switch to shuffle if the first epoch has finished. See SortaGrad.
     current_global_step += 1

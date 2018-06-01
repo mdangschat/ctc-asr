@@ -70,7 +70,7 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
             [file_names, labels, originals],
             capacity=capacity,
-            num_epochs=None if shuffle else 1,  # SortaGrad: 1st epoch goes over sorted inputs.
+            num_epochs=1,
             shuffle=shuffle,
             seed=FLAGS.random_seed
         )
