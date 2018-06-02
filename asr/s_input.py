@@ -23,7 +23,7 @@ DEV_TXT_PATH = './data/dev.txt'
 DATASET_PATH = '../datasets/speech_data/'
 
 
-def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
+def inputs_train(batch_size, shuffle=False):
     """Construct input for asr training.
 
     Args:
@@ -35,9 +35,6 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
             Default (`False`) create batches from samples in the order they are listed in
             the .txt file. Else (`True`) shuffle input order. This also uses bucketing, to
             only combine samples of similar sequence length into a batch.
-
-        train_txt_path (str):
-            Path to `train.txt` file.
 
     Returns:
         tf.Tensor: `sequences`
@@ -55,9 +52,9 @@ def inputs_train(batch_size, shuffle=False, train_txt_path=TRAIN_TXT_PATH):
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    sample_list, label_list, original_list = _read_file_list(train_txt_path)
+    sample_list, label_list, original_list = _read_file_list(TRAIN_TXT_PATH)
 
-    with tf.variable_scope('input', reuse=tf.AUTO_REUSE):
+    with tf.variable_scope('input_train', reuse=tf.AUTO_REUSE):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
@@ -147,9 +144,62 @@ def inputs(batch_size, target):
         txt_path = DEV_TXT_PATH
     else:
         raise ValueError('Invalid target "{}".'.format(target))
-    print('Using: ', txt_path)
+    print('Using: {} as input.'.format(txt_path))
 
-    return inputs_train(batch_size, shuffle=True, train_txt_path=txt_path)
+    sample_list, label_list, original_list = _read_file_list(txt_path)
+
+    with tf.variable_scope('input_validation', reuse=tf.AUTO_REUSE):
+        # Convert lists to tensors.
+        file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
+        labels = tf.convert_to_tensor(label_list, dtype=tf.string)
+        originals = tf.convert_to_tensor(original_list, dtype=tf.string)
+
+        # Set a sufficient bucket capacity.
+        capacity = 512 + (4 * FLAGS.batch_size)
+
+        # Create an input queue that produces the file names to read.
+        sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
+            [file_names, labels, originals],
+            capacity=capacity,
+            num_epochs=1,
+            shuffle=True,
+            seed=FLAGS.random_seed
+        )
+
+        # Reinterpret the bytes of a string as a vector of numbers.
+        label_queue = tf.decode_raw(label_queue, tf.int32)
+
+        # Determine length of the label vector.
+        label_len = tf.shape(label_queue)
+
+        # Read the sequence from disk and extract its features.
+        sequence, seq_len = tf.py_func(load_sample, [sample_queue], [TF_FLOAT, tf.int32],
+                                       name='py_load_sample')
+
+        # Restore shape, since `py_func` forgets it.
+        # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
+        sequence.set_shape([None, NUM_FEATURES])
+        seq_len.set_shape([])  # Shape for scalar is [].
+
+        print('Generating validation batches of size {}. Queue capacity is {}. '
+              .format(batch_size, capacity))
+
+        batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len, originals_queue,
+                                       batch_size, capacity)
+
+        sequences, seq_length, labels, label_len, originals = batch
+
+        # Convert the dense labels to sparse ones for the CTC-loss function.
+        if not FLAGS.use_warp_ctc:
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
+            labels = tfc.layers.dense_to_sparse(labels)
+
+        # Add input vectors to TensorBoard summary.
+        batch_size_t = tf.shape(sequences)[0]
+        summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_FEATURES, 1])
+        tf.summary.image('sequence', summary_batch, max_outputs=1)
+
+        return sequences, seq_length, labels, label_len, originals
 
 
 def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_size):
