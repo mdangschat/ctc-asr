@@ -14,14 +14,14 @@ from asr.evaluate import evaluate
 
 
 # General TensorFlow settings and setup.
-tf.logging.set_verbosity(tf.logging.INFO)
+tf.logging.set_verbosity(tf.logging.WARN)
 tf.set_random_seed(FLAGS.random_seed)
 
 __STEPS_EPOCH = (FLAGS.num_examples_train // FLAGS.batch_size) - 1
 __MAX_STEPS = __STEPS_EPOCH * FLAGS.max_epochs
 
 
-def train(shuffle):
+def train(epoch):
     """Train the network for a number of steps. Uses SortaGrad to start training (first epoch)
      on short sequences, and increase their length throughout the first epoch. After that it
      uses shuffled inputs.
@@ -29,16 +29,13 @@ def train(shuffle):
      times at the start of the first epoch.
 
     Args:
-        shuffle (bool): Whether to use sorted inputs or shuffled inputs for training.
+        epoch (int): Whether to use sorted inputs (`epoch=0`) or shuffled inputs for training.
             See SortaGrad approach as documented in `Deep Speech 2`_.
 
     .. _`Deep Speech 2`:
         https://arxiv.org/abs/1512.02595
     """
-    print('Version: {} Branch: {} Commit: {}'
-          .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
-    print('Parameters: ', get_parameters())
-    print('SortaGrad shuffle active: ', shuffle)
+    print('Starting epoch {}.'.format(epoch))
 
     with tf.Graph().as_default():
         global_step = tf.train.get_or_create_global_step()
@@ -47,7 +44,7 @@ def train(shuffle):
         # are performed on GPU.
         with tf.device('/cpu:0'):
             # Note that _ is `seq_length`, which is calculated in `inference()` for now.
-            sequences, _, labels, label_length, originals = model.inputs_train(shuffle)
+            sequences, _, labels, label_length, originals = model.inputs_train(epoch > 0)
 
         # Build the logits (prediction) graph.
         logits, seq_length = model.inference(sequences)
@@ -102,7 +99,7 @@ def train(shuffle):
                                                        summary_op=summary_op)
 
         # Stop after steps hook.
-        last_step = __MAX_STEPS if shuffle else __STEPS_EPOCH
+        last_step = (epoch + 1) * __STEPS_EPOCH
         stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
 
         # Session hooks.
@@ -145,11 +142,10 @@ def train(shuffle):
 
         with session:
             current_global_step = tf.train.global_step(session, global_step)
-            # current_global_step += 1  # Offset accounts for TF counting from 0.
-            print('initial step:', current_global_step)     # TODO
+            print('initial step:', current_global_step, __STEPS_EPOCH)     # TODO
 
-            if (shuffle and current_global_step >= __STEPS_EPOCH) or \
-               (not shuffle and current_global_step < __STEPS_EPOCH):
+            if (epoch > 0 and current_global_step >= __STEPS_EPOCH) or \
+               (epoch <= 0 and current_global_step < __STEPS_EPOCH):
                 while not session.should_stop():
                     try:
                         _, current_global_step = session.run([train_op, global_step])
@@ -157,7 +153,7 @@ def train(shuffle):
                     except tf.errors.OutOfRangeError:
                         print('{:%Y-%m-%d %H:%M:%S}: All batches of epoch fed.'
                               .format(datetime.now()))
-                        # REVIEW If `run` isn't successful, global step isn't being updated.
+                        # REVIEW If `tf.run` isn't successful, global step isn't being updated.
                         # current_global_step += 1
                         break
 
@@ -190,19 +186,30 @@ def main(argv=None):
         print('Starting a new evaluation in: {}'.format(eval_dir))
         tf.gfile.MakeDirs(eval_dir)
 
-    shuffle = False
+    # Logging information's about the run.
+    print('Version: {} Branch: {} Commit: {}'
+          .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
+    print('Parameters: ', get_parameters())
+
+    # Main training loop.
+    epoch = 0
     current_global_step = -1
     while current_global_step < __MAX_STEPS:
         # Start training. `shuffle=False` indicates that the 1st epoch uses SortaGrad.
-        current_global_step = train(shuffle=shuffle)
+        current_global_step = train(epoch=epoch)
+        print('Epoch {} complete.'.format(epoch))
 
         # Validate results after each epoch.
         if current_global_step % __STEPS_EPOCH == 0:
+            print('Starting evaluation.', current_global_step)  # TODO
+            evaluate(eval_dir)
+        elif epoch > 0:     # Review if this branch can be removed.
+            print('Starting evaluation (epoch).', current_global_step, epoch)   # TODO
             evaluate(eval_dir)
 
         # Switch to shuffle if the first epoch has finished. See SortaGrad.
         if current_global_step >= __STEPS_EPOCH:
-            shuffle = True
+            epoch = current_global_step // __STEPS_EPOCH
         else:
             print("""WARN: Resumed before completing the first epoch.
             This can lead to compromised learning due to the status of the SortaGrad input queue
