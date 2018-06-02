@@ -3,6 +3,7 @@
 import os
 
 from git import Repo
+import tensorflow as tf
 
 
 def git_revision_hash():
@@ -51,3 +52,26 @@ def delete_file_if_exists(path):
     """
     if os.path.exists(path) and os.path.isfile(path):
         os.remove(path)
+
+
+def maybe_delete_checkpoints(path, delete):
+    """Delete a TensorFlow checkpoint directory if requested and necessary.
+
+    Args:
+        path (str):
+            Path to directory e.g. `FLAGS.train_dir`.
+        delete (bool):
+            Whether to delete old checkpoints or not. Should probably correspond to `FLAGS.delete`.
+
+    Returns:
+        Nothing.
+    """
+    if tf.gfile.Exists(path) and delete:
+        print('Deleting old checkpoint data from: {}'.format(path))
+        tf.gfile.DeleteRecursively(path)
+        tf.gfile.MakeDirs(path)
+    elif tf.gfile.Exists(path) and not delete:
+        print('Resuming training from: {}'.format(path))
+    else:
+        print('Starting a new training run in: {}'.format(path))
+        tf.gfile.MakeDirs(path)

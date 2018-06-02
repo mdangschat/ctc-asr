@@ -8,6 +8,7 @@ import numpy as np
 import tensorflow as tf
 
 from asr.params import FLAGS
+from asr.util import storage
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False
@@ -161,15 +162,7 @@ def main(argv=None):
         .format(FLAGS.train_dir, EVALUATION_TARGET)
 
     # Delete old evaluation data if requested.
-    if tf.gfile.Exists(eval_dir) and FLAGS.delete:
-        print('Deleting old evaluation data from: {}'.format(eval_dir))
-        tf.gfile.DeleteRecursively(eval_dir)
-        tf.gfile.MakeDirs(eval_dir)
-    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:
-        print('Resuming evaluation in: {}'.format(eval_dir))
-    else:
-        print('Starting a new evaluation in: {}'.format(eval_dir))
-        tf.gfile.MakeDirs(eval_dir)
+    storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
 
     evaluate(eval_dir)
 

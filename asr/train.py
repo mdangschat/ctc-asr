@@ -166,25 +166,11 @@ def main(argv=None):
     """TensorFlow starting routine."""
 
     # Delete old training data if requested.
-    if tf.gfile.Exists(FLAGS.train_dir) and FLAGS.delete:
-        print('Deleting old checkpoint data from: {}'.format(FLAGS.train_dir))
-        tf.gfile.DeleteRecursively(FLAGS.train_dir)
-    elif tf.gfile.Exists(FLAGS.train_dir) and not FLAGS.delete:
-        print('Resuming training from: {}'.format(FLAGS.train_dir))
-    else:
-        print('Starting a new training run in: {}'.format(FLAGS.train_dir))
-        tf.gfile.MakeDirs(FLAGS.train_dir)
+    storage.maybe_delete_checkpoints(FLAGS.train_dir, FLAGS.delete)
 
     # Delete old evaluation data if requested.
     eval_dir = '{}_dev'.format(FLAGS.train_dir)
-    if tf.gfile.Exists(eval_dir) and FLAGS.delete:
-        print('Deleting old evaluation data from: {}'.format(eval_dir))
-        tf.gfile.DeleteRecursively(eval_dir)
-    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:
-        print('Resuming evaluation in: {}'.format(eval_dir))
-    else:
-        print('Starting a new evaluation in: {}'.format(eval_dir))
-        tf.gfile.MakeDirs(eval_dir)
+    storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
 
     # Logging information's about the run.
     print('Version: {} Branch: {} Commit: {}'
