@@ -128,8 +128,7 @@ def evaluate(eval_dir):
     with tf.Graph().as_default() as graph:
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
-            sequences, _, labels, label_length, originals = model.inputs(
-                target=EVALUATION_TARGET)
+            sequences, _, labels, label_length, originals = model.inputs(target=EVALUATION_TARGET)
 
         # Build a graph that computes the logits predictions from the inference model.
         logits, seq_length = model.inference(sequences, training=False)

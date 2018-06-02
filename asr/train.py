@@ -14,8 +14,8 @@ from asr.evaluate import evaluate
 
 
 # General TensorFlow settings and setup.
-tf.logging.set_verbosity(tf.logging.WARN)
-tf.set_random_seed(FLAGS.random_seed)
+# tf.logging.set_verbosity(tf.logging.INFO)
+# tf.set_random_seed(FLAGS.random_seed)
 
 __STEPS_EPOCH = (FLAGS.num_examples_train // FLAGS.batch_size) - 1
 __MAX_STEPS = __STEPS_EPOCH * FLAGS.max_epochs
