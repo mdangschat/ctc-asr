@@ -123,7 +123,7 @@ def get_parameters():
         'Dense (num_units={:,d});\n' \
         'Decoding (beam_width={:,d});\n' \
         'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps; ' \
-        '{:,d} steps_per_epoch), log_frequency={:,d});\n'
+        '{:,d} steps_per_epoch), log_frequency={:,d});'
     return s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                     FLAGS.use_warp_ctc, FLAGS.use_cudnn,
                     FLAGS.conv_filters,

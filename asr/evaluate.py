@@ -144,12 +144,12 @@ def evaluate(eval_dir):
             _, mean_ed_op, _, wer_op = model.decoded_error_rates(labels, originals, decoded,
                                                                  plaintext)
 
-            # Build the summary operation based on the TF collection of summaries.
-            summary_op = tf.summary.merge_all()
-            summary_writer = tf.summary.FileWriter(eval_dir, graph)
+        # Build the summary operation based on the TF collection of summaries.
+        summary_op = tf.summary.merge_all()
+        summary_writer = tf.summary.FileWriter(eval_dir, graph, flush_secs=10)
 
-            # Maybe: Add continuous evaluation loop.
-            evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer)
+        # Maybe: Add continuous evaluation loop.
+        evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer)
 
 
 # noinspection PyUnusedLocal
@@ -162,7 +162,7 @@ def main(argv=None):
 
     # Delete old evaluation data if requested.
     if tf.gfile.Exists(eval_dir) and FLAGS.delete:
-        print('Deleting old evaluation data from: {}.'.format(eval_dir))
+        print('Deleting old evaluation data from: {}'.format(eval_dir))
         tf.gfile.DeleteRecursively(eval_dir)
         tf.gfile.MakeDirs(eval_dir)
     elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:

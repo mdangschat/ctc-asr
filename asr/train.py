@@ -10,12 +10,15 @@ from datetime import datetime
 from asr.params import FLAGS, get_parameters
 from asr.util import storage, tf_contrib
 import asr.model as model
-from asr.evaluate import main as evaluate
+from asr.evaluate import evaluate
 
 
 # General TensorFlow settings and setup.
 tf.logging.set_verbosity(tf.logging.INFO)
 tf.set_random_seed(FLAGS.random_seed)
+
+__STEPS_EPOCH = (FLAGS.num_examples_train // FLAGS.batch_size) - 1
+__MAX_STEPS = __STEPS_EPOCH * FLAGS.max_epochs
 
 
 def train(shuffle):
@@ -32,15 +35,10 @@ def train(shuffle):
     .. _`Deep Speech 2`:
         https://arxiv.org/abs/1512.02595
     """
-    run_evaluation = False
-
     print('Version: {} Branch: {} Commit: {}'
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
     print('Parameters: ', get_parameters())
     print('SortaGrad shuffle active: ', shuffle)
-
-    max_steps_epoch = FLAGS.num_examples_train // FLAGS.batch_size
-    max_steps_total = max_steps_epoch * FLAGS.max_epochs
 
     with tf.Graph().as_default():
         global_step = tf.train.get_or_create_global_step()
@@ -104,7 +102,7 @@ def train(shuffle):
                                                        summary_op=summary_op)
 
         # Stop after steps hook.
-        last_step = max_steps_total if shuffle else max_steps_epoch
+        last_step = __MAX_STEPS if shuffle else __STEPS_EPOCH
         stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
 
         # Session hooks.
@@ -147,31 +145,24 @@ def train(shuffle):
 
         with session:
             current_global_step = tf.train.global_step(session, global_step)
-            current_global_step += 1  # Offset accounts for TF counting from 0.
+            # current_global_step += 1  # Offset accounts for TF counting from 0.
+            print('initial step:', current_global_step)     # TODO
 
-            if (shuffle and current_global_step >= max_steps_epoch) or \
-               (not shuffle and current_global_step < max_steps_epoch):
-                run_evaluation = True
-
+            if (shuffle and current_global_step >= __STEPS_EPOCH) or \
+               (not shuffle and current_global_step < __STEPS_EPOCH):
                 while not session.should_stop():
                     try:
                         _, current_global_step = session.run([train_op, global_step])
 
                     except tf.errors.OutOfRangeError:
-                        print('{:%Y-%m-%d %H:%M:%S}: All batches fed. Stopping.'
+                        print('{:%Y-%m-%d %H:%M:%S}: All batches of epoch fed.'
                               .format(datetime.now()))
-                        # If `run` isn't successful, global step isn't being updated.
-                        current_global_step += 1
+                        # REVIEW If `run` isn't successful, global step isn't being updated.
+                        # current_global_step += 1
                         break
 
-    # Validate results after each epoch.
-    if run_evaluation:
-        evaluate()
-
-    # Switch to shuffle if the first epoch has finished. See SortaGrad.
-    current_global_step += 1
-    if not shuffle and current_global_step >= max_steps_epoch:
-        train(True)
+    print('returning step:', current_global_step + 1)   # TODO
+    return current_global_step + 1
 
 
 # noinspection PyUnusedLocal
@@ -180,7 +171,7 @@ def main(argv=None):
 
     # Delete old training data if requested.
     if tf.gfile.Exists(FLAGS.train_dir) and FLAGS.delete:
-        print('Deleting old checkpoint data from: {}.'.format(FLAGS.train_dir))
+        print('Deleting old checkpoint data from: {}'.format(FLAGS.train_dir))
         tf.gfile.DeleteRecursively(FLAGS.train_dir)
     elif tf.gfile.Exists(FLAGS.train_dir) and not FLAGS.delete:
         print('Resuming training from: {}'.format(FLAGS.train_dir))
@@ -188,8 +179,36 @@ def main(argv=None):
         print('Starting a new training run in: {}'.format(FLAGS.train_dir))
         tf.gfile.MakeDirs(FLAGS.train_dir)
 
-    # Start training. `shuffle=False` indicates that the 1st epoch uses SortaGrad.
-    train(shuffle=False)
+    # Delete old evaluation data if requested.
+    eval_dir = '{}_dev'.format(FLAGS.train_dir)
+    if tf.gfile.Exists(eval_dir) and FLAGS.delete:
+        print('Deleting old evaluation data from: {}'.format(eval_dir))
+        tf.gfile.DeleteRecursively(eval_dir)
+    elif tf.gfile.Exists(eval_dir) and not FLAGS.delete:
+        print('Resuming evaluation in: {}'.format(eval_dir))
+    else:
+        print('Starting a new evaluation in: {}'.format(eval_dir))
+        tf.gfile.MakeDirs(eval_dir)
+
+    shuffle = False
+    current_global_step = -1
+    while current_global_step < __MAX_STEPS:
+        # Start training. `shuffle=False` indicates that the 1st epoch uses SortaGrad.
+        current_global_step = train(shuffle=shuffle)
+
+        # Validate results after each epoch.
+        if current_global_step % __STEPS_EPOCH == 0:
+            evaluate(eval_dir)
+
+        # Switch to shuffle if the first epoch has finished. See SortaGrad.
+        if current_global_step >= __STEPS_EPOCH:
+            shuffle = True
+        else:
+            print("""WARN: Resumed before completing the first epoch.
+            This can lead to compromised learning due to the status of the SortaGrad input queue
+            order isn't being stored in the checkpoint.""")
+
+    print('Completed all epochs.')
 
 
 if __name__ == '__main__':
