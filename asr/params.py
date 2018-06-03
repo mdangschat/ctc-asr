@@ -22,6 +22,8 @@ tf.flags.DEFINE_integer('num_threads', 8,
                         """Number of threads used to preload data.""")
 
 # Learning Rate.
+tf.flags.DEFINE_integer('max_epochs', 20,
+                        """Number of epochs to run. [Deep Speech 1] uses about 20 epochs.""")
 tf.flags.DEFINE_float('learning_rate', 1e-4,
                       """Initial learning rate.""")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/5,
@@ -52,6 +54,10 @@ tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       """Dropout rate for dense layers.""")
 
 # Layer and activation options.
+tf.flags.DEFINE_string('used_model', 'ds2',
+                       """Used inference model. Supported are 'ds1', and 'ds2'.
+                       Also see `FLAGS.feature_drop_every_second_frame`.""")
+
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               """Number of filters for each convolutional layer.""")
 
@@ -66,20 +72,14 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       """Cutoff ReLU activations that exceed the cutoff.""")
 
-# Logging and Output.
-tf.flags.DEFINE_integer('max_epochs', 20,
-                        """Number of epochs to run. [Deep Speech 1] uses 15 to 20 epochs.""")
-tf.flags.DEFINE_integer('log_frequency', 250,
-                        """How often (every `log_frequency` steps) to log results.""")
-tf.flags.DEFINE_integer('num_samples_to_report', 4,
-                        """The maximum number of decoded and original text samples to report.""")
-
 # Input features.
 tf.flags.DEFINE_string('feature_type', 'mel',
                        """Type of input features. Supported types are: 'mel' and 'mfcc'.""")
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        """Type of normalization applied to input features. 
                        Supported are: 'none', 'global', 'local', and 'local_scalar'""")
+tf.flags.DEFINE_bool('features_drop_every_second_frame', False,
+                     """[Deep Speech 1] like dropping of every 2nd input time frame.""")
 
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
@@ -92,6 +92,13 @@ tf.flags.DEFINE_integer('num_examples_dev', 2703,
                         """Number of examples in the validation set. `dev.txt`""")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
+
+
+# Logging and Output.
+tf.flags.DEFINE_integer('log_frequency', 250,
+                        """How often (every `log_frequency` steps) to log results.""")
+tf.flags.DEFINE_integer('num_samples_to_report', 4,
+                        """The maximum number of decoded and original text samples to report.""")
 
 # Evaluation.
 tf.flags.DEFINE_string('eval_dir', '',

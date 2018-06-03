@@ -43,11 +43,10 @@ def train(epoch):
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
-            # Note that _ is `seq_length`, which is calculated in `inference()` for now.
-            sequences, _, labels, label_length, originals = model.inputs_train(epoch > 0)
+            sequences, seq_length, labels, label_length, originals = model.inputs_train(epoch > 0)
 
         # Build the logits (prediction) graph.
-        logits, seq_length = model.inference(sequences)
+        logits, seq_length = model.inference(sequences, seq_length, training=True)
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate loss/cost.

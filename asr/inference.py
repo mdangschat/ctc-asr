@@ -22,7 +22,7 @@ WAV_PATHS = ['/tmp/examples/audio1_16.wav',
              '/tmp/poop/youdontunderstandme.wav']
 
 
-def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph):
+def transcribe_once(logits_op, decoded_op, plaintext_op, feed_dict):
     """Restore model from latest checkpoint and run the inference for the provided `sequence`.
 
     Args:
@@ -32,10 +32,8 @@ def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph
             Decoded operator.
         plaintext_op (tf.Tensor):
             Plaintext operator.
-        sequences (List[np.ndarray]):
-            Python list of 2D numpy arrays, each containing audio features.
-        sequences_ph (tf.Tensor):
-            Placeholder for the input sequences.
+        feed_dict (dict):
+            Session run feed dictionary.
 
     Returns:
         Nothing.
@@ -71,7 +69,7 @@ def transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph
 
             if not coord.should_stop():
                 logits, decoded, plaintext = sess.run([logits_op, decoded_op, plaintext_op],
-                                                      feed_dict={sequences_ph: sequences})
+                                                      feed_dict=feed_dict)
 
                 print('Transcriptions {}:\n{}'.format(plaintext.shape, plaintext))
 
@@ -98,17 +96,26 @@ def transcribe(wav_file):
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
             # Load audio file into tensor.
-            sequences, _ = load_sample(wav_file)
-            sequences = [sequences] * FLAGS.batch_size
-            sequences_ph = tf.placeholder(dtype=TF_FLOAT,
-                                          shape=[FLAGS.batch_size, None, NUM_FEATURES])
+            sequence, seq_length = load_sample(wav_file)
+
+            sequence = [sequence] * FLAGS.batch_size
+            sequence_ph = tf.placeholder(dtype=TF_FLOAT,
+                                         shape=[FLAGS.batch_size, None, NUM_FEATURES])
+
+            seq_length = [seq_length] * FLAGS.batch_size
+            seq_length_ph = tf.placeholder(dtype=tf.int32, shape=[FLAGS.batch_size, 1])
+
+            feed_dict = {
+                sequence_ph: sequence,
+                seq_length_ph: seq_length
+            }
 
         # Build a graph that computes the logits predictions from the inference model.
-        logits_op, seq_length = model.inference(sequences_ph, training=False)
+        logits_op, seq_length = model.inference(sequence_ph, seq_length_ph, training=False)
 
         decoded_op, plaintext_op, _ = model.decode(logits_op, seq_length, originals=None)
 
-        transcribe_once(logits_op, decoded_op, plaintext_op, sequences, sequences_ph)
+        transcribe_once(logits_op, decoded_op, plaintext_op, feed_dict)
 
 
 # noinspection PyUnusedLocal

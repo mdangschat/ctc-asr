@@ -12,7 +12,128 @@ if FLAGS.use_warp_ctc:
     import warpctc_tensorflow as warpctc
 
 
-def inference(sequences, training=True):
+def inference(sequences, seq_length, training=True):
+    # TODO: Documentation
+    if FLAGS.used_model == 'ds1':
+        return inference_ds1(sequences, seq_length, training=training)
+    elif FLAGS.used_model == 'ds2':
+        # DS2 convolutional layers don't need the `seq_length` parameter.
+        return inference_ds2(sequences, training=training)
+    else:
+        raise ValueError('Unsupported model: {}'.format(FLAGS.used_model))
+
+
+def inference_ds1(sequences, seq_length, training=True):
+    """Build the asr model, mostly based on the original DS1 paper.
+
+    Args:
+        sequences (tf.Tensor):
+            3D float Tensor with input sequences. [batch_size, time, NUM_INPUTS]
+        seq_length (tf.Tensor):
+            1D int Tensor with sequence length. [batch_size]
+        training (bool):
+            If `True` apply dropout else if `False` the data is passed through unaltered.
+
+    Returns:
+        tf.Tensor: `logits`
+            Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
+        tf.Tensor: `seq_length`
+            1D Tensor containing approximated sequence lengths.
+    """
+    initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
+    regularizer = tfc.layers.l2_regularizer(0.0046875)
+
+    # Dense1
+    with tf.variable_scope('dense1'):
+        # TODO: sequences = []
+        dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=tf.glorot_normal_initializer(),
+                                 kernel_regularizer=regularizer)
+        dense1 = tf.minimum(dense1, FLAGS.relu_cutoff)
+        dense1 = tf.layers.dropout(dense1, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: dense1 = []
+
+    # Dense2
+    with tf.variable_scope('dense2'):
+        dense2 = tf.layers.dense(dense1, FLAGS.num_units_dense,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=initializer,
+                                 kernel_regularizer=regularizer)
+        dense2 = tf.minimum(dense2, FLAGS.relu_cutoff)
+        dense2 = tf.layers.dropout(dense2, rate=FLAGS.dense_dropout_rate, training=training)
+        # TODO: dense2 = []
+
+    # Dense3
+    with tf.variable_scope('dense3'):
+        dense3 = tf.layers.dense(dense2, FLAGS.num_units_dense,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=initializer,
+                                 kernel_regularizer=regularizer)
+        dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
+        dense3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate, training=training)
+        # dense3 = [batch_size, time, num_units_dense]
+
+    # RNN layers.
+    with tf.variable_scope('rnn'):
+        dropout_rate = FLAGS.rnn_dropout_rate if training else 0.0
+
+        if not FLAGS.use_cudnn:
+            # Create a stack of RNN cells.
+            fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_rnn,
+                                                                FLAGS.num_layers_rnn,
+                                                                dropout=dropout_rate)
+
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
+            rnn_output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(fw_cells, bw_cells,
+                                                                       inputs=dense3,
+                                                                       dtype=TF_FLOAT,
+                                                                       sequence_length=seq_length,
+                                                                       parallel_iterations=64,
+                                                                       time_major=False)
+            # rnn_output = [batch_size, time, num_units_rnn * 2]
+
+        else:   # FLAGS.use_cudnn
+            # cuDNN RNNs only support time major inputs.
+            conv_output = tfc.rnn.transpose_batch_time(dense3)
+
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
+            rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
+                                             num_units=FLAGS.num_units_rnn,
+                                             input_mode='linear_input',
+                                             direction='bidirectional',
+                                             dropout=dropout_rate,
+                                             seed=FLAGS.random_seed,
+                                             dtype=TF_FLOAT,
+                                             kernel_initializer=None,   # Glorot Uniform Initializer
+                                             bias_initializer=None)     # Constant 0.0 Initializer
+
+            rnn_output, _ = rnn(conv_output)
+            rnn_output = tfc.rnn.transpose_batch_time(rnn_output)
+            # rnn_output = [batch_size, time, num_units_rnn * 2]
+
+    # Dense4
+    with tf.variable_scope('dense4'):
+        dense4 = tf.layers.dense(rnn_output, FLAGS.num_units_dense,
+                                 activation=tf.nn.relu,
+                                 kernel_initializer=initializer,
+                                 kernel_regularizer=regularizer)
+        dense4 = tf.minimum(dense4, FLAGS.relu_cutoff)
+        dense4 = tf.layers.dropout(dense4, rate=FLAGS.dense_dropout_rate, training=training)
+        # dense4 = [batch_size, conv_time, num_units_dense]
+
+    # Logits: layer(XW + b),
+    # We don't apply softmax here because most TensorFlow loss functions perform
+    # a softmax activation as needed, and therefore don't expect activated logits.
+    with tf.variable_scope('logits'):
+        logits = tf.layers.dense(dense4, FLAGS.num_classes, kernel_initializer=initializer)
+        logits = tfc.rnn.transpose_batch_time(logits)
+
+    # logits = [time, batch_size, NUM_CLASSES]
+    return logits, seq_length
+
+
+def inference_ds2(sequences, training=True):
     """Build the asr model.
 
     Args:
@@ -30,11 +151,12 @@ def inference(sequences, training=True):
     initializer = tf.truncated_normal_initializer(stddev=0.046875, dtype=TF_FLOAT)
     regularizer = tfc.layers.l2_regularizer(0.0046875)
 
-    # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
-    sequences = tf.reshape(sequences, [sequences.shape[0], -1, sequences.shape[2], 1])
-
     # Convolutional layers.
     with tf.variable_scope('conv'):
+        # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
+        sequences = tf.reshape(sequences, [sequences.shape[0], -1, sequences.shape[2], 1])
+
+        # Apply convolutions.
         conv_output, seq_length = tf_contrib.conv_layers(sequences)
 
     # RNN layers.

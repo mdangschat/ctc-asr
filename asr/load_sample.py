@@ -154,6 +154,10 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
     # Make sure that data type matches TensorFlow type.
     sample = sample.astype(NP_FLOAT)
 
+    # Drop every 2nd time frame, if requested.
+    if FLAGS.features_drop_every_second_frame:
+        sample = sample[:: 2, :]
+
     # Get length of the sample.
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
