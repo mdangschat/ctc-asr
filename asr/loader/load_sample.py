@@ -69,7 +69,7 @@ __global_std_mfcc = [3.7248473, 3.896349, 4.0420074, 4.152798, 4.2421, 4.302436,
 __global_std_mfcc = np.array(__global_std_mfcc, dtype=NP_FLOAT).reshape([1, NUM_FEATURES])
 
 
-def load_sample(file_path, feature_type='mel', normalize_features='local'):
+def load_sample(file_path, feature_type=None, feature_normalization=None):
     """Loads the wave file and converts it into feature vectors.
 
     Args:
@@ -77,9 +77,12 @@ def load_sample(file_path, feature_type='mel', normalize_features='local'):
             A TensorFlow queue of file names to read from.
             `tf.py_func` converts the provided Tensor into `np.ndarray`s bytes.
 
-        feature_type (str): Type of features to generate. Options are `'mel'` and `'mfcc'`.
+        feature_type (str): Optional. If `None` is provided, use `FLAGS.feature_type`.
+            Type of features to generate. Options are 'mel' and 'mfcc'.
 
-        normalize_features (str or bool):
+        feature_normalization (str): Optional.
+            If `None` is provided, use `FLAGS.feature_normalization`.
+
             Whether to normalize the generated features with the stated method or not.
             Please consult `sample_normalization` for a complete list of normalization methods.
 
@@ -94,7 +97,8 @@ def load_sample(file_path, feature_type='mel', normalize_features='local'):
             'local_scalar': Uses only the mean and standard deviation of the current sample.
                 The normalization is being applied by ([sample] - mean_scalar) / std_scalar
 
-            False: No normalization is being applied.
+            'none': No normalization is being applied.
+
 
     Returns:
         np.ndarray:
@@ -102,6 +106,21 @@ def load_sample(file_path, feature_type='mel', normalize_features='local'):
         np.ndarray:
             Array containing a single int32.
     """
+    __supported_feature_types = ['mel', 'mfcc']
+    __supported_feature_normalizations = ['none', 'global', 'local', 'local_scalar']
+
+    feature_type = feature_type if feature_type is not None else FLAGS.feature_type
+    feature_normalization = feature_normalization if feature_normalization is not None \
+        else FLAGS.feature_normalization
+
+    if feature_type not in __supported_feature_types:
+        raise ValueError('Requested feature type of {} isn\'t supported.'
+                         .format(feature_type))
+
+    if feature_normalization not in __supported_feature_normalizations:
+        raise ValueError('Requested feature normalization method {} is invalid.'
+                         .format(feature_normalization))
+
     if type(file_path) is not str:
         file_path = str(file_path, 'utf-8')
 
@@ -112,10 +131,10 @@ def load_sample(file_path, feature_type='mel', normalize_features='local'):
     (sr, y) = wav.read(file_path)
 
     if len(y) < 401:
-        raise RuntimeError('Sample length () to short: {}'.format(len(y), file_path))
+        raise RuntimeError('Sample length {:,d} to short: {}'.format(len(y), file_path))
 
     if not sr == FLAGS.sampling_rate:
-        raise RuntimeError('Sampling rate of {} found, expected {}.'
+        raise RuntimeError('Sampling rate is {:,d}, expected {:,d}.'
                            .format(sr, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
@@ -130,7 +149,7 @@ def load_sample(file_path, feature_type='mel', normalize_features='local'):
     elif feature_type == 'mel':
         sample = _mel(y, sr, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max)
     else:
-        raise ValueError('Unsupported feature type "{}".'.format(feature_type))
+        raise ValueError('Unsupported feature type: {}'.format(feature_type))
 
     # Make sure that data type matches TensorFlow type.
     sample = sample.astype(NP_FLOAT)
@@ -138,18 +157,15 @@ def load_sample(file_path, feature_type='mel', normalize_features='local'):
     # Get length of the sample.
     sample_len = np.array(sample.shape[0], dtype=np.int32)
 
-    # Sample normalization.
-    __global_mean = __global_mean_mel if feature_type == 'mel' else __global_mean_mfcc
-    __global_std = __global_std_mel if feature_type == 'mel' else __global_std_mfcc
-    sample = _feature_normalization(sample, normalize_features,
-                                    global_mean=__global_mean, global_std=__global_std)
+    # Apply feature normalization.
+    sample = _feature_normalization(sample, feature_normalization, feature_type)
 
     # sample = [time, NUM_FEATURES], sample_len: scalar
     return sample, sample_len
 
 
 def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
-    """Convert a wav signal into Mel Frequency Cepstral Coefficients.
+    """Convert a wav signal into Mel Frequency Cepstral Coefficients (MFCC).
 
     Args:
         y (np.ndarray): Wav signal.
@@ -165,7 +181,7 @@ def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
         np.ndarray: MFCC feature vectors. Shape: [time, num_features]
     """
     if num_features % 2 != 0:
-        raise ValueError('num_features not a multiple of 2.')
+        raise ValueError('num_features is not a multiple of 2.')
 
     # Compute MFCC features.
     mfcc = psf.mfcc(signal=y, samplerate=sr, winlen=win_len, winstep=win_step,
@@ -202,13 +218,12 @@ def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
     return mel
 
 
-def _feature_normalization(features, method, global_mean=__global_mean_mel,
-                           global_std=__global_std_mel):
+def _feature_normalization(features, method, feature_type):
     """Normalize the given feature vector `y`, with the stated normalization `method`.
 
     Args:
         features (np.ndarray): The signal array
-        method (str or bool): Normalization method.
+        method (str): Normalization method.
 
             'global': Uses global mean and standard deviation values from `train.txt`.
                 The normalization is being applied element wise.
@@ -221,21 +236,25 @@ def _feature_normalization(features, method, global_mean=__global_mean_mel,
             'local_scalar': Uses only the mean and standard deviation of the current sample.
                 The normalization is being applied by ([sample] - mean_scalar) / std_scalar
 
-            False: No normalization is being applied.
+            'none': No normalization is being applied.
 
-        global_mean (np.ndarray): (Optional).
-            1D vector containing the global mean values per feature vector element.
-
-        global_std (np.ndarray): (Optional).
-            1D vector containing the global standard deviation values per feature vector element.
+        feature_type (str): Feature type, see `load_sample` for details.
 
     Returns:
         np.ndarray: The normalized feature vector.
     """
-    if not method:
+    if method == 'none':
         return features
     elif method == 'global':
         # Option 'global' is applied element wise.
+        if feature_type == 'mel':
+            global_mean = __global_mean_mel
+            global_std = __global_std_mel
+        elif feature_type == 'mfcc':
+            global_mean = __global_mean_mfcc
+            global_std = __global_std_mfcc
+        else:
+            raise ValueError('Unsupported global feature type: {}'.format(feature_type))
         return (features - global_mean) / global_std
     elif method == 'local':
         return (features - np.mean(features, axis=0)) / np.std(features, axis=0)
@@ -243,4 +262,4 @@ def _feature_normalization(features, method, global_mean=__global_mean_mel,
         # Option 'local' uses scalar values.
         return (features - np.mean(features)) / np.std(features)
     else:
-        raise ValueError('Invalid normalization method "{}".'.format(method))
+        raise ValueError('Invalid normalization method: {}'.format(method))

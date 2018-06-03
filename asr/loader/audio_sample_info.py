@@ -141,11 +141,12 @@ def display_sample_info(file_path, label=''):
     plt.title('Mel spectrogram')
 
     # Import project used features (python_speech_features).
-    normalize_features = 'global'
-    mfcc = ls.load_sample(file_path, feature_type='mfcc', normalize_features=normalize_features)[0]
+    normalize_features = 'local'
+    mfcc = ls.load_sample(file_path, feature_type='mfcc',
+                          feature_normalization=normalize_features)[0]
     mfcc = np.swapaxes(mfcc, 0, 1)
 
-    mel = ls.load_sample(file_path, feature_type='mel', normalize_features=normalize_features)[0]
+    mel = ls.load_sample(file_path, feature_type='mel', feature_normalization=normalize_features)[0]
     mel = np.swapaxes(mel, 0, 1)
 
     plt.figure(figsize=(12, 8))

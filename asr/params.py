@@ -74,6 +74,13 @@ tf.flags.DEFINE_integer('log_frequency', 250,
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")
 
+# Input features.
+tf.flags.DEFINE_string('feature_type', 'mel',
+                       """Type of input features. Supported types are: 'mel' and 'mfcc'.""")
+tf.flags.DEFINE_string('feature_normalization', 'local',
+                       """Type of normalization applied to input features. 
+                       Supported are: 'none', 'global', 'local', and 'local_scalar'""")
+
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         """The sampling rate of the audio files (2 * 8kHz).""")

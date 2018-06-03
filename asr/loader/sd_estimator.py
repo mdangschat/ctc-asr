@@ -63,7 +63,7 @@ def __stat_calculator(line):
     wav_path, _ = line.split(' ', 1)
 
     feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
-                             normalize_features=False)
+                             feature_normalization='none')
     assert len(feature) > 1
 
     return feature
