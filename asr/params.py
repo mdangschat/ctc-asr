@@ -95,7 +95,7 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
 
 
 # Logging.
-tf.flags.DEFINE_integer('log_frequency', 250,
+tf.flags.DEFINE_integer('log_frequency', 500,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         """The maximum number of decoded and original text samples to report.""")

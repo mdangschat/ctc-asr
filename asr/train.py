@@ -79,7 +79,7 @@ def train(epoch):
             # Note: cuDNN RNNs do not support distributed saving of parameters.
             sharded=False,
             allow_empty=True,
-            max_to_keep=10,
+            max_to_keep=100,
             save_relative_paths=True
         )
 
@@ -122,6 +122,7 @@ def train(epoch):
         # creating checkpoints, and some basic error handling.
         session = tf.train.MonitoredTrainingSession(
             checkpoint_dir=FLAGS.train_dir,
+            # Don't use the sessions default checkpoint saver.
             save_checkpoint_steps=None,
             save_checkpoint_secs=None,
             # Don't use the sessions default summary saver.
