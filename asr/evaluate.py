@@ -78,26 +78,29 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             step = 0
 
             while step < num_iter and not coord.should_stop():
+                step += 1
+
                 try:
                     loss_batch, mean_ed_batch, wer_batch = sess.run([loss_op, mean_ed_op, wer_op])
-                except tf.errors.OutOfRangeError:
-                    print("""WARN: Due to not allowing for smaller final batches {} batches have not
-                    been evaluated.""".format(num_iter - step + 1))
+                # except tf.errors.OutOfRangeError:
+                except Exception as e:
+                    print('DEBUG EXCEPTION:', e, ' type:', type(e))
+                    print('WARN: Due to not allowing for smaller final batches {} batches have not '
+                          'been evaluated.'.format(num_iter - step))
                     break
 
                 loss_sum += np.sum(loss_batch)
                 mean_ed_sum += mean_ed_batch
                 wer_sum += wer_batch
-                step += 1
 
                 print('{:%Y-%m-%d %H:%M:%S}: Step {:,d} of {:,d}; Results: loss={:7.3f}; '
                       'mean_edit_distance={:5.3f}; WER={:5.3f}'
                       .format(datetime.now(), step, num_iter, loss_batch, mean_ed_batch, wer_batch))
 
             # Compute error rates.
-            avg_loss = loss_sum / num_iter
-            mean_ed = mean_ed_sum / num_iter
-            wer = wer_sum / num_iter
+            avg_loss = loss_sum / step
+            mean_ed = mean_ed_sum / step
+            wer = wer_sum / step
 
             print('Summarizing averages:')
             print('{:%Y-%m-%d %H:%M:%S}: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
