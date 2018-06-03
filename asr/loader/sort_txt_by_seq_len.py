@@ -12,7 +12,7 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 from asr.util import storage
-from asr.loader.load_sample import load_sample
+from asr.load_sample import load_sample
 
 
 DATASETS_PATH = '../datasets/speech_data'

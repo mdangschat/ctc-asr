@@ -5,7 +5,7 @@ import os
 import tensorflow as tf
 
 from asr.params import FLAGS, TF_FLOAT
-from asr.loader.load_sample import load_sample, NUM_FEATURES
+from asr.load_sample import load_sample, NUM_FEATURES
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False

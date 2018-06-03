@@ -10,7 +10,7 @@ from multiprocessing import Pool, Lock
 import numpy as np
 from tqdm import tqdm
 
-from asr.loader.load_sample import load_sample
+from asr.load_sample import load_sample
 
 
 DATASETS_PATH = '../datasets/speech_data'

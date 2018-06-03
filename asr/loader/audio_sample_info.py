@@ -14,8 +14,7 @@ import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
 
-from asr.loader import load_sample as ls
-
+import asr.load_sample as ls
 
 DATASETS_PATH = '../datasets/speech_data'
 

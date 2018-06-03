@@ -10,7 +10,7 @@ from tensorflow import contrib as tfc
 
 from asr.params import FLAGS, TF_FLOAT
 import asr.s_labels as s_labels
-from asr.loader.load_sample import load_sample, NUM_FEATURES
+from asr.load_sample import load_sample, NUM_FEATURES
 
 
 # Path to train.txt file.
