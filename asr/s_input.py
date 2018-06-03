@@ -54,7 +54,7 @@ def inputs_train(batch_size, shuffle=False):
     """
     sample_list, label_list, original_list = _read_file_list(TRAIN_TXT_PATH)
 
-    with tf.variable_scope('input_train', reuse=tf.AUTO_REUSE):
+    with tf.variable_scope('input', reuse=tf.AUTO_REUSE):
         # Convert lists to tensors.
         file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
         labels = tf.convert_to_tensor(label_list, dtype=tf.string)
@@ -87,7 +87,7 @@ def inputs_train(batch_size, shuffle=False):
         sequence.set_shape([None, NUM_FEATURES])
         seq_len.set_shape([])    # Shape for scalar is [].
 
-        print('Generating training batches of size {}. Queue capacity is {}. '
+        print('Generating training batches of size {}. Queue capacity is {}.'
               .format(batch_size, capacity))
 
         if shuffle:
@@ -146,20 +146,20 @@ def inputs(batch_size, target):
         raise ValueError('Invalid target "{}".'.format(target))
     print('Using: {} as input.'.format(txt_path))
 
-    sample_list, label_list, original_list = _read_file_list(txt_path)
+    paths_list, labels_list, originals_list = _read_file_list(txt_path)
 
-    with tf.variable_scope('input_validation', reuse=tf.AUTO_REUSE):
+    with tf.variable_scope('input', reuse=tf.AUTO_REUSE):
         # Convert lists to tensors.
-        file_names = tf.convert_to_tensor(sample_list, dtype=tf.string)
-        labels = tf.convert_to_tensor(label_list, dtype=tf.string)
-        originals = tf.convert_to_tensor(original_list, dtype=tf.string)
+        paths_t = tf.convert_to_tensor(paths_list, dtype=tf.string)
+        labels_t = tf.convert_to_tensor(labels_list, dtype=tf.string)
+        originals_t = tf.convert_to_tensor(originals_list, dtype=tf.string)
 
         # Set a sufficient bucket capacity.
-        capacity = 512 + (4 * FLAGS.batch_size)
+        capacity = 256 + (4 * FLAGS.batch_size)
 
         # Create an input queue that produces the file names to read.
-        sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
-            [file_names, labels, originals],
+        path_queue, label_queue, original_queue = tf.train.slice_input_producer(
+            [paths_t, labels_t, originals_t],
             capacity=capacity,
             num_epochs=1,
             shuffle=True,
@@ -173,7 +173,7 @@ def inputs(batch_size, target):
         label_len = tf.shape(label_queue)
 
         # Read the sequence from disk and extract its features.
-        sequence, seq_len = tf.py_func(load_sample, [sample_queue], [TF_FLOAT, tf.int32],
+        sequence, seq_len = tf.py_func(load_sample, [path_queue], [TF_FLOAT, tf.int32],
                                        name='py_load_sample')
 
         # Restore shape, since `py_func` forgets it.
@@ -181,25 +181,25 @@ def inputs(batch_size, target):
         sequence.set_shape([None, NUM_FEATURES])
         seq_len.set_shape([])  # Shape for scalar is [].
 
-        print('Generating validation batches of size {}. Queue capacity is {}. '
+        print('Generating validation batches of size {}. Queue capacity is {}.'
               .format(batch_size, capacity))
 
-        batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len, originals_queue,
+        batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len, original_queue,
                                        batch_size, capacity)
 
-        sequences, seq_length, labels, label_len, originals = batch
+        sequences, seq_length, labels_t, label_len, originals_t = batch
 
         # Convert the dense labels to sparse ones for the CTC-loss function.
         if not FLAGS.use_warp_ctc:
             # https://www.tensorflow.org/api_docs/python/tf/contrib/layers/dense_to_sparse
-            labels = tfc.layers.dense_to_sparse(labels)
+            labels_t = tfc.layers.dense_to_sparse(labels_t)
 
         # Add input vectors to TensorBoard summary.
         batch_size_t = tf.shape(sequences)[0]
         summary_batch = tf.reshape(sequences, [batch_size_t, -1, NUM_FEATURES, 1])
         tf.summary.image('sequence', summary_batch, max_outputs=1)
 
-        return sequences, seq_length, labels, label_len, originals
+        return sequences, seq_length, labels_t, label_len, originals_t
 
 
 def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_size):
@@ -326,20 +326,17 @@ def _read_file_list(txt_path):
     with open(txt_path) as f:
         lines = f.readlines()
 
-        sample_paths = []
+        paths = []
         labels = []
         originals = []
         for line in lines:
-            sample_path, label = line.split(' ', 1)
-            sample_paths.append(os.path.join(DATASET_PATH, sample_path))
-            label = label.strip()
+            path, label = line.split(' ', 1)
+            paths.append(os.path.join(DATASET_PATH, path))
+
             originals.append(label)
-            label = [s_labels.ctoi(c) for c in label]
+
+            label = [s_labels.ctoi(c) for c in label.strip()]
             label = np.array(label, dtype=np.int32).tostring()
-
-            if len(label) < 4:
-                raise RuntimeError('Label "{}" to short {}.'.format(label, len(label)))
-
             labels.append(label)
 
-        return sample_paths, labels, originals
+        return paths, labels, originals

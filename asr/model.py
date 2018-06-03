@@ -402,7 +402,7 @@ def inputs_train(shuffle):
     return s_input.inputs_train(FLAGS.batch_size, shuffle=shuffle)
 
 
-def inputs(target='test'):
+def inputs(target):
     """Construct input for the asr evaluation.
 
     Args:

@@ -78,7 +78,12 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             step = 0
 
             while step < num_iter and not coord.should_stop():
-                loss_batch, mean_ed_batch, wer_batch = sess.run([loss_op, mean_ed_op, wer_op])
+                try:
+                    loss_batch, mean_ed_batch, wer_batch = sess.run([loss_op, mean_ed_op, wer_op])
+                except tf.errors.OutOfRangeError:
+                    print("""WARN: Due to not allowing for smaller final batches {} batches have not
+                    been evaluated.""".format(num_iter - step + 1))
+                    break
 
                 loss_sum += np.sum(loss_batch)
                 mean_ed_sum += mean_ed_batch

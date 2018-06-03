@@ -9,7 +9,7 @@ from asr.s_labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '/home/marc/workspace/speech_checkpoints/3c3r2d_1',
+tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c3r2d_1',
                        """Directory where to write event logs and checkpoints.""")
 tf.flags.DEFINE_integer('batch_size', 8,
                         """Number of samples within a batch.""")
@@ -94,7 +94,7 @@ tf.flags.DEFINE_integer('num_classes', num_classes(),
                         """Number of classes. Contains the additional CTC <blank> label.""")
 
 
-# Logging and Output.
+# Logging.
 tf.flags.DEFINE_integer('log_frequency', 250,
                         """How often (every `log_frequency` steps) to log results.""")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
