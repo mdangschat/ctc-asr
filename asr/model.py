@@ -9,11 +9,28 @@ from asr.util import tf_contrib, error_metrics
 import asr.s_input as s_input
 
 if FLAGS.use_warp_ctc:
-    import warpctc_tensorflow as warpctc
+    import warpctc_tensorflow as warp_ctc
 
 
 def inference(sequences, seq_length, training=True):
-    # TODO: Documentation
+    """Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
+    Supports the default [Deep Speech 1] model ('ds1') and an [Deep Speech 2] inspired
+    implementation ('ds2').
+
+    Args:
+        sequences (tf.Tensor):
+            3D float Tensor with input sequences. [batch_size, time, NUM_INPUTS]
+        seq_length (tf.Tensor):
+            1D int Tensor with sequence length. [batch_size]
+        training (bool):
+            If `True` apply dropout else if `False` the data is passed through unaltered.
+
+    Returns:
+        tf.Tensor: `logits`
+            Softmax layer (logits) pre activation function, i.e. layer(X*W + b)
+        tf.Tensor: `seq_length`
+            1D Tensor containing approximated sequence lengths.
+    """
     if FLAGS.used_model == 'ds1':
         return inference_ds1(sequences, seq_length, training=training)
     elif FLAGS.used_model == 'ds2':
@@ -45,14 +62,14 @@ def inference_ds1(sequences, seq_length, training=True):
 
     # Dense1
     with tf.variable_scope('dense1'):
-        # TODO: sequences = []
+        # sequences = [batch_size, time, NUM_FEATURES]
         dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
                                  activation=tf.nn.relu,
                                  kernel_initializer=tf.glorot_normal_initializer(),
                                  kernel_regularizer=regularizer)
         dense1 = tf.minimum(dense1, FLAGS.relu_cutoff)
         dense1 = tf.layers.dropout(dense1, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense1 = []
+        # dense1 = [batch_size, time, num_units_dense]
 
     # Dense2
     with tf.variable_scope('dense2'):
@@ -62,7 +79,7 @@ def inference_ds1(sequences, seq_length, training=True):
                                  kernel_regularizer=regularizer)
         dense2 = tf.minimum(dense2, FLAGS.relu_cutoff)
         dense2 = tf.layers.dropout(dense2, rate=FLAGS.dense_dropout_rate, training=training)
-        # TODO: dense2 = []
+        # dense2 = [batch_size, time, num_units_dense]
 
     # Dense3
     with tf.variable_scope('dense3'):
@@ -255,11 +272,11 @@ def loss(logits, seq_length, labels, label_length):
         flat_label_length = tf.reshape(label_length, [-1])
 
         # https://github.com/baidu-research/warp-ctc
-        total_loss = warpctc.ctc(activations=logits,
-                                 flat_labels=flat_labels,
-                                 label_lengths=flat_label_length,
-                                 input_lengths=seq_length,
-                                 blank_label=28)
+        total_loss = warp_ctc.ctc(activations=logits,
+                                  flat_labels=flat_labels,
+                                  label_lengths=flat_label_length,
+                                  input_lengths=seq_length,
+                                  blank_label=28)
 
         # total_loss = tf.Print(total_loss, [total_loss], message='total_loss ')
 
