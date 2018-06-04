@@ -76,26 +76,29 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             num_iter = num_target_samples // FLAGS.batch_size
             loss_sum, mean_ed_sum, wer_sum = 0., 0., 0.
             step = 0
+            summary_result = None
 
             while step < num_iter and not coord.should_stop():
                 step += 1
 
                 try:
-                    loss_batch, mean_ed_batch, wer_batch = sess.run([loss_op, mean_ed_op, wer_op])
-                # except tf.errors.OutOfRangeError:
-                except Exception as e:
-                    print('DEBUG EXCEPTION:', e, ' type:', type(e))
-                    print('WARN: Due to not allowing for smaller final batches {} batches have not '
-                          'been evaluated.'.format(num_iter - step))
+                    summary_result, loss_batch, mean_ed_batch, wer_batch = sess.run([
+                        summary_op, loss_op, mean_ed_op, wer_op
+                    ])
+
+                    loss_sum += np.sum(loss_batch)
+                    mean_ed_sum += mean_ed_batch
+                    wer_sum += wer_batch
+
+                    print('{:%Y-%m-%d %H:%M:%S}: Step {:,d} of {:,d}; Results: loss={:7.3f}; '
+                          'mean_edit_distance={:5.3f}; WER={:5.3f}'
+                          .format(datetime.now(), step, num_iter, loss_batch,
+                                  mean_ed_batch, wer_batch))
+
+                except tf.errors.OutOfRangeError:
+                    print('WARN: Due to not allowing for smaller final batches, {} batches have not'
+                          ' been evaluated.'.format(num_iter - step))
                     break
-
-                loss_sum += np.sum(loss_batch)
-                mean_ed_sum += mean_ed_batch
-                wer_sum += wer_batch
-
-                print('{:%Y-%m-%d %H:%M:%S}: Step {:,d} of {:,d}; Results: loss={:7.3f}; '
-                      'mean_edit_distance={:5.3f}; WER={:5.3f}'
-                      .format(datetime.now(), step, num_iter, loss_batch, mean_ed_batch, wer_batch))
 
             # Compute error rates.
             avg_loss = loss_sum / step
@@ -107,7 +110,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
                   .format(datetime.now(), avg_loss, mean_ed, wer))
 
             summary = tf.Summary()
-            summary.ParseFromString(sess.run(summary_op))
+            summary.ParseFromString(summary_result)
 
             summary.value.add(tag='loss/ctc_loss', simple_value=avg_loss)
             summary.value.add(tag='loss/mean_edit_distance', simple_value=mean_ed)
@@ -119,7 +122,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             print('EXCEPTION:', e, ', type:', type(e))
             coord.request_stop(e)
 
-        print('Stopping...')
+        print('Stopping evaluation...')
         coord.request_stop()
         coord.join(threads, stop_grace_period_secs=120)
 
