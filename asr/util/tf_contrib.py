@@ -269,7 +269,7 @@ class LoggerHook(tf.train.SessionRunHook):
             batch_per_sec = float(FLAGS.log_frequency) / duration
 
             print('{:%Y-%m-%d %H:%M:%S}: Epoch {:,d} (step={:,d}); loss={:.4f}; '
-                  '{:.1f} examples/sec ({:.3f} sec/batch) ({:.1f} batch/sec)'
+                  '{:.1f} examples/sec ({:.3f} sec/batch) ({:.2f} batch/sec)'
                   .format(datetime.now(),
                           global_step // (FLAGS.num_examples_train // FLAGS.batch_size - 1),
                           global_step, loss_value, examples_per_sec,
