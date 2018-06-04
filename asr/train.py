@@ -4,6 +4,8 @@ Tested with Python 3.5 and 3.6.
 Note: No Python 2 compatibility is being provided.
 """
 
+import time
+
 import tensorflow as tf
 from datetime import datetime
 
@@ -15,7 +17,8 @@ from asr.evaluate import evaluate
 
 # General TensorFlow settings and setup.
 # tf.logging.set_verbosity(tf.logging.INFO)
-# tf.set_random_seed(FLAGS.random_seed)
+__random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
+tf.set_random_seed(FLAGS.random_seed)
 
 __STEPS_EPOCH = (FLAGS.num_examples_train // FLAGS.batch_size) - 1
 __MAX_STEPS = __STEPS_EPOCH * FLAGS.max_epochs

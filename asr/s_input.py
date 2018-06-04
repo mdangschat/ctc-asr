@@ -1,8 +1,8 @@
-"""Routines to load a corpus and perform the necessary pre processing on the
-audio files and labels.
+"""Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
 """
 
 import os
+import time
 
 import numpy as np
 import tensorflow as tf
@@ -64,12 +64,13 @@ def inputs_train(batch_size, shuffle=False):
         capacity = 512 + (4 * FLAGS.batch_size)
 
         # Create an input queue that produces the file names to read.
+        __random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
         sample_queue, label_queue, originals_queue = tf.train.slice_input_producer(
             [file_names, labels, originals],
             capacity=capacity,
             num_epochs=1,
             shuffle=shuffle,
-            seed=FLAGS.random_seed
+            seed=__random_seed
         )
 
         # Reinterpret the bytes of a string as a vector of numbers.
@@ -158,12 +159,13 @@ def inputs(batch_size, target):
         capacity = 256 + (4 * FLAGS.batch_size)
 
         # Create an input queue that produces the file names to read.
+        __random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
         path_queue, label_queue, original_queue = tf.train.slice_input_producer(
             [paths_t, labels_t, originals_t],
             capacity=capacity,
             num_epochs=1,
             shuffle=True,
-            seed=FLAGS.random_seed
+            seed=__random_seed
         )
 
         # Reinterpret the bytes of a string as a vector of numbers.
