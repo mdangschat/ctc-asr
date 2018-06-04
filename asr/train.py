@@ -145,7 +145,6 @@ def train(epoch):
 
         with session:
             current_global_step = tf.train.global_step(session, global_step)
-            print('initial step:', current_global_step, __STEPS_EPOCH)     # TODO
 
             if (epoch > 0 and current_global_step >= __STEPS_EPOCH) or \
                (epoch <= 0 and current_global_step < __STEPS_EPOCH):
@@ -156,11 +155,10 @@ def train(epoch):
                     except tf.errors.OutOfRangeError:
                         print('{:%Y-%m-%d %H:%M:%S}: All batches of epoch fed.'
                               .format(datetime.now()))
-                        # REVIEW If `tf.run` isn't successful, global step isn't being updated.
+                        # Review if `tf.run()` isn't successful, global step isn't being updated.
                         # current_global_step += 1
                         break
 
-    print('returning step:', current_global_step + 1)   # TODO
     return current_global_step + 1
 
 
@@ -184,16 +182,16 @@ def main(argv=None):
     epoch = 0
     current_global_step = -1
     while current_global_step < __MAX_STEPS:
-        # Start training. `shuffle=False` indicates that the 1st epoch uses SortaGrad.
+        print('Starting training at epoch {}.'.format(epoch))
+        # Start training. `epoch=0` indicates that the 1st epoch uses SortaGrad.
         current_global_step = train(epoch=epoch)
-        print('Epoch {} complete.'.format(epoch))
 
         # Validate results after each epoch.
         if current_global_step % __STEPS_EPOCH == 0:
-            print('Starting evaluation.', current_global_step)  # TODO
+            print('Starting evaluation.', current_global_step)  # L8ER
             evaluate(eval_dir)
         elif epoch > 0:     # Review if this branch can be removed.
-            print('Starting evaluation (epoch).', current_global_step, epoch)   # TODO
+            print('Starting evaluation (epoch).', current_global_step, epoch)   # L8ER
             evaluate(eval_dir)
 
         # Switch to shuffle if the first epoch has finished. See SortaGrad.

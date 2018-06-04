@@ -96,8 +96,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
                                   mean_ed_batch, wer_batch))
 
                 except tf.errors.OutOfRangeError:
-                    print('WARN: Due to not allowing for smaller final batches, {} batches have not'
-                          ' been evaluated.'.format(num_iter - step))
+                    print('WARN: Due to not allowing for smaller final batches, '
+                          '{} batches have not been evaluated.'.format(num_iter - step))
                     break
 
             # Compute error rates.
@@ -105,8 +105,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             mean_ed = mean_ed_sum / step
             wer = wer_sum / step
 
-            print('Summarizing averages:')
-            print('{:%Y-%m-%d %H:%M:%S}: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
+            print('{:%Y-%m-%d %H:%M:%S}: Summarizing averages: '
+                  'loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
                   .format(datetime.now(), avg_loss, mean_ed, wer))
 
             summary = tf.Summary()
