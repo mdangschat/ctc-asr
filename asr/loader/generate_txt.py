@@ -149,6 +149,7 @@ def _common_voice_loader(dataset_path, target, pattern):
             csv_reader = csv.reader(csv_file, delimiter=',')
             csv_lines = list(csv_reader)
             # print('csv_header:', csv_lines[0])
+            # filename,text,up_votes,down_votes,age,gender,accent,duration
 
             for line in csv_lines[1:]:
                 # Cleanup label text.
