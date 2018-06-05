@@ -105,6 +105,9 @@ Start training by invoking `python/train.py`.
 Evaluate the current model by invoking `python/evaluate.py`.
  
 
+## License
+To be determined.
+
 <!--
 # vim: ts=2:sw=2:et:
 -->
