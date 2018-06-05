@@ -16,7 +16,7 @@ from asr.evaluate import evaluate
 
 
 # General TensorFlow settings and setup.
-# tf.logging.set_verbosity(tf.logging.INFO)
+tf.logging.set_verbosity(tf.logging.INFO)
 __random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 tf.set_random_seed(FLAGS.random_seed)
 
