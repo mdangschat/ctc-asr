@@ -1,5 +1,5 @@
 """Generate `train.txt` and `test.txt` for the `LibriSpeech`_ and
-`TEDLIUMv2`_ and `TIMIT`_ datasets.
+`TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ datasets.
  Additionally some information about the data set can be printed out.
 
 Generated data format:
@@ -16,6 +16,9 @@ Generated data format:
 
 .. _TIMIT:
     https://vcs.zwuenf.org/agct_data/timit
+
+.. _TATOEBA:
+    https://tatoeba.org/eng/downloads
 """
 
 import sys
@@ -24,6 +27,7 @@ import re
 import csv
 import subprocess
 
+from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
@@ -42,6 +46,8 @@ TEDLIUM_PATH = os.path.join(DATASET_PATH, 'tedlium')
 TIMIT_PATH = os.path.join(DATASET_PATH, 'timit/TIMIT')
 # Path to the Mozilla Common Voice dataset.
 COMMON_VOICE_PATH = os.path.join(DATASET_PATH, 'common_voice/cv_corpus_v1')
+# Path to the Taboeba dataset.
+TATOEBA_PATH = os.path.join(DATASET_PATH, 'tatoeba/tatoeba_audio_eng')
 
 # Where to generate the .txt files, e.g. /home/user/../data/<target>.txt
 TXT_TARGET_PATH = './data/'
@@ -73,7 +79,8 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
         'timit': _timit_loader,
         'libri_speech': _libri_speech_loader,
         'tedlium': _tedlium_loader,
-        'common_voice': _common_voice_loader
+        'common_voice': _common_voice_loader,
+        'tatoeba': _tatoeba_loader
     }
 
     if dataset_name not in loaders:
@@ -108,6 +115,91 @@ def generate_list(dataset_path, dataset_name, target, dry_run=False):
         # Write data to the file.
         with open(target_path, 'w') as f:
             f.writelines(output)
+
+
+def _tatoeba_loader(dataset_path, target, pattern):
+    # TODO Documentation
+
+    if target != 'train':
+        raise ValueError('Tatoeba only has a train dataset.')
+
+    validated_samples = set()     # Set of all sample IDs that have been validated.
+    # Parse dataset meta data information to filter out low ranked samples.
+    with open(os.path.join(dataset_path, 'users_sentences.csv'), 'r') as csv_handle:
+        csv_reader = csv.reader(csv_handle, delimiter='\t')
+        csv_lines = list(csv_reader)
+        # print('csv_header: username\tsentence_id\trating\tdate_added\tdate_modified')
+
+        for username, _id, rating, _, _ in csv_lines:
+            rating = int(rating)
+            if rating >= 1:
+                path = os.path.join(dataset_path, 'audio', username, _id)
+                validated_samples.add(path)
+
+        print('validated:', len(validated_samples))
+
+    samples = []     # List of dictionaries of all files and labels and in the dataset.
+    # Parse dataset meta data information to filter out low ranked samples.
+    with open(os.path.join(dataset_path, 'sentences_with_audio.csv'), 'r') as csv_handle:
+        csv_reader = csv.reader(csv_handle, delimiter='\t')
+        csv_lines = list(csv_reader)
+        csv_lines = csv_lines[1:]  # Remove CSV header.
+        # print('csv_header: sentence_id\tusername\ttext')
+
+        for _id, username, text in tqdm(csv_lines,
+                                        desc='Reading audio samples', total=len(csv_lines),
+                                        file=sys.stdout, unit='samples', dynamic_ncols=True):
+            path = os.path.join(dataset_path, 'audio', username, _id)
+            if path in validated_samples:
+                samples.append({'path': path, 'text': text})
+
+    print('matching:', len(samples), samples[0])
+
+    lock = Lock()
+    buffer = []
+    missing_mp3_counter = 0
+    # with Pool(processes=cpu_count()) as pool:
+    with Pool(processes=1) as pool:
+        for result in tqdm(pool.imap_unordered(__tatoeba_loader_helper, samples, chunksize=4),
+                           desc='Reading audio samples', total=len(samples), file=sys.stdout,
+                           unit='samples', dynamic_ncols=True):
+            lock.acquire()
+            if result is not None:
+                buffer.append(result)
+            else:
+                missing_mp3_counter += 1
+            lock.release()
+
+    # for sample in samples:
+    #     print(__convert_to_wav(sample))
+
+    print('WARN: {} MP3 files listed in the CSV could not be found.'
+          .format(missing_mp3_counter))
+
+    return buffer
+
+
+def __tatoeba_loader_helper(__sample):
+    # TODO Document helper method.
+    __path = __sample['path']
+    __text = __sample['text']
+    __mp3_path = '{}.mp3'.format(__path)
+
+    # Check if audio file MP3 exists.
+    if not os.path.isfile(__mp3_path):
+        print('WARN: Audio file missing: {}'.format(__mp3_path))
+        return None
+
+    # Convert MP3 to WAV.
+    __wav_path = '{}.wav'.format(__path)
+
+    storage.delete_file_if_exists(__wav_path)
+    # Convert .mp3 file into .wav file, reduce volume to 0.95, downsample to 16kHz mono sound.
+    # TODO reenable
+    # subprocess.call(['sox', '-v', '0.95', __path, '-r', '16k', __wav_path, 'remix', '1'])
+    # assert os.path.isfile(__wav_path)
+
+    return '{} {}'.format(__wav_path, __text)
 
 
 def _common_voice_loader(dataset_path, target, pattern):
@@ -145,7 +237,7 @@ def _common_voice_loader(dataset_path, target, pattern):
     output = []
     for folder in folders:
         # Open .csv file.
-        with open('{}.csv'.format(os.path.join(dataset_path, folder))) as csv_file:
+        with open('{}.csv'.format(os.path.join(dataset_path, folder)), 'r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             csv_lines = list(csv_reader)
             # print('csv_header:', csv_lines[0])
@@ -400,7 +492,7 @@ def _timit_loader(dataset_path, target, pattern):
 
 
 if __name__ == '__main__':
-    __dry_run = False
+    __dry_run = True
 
     # TEDLIUMv2
     # generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
@@ -417,6 +509,9 @@ if __name__ == '__main__':
     # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=__dry_run)
 
     # Mozilla Common Voice
-    generate_list(COMMON_VOICE_PATH, 'common_voice', 'test', dry_run=__dry_run)
-    generate_list(COMMON_VOICE_PATH, 'common_voice', 'dev', dry_run=__dry_run)
-    generate_list(COMMON_VOICE_PATH, 'common_voice', 'train', dry_run=__dry_run)
+    # generate_list(COMMON_VOICE_PATH, 'common_voice', 'test', dry_run=__dry_run)
+    # generate_list(COMMON_VOICE_PATH, 'common_voice', 'dev', dry_run=__dry_run)
+    # generate_list(COMMON_VOICE_PATH, 'common_voice', 'train', dry_run=__dry_run)
+
+    # Tatoeba
+    generate_list(TATOEBA_PATH, 'tatoeba', 'train', dry_run=__dry_run)

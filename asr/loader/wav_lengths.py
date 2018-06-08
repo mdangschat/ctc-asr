@@ -34,12 +34,11 @@ def calculate_dataset_stats(txt_path):
         random.shuffle(lines)
 
         # Setup threadpool.
-        num_processes = cpu_count()
         lock = Lock()
         sample_lengths = []         # Output buffer.
         sample_lengths_sec = []     # Output buffer.
 
-        with Pool(processes=num_processes) as pool:
+        with Pool(processes=cpu_count()) as pool:
             for length, length_sec in tqdm(
                 pool.imap_unordered(__stat_calculator, lines, chunksize=4),
                     desc='Reading audio samples', total=len(lines), file=sys.stdout,

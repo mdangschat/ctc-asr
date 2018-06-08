@@ -34,11 +34,10 @@ def calculate_dataset_stats(txt_path):
         lines = lines[: 2 ** 15]
 
         # Setup threadpool.
-        num_processes = cpu_count()
         lock = Lock()
         features = []   # Output buffer.
 
-        with Pool(processes=num_processes) as pool:
+        with Pool(processes=cpu_count()) as pool:
             for feature in tqdm(
                 pool.imap_unordered(__stat_calculator, lines, chunksize=4),
                     desc='Reading audio samples', total=len(lines), file=sys.stdout,
