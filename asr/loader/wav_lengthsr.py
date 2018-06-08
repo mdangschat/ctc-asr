@@ -9,8 +9,10 @@ import random
 from multiprocessing import Pool, Lock, cpu_count
 import numpy as np
 from tqdm import tqdm
-
-from asr.load_sample import load_sample
+import scipy.io.wavfile as wav
+# import matplotlib
+# matplotlib.use('Agg')
+from matplotlib import pyplot as plt
 
 
 DATASETS_PATH = '../datasets/speech_data'
@@ -29,41 +31,60 @@ def calculate_dataset_stats(txt_path):
     # Read train.txt file.
     with open(txt_path, 'r') as f:
         lines = f.readlines()
+        random.shuffle(lines)
 
         # Setup threadpool.
-        num_processes = cpu_count()     # TODO Add this to other loaders as well.
+        num_processes = cpu_count()
         lock = Lock()
-        features = []   # Output buffer.
+        sample_lengths = []         # Output buffer.
+        sample_lengths_sec = []     # Output buffer.
 
         with Pool(processes=num_processes) as pool:
-            for feature in tqdm(
+            for length, length_sec in tqdm(
                 pool.imap_unordered(__stat_calculator, lines, chunksize=4),
                     desc='Reading audio samples', total=len(lines), file=sys.stdout,
                     unit='samples', dynamic_ncols=True):
                 lock.acquire()
-                features.append(feature)
+                sample_lengths.append(length)
+                sample_lengths_sec.append(length_sec)
                 lock.release()
 
-        # Reduce the [num_samples, time, num_features] to [total_time, num_features] array.
-        features = np.concatenate(features)
+        print('mean sample length={:.3f} ({:.3f})s.'
+              .format(np.mean(sample_lengths), np.mean(sample_lengths_sec)))
 
-        print('mean = {}'.format(np.mean(features)))
-        print('std = {}'.format(np.std(features)))
-        means = np.mean(features, axis=0)
-        print('__mean = [' + ', '.join(map(str, means)) + ']')
-        stds = np.std(features, axis=0)
-        print('__std = [' + ', '.join(map(str, stds)) + ']')
+    # Plot histogram of WAV length distribution.
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
+    plt.hist(sample_lengths, bins='auto', facecolor='green', alpha=0.75)
+    plt.title('Sample Length\'s Histogram')
+    plt.ylabel('Count')
+    plt.xlabel('Length')
+    plt.grid(True)
+
+    plt.subplot(1, 2, 2)
+    plt.hist(sample_lengths_sec, bins='auto', facecolor='green', alpha=0.75)
+    plt.title('Sample Length in Seconds\'s Histogram')
+    plt.ylabel('Count')
+    plt.xlabel('Length in Seconds')
+    plt.grid(True)
+
+    plt.tight_layout()
+    plt.show()
 
 
 def __stat_calculator(line):
     # Python multiprocessing helper method.
     wav_path, _ = line.split(' ', 1)
+    wav_path = os.path.join(DATASETS_PATH, wav_path)
 
-    feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
-                             feature_normalization='none')
-    assert len(feature) > 1
+    if not os.path.isfile(wav_path):
+        raise ValueError('"{}" does not exist.'.format(wav_path))
 
-    return feature
+    # Load the audio files sample rate (`sr`) and data (`y`).
+    (sr, y) = wav.read(wav_path)
+
+    length = len(y)
+    return length, length / sr
 
 
 if __name__ == '__main__':

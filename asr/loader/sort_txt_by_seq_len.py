@@ -5,7 +5,7 @@ Sort a train.txt like file by it's audio files sequence length.
 import os
 import sys
 
-from multiprocessing import Pool, Lock
+from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 import matplotlib
 matplotlib.use('Agg')
@@ -38,7 +38,7 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
         read_length = len(lines)
 
         # Setup threadpool.
-        num_processes = 8
+        num_processes = cpu_count()
         lock = Lock()
         buffer = []   # Output buffer.
 

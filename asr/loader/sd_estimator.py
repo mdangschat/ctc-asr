@@ -6,7 +6,7 @@ import os
 import sys
 import random
 
-from multiprocessing import Pool, Lock
+from multiprocessing import Pool, Lock, cpu_count
 import numpy as np
 from tqdm import tqdm
 
@@ -34,7 +34,7 @@ def calculate_dataset_stats(txt_path):
         lines = lines[: 2 ** 15]
 
         # Setup threadpool.
-        num_processes = 8
+        num_processes = cpu_count()
         lock = Lock()
         features = []   # Output buffer.
 
@@ -61,9 +61,9 @@ def calculate_dataset_stats(txt_path):
 def __stat_calculator(line):
     # Python multiprocessing helper method.
     wav_path, _ = line.split(' ', 1)
+    wav_path = os.path.join(DATASETS_PATH, wav_path)
 
-    feature, _ = load_sample(os.path.join(DATASETS_PATH, wav_path), feature_type='mel',
-                             feature_normalization='none')
+    feature, _ = load_sample(wav_path, feature_type='mel', feature_normalization='none')
     assert len(feature) > 1
 
     return feature
