@@ -1,5 +1,6 @@
 """Collection of hyper parameters, network layout, and reporting options."""
 
+from os import path
 import tensorflow as tf
 import numpy as np
 
@@ -118,6 +119,8 @@ tf.flags.DEFINE_boolean('allow_vram_growth', False,
 # Export names.
 TF_FLOAT = tf.float32   # ctc_*** functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_*** functions don't support float64. See #13
+
+BASE_PATH = path.split(path.dirname(path.realpath(__file__)))[0]    # Path to git root.
 
 FLAGS = tf.flags.FLAGS
 

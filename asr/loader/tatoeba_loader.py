@@ -1,0 +1,97 @@
+"""Load the Tatoeba dataset."""
+
+import sys
+import os
+import csv
+import subprocess
+
+from multiprocessing import Pool, Lock, cpu_count
+from tqdm import tqdm
+
+from asr.params import BASE_PATH
+from asr.util.storage import delete_file_if_exists
+
+
+# Path to the Taboeba dataset.
+__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
+__TATOEBA_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tatoeba/tatoeba_audio_eng'))
+print('TATOEABA_PATH:', __TATOEBA_PATH)   # TODO
+
+
+def tatoeba_loader(target):
+    # TODO Documentation
+
+    if target != 'train':
+        raise ValueError('Tatoeba only has a train dataset.')
+
+    validated_samples = set()     # Set of all sample IDs that have been validated.
+    # Parse dataset meta data information to filter out low ranked samples.
+    with open(os.path.join(__TATOEBA_PATH, 'users_sentences.csv'), 'r') as csv_handle:
+        csv_reader = csv.reader(csv_handle, delimiter='\t')
+        csv_lines = list(csv_reader)
+        # print('csv_header: username\tsentence_id\trating\tdate_added\tdate_modified')
+
+        for username, _id, rating, _, _ in csv_lines:
+            rating = int(rating)
+            if rating >= 1:
+                path = os.path.join(__TATOEBA_PATH, 'audio', username, _id)
+                validated_samples.add(path)
+
+        print('validated:', len(validated_samples))
+
+    samples = []     # List of dictionaries of all files and labels and in the dataset.
+    # Parse dataset meta data information to filter out low ranked samples.
+    with open(os.path.join(__TATOEBA_PATH, 'sentences_with_audio.csv'), 'r') as csv_handle:
+        csv_reader = csv.reader(csv_handle, delimiter='\t')
+        csv_lines = list(csv_reader)
+        csv_lines = csv_lines[1:]  # Remove CSV header.
+        # print('csv_header: sentence_id\tusername\ttext')
+
+        for _id, username, text in tqdm(csv_lines,
+                                        desc='Loading Tatoeba CSV', total=len(csv_lines),
+                                        file=sys.stdout, unit='entries', dynamic_ncols=True):
+            path = os.path.join(__TATOEBA_PATH, 'audio', username, _id)
+            if path in validated_samples:
+                samples.append({'path': path, 'text': text})
+
+    print('matching:', len(samples), samples[0])
+
+    lock = Lock()
+    buffer = []
+    missing_mp3_counter = 0
+    with Pool(processes=cpu_count()) as pool:
+        for result in tqdm(pool.imap_unordered(__tatoeba_loader_helper, samples, chunksize=1),
+                           desc='Converting Tatoeba MP3 to WAV', total=len(samples),
+                           file=sys.stdout, unit='files', dynamic_ncols=True):
+            lock.acquire()
+            if result is not None:
+                buffer.append(result)
+            else:
+                missing_mp3_counter += 1
+            lock.release()
+
+    print('WARN: {} MP3 files listed in the CSV could not be found.'
+          .format(missing_mp3_counter))
+
+    return buffer
+
+
+def __tatoeba_loader_helper(sample):
+    # TODO Document helper method.
+    path = sample['path']
+    text = sample['text']
+    mp3_path = '{}.mp3'.format(path)
+
+    # Check if audio file MP3 exists.
+    if not os.path.isfile(mp3_path):
+        # print('WARN: Audio file missing: {}'.format(mp3_path))
+        return None
+
+    # Convert MP3 to WAV.
+    wav_path = '{}.wav'.format(path)
+    delete_file_if_exists(wav_path)
+    # Convert MP3 file into WAV file, reduce volume to 0.95, downsample to 16kHz mono sound.
+    subprocess.call(['sox', '-v', '0.95', mp3_path, '-r', '16k', wav_path, 'remix', '1'])
+    assert os.path.isfile(wav_path), 'Could not create WAV.'
+
+    return '{} {}'.format(wav_path, text.strip())
