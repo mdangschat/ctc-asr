@@ -1,973 +1,982 @@
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000004.wav he moved about invisible but everyone could hear him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000005.wav but everything had changed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000008.wav the shop folks were taking down their shutters and people were opening their bedroom windows
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000009.wav the teacher thought that hed taught himself all he could
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000013.wav in those days very few of the people had any idea about astronomy
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000005.wav but everything had changed
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000020.wav coming home a party of tourists passed us singing and playing music
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000021.wav next install an extension that makes it possible to add custom python commands
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000022.wav the boy had met the alchemist
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000029.wav are you gonna throw a rock
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000034.wav i want to see that map covered before we get through
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000041.wav i dont know where to go
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000045.wav i was scared but wasted no time in going out and crossing the bridge to the sand pits
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000004.wav he moved about invisible but everyone could hear him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000008.wav the shop folks were taking down their shutters and people were opening their bedroom windows
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000013.wav in those days very few of the people had any idea about astronomy
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000046.wav we must be good
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000034.wav i want to see that map covered before we get through
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000029.wav are you gonna throw a rock
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000052.wav he needed someone to talk to so as to avoid thinking about the possibility of war
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000053.wav almost everyone here speaks spanish
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000041.wav i dont know where to go
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000054.wav the report was largely scathing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000045.wav i was scared but wasted no time in going out and crossing the bridge to the sand pits
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000022.wav the boy had met the alchemist
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000056.wav wheres the old goat
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000058.wav it was the time of day when all of spain slept during the summer
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000059.wav there were mountains in the distance
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000060.wav excuse you for what
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000061.wav yesterday i waited forever for the subway train
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000066.wav it was glaringly hot not a cloud in the sky nor a breath of wind
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000067.wav compiling the linux kernel can be time consuming
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000068.wav if that guy lays an egg
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000070.wav sadly my dream of becoming a squirrel whisperer may never happen
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000058.wav it was the time of day when all of spain slept during the summer
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000060.wav excuse you for what
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000053.wav almost everyone here speaks spanish
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000021.wav next install an extension that makes it possible to add custom python commands
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000073.wav the achieved results are far behind the stateoftheart in image classification
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000074.wav ill be back in a minute
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000080.wav two more months passed and the shelf brought many customers into the crystal shop
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000066.wav it was glaringly hot not a cloud in the sky nor a breath of wind
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000070.wav sadly my dream of becoming a squirrel whisperer may never happen
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000082.wav at least she knows how to behave at funerals
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000074.wav ill be back in a minute
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000067.wav compiling the linux kernel can be time consuming
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000080.wav two more months passed and the shelf brought many customers into the crystal shop
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000068.wav if that guy lays an egg
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000083.wav look at the policy i gave him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000085.wav i got two giant bug bites on my right leg from last night and they hurt
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000091.wav what was all that
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000094.wav we cant let the chronicle get the laugh on us
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000098.wav hunches his mother used to call them
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000102.wav they were in an immense setting surrounded by thousands of people speaking a strange language
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000110.wav in some places the ground was covered with the salt of driedup lakes
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000111.wav thats why i was sent down here
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000115.wav for some reason we were blocked from entering
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000117.wav but you are in the desert
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000098.wav hunches his mother used to call them
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000085.wav i got two giant bug bites on my right leg from last night and they hurt
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000119.wav she refilled her vessel and left
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000091.wav what was all that
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000115.wav for some reason we were blocked from entering
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000094.wav we cant let the chronicle get the laugh on us
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000110.wav in some places the ground was covered with the salt of driedup lakes
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000117.wav but you are in the desert
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000102.wav they were in an immense setting surrounded by thousands of people speaking a strange language
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000132.wav hes home cooking dinner
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000142.wav and you married her
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000135.wav he just got a new kite for his birthday
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000123.wav all the joy he had seen that morning had suddenly disappeared
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000139.wav we want to sell handmade chukka boots in that food truck
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000129.wav he was immensely excited at the news
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000130.wav using script blockers is generally a good idea but it requires the user to learn a bit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000132.wav hes home cooking dinner
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000135.wav he just got a new kite for his birthday
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000136.wav the ceiling collapsed inwards
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000139.wav we want to sell handmade chukka boots in that food truck
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000142.wav and you married her
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000152.wav im not hiding anything the boy answered
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000167.wav the boy was relieved
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000153.wav a large portion of the cylinder had been uncovered
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000145.wav few people realise the immensity of vacancy
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000149.wav now leave us alone said the boy to the young arab
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000152.wav im not hiding anything the boy answered
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000153.wav a large portion of the cylinder had been uncovered
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000159.wav the first rule of dont fight club is lets talk about it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000162.wav he only lost three buttons off his vest
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000163.wav i think we can do better after the boat sails
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000167.wav the boy was relieved
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000171.wav few people realise the immensity of vacancy
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000173.wav youre right when you say my father was no business man
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000175.wav what boat you sailing on
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000180.wav what a load of trash sarah opined
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000182.wav the teenagers put on red hoodies for their annual toboggan run
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000184.wav berlin can be so lovely this time of year
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000159.wav the first rule of dont fight club is lets talk about it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000185.wav laura took out a cigarette and placed it in her mouth
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000187.wav the vision vanished immediately but it had shaken him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000182.wav the teenagers put on red hoodies for their annual toboggan run
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000190.wav the omens had told him so
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000184.wav berlin can be so lovely this time of year
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000187.wav the vision vanished immediately but it had shaken him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000162.wav he only lost three buttons off his vest
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000196.wav when he was a child that man wanted to travel too
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000200.wav at that time it was quite clear in my own mind that the thing had come from the planet mars
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000201.wav thats not so bad
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000206.wav the alchemists spent years in their laboratories observing the fire that purified the metals
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000208.wav any decent editor can show you line numbers and let you jump to a specific line
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000163.wav i think we can do better after the boat sails
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000213.wav i want my garden to be filled with roses petunias and passion flowers
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000180.wav what a load of trash sarah opined
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000217.wav just as your grandfather taught you
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000200.wav at that time it was quite clear in my own mind that the thing had come from the planet mars
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000203.wav he had seen the shooting star and was persuaded that a meteorite lay somewhere nearby
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000208.wav any decent editor can show you line numbers and let you jump to a specific line
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000220.wav two days later the merchant spoke to the boy about the display
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000201.wav thats not so bad
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000222.wav as he did so he talked with the monk about the tribal wars
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000229.wav might just as well be
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000232.wav lets have your story
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000234.wav on the first day he returned with a rabbit and on the second with two birds
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000241.wav its practically up there now
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000249.wav you have a mania for simplifying everything answered the englishman irritated
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000206.wav the alchemists spent years in their laboratories observing the fire that purified the metals
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000232.wav lets have your story
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000241.wav its practically up there now
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000250.wav where she used to live
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000229.wav might just as well be
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000255.wav the boy was becoming nervous
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000260.wav they play duets together
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000261.wav he didnt know the man yet but his practiced eye would recognize him when he appeared
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000262.wav ill be right back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000298.wav what did i tell you
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000260.wav they play duets together
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000291.wav im dying for what i believe
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000268.wav hires two personal trainers and make one of them train the other one
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000277.wav of course hes coming back here
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000291.wav im dying for what i believe
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000296.wav they were relieved and happy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000298.wav what did i tell you
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000303.wav the boy noticed that the mans clothing was strange
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000304.wav scattered groups of people were hurrying from the direction of woking
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000306.wav somebody had returned my lost credit card to the bank
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000315.wav the streamer of gas came out towards us
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000296.wav they were relieved and happy
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000304.wav scattered groups of people were hurrying from the direction of woking
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000335.wav love required them to stay with the people they loved
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000317.wav im going to miss annie
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000321.wav at most they thought that another meteorite had descended
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000343.wav her height helped her with her fighting
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000326.wav nobodys going to rush me into anything
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000329.wav just what is the lowdown on williams
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000330.wav its not what enters mens mouths thats evil said the alchemist
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000345.wav it seemed so safe and tranquil
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000331.wav the greatest authority on meteorites stated that the height of its first appearance was about ninety or one hundred miles
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000333.wav what does that get us
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000335.wav love required them to stay with the people they loved
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000337.wav it didnt change anything
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000343.wav her height helped her with her fighting
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000345.wav it seemed so safe and tranquil
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000347.wav goats always have a better view
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000351.wav the turf and gravel around it seemed charred as if by a sudden explosion
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000352.wav how long is it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000355.wav it was dropping off in flakes and raining down on the sand
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000356.wav where you got him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000358.wav we dont know when the war will end so we cant continue our journey he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000337.wav it didnt change anything
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000359.wav his new friend pushed the owner aside and pulled the boy outside with him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000365.wav she set it on the shelf and there it stayed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000367.wav the boy was strong and wanted to retaliate but he was in a foreign country
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000375.wav its called the principle of favorability beginners luck
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000351.wav the turf and gravel around it seemed charred as if by a sudden explosion
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000355.wav it was dropping off in flakes and raining down on the sand
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000358.wav we dont know when the war will end so we cant continue our journey he said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000377.wav im just a man who wanders the desert and knows the stars said the alchemist
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000375.wav its called the principle of favorability beginners luck
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000356.wav where you got him
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000387.wav i got two giant bug bites on my right leg from last night and they hurt
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000347.wav goats always have a better view
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000388.wav now you listen to me
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000405.wav she was supposed to come down and get you
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000406.wav artificial neural networks can do something very similar
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000415.wav it was a litmus test
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000425.wav whats the good of arguing about something that probably doesnt exist
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000415.wav it was a litmus test
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000365.wav she set it on the shelf and there it stayed
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000441.wav they were looking only for gold his companion answered
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000429.wav without responding the guard entered the tent where he remained for some time
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000435.wav and then he perceived it very slowly
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000436.wav i would appreciate if you could create a concise table
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000367.wav the boy was strong and wanted to retaliate but he was in a foreign country
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000438.wav dont you push me around like that
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000444.wav youre supposed to be the one that has all the answers
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000435.wav and then he perceived it very slowly
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000447.wav the high humidity is making me sweat
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000453.wav well usually i learn more from my sheep than from books he answered
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000454.wav adam is a crook
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000456.wav this is for you he said holding one of the parts out to the monk
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000458.wav and i told harry i thought id be bored to death
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000460.wav how do you think the table looks
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000436.wav i would appreciate if you could create a concise table
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000444.wav youre supposed to be the one that has all the answers
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000461.wav putting a pool under this floor was a great idea
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000460.wav how do you think the table looks
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000454.wav adam is a crook
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000453.wav well usually i learn more from my sheep than from books he answered
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000463.wav i want to see him do it said the chief
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000465.wav bacon pancakes and maple syrup is a hearty start to any day
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000466.wav i never knew grandma to be so determined before
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000467.wav the genies were the spirits of good and evil
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000468.wav its true life really is generous to those who pursue their destiny the boy thought
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000470.wav he said he had never seen any like them
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000489.wav maybe these desert birds could explain to him the meaning of love without ownership
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000465.wav bacon pancakes and maple syrup is a hearty start to any day
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000456.wav this is for you he said holding one of the parts out to the monk
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000492.wav send those other people in
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000458.wav and i told harry i thought id be bored to death
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000468.wav its true life really is generous to those who pursue their destiny the boy thought
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000497.wav he was just and good
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000502.wav without the dataset the article is useless
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000509.wav my tax dollars pay for those public school proms
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000489.wav maybe these desert birds could explain to him the meaning of love without ownership
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000515.wav how are the weights computed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000520.wav and its not love to see everything from a distance like you do
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000466.wav i never knew grandma to be so determined before
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000528.wav i told you that your dream was a difficult one
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000532.wav shoot through the desk
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000546.wav a thin circle of bright metal showed between the top and the body of the cylinder
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000502.wav without the dataset the article is useless
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000470.wav he said he had never seen any like them
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000520.wav and its not love to see everything from a distance like you do
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000509.wav my tax dollars pay for those public school proms
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000549.wav the old man returned the book to the boy
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000550.wav and i think its terrific
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000553.wav it was only when i got this close to it that the strangeness of it was at all evident to me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000557.wav but it is not a class that was requested by our alumni or prospective students
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000558.wav the time must have been somewhere around six oclock
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000561.wav ill always let you down
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000562.wav the old man returned the book to the boy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000563.wav they made the boy continue digging but he found nothing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000564.wav the basketball bounced off his shield of titanium
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000546.wav a thin circle of bright metal showed between the top and the body of the cylinder
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000565.wav but you dont know about love
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000564.wav the basketball bounced off his shield of titanium
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000558.wav the time must have been somewhere around six oclock
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000566.wav the wind has many names
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000579.wav how should i know
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000563.wav they made the boy continue digging but he found nothing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000562.wav the old man returned the book to the boy
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000569.wav throughout the night the boy dug at the place he had chosen but found nothing
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000587.wav the englishman had been profoundly impressed by the story
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000553.wav it was only when i got this close to it that the strangeness of it was at all evident to me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000576.wav ive learned things from the sheep and ive learned things from crystal he thought
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000605.wav the boy picked up his pouch and put it with his other things
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000557.wav but it is not a class that was requested by our alumni or prospective students
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000579.wav how should i know
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000608.wav the war is going to end someday the girl said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000609.wav he needed someone to talk to so as to avoid thinking about the possibility of war
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000613.wav the thought was so dreadful to him that he forgot about the heat and went forward
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000614.wav thats true enough the boy thought ruefully
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000615.wav and maybe it wasnt that they were teaching me but that i was learning from them
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000616.wav the horizon was tinged with red and suddenly the sun appeared
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000619.wav the shop folks were taking down their shutters and people were opening their bedroom windows
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000620.wav i was wondering if you could tell me a bit more about what its like to live and work there
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000622.wav maybe these desert birds could explain to him the meaning of love without ownership
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000614.wav thats true enough the boy thought ruefully
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000613.wav the thought was so dreadful to him that he forgot about the heat and went forward
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000609.wav he needed someone to talk to so as to avoid thinking about the possibility of war
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000615.wav and maybe it wasnt that they were teaching me but that i was learning from them
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000623.wav i got doctor bills to pay
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000624.wav dusk was falling as the boy arrived with his herd at an abandoned church
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000625.wav ive been all over town
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000626.wav let me see it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000624.wav dusk was falling as the boy arrived with his herd at an abandoned church
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000616.wav the horizon was tinged with red and suddenly the sun appeared
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000620.wav i was wondering if you could tell me a bit more about what its like to live and work there
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000634.wav i found these one day in the fields
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000628.wav he told fatima that at their next meeting
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000629.wav all things are one
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000630.wav think ill go home and see what the family is doing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000631.wav the nearby city of ceuta had grown faster than tangier and business had fallen off
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000634.wav i found these one day in the fields
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000639.wav but he had to move on
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000622.wav maybe these desert birds could explain to him the meaning of love without ownership
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000642.wav what did she say
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000644.wav the boy began again to read his book but he was no longer able to concentrate
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000649.wav they become the soul o f the world
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000652.wav the pixel probabilities are conditioned on the model state
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000653.wav the navys going to fly father home this afternoon
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000655.wav his eyes filled with tears as he spoke of the prophet
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000626.wav let me see it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000639.wav but he had to move on
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000656.wav it spread through the planets atmosphere and obscured its more familiar features
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000644.wav the boy began again to read his book but he was no longer able to concentrate
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000655.wav his eyes filled with tears as he spoke of the prophet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000658.wav the trees swayed uniformly in the breeze
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000652.wav the pixel probabilities are conditioned on the model state
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000666.wav when the pan had cooled the monk and the boy looked at it dazzled
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000667.wav youd better get your friends
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000668.wav and now it was only four days before he would be back in that same village
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000671.wav maybe these desert birds could explain to him the meaning of love without ownership
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000673.wav bill decided that management should know about this incident
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000678.wav who engineered this getaway
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000649.wav they become the soul o f the world
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000667.wav youd better get your friends
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000631.wav the nearby city of ceuta had grown faster than tangier and business had fallen off
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000682.wav youll weaken when you see that little jezebel
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000673.wav bill decided that management should know about this incident
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000653.wav the navys going to fly father home this afternoon
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000678.wav who engineered this getaway
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000686.wav they just wont let anybody talk politics to them
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000694.wav help me the boy said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000721.wav it was an element of her sexuality
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000695.wav there were just drawings coded instructions and obscure texts
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000694.wav help me the boy said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000699.wav i found a little crowd of about twenty people surrounding the huge hole
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000702.wav he hoped that it would be someone as capable as his previous apprentice
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000706.wav there is no wine in this country the young man said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000712.wav its easy and yet ive never done it before he thought
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000714.wav where did he keep his money
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000721.wav it was an element of her sexuality
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000726.wav he put a sign on the door and they went to a small cafe nearby
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000729.wav the wind has many names
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000731.wav please dont cry
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000735.wav the boy knew and was now working toward it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000740.wav some of the grey ash was falling off the circular edge
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000712.wav its easy and yet ive never done it before he thought
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000726.wav he put a sign on the door and they went to a small cafe nearby
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000745.wav but youve got to leave me alone
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000747.wav you wanna take this outside
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000714.wav where did he keep his money
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000740.wav some of the grey ash was falling off the circular edge
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000748.wav all youve got to do is talk to him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000750.wav the world speaks many languages the boy thought
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000747.wav you wanna take this outside
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000752.wav i dont think its very ethical reading other peoples stuff
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000755.wav can i see blood orgy of the leather girls at a movie house
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000731.wav please dont cry
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000758.wav i hope some of the lines make you smile
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000759.wav they formed heaps that are visible a mile and a half away
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000755.wav can i see blood orgy of the leather girls at a movie house
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000760.wav show me some gratitude
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000764.wav everyone seemed very excited
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000729.wav the wind has many names
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000766.wav lets go and have some lunch said the crystal merchant
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000771.wav the men fell into an animated discussion
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000780.wav its a simple story
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000750.wav the world speaks many languages the boy thought
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000782.wav thats almost a hundred dollars a week
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000787.wav one can imagine these two covered with sand running up the little street in the bright sunlight
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000789.wav the italian got her words mixed up
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000790.wav and find out where the nearest telegraph office is
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000764.wav everyone seemed very excited
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000780.wav its a simple story
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000759.wav they formed heaps that are visible a mile and a half away
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000771.wav the men fell into an animated discussion
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000791.wav i always have been
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000790.wav and find out where the nearest telegraph office is
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000792.wav of course this only reduces the severity of the problem
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000789.wav the italian got her words mixed up
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000793.wav then why do you suppose he hasnt at least called up
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000794.wav im already used to the way things are
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000801.wav i wont shut up
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000809.wav youre in luck you two the fat arab said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000811.wav i myself heard nothing of that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000815.wav like everybody learns he said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000827.wav and it goes for you too
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000832.wav ive got the party here
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000838.wav it brought his heart into his mouth
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000809.wav youre in luck you two the fat arab said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000787.wav one can imagine these two covered with sand running up the little street in the bright sunlight
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000811.wav i myself heard nothing of that
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000801.wav i wont shut up
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000845.wav i dont understand what youre talking about the desert said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000847.wav i aint seen him for a week
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000851.wav they formed heaps that are visible a mile and a half away
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000852.wav is daddy in trouble
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000832.wav ive got the party here
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000855.wav the boy awoke before dawn
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000856.wav its extremely suspicious that theres no information about brains that didnt come from a brain
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000860.wav thats why im quitting
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000861.wav who is your favourite author
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000865.wav there are only eight flags up there now
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000870.wav the article should contain url where the dataset can be downloaded
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000877.wav if i had told you you wouldnt have seen the pyramids
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000838.wav it brought his heart into his mouth
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000880.wav and he wasnt faring much better
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000881.wav he noticed the unequal cooling of its surface
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000891.wav didnt you tell her
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000860.wav thats why im quitting
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000877.wav if i had told you you wouldnt have seen the pyramids
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000865.wav there are only eight flags up there now
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000893.wav the battles may last for a long time perhaps even years
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000870.wav the article should contain url where the dataset can be downloaded
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000912.wav the news was chilling to say the least
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000913.wav at that point the omens will tell you that your treasure is buried forever
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000926.wav turning the air conditioning on leads to an increased fuel consumption
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000929.wav thats true the boy thought
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000934.wav i wouldnt live in it as a ghost
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000935.wav tell your heart that the fear of suffering is worse than the suffering itself
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000936.wav but theyre somebodys children
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000941.wav too bad i couldnt see this guy first
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000946.wav one is loved because one is loved
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000950.wav as the sun rose the men began to beat the boy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000952.wav what do you mean by that
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000936.wav but theyre somebodys children
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000881.wav he noticed the unequal cooling of its surface
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000861.wav who is your favourite author
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000891.wav didnt you tell her
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000934.wav i wouldnt live in it as a ghost
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000953.wav given only the public key it is very hard to compute the private one
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000952.wav what do you mean by that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000955.wav we have also started contemplating the possibility of moving back to colorado
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000956.wav the news was chilling to say the least
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000968.wav the sheep had taught him that
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000950.wav as the sun rose the men began to beat the boy
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000969.wav you dont have to apologize
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000956.wav the news was chilling to say the least
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000941.wav too bad i couldnt see this guy first
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000972.wav darren never saw a bottle till he was six months old
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000980.wav they say its a fake
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000981.wav the boy thought of fatima
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000984.wav luke i am your sister
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000985.wav folk is not my favorite music genre
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000968.wav the sheep had taught him that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-000988.wav i want them both arrested
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000989.wav we miss you and miss having a friend like you and i am so happy that you two got to catch up
-common_voice/cv_corpus_v1/cv-valid-dev/sample-000997.wav these are not camels
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001004.wav upon returning to the wise man he related in detail everything he had seen
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000981.wav the boy thought of fatima
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001011.wav of course the two were unable to do anything
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001022.wav there were raised voicesand some sort of struggle appeared to be going on
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001016.wav my dog gave her life to save my child
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000989.wav we miss you and miss having a friend like you and i am so happy that you two got to catch up
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001020.wav curse the moment i met that old man he thought
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001024.wav the snake slithered toward the shaded boulders under the cliff
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001027.wav it was a pleasant change from talking to his sheep
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001032.wav but they were not there
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001033.wav dont you know there are nine jobs waiting for this guy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001036.wav sandra read aloud the strange excerpt
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001038.wav the criminals taunted the police officers and prison guards
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001040.wav the boy began again to read his book but he was no longer able to concentrate
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001045.wav starting with his own
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001049.wav ill work all night until dawn and ill clean every piece of crystal in your shop
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000984.wav luke i am your sister
+common_voice/cv_corpus_v1/cv-valid-dev/sample-000997.wav these are not camels
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001036.wav sandra read aloud the strange excerpt
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001050.wav but arms cannot be drawn unless they also go into battle
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001040.wav the boy began again to read his book but he was no longer able to concentrate
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001057.wav if a person is living out his destiny he knows everything he needs to know
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001062.wav they seemed to laugh at him and he laughed back his heart bursting with joy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001063.wav laser tag is a game quite similar to paintball
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001065.wav you cant go any farther one of them said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001032.wav but they were not there
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001045.wav starting with his own
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001024.wav the snake slithered toward the shaded boulders under the cliff
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001063.wav laser tag is a game quite similar to paintball
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001066.wav i dont believe it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001068.wav the boy didnt know what to say
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001077.wav i heard a peculiar humming sound from the pit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001080.wav the guy thought he was a lunatic at large and made an unsuccessful attempt to stop him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001084.wav only chris couldnt wait quite as long as the others
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001027.wav it was a pleasant change from talking to his sheep
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001085.wav now i want you to sign this agreement
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001088.wav suddenly he disappeared and i could hear a faint shriek behind the walls
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001077.wav i heard a peculiar humming sound from the pit
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001049.wav ill work all night until dawn and ill clean every piece of crystal in your shop
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001093.wav be careful with your prognostications said the stranger
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001080.wav the guy thought he was a lunatic at large and made an unsuccessful attempt to stop him
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001098.wav you have been stopping me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001111.wav theyd never let you go
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001116.wav scattered groups of people were hurrying from the direction of woking
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001084.wav only chris couldnt wait quite as long as the others
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001117.wav he had done this for years and knew the schedule of everyone who passed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001120.wav the burning fire had been extinguished
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001126.wav love is the falcons flight over your sands
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001134.wav down below in the darkness were hundreds of people sleeping in peace
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001135.wav then suddenly he noticed it with a start
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001137.wav i shall make us some ice cubes
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001140.wav i have had the same dream twice he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001111.wav theyd never let you go
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001088.wav suddenly he disappeared and i could hear a faint shriek behind the walls
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001142.wav because you are trying to realize your destiny
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001126.wav love is the falcons flight over your sands
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001140.wav i have had the same dream twice he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001116.wav scattered groups of people were hurrying from the direction of woking
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001137.wav i shall make us some ice cubes
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001150.wav but horses tire bit by bit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001155.wav hes after the money
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001159.wav the top of the cylinder was rotating on its body
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001166.wav wilmas gone cat sitting again for the weekend if you want to come over
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001167.wav that night there was another jetting out of gas from the distant planet
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001178.wav i cant please everybody
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001135.wav then suddenly he noticed it with a start
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001120.wav the burning fire had been extinguished
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001159.wav the top of the cylinder was rotating on its body
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001185.wav vibrations of peace throughout the tent
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001186.wav the time must have been somewhere around six oclock
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001188.wav used to hunt rabbits there myself
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001192.wav it drew a droplet of blood
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001200.wav the little girl wanted to have a balloon but was too shy to ask
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001134.wav down below in the darkness were hundreds of people sleeping in peace
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001203.wav youre here rather early
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001166.wav wilmas gone cat sitting again for the weekend if you want to come over
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001178.wav i cant please everybody
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001155.wav hes after the money
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001192.wav it drew a droplet of blood
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001204.wav the streamer of gas came out towards us
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001206.wav oxygen is important for us but some bacteria dont need it at all
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001200.wav the little girl wanted to have a balloon but was too shy to ask
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001213.wav so usually a keypress instead of a click is used
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001214.wav its in all the afternoon papers
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001215.wav if you can concentrate always on the present youll be a happy man
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001218.wav but as he saw them lying there on the ground another phrase came to his mind
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001219.wav what a terrible thing to say
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001186.wav the time must have been somewhere around six oclock
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001221.wav but now the sounds inside had stopped
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001219.wav what a terrible thing to say
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001222.wav he moved about invisible but everyone could hear him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001218.wav but as he saw them lying there on the ground another phrase came to his mind
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001214.wav its in all the afternoon papers
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001206.wav oxygen is important for us but some bacteria dont need it at all
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001225.wav thats the way it always is said the old man
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001227.wav i think its about bird hunting but now i can see how that might be misinterpreted
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001231.wav were refugees from the tribal wars and we need money the other figure said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001246.wav after all who doesnt want to overcome new challenges and achieve great heights
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001249.wav they looked for the fallen mass but found nothing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001263.wav the boys name was santiago
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001272.wav every search begins with beginners luck
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001273.wav how about that one there
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001275.wav did you ever walk into this office
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001279.wav my friend bought all the other sheep immediately
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001272.wav every search begins with beginners luck
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001231.wav were refugees from the tribal wars and we need money the other figure said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001280.wav the boy was suddenly happy to be there at the warehouse
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001282.wav you know id tell you if i had it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001263.wav the boys name was santiago
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001293.wav everyone is just standing by the building waiting to get in
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001296.wav strange images passed through my mind
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001301.wav hes trying to trick you again
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001302.wav its a code said the boy a bit disappointed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001303.wav tell your heart that the fear of suffering is worse than the suffering itself
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001227.wav i think its about bird hunting but now i can see how that might be misinterpreted
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001282.wav you know id tell you if i had it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001279.wav my friend bought all the other sheep immediately
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001275.wav did you ever walk into this office
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001301.wav hes trying to trick you again
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001306.wav they were men of the desert and they were fearful of sorcerers
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001307.wav id better see what hes up to
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001316.wav it was starlight and i explained the signs of the zodiac to her
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001249.wav they looked for the fallen mass but found nothing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001303.wav tell your heart that the fear of suffering is worse than the suffering itself
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001317.wav i dont want anything for myself
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001336.wav how is mozilla going to handle ambiguities like queue and cue
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001316.wav it was starlight and i explained the signs of the zodiac to her
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001319.wav never give up
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001328.wav but thats what youre doing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001340.wav who is it from
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001331.wav youll be the counselor of the oasis
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001333.wav hitting the delete and escape keys did nothing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001335.wav didnt i tell you never to come panhandling around here
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001336.wav how is mozilla going to handle ambiguities like queue and cue
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001340.wav who is it from
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001342.wav much better said the old man
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001345.wav i aint gonna squeal
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001335.wav didnt i tell you never to come panhandling around here
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001342.wav much better said the old man
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001359.wav it was only when i got this close to it that the strangeness of it was at all evident to me
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001349.wav mostly just the hearts of those who are trying to realize their destinies
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001354.wav the night was warm and i was thirsty
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001358.wav i am proud of you he said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001359.wav it was only when i got this close to it that the strangeness of it was at all evident to me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001361.wav and im going to build things
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001364.wav the thing itself was almost entirely buried in sand
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001365.wav since the miner had sacrificed everything to his destiny the old man decided to become involved
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001367.wav the thing itself was almost entirely buried in sand
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001368.wav drawing from my own experience as a learner of english and german i value engaging activities that involve everyday conversation
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001381.wav it was just ripe enough to eat
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001388.wav it is i the boy answered
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001390.wav theyre not my sheep anymore he said to himself without nostalgia
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001365.wav since the miner had sacrificed everything to his destiny the old man decided to become involved
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001358.wav i am proud of you he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001367.wav the thing itself was almost entirely buried in sand
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001361.wav and im going to build things
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001394.wav he wandered for a while keeping the date palms of the oasis within sight
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001395.wav and then he perceived it very slowly
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001396.wav hitting the delete and escape keys did nothing
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001398.wav how long will it take to get him examined
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001388.wav it is i the boy answered
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001364.wav the thing itself was almost entirely buried in sand
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001390.wav theyre not my sheep anymore he said to himself without nostalgia
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001401.wav they were men of the desert and they were fearful of sorcerers
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001395.wav and then he perceived it very slowly
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001408.wav only we call them agents
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001405.wav i heard a faint movement under my feet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001406.wav henderson stood up with a spade in his hand
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001408.wav only we call them agents
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001410.wav how they managed to improvise at such short notice shell never know
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001426.wav the boy was shaking with fear but the alchemist helped him out of the tent
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001427.wav it looked like a rusty gas float
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001396.wav hitting the delete and escape keys did nothing
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001433.wav lets go and have some lunch said the crystal merchant
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001437.wav the shop is exactly the size i always wanted it to be
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001444.wav so how will we name all these hurricanes
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001450.wav i heard a peculiar humming sound from the pit
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001427.wav it looked like a rusty gas float
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001453.wav that sounds like their problem
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001410.wav how they managed to improvise at such short notice shell never know
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001455.wav and so do i
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001456.wav the scale model of the architects plans sat at the center of the conference room
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001368.wav drawing from my own experience as a learner of english and german i value engaging activities that involve everyday conversation
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001426.wav the boy was shaking with fear but the alchemist helped him out of the tent
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001459.wav my keyboard is filled with dust
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001444.wav so how will we name all these hurricanes
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001467.wav thats a good idea
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001461.wav this samantha tommy movement costs you a fortune
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001464.wav its a code said the boy a bit disappointed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001467.wav thats a good idea
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001469.wav some went away while i was there and other people came
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001475.wav whos got the room next to hers
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001479.wav it looked like a rusty gas float
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001480.wav something inside the cylinder was unscrewing the top
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001469.wav some went away while i was there and other people came
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001484.wav then a man approached
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001488.wav but where are the houses
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001489.wav isnt it just beautiful
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001492.wav it rattled menacingly
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001480.wav something inside the cylinder was unscrewing the top
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001493.wav the boy wanted to take her hand
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001499.wav you didnt have to do any cleaning he said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001500.wav just use the phone
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001488.wav but where are the houses
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001511.wav i dont want anything for myself
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001515.wav he picked up the two stones and put them back in his pouch
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001489.wav isnt it just beautiful
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001519.wav i was scared but wasted no time in going out and crossing the bridge to the sand pits
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001520.wav the caterpillar responded with a nod
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001529.wav i want to do what i want to do
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001537.wav i dont even know who im talking to any more
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001549.wav and he looked out over the desert that had brought him to the woman he loved
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001500.wav just use the phone
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001515.wav he picked up the two stones and put them back in his pouch
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001492.wav it rattled menacingly
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001553.wav you dont have to smell the world
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001517.wav you came so that you could learn about your dreams said the old woman
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001529.wav i want to do what i want to do
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001520.wav the caterpillar responded with a nod
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001499.wav you didnt have to do any cleaning he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001558.wav that brings you good luck for ten years
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001554.wav whatever the thing observed one could find a connection with his experience of the moment
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001556.wav everyone seemed very excited
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001558.wav that brings you good luck for ten years
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001537.wav i dont even know who im talking to any more
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001561.wav but he didnt need to worry about that right now
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001578.wav think ill go home and see what the family is doing
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001563.wav she must have known alex pretty well
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001549.wav and he looked out over the desert that had brought him to the woman he loved
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001568.wav weve been fed baloney so long were getting used to it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001562.wav at the first glance it was really not very exciting
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001581.wav the boy was shaking with fear but the alchemist helped him out of the tent
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001600.wav give me my robe
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001580.wav thats what id like to know
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001564.wav all who went there were happy at having done so
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001567.wav he stood irresolute for a moment and then scrambled out of the pit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001568.wav weve been fed baloney so long were getting used to it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001575.wav let me comb your hair
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001578.wav think ill go home and see what the family is doing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001580.wav thats what id like to know
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001581.wav the boy was shaking with fear but the alchemist helped him out of the tent
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001596.wav youre through deciding anything
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001599.wav but there were certain of them who took a bit longer to awaken
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001600.wav give me my robe
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001606.wav whod you say it was
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001611.wav have you any idea what these things cost over here
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001575.wav let me comb your hair
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001596.wav youre through deciding anything
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001599.wav but there were certain of them who took a bit longer to awaken
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001612.wav aiding an escaped criminal
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001614.wav but children always seem to be able to play with them without frightening them
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001618.wav i dont see a thing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001620.wav its a code said the boy a bit disappointed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001624.wav that first day everyone slept from exhaustion including the englishman
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001625.wav the infidels had an evil look about them
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001629.wav the boy felt ill and terribly alone
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001630.wav but the boy knew that he was referring to fatima
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001631.wav maybe hell give us one
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001620.wav its a code said the boy a bit disappointed
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001618.wav i dont see a thing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001630.wav but the boy knew that he was referring to fatima
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001634.wav what was written on the emerald tablet the boy wanted to know
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001638.wav my freezer contains enough for a banquet
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001650.wav how long is it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001629.wav the boy felt ill and terribly alone
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001651.wav how many times are you gonna call me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001656.wav he decided to stay right there and await his return
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001624.wav that first day everyone slept from exhaustion including the englishman
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001659.wav thats a good idea
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001650.wav how long is it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001675.wav down below in the darkness were hundreds of people sleeping in peace
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001665.wav it was dropping off in flakes and raining down on the sand
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001673.wav the engines roared as the rocket lifted its precious cargo up into the atmosphere
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001675.wav down below in the darkness were hundreds of people sleeping in peace
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001682.wav and so do i
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001625.wav the infidels had an evil look about them
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001684.wav strange images passed through my mind
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001691.wav the englishman asked if they were in danger
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001694.wav what a wonderful weather
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001695.wav how do you stop this thing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001638.wav my freezer contains enough for a banquet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001699.wav the alchemists spent years in their laboratories observing the fire that purified the metals
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001709.wav licorice is a black chewy food
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001682.wav and so do i
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001710.wav but he had to move on
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001711.wav i was impatient to see it opened
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001712.wav the dead soldiers were replaced by others and life went on
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001691.wav the englishman asked if they were in danger
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001656.wav he decided to stay right there and await his return
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001695.wav how do you stop this thing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001709.wav licorice is a black chewy food
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001713.wav its gonna put our city on the map
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001720.wav the boys name was santiago
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001721.wav this is for you
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001711.wav i was impatient to see it opened
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001694.wav what a wonderful weather
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001723.wav you dominated those horsemen with the way you looked at them he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001712.wav the dead soldiers were replaced by others and life went on
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001724.wav the omens had told him so
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001726.wav we must stay hidden
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001728.wav howd you happen to fall in
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001730.wav if you start your emails with greetings let me be the first to welcome you to earth
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001731.wav if i could id write a huge encyclopedia just about the words luck and coincidence
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001733.wav there were lights in the upper windows of the houses when the people went to bed
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001720.wav the boys name was santiago
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001738.wav then suddenly he noticed it with a start
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001726.wav we must stay hidden
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001741.wav its still sopping wet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001746.wav my seven year resume gap is marked not drugs
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001721.wav this is for you
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001731.wav if i could id write a huge encyclopedia just about the words luck and coincidence
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001728.wav howd you happen to fall in
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001750.wav how long since weve seen each other
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001758.wav i have already described the appearance of that colossal bulk which was embedded in the ground
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001759.wav you have to cross the entire sahara desert said the young man
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001766.wav the men of the desert were already familiar with that wind
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001769.wav mind if i sit down
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001766.wav the men of the desert were already familiar with that wind
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001771.wav somethings the matter with daddy
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001772.wav i know what its going to be like
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001730.wav if you start your emails with greetings let me be the first to welcome you to earth
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001781.wav then it became a signal of danger
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001783.wav you know id tell you if i had it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001785.wav they have their eyes glued on his face
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001786.wav when i had my sheep i was happy and i made those around me happy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001789.wav if only we could see it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001795.wav i had seen all that it would presently bring me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001783.wav you know id tell you if i had it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001758.wav i have already described the appearance of that colossal bulk which was embedded in the ground
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001799.wav it was dropping off in flakes and raining down on the sand
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001803.wav he walked slowly through the market
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001807.wav then she took both of his hands in hers and began quietly to pray
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001808.wav it was rising slowly and painfully out of the cylinder
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001759.wav you have to cross the entire sahara desert said the young man
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001813.wav we dont know whats in the confounded thing do you
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001820.wav i just know that the tradition is always right
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001824.wav the first rule of dont fight club is lets talk about it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001826.wav almost everyone here speaks spanish
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001795.wav i had seen all that it would presently bring me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001807.wav then she took both of his hands in hers and began quietly to pray
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001830.wav storm increasing over the rockies
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001837.wav but they really dont know what theyre saying
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001789.wav if only we could see it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001824.wav the first rule of dont fight club is lets talk about it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001786.wav when i had my sheep i was happy and i made those around me happy
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001808.wav it was rising slowly and painfully out of the cylinder
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001820.wav i just know that the tradition is always right
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001826.wav almost everyone here speaks spanish
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001845.wav there were mountains in the distance
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001850.wav im going to them
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001851.wav what had been next to him five minutes ago was now at the other side
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001854.wav it was faintly marked with transverse stripes and slightly flattened from the perfect round
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001859.wav what do they want
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001875.wav it seemed such a little thing so bright and small and still
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001883.wav thats what i was sent down for
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001892.wav ill get it for you
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001837.wav but they really dont know what theyre saying
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001859.wav what do they want
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001899.wav if i could id write a huge encyclopedia just about the words luck and coincidence
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001901.wav maybe it was because they moved around so much
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001907.wav from here on you will be alone the alchemist said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001908.wav the first rule of dont fight club is lets talk about it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001917.wav lots of places sell tea around here the merchant said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001918.wav the streamer of gas came out towards us
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001920.wav but just before lunchtime a boy stopped in front of the shop
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001907.wav from here on you will be alone the alchemist said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001854.wav it was faintly marked with transverse stripes and slightly flattened from the perfect round
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001901.wav maybe it was because they moved around so much
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001925.wav about time one of you lunkheads said it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001920.wav but just before lunchtime a boy stopped in front of the shop
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001908.wav the first rule of dont fight club is lets talk about it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001918.wav the streamer of gas came out towards us
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001926.wav this is for you
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001927.wav all things are one the old man had said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001930.wav i heard a peculiar humming sound from the pit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001935.wav the desert didnt answer him for a few moments
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001938.wav today i understand something i didnt see before every blessing ignored becomes a curse
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001939.wav it was glaringly hot not a cloud in the sky nor a breath of wind
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001944.wav the boy knew a lot of people in the city
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001948.wav the top had certainly ceased to rotate
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001949.wav when he saw henderson in his garden he called over the fence and made himself understood
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001927.wav all things are one the old man had said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001938.wav today i understand something i didnt see before every blessing ignored becomes a curse
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001930.wav i heard a peculiar humming sound from the pit
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001952.wav he didnt need to seek out the old woman for this
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001953.wav once you get into the desert theres no going back said the camel driver
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001935.wav the desert didnt answer him for a few moments
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001959.wav no baselines or comparison to state of the art is provided
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001979.wav he approached the mass and was surprised at the size and the shape
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001981.wav the space station rocked violently due to the intense pressure wave from the airlock failure
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001948.wav the top had certainly ceased to rotate
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001984.wav if good things are coming they will be a pleasant surprise said the seer
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001986.wav kidneys are transplanted often because every healthy person has two of them
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001944.wav the boy knew a lot of people in the city
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001949.wav when he saw henderson in his garden he called over the fence and made himself understood
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001979.wav he approached the mass and was surprised at the size and the shape
 common_voice/cv_corpus_v1/cv-valid-dev/sample-001991.wav it was impossible to remember all the details that he covered in an hour
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001994.wav if what one finds is made of pure matter it will never spoil
-common_voice/cv_corpus_v1/cv-valid-dev/sample-001995.wav im going away he said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002000.wav the boy felt a pang in his heart thinking about the merchants daughter
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002006.wav now i will drift gently off to dreamland
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002008.wav those women are all card sharks dont be fooled
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001981.wav the space station rocked violently due to the intense pressure wave from the airlock failure
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002012.wav keep your shirt on
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002015.wav he decanted the wine and began to recount the disturbing story he had been told
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002000.wav the boy felt a pang in his heart thinking about the merchants daughter
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001994.wav if what one finds is made of pure matter it will never spoil
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002019.wav i want them both arrested
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002008.wav those women are all card sharks dont be fooled
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001986.wav kidneys are transplanted often because every healthy person has two of them
+common_voice/cv_corpus_v1/cv-valid-dev/sample-001995.wav im going away he said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002020.wav the list was frighteningly extensive
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002035.wav the loafers and golf caddies were used to hanging out near the railway station
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002043.wav one can imagine these two covered with sand running up the little street in the bright sunlight
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002015.wav he decanted the wine and began to recount the disturbing story he had been told
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002044.wav about how wealthy would you say
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002047.wav the three fell silent
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002035.wav the loafers and golf caddies were used to hanging out near the railway station
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002049.wav im a sucker for this country
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002054.wav no the alchemist answered
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002071.wav the sword didnt fall
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002074.wav but finally the merchant appeared and asked the boy to shear four sheep
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002047.wav the three fell silent
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002077.wav life is beautiful
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002079.wav i hope it works
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002071.wav the sword didnt fall
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002081.wav i dont know who anybody is any more
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002082.wav shes good enough for me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002084.wav you fight it cut
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002085.wav weve certainly been in some sweet jams
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002087.wav the terror was palpable
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002089.wav i heard a faint movement under my feet
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002084.wav you fight it cut
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002074.wav but finally the merchant appeared and asked the boy to shear four sheep
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002090.wav im trying to think of something before those reporters get back
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002094.wav the boy began to dig into the dune
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002096.wav can i help you asked the man behind the window
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002097.wav its true that everything has its destiny but one day that destiny will be realized
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002079.wav i hope it works
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002082.wav shes good enough for me
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002101.wav whod you say was gonna get him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002102.wav who do you want
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002096.wav can i help you asked the man behind the window
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002094.wav the boy began to dig into the dune
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002085.wav weve certainly been in some sweet jams
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002110.wav ill just go upstairs and send it over with a messenger
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002102.wav who do you want
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002113.wav maybe no one here knows what an alchemist is
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002122.wav let me speak to her
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002124.wav the conquered half of the world on her horses back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002087.wav the terror was palpable
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002125.wav she had no temperature
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002128.wav he dressed in his arabian clothing of white linen bought especially for this day
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002122.wav let me speak to her
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002136.wav the monk laughed when he saw me come back in tatters
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002138.wav a drought hit western europe
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002151.wav reading between the lines requires understanding
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002124.wav the conquered half of the world on her horses back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002128.wav he dressed in his arabian clothing of white linen bought especially for this day
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002152.wav the alchemist removed the pan from the fire and set it aside to cool
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002151.wav reading between the lines requires understanding
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002156.wav after writing a bug report one should regularly check if someone responded
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002165.wav on the first day he returned with a rabbit and on the second with two birds
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002166.wav be sure you spell the name right
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002138.wav a drought hit western europe
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002168.wav i hold the power of life and death for every person i take with me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002170.wav his grandfather was a snake
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002173.wav i felt a chill down my spine
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002177.wav they formed heaps that are visible a mile and a half away
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002181.wav think ill go home and see what the family is doing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002184.wav please bring mama back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002173.wav i felt a chill down my spine
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002166.wav be sure you spell the name right
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002190.wav may i go in and see him
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002192.wav so what do you want of me the sun asked
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002196.wav dont you understand french
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002200.wav you know what i mean
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002204.wav isnt this a parameter of the method
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002206.wav which one of these men is it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002216.wav my names pete davis
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002184.wav please bring mama back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002097.wav its true that everything has its destiny but one day that destiny will be realized
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002181.wav think ill go home and see what the family is doing
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002221.wav sometimes theres just no way to hold back the river
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002206.wav which one of these men is it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002222.wav when you are loved you can do anything in creation
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002226.wav and you know it as well as i do
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002170.wav his grandfather was a snake
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002228.wav i thought about the difficulties in translation that might arise
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002232.wav they forgot that lead copper and iron have their own destinies to fulfill
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002237.wav he brought six sheep with him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002204.wav isnt this a parameter of the method
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002216.wav my names pete davis
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002250.wav its a simple story
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002226.wav and you know it as well as i do
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002241.wav there was very little talking
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002232.wav they forgot that lead copper and iron have their own destinies to fulfill
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002245.wav then suddenly he noticed it with a start
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002246.wav if i had told you you wouldnt have seen the pyramids
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002248.wav its candice now on long distance from washington
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002250.wav its a simple story
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002252.wav it considers the horizontal dimension as time
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002255.wav about eleven i walked back to my home in maybury because nothing seemed to be happening
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002257.wav the boy was surprised and then irritated
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002263.wav why was it that he wanted the boy to serve as his instrument
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002264.wav no one paid any attention to the two travelers
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002267.wav they rode for the entire day
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002255.wav about eleven i walked back to my home in maybury because nothing seemed to be happening
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002237.wav he brought six sheep with him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002257.wav the boy was surprised and then irritated
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002248.wav its candice now on long distance from washington
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002271.wav he couldnt have been wrong
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002272.wav and the leader posted armed sentinels at the fringes of the group
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002263.wav why was it that he wanted the boy to serve as his instrument
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002277.wav gotta be gentle to suit me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002283.wav he almost began to tell about his treasure but decided not to do so
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002290.wav it must be some kind of a gag
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002292.wav he was excited and at the same time uneasy maybe the girl had already forgotten him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002299.wav im afraid that if my dream is realized ill have no reason to go on living
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002252.wav it considers the horizontal dimension as time
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002272.wav and the leader posted armed sentinels at the fringes of the group
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002301.wav venus is far too hot for exploration
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002304.wav they shouted consolation and promises and went off back to the town again to get help
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002307.wav this puts me in a peculiar hole
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002283.wav he almost began to tell about his treasure but decided not to do so
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002309.wav like everybody learns he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002304.wav they shouted consolation and promises and went off back to the town again to get help
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002290.wav it must be some kind of a gag
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002313.wav lets dance
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002316.wav it was a cobra whose venom could kill a person in minutes
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002327.wav yet each felt his heart beat a bit faster
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002331.wav a thin circle of bright metal showed between the top and the body of the cylinder
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002337.wav there wasnt much impetus to finish our chores
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002292.wav he was excited and at the same time uneasy maybe the girl had already forgotten him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002307.wav this puts me in a peculiar hole
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002338.wav his soul must be too primitive to understand those things he thought
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002299.wav im afraid that if my dream is realized ill have no reason to go on living
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002372.wav on the first day he returned with a rabbit and on the second with two birds
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002316.wav it was a cobra whose venom could kill a person in minutes
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002331.wav a thin circle of bright metal showed between the top and the body of the cylinder
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002339.wav my mother just called you
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002341.wav html is not a programming language
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002361.wav this is my last chance
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002371.wav he had suddenly remembered that in tarifa there was an old woman who interpreted dreams
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002372.wav on the first day he returned with a rabbit and on the second with two birds
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002377.wav i won a flower
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002371.wav he had suddenly remembered that in tarifa there was an old woman who interpreted dreams
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002361.wav this is my last chance
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002425.wav your husband must have been in a great hurry
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002408.wav thanks for dropping around
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002433.wav sometimes their caravan met with another
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002427.wav well then why do we need all these books the boy asked
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002380.wav the heather was on fire and you could see a thin blue smoke rising up slowly
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002381.wav well leave tomorrow before sunrise was the alchemists only response
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002385.wav and what do you do in salem he insisted
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002397.wav and tomorrow his enemy would also be a part of that soul
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002408.wav thanks for dropping around
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002425.wav your husband must have been in a great hurry
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002427.wav well then why do we need all these books the boy asked
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002433.wav sometimes their caravan met with another
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002436.wav another trick the boy thought
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002441.wav about eleven i walked back to my home in maybury because nothing seemed to be happening
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002444.wav how could it be awkward
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002445.wav he ran his fingers slowly over the stones sensing their temperature and feeling their surfaces
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002441.wav about eleven i walked back to my home in maybury because nothing seemed to be happening
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002385.wav and what do you do in salem he insisted
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002452.wav i encourage everyone to contribute their voice to project common voice
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002460.wav hes insane or drunk or something
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002461.wav when i returned to the common the sun was setting
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002465.wav i want to do what i want to do
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002469.wav looking through the telescope i saw a circle of deep blue and the little round planet
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002471.wav i didnt fall in
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002473.wav he was older and was carrying a small bucket
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002444.wav how could it be awkward
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002436.wav another trick the boy thought
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002465.wav i want to do what i want to do
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002479.wav keep your shirt on
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002480.wav the police finally manage to get him out of the park
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002487.wav my father fell in love with him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002489.wav i couldnt work in the city
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002469.wav looking through the telescope i saw a circle of deep blue and the little round planet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002495.wav the actors authentic facial expression was convincing the jury
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002461.wav when i returned to the common the sun was setting
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002480.wav the police finally manage to get him out of the park
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002504.wav in any case its good that youve learned that everything in life has its price
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002510.wav can i go now
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002511.wav twins are known to be confounding
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002513.wav as jennifer walked down the aisle she wondered if she had made a mistake
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002514.wav what are you doing around here
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002515.wav im trying to explain to my mother how to get pictures off her phone
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002521.wav of course it is
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002471.wav i didnt fall in
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002529.wav it rattled menacingly
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002487.wav my father fell in love with him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002514.wav what are you doing around here
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002489.wav i couldnt work in the city
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002533.wav im hunting with my falcon the alchemist answered
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002515.wav im trying to explain to my mother how to get pictures off her phone
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002534.wav some of the grey ash was falling off the circular edge
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002537.wav how do you know she didnt
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002539.wav of course the two were unable to do anything
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002521.wav of course it is
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002543.wav you have helped me the man continued to prepare his tea saying nothing
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002544.wav todays world is full of commercials
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002546.wav they had gone away to breakfast at hendersons house
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002549.wav until then he had considered the omens to be things of this world
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002554.wav as was mecca for the merchant
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002539.wav of course the two were unable to do anything
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002592.wav cause you know how politicians are
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002546.wav they had gone away to breakfast at hendersons house
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002580.wav whats so depressing about that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002558.wav whats going on here
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002590.wav the thief wasnt there and the owner brought him a cup of tea
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002562.wav i hate to think that i will have to leave but i guess thats not really up to me
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002569.wav the boy was sad as he left her that day
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002578.wav and he gets it right away
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002580.wav whats so depressing about that
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002590.wav the thief wasnt there and the owner brought him a cup of tea
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002592.wav cause you know how politicians are
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002597.wav the burning fire had been extinguished
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002603.wav in order to find the treasure you will have to follow the omens
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002606.wav the snake fought frantically making hissing sounds that shattered the silence of the desert
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002611.wav it was the old man who spoke first
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002597.wav the burning fire had been extinguished
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002612.wav an huge hole had been made by the impact of the projectile
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002613.wav the caravan began to travel day and night
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002614.wav and it knew nothing about love
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002627.wav this was the strangest of all things that ever came to earth from outer space
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002629.wav that day the merchant gave the boy permission to build the display
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002640.wav weve still got two bucks left
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002647.wav you can count on me under one condition
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002603.wav in order to find the treasure you will have to follow the omens
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002578.wav and he gets it right away
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002653.wav i thought about whether we should find coins and models in it and so on
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002658.wav all they wanted was food and water
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002662.wav this is christmas eve
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002629.wav that day the merchant gave the boy permission to build the display
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002669.wav then whos this one
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002671.wav but finally the merchant appeared and asked the boy to shear four sheep
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002672.wav it was almost as if her life had been deleted
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002673.wav the nurse waddled around the ward
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002671.wav but finally the merchant appeared and asked the boy to shear four sheep
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002611.wav it was the old man who spoke first
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002683.wav i heard a faint movement under my feet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002676.wav half an hour later his shovel hit something solid
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002677.wav i heard a faint movement under my feet
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002640.wav weve still got two bucks left
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002678.wav sometimes its better to be with the sheep who dont say anything
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002680.wav it is i the boy answered
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002683.wav i heard a faint movement under my feet
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002686.wav some do come back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002672.wav it was almost as if her life had been deleted
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002627.wav this was the strangest of all things that ever came to earth from outer space
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002689.wav i thought tonight id put miss kelly there
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002691.wav but you will love her and shell return your love
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002693.wav evidently were the floor show
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002694.wav and im afraid we want it back
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002696.wav my wife pointed out to me the brightness of the red green and yellow signal lights
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002680.wav it is i the boy answered
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002686.wav some do come back
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002697.wav the alchemist knocked on the gate of the monastery
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002705.wav they could barely see the boy
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002715.wav whos gonna get him
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002691.wav but you will love her and shell return your love
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002725.wav now lets see what you look like when you protest
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002737.wav he quickly pulled his hands away
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002744.wav he heard a muffled grating sound and saw the black mark jerk forward an inch or so
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002696.wav my wife pointed out to me the brightness of the red green and yellow signal lights
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002693.wav evidently were the floor show
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002694.wav and im afraid we want it back
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002745.wav what had been next to him five minutes ago was now at the other side
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002744.wav he heard a muffled grating sound and saw the black mark jerk forward an inch or so
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002749.wav he was more certain of it than of anything in the world
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002767.wav to do that successfully i must have no fear of failure
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002750.wav three days from now he would be with the merchants daughter
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002765.wav that night there was another jetting out of gas from the distant planet
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002770.wav they also began to feel that they knew a better way than others had
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002769.wav the comparison to other works on different databases is still problematic
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002758.wav look where youre going
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002760.wav he moved about invisible but everyone could hear him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002763.wav you just dont know all that youve done
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002765.wav that night there was another jetting out of gas from the distant planet
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002767.wav to do that successfully i must have no fear of failure
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002769.wav the comparison to other works on different databases is still problematic
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002770.wav they also began to feel that they knew a better way than others had
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002780.wav that was the law of hospitality
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002788.wav this is a common misconception sheldon said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002763.wav you just dont know all that youve done
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002796.wav its easy for you to talk
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002798.wav the boy put the stones in his pouch
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002799.wav but it is not a class that was requested by our alumni or prospective students
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002806.wav the greatest authority on meteorites stated that the height of its first appearance was about ninety or one hundred miles
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002807.wav once to the thief and once to the general
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002810.wav you came so that you could learn about your dreams said the old woman
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002811.wav february took a book from the shelves
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002780.wav that was the law of hospitality
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002798.wav the boy put the stones in his pouch
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002813.wav why dont you want me to see him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002814.wav it was the time of day when all of spain slept during the summer
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002817.wav speak to the hand that wrote all said the sun
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002820.wav have a good trip
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002811.wav february took a book from the shelves
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002830.wav the whole towns in an uproar
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002817.wav speak to the hand that wrote all said the sun
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002806.wav the greatest authority on meteorites stated that the height of its first appearance was about ninety or one hundred miles
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002799.wav but it is not a class that was requested by our alumni or prospective students
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002832.wav the references are good in the very narrow area of histogram methods
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002814.wav it was the time of day when all of spain slept during the summer
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002810.wav you came so that you could learn about your dreams said the old woman
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002838.wav if you know your heart well it will never be able to do that to you
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002841.wav tell me more about your dream said the woman
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002843.wav i have to separate out the sulfur
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002845.wav just as your grandfather taught you
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002858.wav i had the everyone has gary buseys teeth dream again
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002865.wav he said that everything has its own destiny
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002869.wav are you going to go to julias
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002872.wav the boy went to his room and packed his belongings
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002886.wav then he realized that he had been distracted for a few moments looking at the sword
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002841.wav tell me more about your dream said the woman
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002820.wav have a good trip
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002858.wav i had the everyone has gary buseys teeth dream again
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002889.wav the boy offered his bottle hoping that the old man would leave him alone
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002886.wav then he realized that he had been distracted for a few moments looking at the sword
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002894.wav if you dont know any alternative search engines just google them
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002897.wav the sun thought for a minute
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002899.wav the desert takes our men from us and they dont always return she said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002869.wav are you going to go to julias
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002900.wav the boy was trying to understand the truth of what the old man had said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002906.wav the little group of people from the city dispersed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002909.wav dont let facebook take up all of your time
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002910.wav what was the reason for the increase
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002911.wav he stood irresolute for a moment and then scrambled out of the pit
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002913.wav and heres fifty dollars on account
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002906.wav the little group of people from the city dispersed
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002872.wav the boy went to his room and packed his belongings
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002845.wav just as your grandfather taught you
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002910.wav what was the reason for the increase
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002899.wav the desert takes our men from us and they dont always return she said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002916.wav turkey for thanksgiving
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002917.wav i wish it were as simple as that
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002920.wav they looked for the fallen mass but found nothing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002922.wav he put a sign on the door and they went to a small cafe nearby
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002909.wav dont let facebook take up all of your time
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002924.wav my review of the sun one star
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002911.wav he stood irresolute for a moment and then scrambled out of the pit
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002933.wav the boy began to dig into the dune
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002934.wav we speak of them only to children
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002942.wav for at that time it had not occurred to him that it might be hollow
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002922.wav he put a sign on the door and they went to a small cafe nearby
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002934.wav we speak of them only to children
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002920.wav they looked for the fallen mass but found nothing
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002944.wav finally a young woman approached who was not dressed in black
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002946.wav starting with his own
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002951.wav he disappeared into the tent
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002955.wav he sat on a stone and allowed himself to become hypnotized by the horizon
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002957.wav they begin creeping up on you trying to sell you something
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002958.wav but i found it difficult to get to work because of the investigations
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002960.wav we miss you and miss having a friend like you and i am so happy that you two got to catch up
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002961.wav what is love the desert asked
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002971.wav the plastic barrier shattered
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002946.wav starting with his own
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002957.wav they begin creeping up on you trying to sell you something
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002961.wav what is love the desert asked
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002974.wav your lucks not with you now
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002979.wav it was the most delicious wine he had ever tasted
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002980.wav i shall make us some ice cubes
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002955.wav he sat on a stone and allowed himself to become hypnotized by the horizon
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002979.wav it was the most delicious wine he had ever tasted
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002958.wav but i found it difficult to get to work because of the investigations
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003000.wav dont be more catholic than the pope
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002960.wav we miss you and miss having a friend like you and i am so happy that you two got to catch up
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002988.wav it would have been visible to me had i only looked up as it passed
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002991.wav men dream more about coming home than about leaving the boy said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002992.wav show me some gratitude
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002993.wav i read only what the birds wanted to tell me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-002994.wav she placed the glass carefully on the edge of the table
 common_voice/cv_corpus_v1/cv-valid-dev/sample-002999.wav from there he could see africa in the distance
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003000.wav dont be more catholic than the pope
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003002.wav where did everything go
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003004.wav where are you from the boy asked
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002992.wav show me some gratitude
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003005.wav the alchemist probably already knew all that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003008.wav going up to see erin
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003002.wav where did everything go
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003009.wav youre probably weak from hunger
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002993.wav i read only what the birds wanted to tell me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-002994.wav she placed the glass carefully on the edge of the table
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003013.wav arent you allowed to kiss back
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003023.wav the boy was getting irritated
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003026.wav replace the ts in tim tebows name with any other consonant to get a star wars character
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003029.wav i have already described the appearance of that colossal bulk which was embedded in the ground
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003030.wav why shouldnt i make father my beneficiary
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003004.wav where are you from the boy asked
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003031.wav i can see april coming
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003033.wav at most they thought that another meteorite had descended
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003034.wav your face is really beautiful
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003036.wav theres the city hall tower im supposed to visit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003039.wav how did it start
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003042.wav youll weaken when you see that little jezebel
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003023.wav the boy was getting irritated
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003055.wav heads popping back behind doors
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003036.wav theres the city hall tower im supposed to visit
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003034.wav your face is really beautiful
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003033.wav at most they thought that another meteorite had descended
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003058.wav and dont forget the language of omens
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003042.wav youll weaken when you see that little jezebel
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003030.wav why shouldnt i make father my beneficiary
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003060.wav as soon as he saw me among the crowd he called to me to come down
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003062.wav the boy didnt want to talk about the pyramids
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003029.wav i have already described the appearance of that colossal bulk which was embedded in the ground
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003039.wav how did it start
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003063.wav the boy began to dig into the dune
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003066.wav he couldnt have been wrong
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003068.wav he couldnt have been wrong
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003073.wav there was no response from the elders
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003082.wav lets stop this another commander said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003086.wav at once he connected the two incidents
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003068.wav he couldnt have been wrong
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003097.wav i havent any watch
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003102.wav you dont have to go with me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003066.wav he couldnt have been wrong
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003103.wav i am definitely open to the idea because ive always wanted to work as a small business owner
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003073.wav there was no response from the elders
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003102.wav you dont have to go with me
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003104.wav my keychain is heavy and awkward to carry in my pocket
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003106.wav and the sand and gravel had been flung violently in every direction
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003082.wav lets stop this another commander said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003107.wav the wind began to blow again
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003106.wav and the sand and gravel had been flung violently in every direction
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003108.wav but the boy never took his eye off his new friend
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003111.wav the old man was probably a gypsy too
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003112.wav watch out for his venom the boy said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003117.wav the boy took out urim and thummim from his bag
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003119.wav must have been that jump in the cold water
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003121.wav wait till those two future jailbirds read the morning post tomorrow
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003111.wav the old man was probably a gypsy too
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003119.wav must have been that jump in the cold water
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003125.wav i thought the unscrewing might be automatic
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003127.wav in general people have difficulties estimating risks correctly
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003112.wav watch out for his venom the boy said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003128.wav night fell and an assortment of fighting men and merchants entered and exited the tent
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003117.wav the boy took out urim and thummim from his bag
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003132.wav the boy noticed that the owner of the bar stood nearby listening attentively to their conversation
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003127.wav in general people have difficulties estimating risks correctly
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003134.wav but my heart is agitated the boy said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003136.wav i told you i cant use your column any more
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003139.wav he took back his books and packed them away again in their bags
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003141.wav you forgot to pack it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003143.wav but my heart is agitated the boy said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003144.wav do you read me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003146.wav thats not my money
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003156.wav always ask an objective question
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003136.wav i told you i cant use your column any more
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003159.wav the simum blew that day as it had never blown before
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003170.wav i shall make us some ice cubes
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003146.wav thats not my money
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003139.wav he took back his books and packed them away again in their bags
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003173.wav id know that voice anywhere
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003188.wav i guess i was homesick
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003156.wav always ask an objective question
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003141.wav you forgot to pack it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003182.wav scattered groups of people were hurrying from the direction of woking
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003190.wav you point to a trail of ants leading into the house
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003170.wav i shall make us some ice cubes
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003144.wav do you read me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003199.wav thats why i feel that i deserve a part of what you find
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003192.wav they all complain theyre practically working for the government
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003218.wav someplace you could have put it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003177.wav i couldnt stop staring at it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003180.wav it was dropping off in flakes and raining down on the sand
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003182.wav scattered groups of people were hurrying from the direction of woking
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003188.wav i guess i was homesick
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003190.wav you point to a trail of ants leading into the house
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003192.wav they all complain theyre practically working for the government
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003212.wav thats where youre mistaken
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003225.wav he didnt know the man yet but his practiced eye would recognize him when he appeared
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003193.wav if only we could see it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003195.wav i pointed out mars a bright dot of light
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003199.wav thats why i feel that i deserve a part of what you find
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003212.wav thats where youre mistaken
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003218.wav someplace you could have put it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003225.wav he didnt know the man yet but his practiced eye would recognize him when he appeared
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003254.wav ill talk to you tonight
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003237.wav vicky wanted to not make a spectacle of herself
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003232.wav the following night the boy appeared at the alchemists tent with a horse
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003233.wav he stood silent and motionless regarding me
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003234.wav im beginning to realize that
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003237.wav vicky wanted to not make a spectacle of herself
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003241.wav you can hear out of it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003242.wav she and the judge are like corned beef and cabbage
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003246.wav the young arab took out a book and began to read
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003254.wav ill talk to you tonight
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003258.wav trust in your heart but never forget that youre in the desert
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003259.wav well then why do we need all these books the boy asked
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003261.wav and look how many things the wind already knew how to do
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003259.wav well then why do we need all these books the boy asked
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003234.wav im beginning to realize that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003269.wav he prepared himself a sandwich and drank some hot tea from a crystal glass
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003258.wav trust in your heart but never forget that youre in the desert
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003274.wav to stuff into their own pockets
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003277.wav ill just watch him he said to himself
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003278.wav the englishman was disappointed
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003242.wav she and the judge are like corned beef and cabbage
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003286.wav hes looking for you
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003241.wav you can hear out of it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003290.wav now lets take a look at the candidates
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003299.wav what time is it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003304.wav toffee coated all the surfaces it was disgustingly sticky
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003305.wav somebody had returned my lost credit card to the bank
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003278.wav the englishman was disappointed
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003308.wav did you see his picture on the cover of time
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003309.wav in one he had read that many years ago a famous arabian alchemist had visited europe
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003323.wav it was only when i got this close to it that the strangeness of it was at all evident to me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003277.wav ill just watch him he said to himself
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003304.wav toffee coated all the surfaces it was disgustingly sticky
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003330.wav then he dropped his spade picked up his jacket and came out into the road
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003350.wav these are the spies said one of the men
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003335.wav you can try using an eye tracker to accomplish this but the precision isnt quite high enough
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003342.wav the serpent relaxed immediately
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003344.wav one must prepare for it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003309.wav in one he had read that many years ago a famous arabian alchemist had visited europe
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003347.wav why shouldnt i make father my beneficiary
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003349.wav whats she up to
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003350.wav these are the spies said one of the men
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003352.wav as fast as i can
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003368.wav another dreamer said the ticket seller to his assistant watching the boy walk away
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003369.wav the boy was relieved
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003377.wav who could have predicted that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003386.wav at the first glance it was really not very exciting
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003369.wav the boy was relieved
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003349.wav whats she up to
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003352.wav as fast as i can
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003344.wav one must prepare for it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003377.wav who could have predicted that
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003391.wav why do they need gin
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003402.wav that sobered him a little
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003405.wav somewhere you are holding the person i love the boy said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003402.wav that sobered him a little
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003414.wav put down that chair
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003416.wav she felt like a weakling in comparison to her newborn daughter
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003418.wav all the joy he had seen that morning had suddenly disappeared
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003419.wav whos the ten for
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003420.wav i cant think any more
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003428.wav why dont we search their rooms
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003434.wav the experiments are unconvincing
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003436.wav is it a deal or isnt it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003437.wav but i found it difficult to get to work because of the investigations
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003438.wav when he speaks in our language i can interpret what he has said
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003440.wav ill take mine now
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003428.wav why dont we search their rooms
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003444.wav ill see you get it in fifteen minutes
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003446.wav you are wise because you observe everything from a distance the boy said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003451.wav how do you know she didnt
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003453.wav at that point in their lives everything is clear and everything is possible
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003436.wav is it a deal or isnt it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003454.wav you got your sea legs yet
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003457.wav give me the district attorneys office
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003446.wav you are wise because you observe everything from a distance the boy said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003437.wav but i found it difficult to get to work because of the investigations
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003458.wav but i didnt think that it contained any living creature
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003438.wav when he speaks in our language i can interpret what he has said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003457.wav give me the district attorneys office
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003462.wav i just dont trust anyone who says theyve never had hamburger helper
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003464.wav tell me more about your dream said the woman
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003469.wav the boy stood up shakily and looked once more at the pyramids
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003471.wav then she filled her vessel with water and left
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003451.wav how do you know she didnt
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003475.wav down below in the darkness were hundreds of people sleeping in peace
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003477.wav they had gone away to breakfast at hendersons house
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003479.wav hes on the way
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003480.wav water boarding is a terrible form of torture
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003489.wav please dont make me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003453.wav at that point in their lives everything is clear and everything is possible
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003493.wav ill give it a drink
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003464.wav tell me more about your dream said the woman
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003498.wav thats too far from the bedroom
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003469.wav the boy stood up shakily and looked once more at the pyramids
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003471.wav then she filled her vessel with water and left
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003499.wav and they attacked an empty tent
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003504.wav i feel quite ambivalent about the article
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003505.wav first they tried to find him on their own
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003489.wav please dont make me
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003479.wav hes on the way
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003504.wav i feel quite ambivalent about the article
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003480.wav water boarding is a terrible form of torture
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003519.wav better bring me a glass of milk
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003506.wav the sun was turned into a golden disk
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003509.wav this is the mayor
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003511.wav you didnt vote for me the last time
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003516.wav i only interpret dreams
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003519.wav better bring me a glass of milk
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003520.wav we showed up and gave minute speeches each
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003521.wav the boy was also saddened his friend was in pursuit of his destiny
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003522.wav its saturday its hot and i really want to try the dry ramen
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003525.wav he got up early with the idea of finding it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003527.wav he put a sign on the door and they went to a small cafe nearby
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003529.wav i had the everyone has gary buseys teeth dream again
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003521.wav the boy was also saddened his friend was in pursuit of his destiny
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003532.wav it may be the gases of the firing that caused the martians inconvenience
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003522.wav its saturday its hot and i really want to try the dry ramen
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003511.wav you didnt vote for me the last time
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003520.wav we showed up and gave minute speeches each
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003551.wav im going to build a bridge a mile long
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003527.wav he put a sign on the door and they went to a small cafe nearby
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003555.wav but then he remembered that he wasnt going to have to pay anything
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003534.wav we beat the whole country on that story
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003535.wav you should see the other guy specifically how good at fighting he is
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003541.wav it seemed such a little thing so bright and small and still
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003551.wav im going to build a bridge a mile long
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003553.wav he asked it please never to stop speaking to him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003555.wav but then he remembered that he wasnt going to have to pay anything
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003556.wav some storms are worth the wreckage
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003565.wav the burning fire had been extinguished
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003564.wav one can imagine these two covered with sand running up the little street in the bright sunlight
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003588.wav its called the principle of favorability beginners luck
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003601.wav im not afraid of anything
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003595.wav i want my husband to wander as free as the wind that shapes the dunes
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003572.wav that first day everyone slept from exhaustion including the englishman
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003604.wav get the governor on the phone
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003562.wav we dont want him
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003563.wav makes about five thousand a year
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003564.wav one can imagine these two covered with sand running up the little street in the bright sunlight
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003565.wav the burning fire had been extinguished
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003572.wav that first day everyone slept from exhaustion including the englishman
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003588.wav its called the principle of favorability beginners luck
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003595.wav i want my husband to wander as free as the wind that shapes the dunes
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003601.wav im not afraid of anything
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003604.wav get the governor on the phone
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003553.wav he asked it please never to stop speaking to him
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003606.wav where do you live shouted the boy as the horseman rode away
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003609.wav shes a wonderful person
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003611.wav how do you do
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003612.wav he got up early with the idea of finding it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003615.wav whats she doing over here
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003623.wav your mother and i talked it over half the night
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003633.wav im a sucker for it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003634.wav why cant you be serious
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003649.wav some do come back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003611.wav how do you do
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003623.wav your mother and i talked it over half the night
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003612.wav he got up early with the idea of finding it
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003650.wav lots of shepherds passed through selling their wool
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003652.wav suddenly he disappeared and i could hear a faint shriek behind the walls
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003664.wav ill tell you in a minute
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003680.wav and then he perceived it very slowly
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003649.wav some do come back
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003652.wav suddenly he disappeared and i could hear a faint shriek behind the walls
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003615.wav whats she doing over here
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003665.wav i have the diet of a kid who found twenty dollars
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003670.wav arent we godlike
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003680.wav and then he perceived it very slowly
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003634.wav why cant you be serious
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003693.wav you cant see the planet with the naked eye
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003682.wav they mounted their horses
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003685.wav ill cover the method i use and describe some alternatives
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003691.wav the charcoal burned away to white ash
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003692.wav he stood irresolute for a moment and then scrambled out of the pit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003693.wav you cant see the planet with the naked eye
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003703.wav frank was dying so they were forced to leave him
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003711.wav so he began to wander through the city and found himself at the gates
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003718.wav he could always go back to being a shepherd
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003698.wav many people in berkshire surrey and middlesex must have seen it
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003692.wav he stood irresolute for a moment and then scrambled out of the pit
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003721.wav he knew he was stronger than his friend
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003725.wav absolutely despicable that gingerbread men are forced to live in houses made of their own flesh
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003718.wav he could always go back to being a shepherd
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003727.wav this was the strangest of all things that ever came to earth from outer space
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003728.wav her walls were covered with dark and scary sketches
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003729.wav here i am between my flock and my treasure the boy thought
@@ -975,92 +984,95 @@ common_voice/cv_corpus_v1/cv-valid-dev/sample-003732.wav im afraid itll be steve
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003733.wav dont give in to your fears said the alchemist in a strangely gentle voice
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003735.wav it was seen early in the morning rushing over eastward
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003739.wav did you see the garden that it took the master gardener ten years to create
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003740.wav he didnt seduce her with his words but with subliminal messages thats the trick
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003748.wav suppose there was a shane york and he walked into this office
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003751.wav i havent won my wings yet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003752.wav i think youre a great guy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003755.wav and above all dont forget to follow your destiny through to its conclusion
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003756.wav had our instruments permitted it we might have been able to see the trouble way back when
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003751.wav i havent won my wings yet
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003764.wav so you know about love the boy said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003770.wav but bakers are more important people than shepherds
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003781.wav but horses tire bit by bit
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003782.wav they began to ride out over the sands with the moon lighting their way
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003783.wav just one more try
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003782.wav they began to ride out over the sands with the moon lighting their way
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003770.wav but bakers are more important people than shepherds
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003756.wav had our instruments permitted it we might have been able to see the trouble way back when
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003725.wav absolutely despicable that gingerbread men are forced to live in houses made of their own flesh
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003789.wav i almost dropped him
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003790.wav the accommodation was affordable and cosy
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003755.wav and above all dont forget to follow your destiny through to its conclusion
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003792.wav the river babbled inanely to itself
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003793.wav the airplane rose gracefully into the sky
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003795.wav the level ground was blackened as far as one could see and it was still giving off smoke
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003796.wav but would you mind telling me who goes out
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003799.wav get a load of this
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003802.wav wouldnt do any good
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003740.wav he didnt seduce her with his words but with subliminal messages thats the trick
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003795.wav the level ground was blackened as far as one could see and it was still giving off smoke
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003790.wav the accommodation was affordable and cosy
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003781.wav but horses tire bit by bit
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003803.wav i thought sure youd remember me
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003804.wav he decanted the wine and began to recount the disturbing story he had been told
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003808.wav i had to test your courage the stranger said
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003814.wav everyone has his or her own way of learning things he said to himself
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003816.wav hang on for a second
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003819.wav hey what do you say
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003793.wav the airplane rose gracefully into the sky
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003799.wav get a load of this
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003825.wav the pink love heart keyring glowed
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003828.wav somebodys going to get hurt
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003831.wav at the first glance it was really not very exciting
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003832.wav something happens here youll have to remember later on
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003808.wav i had to test your courage the stranger said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003819.wav hey what do you say
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003833.wav and if it is
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003814.wav everyone has his or her own way of learning things he said to himself
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003832.wav something happens here youll have to remember later on
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003836.wav the chair had leather upholstery
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003852.wav the newspaper articles had prepared everyone for the reception of the idea
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003802.wav wouldnt do any good
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003831.wav at the first glance it was really not very exciting
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003828.wav somebodys going to get hurt
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003853.wav i forgot my hat
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003855.wav no one seemed to have thought about it that night
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003863.wav you should have seen the commotion in that locker room
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003866.wav coach has heard all about you
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003873.wav the boy looked around for the ovens and other apparatus used in alchemy but saw none
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003816.wav hang on for a second
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003852.wav the newspaper articles had prepared everyone for the reception of the idea
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003866.wav coach has heard all about you
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003876.wav it may be the gases of the firing that caused the martians inconvenience
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003881.wav and then he perceived it very slowly
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003899.wav youll ask me to what
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003887.wav i was expecting you
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003888.wav they mounted their horses
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003890.wav whats the matter with you two guys
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003898.wav thank you very much
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003899.wav youll ask me to what
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003907.wav he must be disguised to avoid encounters with thieves
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003920.wav im looking for a treasure said the boy and he immediately regretted having said it
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003923.wav they set off running wildly into the trees
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003925.wav other servants maintained the fires in the hookahs
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003928.wav next youll want to enumerate tabs so you can quickly jump between them
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003933.wav he restarted his efforts for the twentieth time
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003890.wav whats the matter with you two guys
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003937.wav but the marketplace was empty and he was far from home so he wept
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003939.wav and dont forget the language of omens
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003940.wav most meteorites are more or less rounded
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003925.wav other servants maintained the fires in the hookahs
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003898.wav thank you very much
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003928.wav next youll want to enumerate tabs so you can quickly jump between them
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003907.wav he must be disguised to avoid encounters with thieves
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003941.wav i wonder whats eating that old money grubbing buzzard anyway
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003923.wav they set off running wildly into the trees
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003940.wav most meteorites are more or less rounded
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003939.wav and dont forget the language of omens
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003933.wav he restarted his efforts for the twentieth time
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003945.wav asymmetric cryptography uses pairs of keys
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003962.wav the boy reminded the old man that he had said something about hidden treasure
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003948.wav youd think i was on the witness stand
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003949.wav with a bag of marshmallows
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003952.wav the teller didnt have enough change
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003949.wav with a bag of marshmallows
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003979.wav he wasnt asking for help
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003955.wav its not i the wind spoke about
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003959.wav but then i realized she couldnt have been
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003962.wav the boy reminded the old man that he had said something about hidden treasure
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003968.wav he wanted to forget about the vision and return to his meditation
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003969.wav in spite of this i still believed that there were men in mars
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003975.wav it had a diameter of about thirty yards
-common_voice/cv_corpus_v1/cv-valid-dev/sample-003979.wav he wasnt asking for help
 common_voice/cv_corpus_v1/cv-valid-dev/sample-003987.wav that guy over there likes to drink a lot talk a lot but do nothing
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003975.wav it had a diameter of about thirty yards
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004015.wav trying to improve the world by jumping up and down
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003969.wav in spite of this i still believed that there were men in mars
+common_voice/cv_corpus_v1/cv-valid-dev/sample-003971.wav ill return just as your father came back to your mother he said
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004016.wav mr lee cant be bothered now
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004003.wav they set off running wildly into the trees
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004005.wav they formed heaps that are visible a mile and a half away
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004009.wav although searching in binary search trees is efficient you wont find any fruits in there
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004014.wav they were known as seers and they were held in fear by women and the elderly
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004015.wav trying to improve the world by jumping up and down
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004016.wav mr lee cant be bothered now
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004017.wav it must have fallen while i was sitting over there
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004023.wav you want the moon
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004028.wav the one in there
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004031.wav where did he keep his money
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004009.wav although searching in binary search trees is efficient you wont find any fruits in there
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004033.wav as he looked at the stones he felt relieved for some reason
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004036.wav three cheers for aden christopher
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004038.wav its been a long time since she last read chekhov and because of that she no longer feels like the heroine of her own story
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004014.wav they were known as seers and they were held in fear by women and the elderly
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004039.wav are you enjoying london
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004028.wav the one in there
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004040.wav they placed the symbols of the pilgrimage on the doors of their houses
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004044.wav as the sun rose the men began to beat the boy
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004045.wav i have to find a man who knows that universal language
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004048.wav did you ever walk into this office
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004051.wav everything looked diffuse after she took the narcotic
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004044.wav as the sun rose the men began to beat the boy
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004031.wav where did he keep his money
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004036.wav three cheers for aden christopher
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004053.wav if you start your emails with greetings let me be the first to welcome you to earth
-common_voice/cv_corpus_v1/cv-valid-dev/sample-004067.wav they reached the center of a large plaza where the market was held
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004045.wav i have to find a man who knows that universal language
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004038.wav its been a long time since she last read chekhov and because of that she no longer feels like the heroine of her own story
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004055.wav the atmosphere was suffused with the sweet scent of smoke
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004069.wav no sense messing up the streets
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004067.wav they reached the center of a large plaza where the market was held
+common_voice/cv_corpus_v1/cv-valid-dev/sample-004048.wav did you ever walk into this office
 common_voice/cv_corpus_v1/cv-valid-dev/sample-004073.wav thats what im not supposed to say
