@@ -8,7 +8,6 @@ from asr.params import BASE_PATH
 # Path to the TIMIT dataset.
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __TIMIT_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'timit/TIMIT'))
-print('__TIMIT_PATH:', __TIMIT_PATH)    # TODO
 
 
 def timit_loader(target):
@@ -20,6 +19,9 @@ def timit_loader(target):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    if not os.path.isdir(__TIMIT_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__TIMIT_PATH))
+
     if target != 'test' and target != 'train':
         raise ValueError('Timit only supports "train" and "test" targets.')
 

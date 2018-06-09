@@ -8,7 +8,6 @@ from asr.params import BASE_PATH
 # Path to the LibriSpeech ASR dataset.
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __LIBRI_SPEECH_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'libri_speech/LibriSpeech'))
-print('__LIBRI_SPEECH_PATH:', __LIBRI_SPEECH_PATH)   # TODO
 
 
 def libri_speech_loader(target):
@@ -20,6 +19,9 @@ def libri_speech_loader(target):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    if not os.path.isdir(__LIBRI_SPEECH_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__LIBRI_SPEECH_PATH))
+
     # Folders for each target.
     train_folders = ['train-clean-100', 'train-clean-360']
     test_folders = ['test-clean']

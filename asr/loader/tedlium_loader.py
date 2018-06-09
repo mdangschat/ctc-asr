@@ -1,12 +1,9 @@
 """Load the Tedlium v2 dataset."""
 
-# TODO incomplete
-
 import sys
 import os
 import re
 import math
-import subprocess
 
 from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
@@ -19,7 +16,13 @@ from asr.util.storage import delete_file_if_exists
 # Path to the Tedlium v2 dataset.
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __TEDLIUM_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tedlium'))
-print('__TEDLIUM_PATH:', __TEDLIUM_PATH)   # TODO
+
+# Flag that marks time segments that should be skipped.
+__IGNORE_FLAG = 'ignore_time_segment_in_scoring'
+
+# RegEx pattern to extract TEDLIUM's .stm information's.
+__PATTERN = re.compile(
+    r"[.\w]+ [0-9] [.\w]+ ([0-9]+(?:\.[0-9]+)?) ([0-9]+(?:\.[0-9]+)?) <[\w,]+> ([\w ']+)")
 
 
 def tedlium_loader(target):
@@ -38,6 +41,8 @@ def tedlium_loader(target):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
+    if not os.path.isdir(__TEDLIUM_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__TEDLIUM_PATH))
 
     target_folders = {
         'dev': 'dev',
@@ -45,54 +50,51 @@ def tedlium_loader(target):
         'train': 'train'
     }
 
-    target_folder = os.path.join(__TEDLIUM_PATH, 'TEDLIUM_release2', target_folders[target], 'stm')
+    target_folder = os.path.join(__TEDLIUM_PATH, 'TEDLIUM_release2', target_folders[target])
 
-    # Flag that marks time segments that should be skipped.
-    ignore_flag = 'ignore_time_segment_in_scoring'
-
-    # RegEx pattern to extract TEDLIUM's .stm information's.
-    format_pattern = re.compile(
-        r"[.\w]+ [0-9] [.\w]+ ([0-9]+(?:\.[0-9]+)?) ([0-9]+(?:\.[0-9]+)?) <[\w,]+> ([\w ']+)")
-
-    files = os.listdir(target_folder)
+    files = os.listdir(os.path.join(target_folder, 'stm'))
 
     lock = Lock()
     output = []
     with Pool(processes=cpu_count()) as pool:
-        for result in tqdm(pool.imap_unordered(_tedlium_loader_helper, files),
+        for result in tqdm(pool.imap_unordered(_tedlium_loader_helper,
+                                               zip(files, [target_folder] * len(files))),
                            desc='Reading audio files', total=len(files), file=sys.stdout,
                            unit='files', dynamic_ncols=True):
             if result is not None:
                 lock.acquire()
-                output.append(result)
+                output.extend(result)
                 lock.release()
 
     return output
 
 
-def _tedlium_loader_helper(stm_file):
+def _tedlium_loader_helper(args):
+    stm_file, target_folder = args
     if os.path.splitext(stm_file)[1] != '.stm':
         # This check is required, since there are swap files, etc. in the TEDLIUM dataset.
         print('WARN: Invalid .stm file found:', stm_file)
         return None
 
-    stm_file_path = os.path.join(target_folder, stm_file)
+    stm_file_path = os.path.join(target_folder, 'stm', stm_file)
     with open(stm_file_path, 'r') as f:
         lines = f.readlines()
 
-        wav_path = os.path.join(__TEDLIUM_PATH, 'TEDLIUM_release2', target_folders[target],
-                                'sph', '{}.wav'.format(os.path.splitext(stm_file)[0]))
+        wav_path = os.path.join(__TEDLIUM_PATH, 'TEDLIUM_release2', target_folder, 'sph',
+                                '{}.wav'.format(os.path.splitext(stm_file)[0]))
         assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
         # Load the audio data, to later split it into a part per audio segment.
         (sampling_rate, wav_data) = wavfile.read(wav_path)
         assert sampling_rate == FLAGS.sampling_rate
 
+        output = []
+
         for i, line in enumerate(lines):
-            if ignore_flag in line:
+            if __IGNORE_FLAG in line:
                 continue
 
-            res = re.search(format_pattern, line)
+            res = re.search(__PATTERN, line)
             if res is None:
                 raise RuntimeError('TEDLIUM loader error in file {}\nLine: {}'
                                    .format(stm_file_path, line))
@@ -105,8 +107,8 @@ def _tedlium_loader_helper(stm_file):
             part_path = '{}_{}.wav'.format(wav_path[: -4], i)
             _write_part_to_wav(wav_data, part_path, start_time, end_time)
 
-            # Relative path to DATASET_PATH.
-            part_path = os.path.relpath(part_path, __TEDLIUM_PATH)
+            # Relative path to __DATASETS_PATH.
+            part_path = os.path.relpath(part_path, __DATASETS_PATH)
 
             # Sanitize lines.
             text = text.lower().replace(" '", '').replace('  ', ' ').strip()
@@ -115,7 +117,7 @@ def _tedlium_loader_helper(stm_file):
             if len(text.split(' ')) > 4:
                 output.append('{} {}\n'.format(part_path, text))
 
-                return ASDF
+        return output
 
 
 def _write_part_to_wav(wav_data, path, start, end, sr=16000):

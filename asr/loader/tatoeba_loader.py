@@ -15,11 +15,13 @@ from asr.util.storage import delete_file_if_exists
 # Path to the Taboeba dataset.
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __TATOEBA_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tatoeba/tatoeba_audio_eng'))
-print('TATOEABA_PATH:', __TATOEBA_PATH)   # TODO
 
 
 def tatoeba_loader(target):
     # TODO Documentation
+
+    if not os.path.isdir(__TATOEBA_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__TATOEBA_PATH))
 
     if target != 'train':
         raise ValueError('Tatoeba only has a train dataset.')
@@ -94,4 +96,4 @@ def __tatoeba_loader_helper(sample):
     subprocess.call(['sox', '-v', '0.95', mp3_path, '-r', '16k', wav_path, 'remix', '1'])
     assert os.path.isfile(wav_path), 'Could not create WAV.'
 
-    return '{} {}'.format(wav_path, text.strip())
+    return '{} {}\n'.format(wav_path, text.strip())

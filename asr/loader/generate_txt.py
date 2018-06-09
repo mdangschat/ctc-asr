@@ -1,5 +1,5 @@
 """Generate `train.txt` and `test.txt` for the `LibriSpeech`_ and
-`TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ datasets.
+`TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ and `Common Voice`_ datasets.
  Additionally some information about the data set can be printed out.
 
 Generated data format:
@@ -19,24 +19,20 @@ Generated data format:
 
 .. _TATOEBA:
     https://tatoeba.org/eng/downloads
+
+.. _COMMON_VOICE:
+    https://voice.mozilla.org/en
 """
 
-import sys
 import os
 import re
-import csv
-import subprocess
 
-from multiprocessing import Pool, Lock, cpu_count
-from tqdm import tqdm
-from scipy.io import wavfile
-
-from asr.params import FLAGS
 from asr.util import storage
 from asr.loader.tatoeba_loader import tatoeba_loader
 from asr.loader.timit_loader import timit_loader
 from asr.loader.libri_speech_loeader import libri_speech_loader
 from asr.loader.tedlium_loader import tedlium_loader
+from asr.loader.common_voice_loader import common_voice_loader
 
 
 # Dataset base path.
@@ -64,6 +60,7 @@ def generate_list(dataset_name, target, dry_run=False):
         dry_run (bool):
             Optional, default False.
             Dry running does not create output.txt files.
+            Note that it converts e.g. MP3 files to WAV files, no matter `dry_run`.
 
     Returns:
         Nothing.
@@ -85,14 +82,11 @@ def generate_list(dataset_name, target, dry_run=False):
     if target != 'test' and target != 'train' and target != 'dev':
         raise ValueError('"{}" is not a valid target.'.format(target))
 
-    if not os.path.isdir(dataset_path):
-        raise ValueError('"{}" is not a directory.'.format(dataset_path))
-
-    target_path = os.path.join(TXT_TARGET_PATH, '{}_{}.txt'.format(dataset_name, target))
-    print('Starting to generate: {}'.format(os.path.basename(target_path)))
+    target_txt_path = os.path.join(TXT_TARGET_PATH, '{}_{}.txt'.format(dataset_name, target))
+    print('Starting to generate: {}'.format(os.path.basename(target_txt_path)))
 
     # Load the output string. Format ['/path/s.wav label text\n', ...]
-    output = loader(dataset_path, target)
+    output = loader(target)
 
     # Remove illegal characters from labels.
     output = _remove_illegal_characters(output)
@@ -101,13 +95,13 @@ def generate_list(dataset_name, target, dry_run=False):
     output = list(filter(lambda x: len((x.split(' ', 1)[-1]).strip()) >= 2, output))
 
     # Write list to .txt file.
-    print('> Writing {} lines of {} files to {}'.format(len(output), target, target_path))
+    print('> Writing {} lines of {} files to {}'.format(len(output), target, target_txt_path))
     if not dry_run:
         # Delete the old file if it exists.
-        storage.delete_file_if_exists(target_path)
+        storage.delete_file_if_exists(target_txt_path)
 
         # Write data to the file.
-        with open(target_path, 'w') as f:
+        with open(target_txt_path, 'w') as f:
             f.writelines(output)
 
 
@@ -116,31 +110,31 @@ def _remove_illegal_characters(output):
     for line in output:
         path, text = line.split(' ', 1)
         text = re.sub(__PATTERN, '', text.lower()).strip().replace('  ', ' ')
-        result.append('{} {}'.format(path, text))
+        result.append('{} {}\n'.format(path, text))
     return result
 
 
 if __name__ == '__main__':
     __dry_run = False
 
-    # TEDLIUMv2
-    # generate_list(TEDLIUM_PATH, 'tedlium', 'test', dry_run=__dry_run)
-    # generate_list(TEDLIUM_PATH, 'tedlium', 'dev', dry_run=__dry_run)
-    # generate_list(TEDLIUM_PATH, 'tedlium', 'train', dry_run=__dry_run)
+    # TEDLIUM v2
+    # generate_list('tedlium', 'test', dry_run=__dry_run)
+    # generate_list('tedlium', 'dev', dry_run=__dry_run)
+    # generate_list('tedlium', 'train', dry_run=__dry_run)
 
     # TIMIT
-    # generate_list(__TIMIT_PATH, 'timit', 'test', dry_run=__dry_run)
-    # generate_list(__TIMIT_PATH, 'timit', 'train', dry_run=__dry_run)
+    # generate_list('timit', 'test', dry_run=__dry_run)
+    # generate_list('timit', 'train', dry_run=__dry_run)
 
     # LibriSpeech ASR Corpus
-    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'test', dry_run=__dry_run)
-    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'dev', dry_run=__dry_run)
-    # generate_list(LIBRI_SPEECH_PATH, 'libri_speech', 'train', dry_run=__dry_run)
+    # generate_list('libri_speech', 'test', dry_run=__dry_run)
+    # generate_list('libri_speech', 'dev', dry_run=__dry_run)
+    # generate_list('libri_speech', 'train', dry_run=__dry_run)
 
-    # Mozilla Common Voice
-    # generate_list(COMMON_VOICE_PATH, 'common_voice', 'test', dry_run=__dry_run)
-    # generate_list(COMMON_VOICE_PATH, 'common_voice', 'dev', dry_run=__dry_run)
-    # generate_list(COMMON_VOICE_PATH, 'common_voice', 'train', dry_run=__dry_run)
+    # Mozilla Common Voice v1
+    # generate_list('common_voice', 'test', dry_run=__dry_run)
+    # generate_list('common_voice', 'dev', dry_run=__dry_run)
+    # generate_list('common_voice', 'train', dry_run=__dry_run)
 
     # Tatoeba
-    generate_list(TATOEBA_PATH, 'tatoeba', 'train', dry_run=__dry_run)
+    generate_list('tatoeba', 'train', dry_run=__dry_run)
