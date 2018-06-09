@@ -24,7 +24,7 @@ def tatoeba_loader(target):
         raise ValueError('"{}" is not a directory.'.format(__TATOEBA_PATH))
 
     if target != 'train':
-        raise ValueError('Tatoeba only has a train dataset.')
+        raise ValueError('Invalid target. Tatoeba only has a train dataset.')
 
     validated_samples = set()     # Set of all sample IDs that have been validated.
     # Parse dataset meta data information to filter out low ranked samples.
@@ -38,8 +38,6 @@ def tatoeba_loader(target):
             if rating >= 1:
                 path = os.path.join(__TATOEBA_PATH, 'audio', username, _id)
                 validated_samples.add(path)
-
-        print('validated:', len(validated_samples))
 
     samples = []     # List of dictionaries of all files and labels and in the dataset.
     # Parse dataset meta data information to filter out low ranked samples.
@@ -55,8 +53,6 @@ def tatoeba_loader(target):
             path = os.path.join(__TATOEBA_PATH, 'audio', username, _id)
             if path in validated_samples:
                 samples.append({'path': path, 'text': text})
-
-    print('matching:', len(samples), samples[0])
 
     lock = Lock()
     buffer = []

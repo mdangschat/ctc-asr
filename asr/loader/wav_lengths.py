@@ -48,7 +48,8 @@ def calculate_dataset_stats(txt_path):
                 sample_lengths_sec.append(length_sec)
                 lock.release()
 
-        print('mean sample length={:.3f} ({:.3f})s.'
+        print('Total sample length={:.3f}s for {}.'.format(np.sum(sample_lengths_sec), txt_path))
+        print('Mean sample length={:.3f} ({:.3f})s.'
               .format(np.mean(sample_lengths), np.mean(sample_lengths_sec)))
 
     # Plot histogram of WAV length distribution.
