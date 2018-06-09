@@ -89,7 +89,7 @@ def __stat_calculator(line):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _test_txt_path = os.path.join('./data', 'train.txt')
+    _txt_path = os.path.join('./data', 'train.txt')
 
     # Display dataset stats.
-    calculate_dataset_stats(_test_txt_path)
+    calculate_dataset_stats(_txt_path)
