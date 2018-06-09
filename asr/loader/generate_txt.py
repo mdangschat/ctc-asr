@@ -118,23 +118,23 @@ if __name__ == '__main__':
     __dry_run = False
 
     # TEDLIUM v2
-    # generate_list('tedlium', 'test', dry_run=__dry_run)
-    # generate_list('tedlium', 'dev', dry_run=__dry_run)
-    # generate_list('tedlium', 'train', dry_run=__dry_run)
+    generate_list('tedlium', 'test', dry_run=__dry_run)
+    generate_list('tedlium', 'dev', dry_run=__dry_run)
+    generate_list('tedlium', 'train', dry_run=__dry_run)
 
     # TIMIT
-    # generate_list('timit', 'test', dry_run=__dry_run)
-    # generate_list('timit', 'train', dry_run=__dry_run)
+    generate_list('timit', 'test', dry_run=__dry_run)
+    generate_list('timit', 'train', dry_run=__dry_run)
 
     # LibriSpeech ASR Corpus
-    # generate_list('libri_speech', 'test', dry_run=__dry_run)
-    # generate_list('libri_speech', 'dev', dry_run=__dry_run)
-    # generate_list('libri_speech', 'train', dry_run=__dry_run)
+    generate_list('libri_speech', 'test', dry_run=__dry_run)
+    generate_list('libri_speech', 'dev', dry_run=__dry_run)
+    generate_list('libri_speech', 'train', dry_run=__dry_run)
 
     # Mozilla Common Voice v1
-    # generate_list('common_voice', 'test', dry_run=__dry_run)
-    # generate_list('common_voice', 'dev', dry_run=__dry_run)
-    # generate_list('common_voice', 'train', dry_run=__dry_run)
+    generate_list('common_voice', 'test', dry_run=__dry_run)
+    generate_list('common_voice', 'dev', dry_run=__dry_run)
+    generate_list('common_voice', 'train', dry_run=__dry_run)
 
     # Tatoeba
     generate_list('tatoeba', 'train', dry_run=__dry_run)
