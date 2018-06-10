@@ -4,7 +4,7 @@ from os import path
 import tensorflow as tf
 import numpy as np
 
-from asr.s_labels import num_classes
+from asr.labels import num_classes
 
 
 # Constants describing the training process.

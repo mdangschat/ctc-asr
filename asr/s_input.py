@@ -9,7 +9,7 @@ import tensorflow as tf
 from tensorflow import contrib as tfc
 
 from asr.params import FLAGS, TF_FLOAT
-import asr.s_labels as s_labels
+import asr.labels as s_labels
 from asr.load_sample import load_sample, NUM_FEATURES
 
 
