@@ -35,7 +35,6 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
     # Read train.txt file.
     with open(txt_path, 'r') as f:
         lines = f.readlines()
-        read_length = len(lines)
 
         # Setup threadpool.
         lock = Lock()
@@ -80,15 +79,12 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
         buffer = ['{} {}'.format(p, l) for _, p, l in buffer]
 
     # Write back to file.
-    assert read_length == len(buffer)
     storage.delete_file_if_exists(txt_path)
     with open(txt_path, 'w') as f:
         f.writelines(buffer)
 
     with open(txt_path, 'r') as f:
-        assert len(f.readlines()) == read_length, \
-            'Something went wrong writing the data back to file.'
-        print('Successfully sorted {} lines of {}'.format(read_length, txt_path))
+        print('Successfully sorted {} lines of {}'.format(len(f.readlines()), txt_path))
 
 
 def __feature_length(line):
