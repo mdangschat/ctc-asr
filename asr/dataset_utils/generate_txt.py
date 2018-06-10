@@ -1,8 +1,8 @@
-"""Generate `train.txt` and `test.txt` for the `LibriSpeech`_ and
-`TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ and `Common Voice`_ datasets.
- Additionally some information about the data set can be printed out.
+"""Generate `train.txt`, `dev.txt`, and `test.txt` for the `LibriSpeech`_
+and `TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ and `Common Voice`_ datasets.
 
-# TODO Documentation: Add merging into single file.
+The selected parts of various datasets are merged into combined files at
+the end.
 
 Generated data format:
     `path/to/sample.wav transcription of the sample wave file<new_line>`
@@ -30,11 +30,11 @@ import os
 import re
 
 from asr.util import storage
-from asr.loader.tatoeba_loader import tatoeba_loader
-from asr.loader.timit_loader import timit_loader
-from asr.loader.libri_speech_loeader import libri_speech_loader
-from asr.loader.tedlium_loader import tedlium_loader
-from asr.loader.common_voice_loader import common_voice_loader
+from asr.dataset_utils.tatoeba_loader import tatoeba_loader
+from asr.dataset_utils.timit_loader import timit_loader
+from asr.dataset_utils.libri_speech_loeader import libri_speech_loader
+from asr.dataset_utils.tedlium_loader import tedlium_loader
+from asr.dataset_utils.common_voice_loader import common_voice_loader
 
 
 # Dataset base path.
@@ -109,10 +109,17 @@ def generate_list(dataset_name, target, dry_run=False):
     return target_txt_path
 
 
-def _remove_illegal_characters(output):
-    # TODO Document
+def _remove_illegal_characters(lines):
+    """Remove every not whitelisted character from a list of formatted lines.
+
+    Args:
+        lines (List[str]): List if lines in the format '/path/to/file.wav label text here'
+
+    Returns:
+        List[str]: Filtered list of lines.
+    """
     result = []
-    for line in output:
+    for line in lines:
         path, text = line.split(' ', 1)
         text = re.sub(__PATTERN, '', text.lower()).strip().replace('  ', ' ')
         result.append('{} {}\n'.format(path, text))
@@ -120,7 +127,18 @@ def _remove_illegal_characters(output):
 
 
 def _merge_txt_files(txt_files, target):
-    # TODO Document
+    """Merge a list of TXT files into a single target TXT file.
+
+    Args:
+        txt_files (List[str]): List of paths to dataset TXT files.
+        target (str): 'test', 'dev', 'train'
+
+    Returns:
+        Nothing.
+    """
+    if target not in ['test', 'dev', 'train']:
+        raise ValueError('Invalid target.')
+
     buffer = []
 
     # Read and merge files.
