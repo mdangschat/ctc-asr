@@ -18,8 +18,14 @@ __TATOEBA_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tatoeba/tatoeba
 
 
 def tatoeba_loader(target):
-    # TODO Documentation
+    """Build the output string that can be written to the desired *.txt file.
 
+    Args:
+        target (str): 'train'
+
+    Returns:
+        List[str]: List containing the output string that can be written to *.txt file.
+    """
     if not os.path.isdir(__TATOEBA_PATH):
         raise ValueError('"{}" is not a directory.'.format(__TATOEBA_PATH))
 
@@ -75,7 +81,6 @@ def tatoeba_loader(target):
 
 
 def __tatoeba_loader_helper(sample):
-    # TODO Document helper method.
     path = sample['path']
     text = sample['text']
     mp3_path = '{}.mp3'.format(path)
