@@ -32,7 +32,7 @@ def common_voice_loader(target):
         target (str): 'train', 'test', or 'dev'
 
     Returns:
-        [str]: List containing the output string that can be written to *.txt file.
+        List[str]: List containing the output string that can be written to *.txt file.
     """
     if not os.path.isdir(__COMMON_VOICE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__COMMON_VOICE_PATH))

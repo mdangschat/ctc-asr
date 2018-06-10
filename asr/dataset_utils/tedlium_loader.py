@@ -128,7 +128,6 @@ def _write_part_to_wav(wav_data, path, start, end, sr=16000):
     #       .format(seconds_to_sample(start), start, seconds_to_sample(end), end, path))
 
     delete_file_if_exists(path)
-    # TODO Verify that the created WAV files are okay!
     wavfile.write(path, sr, wav_data[_seconds_to_sample(start, True):
                                      _seconds_to_sample(end, False)])
 
