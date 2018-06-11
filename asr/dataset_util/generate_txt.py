@@ -30,11 +30,11 @@ import os
 import re
 
 from asr.util import storage
-from asr.dataset_utils.tatoeba_loader import tatoeba_loader
-from asr.dataset_utils.timit_loader import timit_loader
-from asr.dataset_utils.libri_speech_loeader import libri_speech_loader
-from asr.dataset_utils.tedlium_loader import tedlium_loader
-from asr.dataset_utils.common_voice_loader import common_voice_loader
+from asr.dataset_util.tatoeba_loader import tatoeba_loader
+from asr.dataset_util.timit_loader import timit_loader
+from asr.dataset_util.libri_speech_loeader import libri_speech_loader
+from asr.dataset_util.tedlium_loader import tedlium_loader
+from asr.dataset_util.common_voice_loader import common_voice_loader
 
 
 # Dataset base path.
