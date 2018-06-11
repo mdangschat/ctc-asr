@@ -48,28 +48,30 @@ def calculate_dataset_stats(txt_path):
                 sample_lengths_sec.append(length_sec)
                 lock.release()
 
-        print('Total sample length={:.3f}s for {}.'.format(np.sum(sample_lengths_sec), txt_path))
+        total_len = np.sum(sample_lengths_sec)
+        print('Total sample length={:.3f}s (~{}h) for {}.'
+              .format(total_len, int(total_len / 60 / 60), txt_path))
         print('Mean sample length={:.3f} ({:.3f})s.'
               .format(np.mean(sample_lengths), np.mean(sample_lengths_sec)))
 
-    # Plot histogram of WAV length distribution.
-    plt.figure(figsize=(10, 5))
-    plt.subplot(1, 2, 1)
-    plt.hist(sample_lengths, bins='auto', facecolor='green', alpha=0.75)
-    plt.title('Sample Length\'s Histogram')
-    plt.ylabel('Count')
-    plt.xlabel('Length')
-    plt.grid(True)
+        # Plot histogram of WAV length distribution.
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1, 2, 1)
+        plt.hist(sample_lengths, bins='auto', facecolor='green', alpha=0.75)
+        plt.title('Sample Length\'s Histogram')
+        plt.ylabel('Count')
+        plt.xlabel('Length')
+        plt.grid(True)
 
-    plt.subplot(1, 2, 2)
-    plt.hist(sample_lengths_sec, bins='auto', facecolor='green', alpha=0.75)
-    plt.title('Sample Length in Seconds\'s Histogram')
-    plt.ylabel('Count')
-    plt.xlabel('Length in Seconds')
-    plt.grid(True)
+        plt.subplot(1, 2, 2)
+        plt.hist(sample_lengths_sec, bins='auto', facecolor='green', alpha=0.75)
+        plt.title('Sample Length in Seconds\'s Histogram')
+        plt.ylabel('Count')
+        plt.xlabel('Length in Seconds')
+        plt.grid(True)
 
-    plt.tight_layout()
-    plt.show()
+        plt.tight_layout()
+        plt.show()
 
 
 def __stat_calculator(line):
