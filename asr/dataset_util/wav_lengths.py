@@ -31,7 +31,6 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
         random.shuffle(lines)
-        lines = lines[: 1000]     # TODO
 
         # Setup threadpool.
         lock = Lock()
