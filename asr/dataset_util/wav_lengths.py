@@ -53,6 +53,9 @@ def calculate_dataset_stats(txt_path):
               .format(np.mean(sample_lengths), np.mean(sample_lengths_sec)))
 
         # Plot histogram of WAV length distribution.
+        _plot(sample_lengths, sample_lengths_sec)
+
+        print('Done.')
 
 
 def _stat_calculator(line):
@@ -95,6 +98,7 @@ def _plot(sample_lengths, sample_lengths_sec):
     plt.xlabel('Length in Seconds')
     plt.grid(True)
 
+    # Finish plot by tightening everything up.
     plt.tight_layout()
 
     # Display or save the plot.

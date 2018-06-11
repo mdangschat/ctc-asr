@@ -9,7 +9,7 @@ Examples that are longer than 1700 feature vectors have been removed.
 Tedlium samples with labels shorter than 5 words have been removed.
 
 
-### `train.txt` 908+ Hours
+### `train.txt` 906+ Hours
 * `libri_speech_train.txt`
 * `timit_train.txt`
 * `tedlium_train.txt`
