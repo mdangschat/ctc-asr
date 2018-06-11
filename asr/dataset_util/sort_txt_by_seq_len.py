@@ -7,12 +7,10 @@ import sys
 
 from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
-import matplotlib
-matplotlib.use('Agg')
-from matplotlib import pyplot as plt
 
 from asr.util import storage
 from asr.load_sample import load_sample
+from asr.util.matplotlib_helper import pyplot_display
 
 
 DATASETS_PATH = '../datasets/speech_data'
@@ -41,7 +39,7 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
         buffer = []   # Output buffer.
 
         with Pool(processes=cpu_count()) as pool:
-            for result in tqdm(pool.imap_unordered(__feature_length, lines, chunksize=4),
+            for result in tqdm(pool.imap_unordered(_feature_length, lines, chunksize=4),
                                desc='Reading audio samples', total=len(lines), file=sys.stdout,
                                unit='samples', dynamic_ncols=True):
                 lock.acquire()
@@ -67,13 +65,7 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
         print('Suggested buckets: ', buckets)
 
         # Plot histogram of feature vector length distribution.
-        plt.figure()
-        plt.hist(lengths, bins='auto', facecolor='green', alpha=0.75)
-        plt.title('Sequence Length\'s Histogram')
-        plt.ylabel('Count')
-        plt.xlabel('Length')
-        plt.grid(True)
-        plt.show()
+        _plot_sequence_lengths(lengths)
 
         # Remove sequence length.
         buffer = ['{} {}'.format(p, l) for _, p, l in buffer]
@@ -87,11 +79,24 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
         print('Successfully sorted {} lines of {}'.format(len(f.readlines()), txt_path))
 
 
-def __feature_length(line):
+def _feature_length(line):
     # Python multiprocessing helper method.
     wav_path, label = line.split(' ', 1)
     length = int(load_sample(os.path.join(DATASETS_PATH, wav_path))[1])
     return length, wav_path, label
+
+
+@pyplot_display
+def _plot_sequence_lengths(plt, lengths):
+    # Plot histogram of feature vector length distribution.
+    fig = plt.figure()
+    plt.hist(lengths, bins=50, facecolor='green', alpha=0.75, edgecolor='black', linewidth=0.9)
+    plt.title('Sequence Length\'s Histogram')
+    plt.ylabel('Count')
+    plt.xlabel('Length')
+    plt.grid(True)
+
+    return fig
 
 
 if __name__ == '__main__':

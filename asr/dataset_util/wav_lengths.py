@@ -10,7 +10,8 @@ from multiprocessing import Pool, Lock, cpu_count
 import numpy as np
 from tqdm import tqdm
 import scipy.io.wavfile as wav
-import matplotlib
+
+from asr.util.matplotlib_helper import pyplot_display
 
 
 DATASETS_PATH = '../datasets/speech_data'
@@ -30,6 +31,7 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
         random.shuffle(lines)
+        lines = lines[: 1000]     # TODO
 
         # Setup threadpool.
         lock = Lock()
@@ -49,11 +51,11 @@ def calculate_dataset_stats(txt_path):
         total_len = np.sum(sample_lengths_sec)
         print('Total sample length={:.3f}s (~{}h) for {}.'
               .format(total_len, int(total_len / 60 / 60), txt_path))
-        print('Mean sample length={:.3f} ({:.3f})s.'
+        print('Mean sample length={:.0f} ({:.3f})s.'
               .format(np.mean(sample_lengths), np.mean(sample_lengths_sec)))
 
         # Plot histogram of WAV length distribution.
-        _plot(sample_lengths, sample_lengths_sec)
+        _plot_wav_lengths(sample_lengths, sample_lengths_sec)
 
         print('Done.')
 
@@ -73,26 +75,21 @@ def _stat_calculator(line):
     return length, length / sr
 
 
-def _plot(sample_lengths, sample_lengths_sec):
-    # Setup plot output based on if a display is available or not.
-    display = 'DISPLAY' in os.environ
-    if display:
-        from matplotlib import pyplot as plt
-    else:
-        matplotlib.use('Agg')
-        from matplotlib import pyplot as plt
-
+@pyplot_display
+def _plot_wav_lengths(plt, sample_lengths, sample_lengths_sec):
     # Create figure.
     fig = plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
-    plt.hist(sample_lengths, bins='auto', facecolor='green', alpha=0.75)
+    plt.hist(sample_lengths, bins=50, facecolor='green', alpha=0.75, edgecolor='black',
+             linewidth=0.9)
     plt.title('Sample Length\'s Histogram')
     plt.ylabel('Count')
-    plt.xlabel('Length')
+    plt.xlabel('Number of Samples')
     plt.grid(True)
 
     plt.subplot(1, 2, 2)
-    plt.hist(sample_lengths_sec, bins='auto', facecolor='green', alpha=0.75)
+    plt.hist(sample_lengths_sec, bins=50, facecolor='green', alpha=0.75, edgecolor='black',
+             linewidth=0.9)
     plt.title('Sample Length in Seconds\'s Histogram')
     plt.ylabel('Count')
     plt.xlabel('Length in Seconds')
@@ -101,11 +98,7 @@ def _plot(sample_lengths, sample_lengths_sec):
     # Finish plot by tightening everything up.
     plt.tight_layout()
 
-    # Display or save the plot.
-    if display:
-        plt.show()
-    else:
-        fig.savefig('/tmp/wav_lengths.png')
+    return fig
 
 
 if __name__ == '__main__':
