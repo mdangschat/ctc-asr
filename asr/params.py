@@ -14,9 +14,9 @@ tf.flags.DEFINE_integer('batch_size', 8,
                         "Number of samples within a batch.")
 
 # Performance.
-tf.flags.DEFINE_bool('use_cudnn', True,
-                     ("Whether to use Nvidia cuDNN implementations or (False) the default "
-                      "TensorFlow implementation."))
+tf.flags.DEFINE_boolean('use_cudnn', True,
+                        "Whether to use Nvidia cuDNN implementations or (False) the default "
+                        "TensorFlow implementation.")
 tf.flags.DEFINE_integer('num_threads', 8,
                         """Number of threads used to preload data.""")
 
@@ -41,8 +41,8 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
 # CTC loss and decoder.
 tf.flags.DEFINE_integer('beam_width', 1024,
                         "Beam width used in the CTC `beam_search_decoder`.")
-tf.flags.DEFINE_bool('use_warp_ctc', False,
-                     "Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.")
+tf.flags.DEFINE_boolean('use_warp_ctc', False,
+                        "Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.")
 
 # Dropout.
 tf.flags.DEFINE_float('conv_dropout_rate', 0.0,
@@ -77,8 +77,8 @@ tf.flags.DEFINE_string('feature_type', 'mel',
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
                         "Supported are: 'none', 'global', 'local', and 'local_scalar'"))
-tf.flags.DEFINE_bool('features_drop_every_second_frame', False,
-                     "[Deep Speech 1] like dropping of every 2nd input time frame.")
+tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
+                        "[Deep Speech 1] like dropping of every 2nd input time frame.")
 
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
@@ -101,8 +101,8 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 
 # Evaluation.
 tf.flags.DEFINE_boolean('eval_test', False,
-                        "`True if evaluation should use the test set, `False` if it should use the "
-                        "dev set.")
+                        "`True` if evaluation should use the test set, "
+                        "`False` if it should use the dev set.")
 tf.flags.DEFINE_string('eval_dir', '',
                        ("If set, evaluation log data will be stored here, instead of the default "
                         "directory `f'{FLAGS.train_dir}_eval'."))
