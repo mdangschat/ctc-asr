@@ -100,6 +100,9 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         "The maximum number of decoded and original text samples to report.")
 
 # Evaluation.
+tf.flags.DEFINE_boolean('eval_test', False,
+                        "`True if evaluation should use the test set, `False` if it should use the "
+                        "dev set.")
 tf.flags.DEFINE_string('eval_dir', '',
                        ("If set, evaluation log data will be stored here, instead of the default "
                         "directory `f'{FLAGS.train_dir}_eval'."))

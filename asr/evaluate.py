@@ -17,8 +17,8 @@ else:
     import asr.model as model
 
 
-# Which dataset *.txt file to use for evaluation. 'test' or 'dev'.
-EVALUATION_TARGET = 'dev'
+# Which dataset TXT file to use for evaluation. 'test' or 'dev'.
+__EVALUATION_TARGET = 'test' if FLAGS.eval_test else 'dev'
 
 
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
@@ -40,12 +40,12 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
         gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
     )
 
-    if EVALUATION_TARGET == 'test':
+    if __EVALUATION_TARGET == 'test':
         num_target_samples = FLAGS.num_examples_test
-    elif EVALUATION_TARGET == 'dev':
+    elif __EVALUATION_TARGET == 'dev':
         num_target_samples = FLAGS.num_examples_dev
     else:
-        raise ValueError('Invalid evaluation target: "{}"'.format(EVALUATION_TARGET))
+        raise ValueError('Invalid evaluation target: "{}"'.format(__EVALUATION_TARGET))
 
     with tf.Session(config=session_config) as sess:
         checkpoint = tf.train.get_checkpoint_state(FLAGS.train_dir)
@@ -139,7 +139,7 @@ def evaluate(eval_dir):
     with tf.Graph().as_default() as graph:
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
-            inputs = model.inputs(target=EVALUATION_TARGET)
+            inputs = model.inputs(target=__EVALUATION_TARGET)
             sequences, seq_length, labels, label_length, originals = inputs
 
         # Build a graph that computes the logits predictions from the inference model.
@@ -170,7 +170,7 @@ def main(argv=None):
 
     # Determine evaluation log directory.
     eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}'\
-        .format(FLAGS.train_dir, EVALUATION_TARGET)
+        .format(FLAGS.train_dir, __EVALUATION_TARGET)
 
     # Delete old evaluation data if requested.
     storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
