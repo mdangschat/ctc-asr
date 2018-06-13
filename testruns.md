@@ -10,7 +10,7 @@ Listing of testruns and results.
 | `3d1r2d_local_scalar` | `run_ds1_local_scalar` | cosy16 |  8 | 80 Mel   | local scalar |  2048 |  20 | 3d1r2d | DS1 w/ local_scalar Mel normalization. | 31.882 | 0.114 | 0.321 |
 | `3d1r2d_none`         |                        | cosy14 |  8 | 80 Mel   | none         |  2048 |  20 | 3d1r2d | DS1 w/o Mel normalization.             |        |       |       |
 | `3d1r2d_mfcc_local`   |                        | cosy15 |  8 | 80 MFCC  | local        |  2048 |  20 | 3d1r2d | DS1 w/ local MFCC normalization.       |        |       |       |
-| `3d1r2d_local_3000U`  |                        | cosy16 |  8 | 80 Mel   | local        |  3000 |  20 | 3d1r2d | DS1 w/ global Mel normalization.       |        |       |       |
+| `3d1r2d_local_3000u`  |                        | cosy16 |  8 | 80 Mel   | local        |  3000 |  20 | 3d1r2d | DS1 w/ global Mel normalization.       |        |       |       |
 
 
 ##### Note: That runs on the COSY servers did not use the complete dataset.
