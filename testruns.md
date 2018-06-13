@@ -3,12 +3,12 @@ Listing of testruns and results.
 
 
 ## COSY17
-| train_dir             | commit-hash                              | Br.   | Server | BS | Features | Norm.        | Units | Ep. | Layout | What was tested?                        | Loss | MED | WER |
-|-----------------------|------------------------------------------|-------|--------|---:|----------|--------------|------:|----:|-------:|-----------------------------------------|-----:|----:|----:|
-| `3d1r2d_global`       | 66be4305025f279f8293c1949cf4a0084c451f26 | master | cosy14 |  8 | 80 Mel   | global       |  2048 |  20 | 3d1r2d | DS1 w/ global MFCC normalization.       |      |     |     |
-| `3d1r2d_local`        | b026c59ca2b4345a658697b52311268073577940 | master | cosy15 |  8 | 80 Mel   | local        |  2048 |  20 | 3d1r2d | DS1 w/ local MFCC normalization.        |      |     |     |
-| `3d1r2d_local_scalar` | 2dc0508e222da3e5b3ba25a79c1e8574dcfda4c3 | master | cosy16 |  8 | 80 Mel   | local scalar |  2048 |  20 | 3d1r2d | DS1 w/ local_scalar MFCC normalization. |      |     |     |
-| `3d1r2d_false`        |                                          | master | cosy   |  8 | 80 Mel   | none         |  2048 |  20 | 3d1r2d | DS1 w/o MFCC normalization.             |      |     |     |
-| `3d1r2d_global_3000U` |                                          | master | cosy   |  8 | 80 Mel   | global       |  3000 |  20 | 3d1r2d | DS1 w/ global MFCC normalization.       |      |     |     |
+| train_dir             | Branch                 | Server | BS | Features | Norm.        | Units | Ep. | Layout | What was tested?                       | Loss | MED | WER |
+|-----------------------|------------------------|--------|---:|----------|--------------|------:|----:|-------:|----------------------------------------|-----:|----:|----:|
+| `3d1r2d_global`       | `run_ds1_global`       | cosy14 |  8 | 80 Mel   | global       |  2048 |  20 | 3d1r2d | DS1 w/ global Mel normalization.       |      |     |     |
+| `3d1r2d_local`        | `run_ds1_local`        | cosy15 |  8 | 80 Mel   | local        |  2048 |  20 | 3d1r2d | DS1 w/ local Mel normalization.        |      |     |     |
+| `3d1r2d_local_scalar` | `run_ds1_local_scalar` | cosy16 |  8 | 80 Mel   | local scalar |  2048 |  20 | 3d1r2d | DS1 w/ local_scalar Mel normalization. |      |     |     |
+| `3d1r2d_false`        |                        | cosy   |  8 | 80 Mel   | none         |  2048 |  20 | 3d1r2d | DS1 w/o Mel normalization.             |      |     |     |
+| `3d1r2d_global_3000U` |                        | cosy   |  8 | 80 Mel   | global       |  3000 |  20 | 3d1r2d | DS1 w/ global Mel normalization.       |      |     |     |
 
 ## GTX1080
