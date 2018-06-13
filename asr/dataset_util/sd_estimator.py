@@ -30,8 +30,7 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
         random.shuffle(lines)
-        random.shuffle(lines)
-        lines = lines[: 2 ** 15]
+        lines = lines[: int(1.4e5)]      # To fit in RAM and not crash Numpy.
 
         # Setup threadpool.
         lock = Lock()
@@ -51,10 +50,12 @@ def calculate_dataset_stats(txt_path):
 
         print('mean = {}'.format(np.mean(features)))
         print('std = {}'.format(np.std(features)))
+        print()
+
         means = np.mean(features, axis=0)
-        print('__mean = [' + ', '.join(map(str, means)) + ']')
+        print('__global_mean = [' + ', '.join(map(str, means)) + ']')
         stds = np.std(features, axis=0)
-        print('__std = [' + ', '.join(map(str, stds)) + ']')
+        print('__global_std = [' + ', '.join(map(str, stds)) + ']')
 
 
 def __stat_calculator(line):
@@ -63,7 +64,7 @@ def __stat_calculator(line):
     wav_path = os.path.join(DATASETS_PATH, wav_path)
 
     feature, _ = load_sample(wav_path, feature_type='mel', feature_normalization='none')
-    assert len(feature) > 1
+    assert len(feature) > 1, 'Empty feature: {}'.format(wav_path)
 
     return feature
 
