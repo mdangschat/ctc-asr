@@ -14,7 +14,7 @@ import scipy.io.wavfile as wav
 from asr.util.matplotlib_helper import pyplot_display
 
 
-DATASETS_PATH = '../datasets/speech_data'
+__DATASETS_PATH = '../datasets/speech_data'
 
 
 def calculate_dataset_stats(txt_path):
@@ -62,7 +62,7 @@ def calculate_dataset_stats(txt_path):
 def _stat_calculator(line):
     # Python multiprocessing helper method.
     wav_path, _ = line.split(' ', 1)
-    wav_path = os.path.join(DATASETS_PATH, wav_path)
+    wav_path = os.path.join(__DATASETS_PATH, wav_path)
 
     if not os.path.isfile(wav_path):
         raise ValueError('"{}" does not exist.'.format(wav_path))

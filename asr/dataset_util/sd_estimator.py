@@ -13,7 +13,8 @@ from tqdm import tqdm
 from asr.load_sample import load_sample
 
 
-DATASETS_PATH = '../datasets/speech_data'
+__DATASETS_PATH = '../datasets/speech_data'
+__FEATURE_TYPE = 'mel'
 
 
 def calculate_dataset_stats(txt_path):
@@ -61,9 +62,9 @@ def calculate_dataset_stats(txt_path):
 def __stat_calculator(line):
     # Python multiprocessing helper method.
     wav_path, _ = line.split(' ', 1)
-    wav_path = os.path.join(DATASETS_PATH, wav_path)
+    wav_path = os.path.join(__DATASETS_PATH, wav_path)
 
-    feature, _ = load_sample(wav_path, feature_type='mel', feature_normalization='none')
+    feature, _ = load_sample(wav_path, feature_type=__FEATURE_TYPE, feature_normalization='none')
     assert len(feature) > 1, 'Empty feature: {}'.format(wav_path)
 
     return feature

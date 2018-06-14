@@ -13,7 +13,7 @@ from asr.load_sample import load_sample
 from asr.util.matplotlib_helper import pyplot_display
 
 
-DATASETS_PATH = '../datasets/speech_data'
+__DATASETS_PATH = '../datasets/speech_data'
 
 
 def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
@@ -82,7 +82,7 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
 def _feature_length(line):
     # Python multiprocessing helper method.
     wav_path, label = line.split(' ', 1)
-    length = int(load_sample(os.path.join(DATASETS_PATH, wav_path))[1])
+    length = int(load_sample(os.path.join(__DATASETS_PATH, wav_path))[1])
     return length, wav_path, label
 
 
