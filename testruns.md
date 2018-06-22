@@ -19,4 +19,8 @@ Listing of testruns and results.
 * dev: libri_speech
 
 
-## GTX1080
+## GTX1080 (Reduced Dataset)
+| train_dir          | Branch | BS | Features | Norm. | Units | Ep. | Layout | What was tested?      | Loss | MED | WER |
+|--------------------|--------|---:|----------|-------|------:|----:|-------:|-----------------------|-----:|----:|----:|
+| `3c1r2d_mel_local` | ``     |  8 | 80 Mel   | local |  2048 |  20 | 3c1r2d | Compare dense vs conv |      |     |     |
+|                    |        |    |          |       |       |     |        |                       |      |     |     |
