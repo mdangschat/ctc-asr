@@ -2,7 +2,7 @@
 Listing of testruns and results.
 
 
-## COSY
+## COSY (Reduced Dataset)
 | train_dir             | Branch                 | Server | BS | Features | Norm.        | Units | Ep. | Layout | What was tested?                       |   Loss |   MED |   WER |
 |-----------------------|------------------------|--------|---:|----------|--------------|------:|----:|-------:|----------------------------------------|-------:|------:|------:|
 | `3d1r2d_global`       | `run_ds1_global`       | cosy14 |  8 | 80 Mel   | global       |  2048 |  20 | 3d1r2d | DS1 w/ global Mel normalization.       | 30.594 | 0.113 | 0.319 |
@@ -13,14 +13,17 @@ Listing of testruns and results.
 | `3d1r2d_local_3000u`  |                        | cosy16 |  8 | 80 Mel   | local        |  3000 |  20 | 3d1r2d | DS1 w/ global Mel normalization.       |        |       |       |
 
 
-##### Note: That runs on the COSY servers did not use the complete dataset.
-* train: timit, tedlium, libri_speech, common_voice
-* test: libri_speech, common_voice
-* dev: libri_speech
-
-
 ## GTX1080 (Reduced Dataset)
 | train_dir          | Branch | BS | Features | Norm. | Units | Ep. | Layout | What was tested?      | Loss | MED | WER |
 |--------------------|--------|---:|----------|-------|------:|----:|-------:|-----------------------|-----:|----:|----:|
 | `3c1r2d_mel_local` | ``     |  8 | 80 Mel   | local |  2048 |  20 | 3c1r2d | Compare dense vs conv |      |     |     |
 |                    |        |    |          |       |       |     |        |                       |      |     |     |
+
+
+
+
+## Reduced Dataset
+Note that runs marked with *Reduced Dataset* did not use the complete dataset.
+* train: timit, tedlium, libri_speech, common_voice
+* test: libri_speech, common_voice
+* dev: libri_speech
