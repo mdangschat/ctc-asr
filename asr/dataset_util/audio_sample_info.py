@@ -54,7 +54,7 @@ def display_sample_info(file_path, label=''):
     info_str = info_str.format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
     print(info_str)
 
-    plt.figure()
+    plt.figure(figsize=(10, 7))
     plt.subplot(3, 1, 1)
     display.waveplot(y, sr=sr)
     plt.title('Monophonic')
@@ -64,7 +64,7 @@ def display_sample_info(file_path, label=''):
     plt.subplot(3, 1, 2)
     display.waveplot(y_harm, sr=sr, alpha=0.33)
     display.waveplot(y_perc, sr=sr, color='r', alpha=0.40)
-    plt.title('Harmonic & Percussive')
+    plt.title('Harmonic and Percussive')
 
     # Add file information.
     plt.subplot(3, 1, 3)
