@@ -8,9 +8,9 @@ from asr.labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c1r2d_1',
+tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c3r2d',
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 32,
                         "Number of samples within a batch.")
 
 # Performance.
@@ -27,7 +27,7 @@ tf.flags.DEFINE_float('learning_rate', 1e-4,
                       "Initial learning rate.")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
                       "Learning rate decay factor.")
-tf.flags.DEFINE_integer('steps_per_decay', 70000,
+tf.flags.DEFINE_integer('steps_per_decay', 100000,
                         "Number of steps after which learning rate decays.")
 
 # Adam Optimizer.
@@ -112,9 +112,9 @@ tf.flags.DEFINE_bool('delete', False,
                      "Whether to delete old checkpoints, or resume training.")
 tf.flags.DEFINE_integer('random_seed', 0,
                         "TensorFlow random seed. Set to `0` to use the current timestamp instead.")
-tf.flags.DEFINE_boolean('log_device_placement', False,
+tf.flags.DEFINE_boolean('log_device_placement', True,
                         "Whether to log device placement.")
-tf.flags.DEFINE_boolean('allow_vram_growth', False,
+tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         "Allow TensorFlow to allocate VRAM as needed, as opposed to allocating the "
                         "whole VRAM at program start.")
 
