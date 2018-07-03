@@ -20,6 +20,11 @@ Listing of testruns and results.
 |                    |        |    |          |       |       |     |        |                       |      |     |     |
 
 
+## FB02TIITs04 V100 32GB
+| train_dir          | Branch | BS | Features | Norm. | Units | Ep. | Layout | What was tested?      | Loss | MED | WER |
+|--------------------|--------|---:|----------|-------|------:|----:|-------:|-----------------------|-----:|----:|----:|
+| `3c3r2d_mel_local` | ``     |  8 | 80 Mel   | local |  2048 |  20 | 3c3r2d |                       |      |     |     |
+|                    |        |    |          |       |       |     |        |                       |      |     |     |
 
 
 ## Reduced Dataset
