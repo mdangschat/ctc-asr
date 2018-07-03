@@ -3,6 +3,7 @@
 from os import path
 import tensorflow as tf
 import numpy as np
+from multiprocessing import cpu_count
 
 from asr.labels import num_classes
 
@@ -17,7 +18,7 @@ tf.flags.DEFINE_integer('batch_size', 8,
 tf.flags.DEFINE_boolean('use_cudnn', True,
                         "Whether to use Nvidia cuDNN implementations or (False) the default "
                         "TensorFlow implementation.")
-tf.flags.DEFINE_integer('num_threads', 8,
+tf.flags.DEFINE_integer('num_threads', cpu_count(),
                         """Number of threads used to preload data.""")
 
 # Learning Rate.
