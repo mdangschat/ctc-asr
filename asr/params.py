@@ -77,6 +77,7 @@ tf.flags.DEFINE_string('feature_type', 'mel',
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
                         "Supported are: 'none', 'global', 'local', and 'local_scalar'"))
+
 tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
 
