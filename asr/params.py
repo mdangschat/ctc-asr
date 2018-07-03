@@ -10,7 +10,7 @@ from asr.labels import num_classes
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c3r2d',
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 32,
+tf.flags.DEFINE_integer('batch_size', 8,
                         "Number of samples within a batch.")
 
 # Performance.
