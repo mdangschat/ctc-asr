@@ -113,7 +113,7 @@ tf.flags.DEFINE_integer('random_seed', 0,
                         "TensorFlow random seed. Set to `0` to use the current timestamp instead.")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         "Whether to log device placement.")
-tf.flags.DEFINE_boolean('allow_vram_growth', False,
+tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         "Allow TensorFlow to allocate VRAM as needed, as opposed to allocating the "
                         "whole VRAM at program start.")
 
