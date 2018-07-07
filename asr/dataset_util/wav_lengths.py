@@ -4,7 +4,7 @@ Print out a length distribution for used WAV files.
 
 import os
 import sys
-import random
+import pickle
 
 from multiprocessing import Pool, Lock, cpu_count
 import numpy as np
@@ -27,36 +27,46 @@ def calculate_dataset_stats(txt_path):
     Returns:
         Nothing.
     """
-    # Read train.txt file.
-    with open(txt_path, 'r') as f:
-        lines = f.readlines()
-        random.shuffle(lines)
+    # Check if results are buffered.
+    tmp_path = '/tmp/sample_length_dump_{}.p'.format(os.path.split(txt_path)[1])
+    if not (os.path.exists(tmp_path) and os.path.isfile(tmp_path)):
+        sample_lengths = []  # Output buffer.
+        sample_lengths_sec = []  # Output buffer.
 
-        # Setup threadpool.
-        lock = Lock()
-        sample_lengths = []         # Output buffer.
-        sample_lengths_sec = []     # Output buffer.
+        # Read train.txt file.
+        with open(txt_path, 'r') as f:
+            lines = f.readlines()
 
-        with Pool(processes=cpu_count()) as pool:
-            for length, length_sec in tqdm(
-                pool.imap_unordered(_stat_calculator, lines, chunksize=4),
-                    desc='Reading audio samples', total=len(lines), file=sys.stdout,
-                    unit='samples', dynamic_ncols=True):
-                lock.acquire()
-                sample_lengths.append(length)
-                sample_lengths_sec.append(length_sec)
-                lock.release()
+            # Setup threadpool.
+            lock = Lock()
+            with Pool(processes=cpu_count()) as pool:
+                for length, length_sec in tqdm(
+                    pool.imap_unordered(_stat_calculator, lines, chunksize=4),
+                        desc='Reading audio samples', total=len(lines), file=sys.stdout,
+                        unit='samples', dynamic_ncols=True):
+                    lock.acquire()
+                    sample_lengths.append(length)
+                    sample_lengths_sec.append(length_sec)
+                    lock.release()
 
-        total_len = np.sum(sample_lengths_sec)
-        print('Total sample length={:.3f}s (~{}h) for {}.'
-              .format(total_len, int(total_len / 60 / 60), txt_path))
-        print('Mean sample length={:.0f} ({:.3f})s.'
-              .format(np.mean(sample_lengths), np.mean(sample_lengths_sec)))
+            pickle.dump(sample_lengths_sec, open(tmp_path, 'wb'))
+            print('Stored data to {}'.format(tmp_path))
 
-        # Plot histogram of WAV length distribution.
-        _plot_wav_lengths(sample_lengths, sample_lengths_sec)
+            total_len = np.sum(sample_lengths_sec)
+            print('Total sample length={:.3f}s (~{}h) of {}.'
+                  .format(total_len, int(total_len / 60 / 60), txt_path))
+            print('Mean sample length={:.0f} ({:.3f})s.'
+                  .format(np.mean(sample_lengths), np.mean(sample_lengths_sec)))
 
-        print('Done.')
+    else:
+        print('Loading stored dump from {}'.format(tmp_path))
+        sample_lengths_sec = pickle.load(open(tmp_path, 'rb'))
+        print(len(sample_lengths_sec), type(sample_lengths_sec), sample_lengths_sec[3:5])
+
+    # Plot histogram of WAV length distribution.
+    _plot_wav_lengths(sample_lengths_sec)
+
+    print('Done.')
 
 
 def _stat_calculator(line):
@@ -75,23 +85,15 @@ def _stat_calculator(line):
 
 
 @pyplot_display
-def _plot_wav_lengths(plt, sample_lengths, sample_lengths_sec):
+def _plot_wav_lengths(plt, sample_lengths_sec):
     # Create figure.
-    fig = plt.figure(figsize=(10, 5))
-    plt.subplot(1, 2, 1)
-    plt.hist(sample_lengths, bins=50, facecolor='green', alpha=0.75, edgecolor='black',
-             linewidth=0.9)
-    plt.title('Sample Length\'s Histogram')
-    plt.ylabel('Count')
-    plt.xlabel('Number of Samples')
-    plt.grid(True)
-
-    plt.subplot(1, 2, 2)
+    fig = plt.figure(figsize=(4.4, 2.2))
     plt.hist(sample_lengths_sec, bins=50, facecolor='green', alpha=0.75, edgecolor='black',
              linewidth=0.9)
-    plt.title('Sample Length in Seconds\'s Histogram')
-    plt.ylabel('Count')
-    plt.xlabel('Length in Seconds')
+    # plt.yscale('log')
+    # plt.title('Sample Length in Seconds')
+    plt.ylabel('count')
+    plt.xlabel('length in seconds')
     plt.grid(True)
 
     # Finish plot by tightening everything up.
