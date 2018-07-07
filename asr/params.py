@@ -14,12 +14,14 @@ tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c3r2d_mel_local',
 tf.flags.DEFINE_integer('batch_size', 8,
                         "Number of samples within a batch.")
 
+
 # Performance.
 tf.flags.DEFINE_boolean('use_cudnn', True,
                         "Whether to use Nvidia cuDNN implementations or (False) the default "
                         "TensorFlow implementation.")
 tf.flags.DEFINE_integer('num_threads', cpu_count(),
                         """Number of threads used to preload data.""")
+
 
 # Learning Rate.
 tf.flags.DEFINE_integer('max_epochs', 20,
@@ -31,6 +33,7 @@ tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
 tf.flags.DEFINE_integer('steps_per_decay', 100000,
                         "Number of steps after which learning rate decays.")
 
+
 # Adam Optimizer.
 tf.flags.DEFINE_float('adam_beta1', 0.9,
                       "Adam optimizer beta_1 power.")
@@ -39,11 +42,13 @@ tf.flags.DEFINE_float('adam_beta2', 0.999,
 tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       "Adam optimizer epsilon.")
 
+
 # CTC loss and decoder.
 tf.flags.DEFINE_integer('beam_width', 1024,
                         "Beam width used in the CTC `beam_search_decoder`.")
 tf.flags.DEFINE_boolean('use_warp_ctc', False,
                         "Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.")
+
 
 # Dropout.
 tf.flags.DEFINE_float('conv_dropout_rate', 0.0,
@@ -52,6 +57,7 @@ tf.flags.DEFINE_float('rnn_dropout_rate', 0.0,
                       "Dropout rate for the RNN cell layers.")
 tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       "Dropout rate for dense layers.")
+
 
 # Layer and activation options.
 tf.flags.DEFINE_string('used_model', 'ds2',
@@ -72,6 +78,7 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       "Cutoff ReLU activations that exceed the cutoff.")
 
+
 # Input features.
 tf.flags.DEFINE_string('feature_type', 'mel',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
@@ -81,6 +88,7 @@ tf.flags.DEFINE_string('feature_normalization', 'local',
 
 tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
+
 
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
@@ -101,6 +109,7 @@ tf.flags.DEFINE_integer('log_frequency', 500,
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         "The maximum number of decoded and original text samples to report.")
 
+
 # Evaluation.
 tf.flags.DEFINE_boolean('eval_test', False,
                         "`True` if evaluation should use the test set, "
@@ -108,6 +117,7 @@ tf.flags.DEFINE_boolean('eval_test', False,
 tf.flags.DEFINE_string('eval_dir', '',
                        ("If set, evaluation log data will be stored here, instead of the default "
                         "directory `f'{FLAGS.train_dir}_eval'."))
+
 
 # Miscellaneous.
 tf.flags.DEFINE_bool('delete', False,
