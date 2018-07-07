@@ -99,6 +99,7 @@ for further informations.
 
 ## Training
 Start training by invoking `python/train.py`.
+Use `python/train.py -- delete` to start a clean run and remove the old checkpoints.
 
 
 ## Evaluation
