@@ -105,6 +105,7 @@ Use `python/train.py --delete` to start a clean run and remove the old checkpoin
 
 ## Evaluation
 Evaluate the current model by invoking `python/evaluate.py`.
+Invoke `python/evaluate.py --test` to run on the test dataset, instead of the development one.
  
 
 ## License
