@@ -29,7 +29,7 @@ sudo apt install python3-tk sox libsox-fmt-all
 ```
 
 
-## Prepare Datasets
+## Prepare Datasets (deprecated)
 ```sh
 cd <project_root>/data/
 
