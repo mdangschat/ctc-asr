@@ -51,7 +51,13 @@ def delete_file_if_exists(path):
         Nothing.
     """
     if os.path.exists(path) and os.path.isfile(path):
-        os.remove(path)
+        for i in range(5):
+            try:
+                os.remove(path)
+            except OSError:
+                print('TODO CAUGHT error at file: ', path)
+                if i == 4:
+                    raise
 
 
 def maybe_delete_checkpoints(path, delete):
