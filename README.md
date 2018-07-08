@@ -18,7 +18,7 @@ git clone https://vcs.zwuenf.org/mdangschat/speech.git
 *TODO: Add dependenies: sox, libsox-fmt-mp3*
 ```sh
 # This list is incomplete.
-pacaur -S tr
+pacaur -S tr sox
 
 # Install TensorFlow
 pacaur -S python-tensorflow-opt-cuda tensorbaord
@@ -27,7 +27,7 @@ pacaur -S python-tensorflow-opt-cuda tensorbaord
 
 #### Ubuntu 16.04
 ```sh
-sudo apt install python3-tk
+sudo apt install python3-tk sox
 ```
 
 
