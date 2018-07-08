@@ -27,7 +27,7 @@ pacaur -S python-tensorflow-opt-cuda tensorbaord
 
 #### Ubuntu 16.04
 ```sh
-sudo apt install python3-tk sox
+sudo apt install python3-tk sox libsox-fmt-all
 ```
 
 
