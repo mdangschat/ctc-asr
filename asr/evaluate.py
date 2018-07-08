@@ -27,7 +27,7 @@ else:
 
 
 # Which dataset TXT file to use for evaluation. 'test' or 'dev'.
-__EVALUATION_TARGET = 'test' if FLAGS.eval_test else 'dev'
+__EVALUATION_TARGET = 'test' if FLAGS.test else 'dev'
 
 
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
