@@ -49,6 +49,9 @@ cat libri_speech_train.txt tedlium_train.txt > train.txt
 git clone https://github.com/tensorflow/tensorflow
 cd tensorflow
 
+# Checkout the desired version (e.g. rolling `r1.9` or release `v1.9.0`).
+git checkout v1.9.0
+
 # Run config wizard
 ./configure
 
