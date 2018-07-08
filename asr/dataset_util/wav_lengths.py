@@ -62,7 +62,6 @@ def calculate_dataset_stats(txt_path):
     else:
         print('Loading stored dump from {}'.format(tmp_path))
         sample_lengths_sec = pickle.load(open(tmp_path, 'rb'))
-        print(len(sample_lengths_sec), type(sample_lengths_sec), sample_lengths_sec[3:5])
 
     # Plot histogram of WAV length distribution.
     _plot_wav_lengths(sample_lengths_sec)

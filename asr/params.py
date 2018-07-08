@@ -93,11 +93,11 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         "The sampling rate of the audio files (2 * 8kHz).")
-tf.flags.DEFINE_integer('num_examples_train', 570351,
+tf.flags.DEFINE_integer('num_examples_train', 570854,
                         "Number of examples in the training set. `test.txt`")
-tf.flags.DEFINE_integer('num_examples_test', 3690,
+tf.flags.DEFINE_integer('num_examples_test', 3556,
                         "Number of examples in the testing/evaluation set. `test.txt`")
-tf.flags.DEFINE_integer('num_examples_dev', 2703,
+tf.flags.DEFINE_integer('num_examples_dev', 2590,
                         "Number of examples in the validation set. `dev.txt`")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         "Number of classes. Contains the additional CTC <blank> label.")
