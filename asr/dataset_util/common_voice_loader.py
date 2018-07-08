@@ -19,7 +19,7 @@ __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __COMMON_VOICE_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'common_voice/cv_corpus_v1'))
 
 # Define valid accents. Review if '' should be accepted as well.
-__VALID_ACCENTS = ['us', 'england', 'canada', 'australia']
+__VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand']
 
 
 def common_voice_loader(target):
