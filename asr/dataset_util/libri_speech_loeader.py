@@ -5,7 +5,7 @@ import os
 from scipy.io import wavfile
 
 from asr.params import BASE_PATH
-from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 # Path to the LibriSpeech ASR dataset.

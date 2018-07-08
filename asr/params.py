@@ -137,6 +137,9 @@ NP_FLOAT = np.float32   # ctc_*** functions don't support float64. See #13
 
 BASE_PATH = path.split(path.dirname(path.realpath(__file__)))[0]    # Path to git root.
 
+MIN_EXAMPLE_LENGTH = 0.7    # Minimum length of examples in datasets (in seconds).
+MAX_EXAMPLE_LENGTH = 17.0   # Maximum length of examples in datasets (in seconds).
+
 FLAGS = tf.flags.FLAGS
 
 

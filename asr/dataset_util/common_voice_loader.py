@@ -11,7 +11,7 @@ from scipy.io import wavfile
 
 from asr.params import BASE_PATH
 from asr.util.storage import delete_file_if_exists
-from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 # Path to the Mozilla Common Voice dataset.

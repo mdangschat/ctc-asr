@@ -37,11 +37,6 @@ from asr.dataset_util.tedlium_loader import tedlium_loader
 from asr.dataset_util.common_voice_loader import common_voice_loader
 
 
-# Minimum and maximum length of examples in datasets (in seconds).
-MIN_EXAMPLE_LENGTH = 0.7
-MAX_EXAMPLE_LENGTH = 17.0
-
-
 # Dataset base path.
 DATASET_PATH = '../datasets/speech_data'
 

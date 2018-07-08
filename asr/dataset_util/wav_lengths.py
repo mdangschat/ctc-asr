@@ -12,7 +12,7 @@ from tqdm import tqdm
 from scipy.io import wavfile
 
 from asr.util.matplotlib_helper import pyplot_display
-from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 __DATASETS_PATH = '../datasets/speech_data'
