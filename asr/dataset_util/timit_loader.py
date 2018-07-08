@@ -51,12 +51,6 @@ def timit_loader(target):
         if 'SA1.WAV' == basename or 'SA2.WAV' == basename:
             continue
 
-        # Validate that the example length is within boundaries.
-        (sr, y) = wavfile.read(wav_path)
-        length_sec = len(y) / sr
-        if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
-            continue
-
         with open(txt_path, 'r') as f:
             txt = f.readlines()
             assert len(txt) == 1, 'Text file contains to many lines. ({})'.format(txt_path)
@@ -64,6 +58,12 @@ def timit_loader(target):
 
             # Absolute path.
             wav_path = os.path.join(__TIMIT_PATH, wav_path)
+
+            # Validate that the example length is within boundaries.
+            (sr, y) = wavfile.read(wav_path)
+            length_sec = len(y) / sr
+            if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
+                continue
 
             # Relative path to `DATASET_PATH`.
             wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
