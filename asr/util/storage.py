@@ -54,8 +54,9 @@ def delete_file_if_exists(path):
         for i in range(5):
             try:
                 os.remove(path)
-            except OSError:
+            except (OSError, ValueError) as e:
                 print('TODO CAUGHT error at file: ', path)
+                print('ERROR=', e)
                 if i == 4:
                     raise
 
