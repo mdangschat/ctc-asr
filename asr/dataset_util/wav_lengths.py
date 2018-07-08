@@ -9,9 +9,10 @@ import pickle
 from multiprocessing import Pool, Lock, cpu_count
 import numpy as np
 from tqdm import tqdm
-import scipy.io.wavfile as wav
+from scipy.io import wavfile
 
 from asr.util.matplotlib_helper import pyplot_display
+from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 __DATASETS_PATH = '../datasets/speech_data'
@@ -78,10 +79,18 @@ def _stat_calculator(line):
         raise ValueError('"{}" does not exist.'.format(wav_path))
 
     # Load the audio files sample rate (`sr`) and data (`y`).
-    (sr, y) = wav.read(wav_path)
+    (sr, y) = wavfile.read(wav_path)
 
     length = len(y)
-    return length, length / sr
+    length_sec = length / sr
+
+    if length_sec < MIN_EXAMPLE_LENGTH:
+        print('WARN: Too short example found: ', line, length_sec)
+
+    if length_sec > MAX_EXAMPLE_LENGTH:
+        print('WARN: Overlong example found: ', line, length_sec)
+
+    return length, length_sec
 
 
 @pyplot_display

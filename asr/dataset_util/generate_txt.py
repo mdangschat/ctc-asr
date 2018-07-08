@@ -37,6 +37,11 @@ from asr.dataset_util.tedlium_loader import tedlium_loader
 from asr.dataset_util.common_voice_loader import common_voice_loader
 
 
+# Minimum and maximum length of examples in datasets (in seconds).
+MIN_EXAMPLE_LENGTH = 0.7
+MAX_EXAMPLE_LENGTH = 17.0
+
+
 # Dataset base path.
 DATASET_PATH = '../datasets/speech_data'
 
@@ -177,8 +182,9 @@ if __name__ == '__main__':
         generate_list('common_voice', 'test', dry_run=__dry_run),
     ]
 
-    _merge_txt_files(__test, 'test')
-    _merge_txt_files(__dev, 'dev')
-    _merge_txt_files(__train, 'train')
+    if not __dry_run:
+        _merge_txt_files(__test, 'test')
+        _merge_txt_files(__dev, 'dev')
+        _merge_txt_files(__train, 'train')
 
     print('Done.')

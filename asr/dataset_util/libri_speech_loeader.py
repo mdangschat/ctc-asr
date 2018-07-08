@@ -2,7 +2,10 @@
 
 import os
 
+from scipy.io import wavfile
+
 from asr.params import BASE_PATH
+from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 # Path to the LibriSpeech ASR dataset.
@@ -62,6 +65,12 @@ def libri_speech_loader(target):
 
                     # Relative path to `DATASET_PATH`.
                     wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
+
+                    # Validate that the example length is within boundaries.
+                    (sr, y) = wavfile.read(wav_path)
+                    length_sec = len(y) / sr
+                    if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
+                        continue
 
                     output.append('{} {}\n'.format(wav_path, txt.strip()))
 

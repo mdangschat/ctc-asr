@@ -7,9 +7,11 @@ import subprocess
 
 from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
+from scipy.io import wavfile
 
 from asr.params import BASE_PATH
 from asr.util.storage import delete_file_if_exists
+from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 # Path to the Taboeba dataset.
@@ -104,6 +106,12 @@ def __tatoeba_loader_helper(sample):
     ret = subprocess.call(['sox', '-v', '0.95', mp3_path, '-r', '16k', wav_path, 'remix', '1'])
     if not os.path.isfile(wav_path):
         raise RuntimeError('Failed to create WAV file with error code={}: {}'.format(ret, wav_path))
+
+    # Validate that the example length is within boundaries.
+    (sr, y) = wavfile.read(wav_path)
+    length_sec = len(y) / sr
+    if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
+        return None
 
     wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
     return '{} {}\n'.format(wav_path, text.strip())

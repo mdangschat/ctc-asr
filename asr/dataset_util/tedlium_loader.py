@@ -11,6 +11,7 @@ from scipy.io import wavfile
 
 from asr.params import BASE_PATH, FLAGS
 from asr.util.storage import delete_file_if_exists
+from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 # Path to the Tedlium v2 dataset.
@@ -106,6 +107,12 @@ def _tedlium_loader_helper(args):
             # Create new partial .wav file.
             part_path = '{}_{}.wav'.format(wav_path[: -4], i)
             _write_part_to_wav(wav_data, part_path, start_time, end_time)
+
+            # Validate that the example length is within boundaries.
+            (sr, y) = wavfile.read(part_path)
+            length_sec = len(y) / sr
+            if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
+                continue
 
             # Relative path to __DATASETS_PATH.
             part_path = os.path.relpath(part_path, __DATASETS_PATH)

@@ -2,7 +2,10 @@
 
 import os
 
+from scipy.io import wavfile
+
 from asr.params import BASE_PATH
+from asr.dataset_util.generate_txt import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 
 # Path to the TIMIT dataset.
@@ -46,6 +49,12 @@ def timit_loader(target):
         # Skip SAx.WAV files, since they are repeated by every speaker in the dataset.
         basename = os.path.basename(wav_path)
         if 'SA1.WAV' == basename or 'SA2.WAV' == basename:
+            continue
+
+        # Validate that the example length is within boundaries.
+        (sr, y) = wavfile.read(wav_path)
+        length_sec = len(y) / sr
+        if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
             continue
 
         with open(txt_path, 'r') as f:
