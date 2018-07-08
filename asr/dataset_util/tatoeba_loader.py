@@ -4,6 +4,7 @@ import sys
 import os
 import csv
 import subprocess
+import time
 
 from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
@@ -108,15 +109,19 @@ def __tatoeba_loader_helper(sample):
         raise RuntimeError('Failed to create WAV file with error code={}: {}'.format(ret, wav_path))
 
     # Validate that the example length is within boundaries.
-    try:
-        (sr, y) = wavfile.read(wav_path)
-        length_sec = len(y) / sr
-        if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
-            return None
-    except ValueError as e:
-        print('ERROR: Could not load wavfile: ', wav_path)
-        print('DEBUG=', e)
-        raise
+    for i in range(5):
+        try:
+            (sr, y) = wavfile.read(wav_path)
+            length_sec = len(y) / sr
+            if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
+                return None
+            break
+        except ValueError as e:
+            print('ERROR: Could not load wavfile: ', i, wav_path)
+            print('DEBUG=', e, ', size=', os.path.getsize(wav_path))
+            if i == 4:
+                raise
+            time.sleep(1)
 
     wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
     return '{} {}\n'.format(wav_path, text.strip())
