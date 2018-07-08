@@ -116,9 +116,8 @@ def __tatoeba_loader_helper(sample):
             if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
                 return None
             break
-        except ValueError as e:
-            print('ERROR: Could not load wavfile: ', i, wav_path)
-            print('DEBUG=', e, ', size=', os.path.getsize(wav_path))
+        except ValueError:
+            print('ERROR: Could not load wavfile: ', i, wav_path, ', size=', os.path.getsize(wav_path))
             if i == 4:
                 raise
             time.sleep(1)

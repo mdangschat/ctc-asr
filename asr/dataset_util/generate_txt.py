@@ -157,7 +157,7 @@ if __name__ == '__main__':
     __dry_run = False
 
     __train = [
-        generate_list('tatoeba', 'train', dry_run=__dry_run),
+        generate_list('tatoeba', 'train', dry_run=__dry_run),       # TODO: last
         generate_list('tedlium', 'train', dry_run=__dry_run),
         generate_list('timit', 'train', dry_run=__dry_run),
         generate_list('libri_speech', 'train', dry_run=__dry_run),
