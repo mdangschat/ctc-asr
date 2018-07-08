@@ -34,7 +34,7 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
 
-        # Setup threadpool.
+        # Setup thread pool.
         lock = Lock()
         buffer = []   # Output buffer.
 

@@ -31,9 +31,9 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
         random.shuffle(lines)
-        lines = lines[: int(1.0e5)]      # To fit in RAM and not crash Numpy.
+        lines = lines[: int(2.0e5)]      # To fit in RAM and not crash Numpy.
 
-        # Setup threadpool.
+        # Setup thread pool.
         lock = Lock()
         features = []   # Output buffer.
 
