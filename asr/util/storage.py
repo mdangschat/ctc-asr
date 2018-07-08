@@ -1,6 +1,7 @@
 """Storage and version control helper methods."""
 
 import os
+import time
 
 from git import Repo
 import tensorflow as tf
@@ -57,9 +58,10 @@ def delete_file_if_exists(path):
                 break
             except (OSError, ValueError) as e:
                 print('TODO CAUGHT error at file: ', path)
-                print('ERROR=', e)
+                print('ERROR=', type(e), e)
                 if i == 4:
-                    raise
+                    raise RuntimeError(path) from e
+                time.sleep(1)
 
 
 def maybe_delete_checkpoints(path, delete):
