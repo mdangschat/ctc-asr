@@ -186,8 +186,11 @@ def inputs(batch_size, target):
         print('Generating validation batches of size {}. Queue capacity is {}.'
               .format(batch_size, capacity))
 
-        batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len, original_queue,
-                                       batch_size, capacity)
+        # TODO Testing if sorted is faster
+        # batch = _generate_bucket_batch(sequence, seq_len, label_queue, label_len, original_queue,
+        #                                batch_size, capacity)
+        batch = _generate_sorted_batch(sequence, seq_len, label_queue, label_len, original_queue,
+                                       batch_size)
 
         sequences, seq_length, labels_t, label_len, originals_t = batch
 
