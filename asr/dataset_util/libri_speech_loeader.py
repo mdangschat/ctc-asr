@@ -63,14 +63,14 @@ def libri_speech_loader(target):
                     wav_path = os.path.join(root, '{}.wav'.format(file_id))
                     assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
-                    # Relative path to `DATASET_PATH`.
-                    wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
-
                     # Validate that the example length is within boundaries.
                     (sr, y) = wavfile.read(wav_path)
                     length_sec = len(y) / sr
                     if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
                         continue
+
+                    # Relative path to `DATASET_PATH`.
+                    wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
 
                     output.append('{} {}\n'.format(wav_path, txt.strip()))
 
