@@ -14,8 +14,6 @@ git clone https://vcs.zwuenf.org/mdangschat/speech.git
 
 ### Install Required Libraries
 #### Arch Linux
-
-*TODO: Add dependenies: sox, libsox-fmt-mp3*
 ```sh
 # This list is incomplete.
 pacaur -S tr sox
