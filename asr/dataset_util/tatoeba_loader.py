@@ -108,10 +108,14 @@ def __tatoeba_loader_helper(sample):
         raise RuntimeError('Failed to create WAV file with error code={}: {}'.format(ret, wav_path))
 
     # Validate that the example length is within boundaries.
-    (sr, y) = wavfile.read(wav_path)
-    length_sec = len(y) / sr
-    if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
-        return None
+    try:
+        (sr, y) = wavfile.read(wav_path)
+        length_sec = len(y) / sr
+        if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
+            return None
+    except ValueError:
+        print('ERROR: Could not load wavfile: ', wav_path)
+        raise
 
     wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
     return '{} {}\n'.format(wav_path, text.strip())
