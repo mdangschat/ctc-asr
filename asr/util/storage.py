@@ -57,7 +57,7 @@ def delete_file_if_exists(path):
                 os.remove(path)
                 break
             except (OSError, ValueError) as e:
-                print('TODO CAUGHT error at file: ', path)      # TODO: Debug
+                print('TODO CAUGHT error at file: ', i, path)      # TODO: Debug
                 print('ERROR=', type(e), e)                     # Debug
                 if i == 4:
                     raise RuntimeError(path) from e
