@@ -117,7 +117,7 @@ def __tatoeba_loader_helper(sample):
                 return None
             break
         except ValueError:
-            print('WARN: Could not load ({}/5) wavfile: '.format(i, wav_path))
+            print('WARN: Could not load ({}/5) wavfile: {}'.format(i, wav_path))
             if i == 4:
                 raise
             time.sleep(1)
