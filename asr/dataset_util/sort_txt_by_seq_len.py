@@ -52,16 +52,17 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
         # Remove samples longer than `max_length` points.
         if max_length > 0:
             original_length = len(buffer)
-            buffer = [s for s in buffer if s[0] < 1750]
+            buffer = [s for s in buffer if s[0] < max_length]
             print('Removed {:,d} samples from training.'.format(original_length - len(buffer)))
 
         # Calculate optimal bucket sizes.
         lengths = [l[0] for l in buffer]
         step = len(lengths) // num_buckets
-        buckets = '['
+        buckets = set()
         for i in range(step, len(lengths), step):
-            buckets += '{}, '.format(lengths[i])
-        buckets = buckets[: -2] + ']'
+            buckets.add(lengths[i])
+        buckets = list(buckets)
+        buckets.sort()
         print('Suggested buckets: ', buckets)
 
         # Plot histogram of feature vector length distribution.
