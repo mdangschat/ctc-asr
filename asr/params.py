@@ -11,7 +11,7 @@ from asr.labels import num_classes
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c3r2d_mel_local',
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
 
 
@@ -26,11 +26,11 @@ tf.flags.DEFINE_integer('num_threads', cpu_count(),
 # Learning Rate.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
-tf.flags.DEFINE_float('learning_rate', 1e-4,
+tf.flags.DEFINE_float('learning_rate', 0.5e-4,
                       "Initial learning rate.")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
                       "Learning rate decay factor.")
-tf.flags.DEFINE_integer('steps_per_decay', 100000,
+tf.flags.DEFINE_integer('steps_per_decay', 50000,
                         "Number of steps after which learning rate decays.")
 
 
