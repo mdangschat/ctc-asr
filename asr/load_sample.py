@@ -3,8 +3,8 @@
 import os
 
 import numpy as np
-import scipy.io.wavfile as wav
 import python_speech_features as psf
+from scipy.io import wavfile
 
 from asr.params import FLAGS, NP_FLOAT
 
@@ -132,7 +132,7 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
     # Load the audio files sample rate (`sr`) and data (`y`).
-    (sr, y) = wav.read(file_path)
+    (sr, y) = wavfile.read(file_path)
 
     if len(y) < 401:
         raise RuntimeError('Sample length {:,d} to short: {}'.format(len(y), file_path))
