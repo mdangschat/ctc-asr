@@ -35,6 +35,7 @@ Examples that are longer than 2500 feature vectors have been removed.
 Calculating statistics for /mnt/storage/workspace/speech/data/train.txt
 Word based statistics:
 	total_words = 8,912,133
+    number_unique_words = 81,090
 	mean_sentence_length = 15.61 words
 	min_sentence_length = 1 words
 	max_sentence_length = 84 words
