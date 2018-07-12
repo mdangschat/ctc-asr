@@ -167,7 +167,7 @@ def display_sample_info(file_path, label=''):
     plt.xlabel('Time (s)')
     plt.ylabel('Frequency (Hz)')
     plt.colorbar(format='%+2.0f')
-    plt.title('MFCC')
+    plt.title('MFCC', visible=False)
 
     plt.subplot(2, 1, 1)
     display.specshow(__mel, sr=__sr, x_axis='time', y_axis='mel', hop_length=win_step * __sr)
@@ -175,8 +175,8 @@ def display_sample_info(file_path, label=''):
     # plt.xticks(rotation=295)
     plt.xlabel('Time (s)')
     plt.ylabel('Frequency (Hz)')
-    plt.colorbar(format='%+2.0f', label='dB Power')
-    plt.title('Mel Spectrogram')
+    plt.colorbar(format='%+2.0f', label='Power')
+    plt.title('Mel Spectrogram', visible=False)
 
     plt.tight_layout()
     plt.show()

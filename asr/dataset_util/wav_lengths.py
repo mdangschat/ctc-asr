@@ -95,14 +95,18 @@ def _stat_calculator(line):
 @pyplot_display
 def _plot_wav_lengths(plt, sample_lengths_sec):
     # Create figure.
-    fig = plt.figure(figsize=(4.4, 2.2))
-    plt.hist(sample_lengths_sec, bins=50, facecolor='green', alpha=0.75, edgecolor='black',
-             linewidth=0.9)
+    fig = plt.figure(figsize=(5.90, 2.30))
+    plt.hist(sample_lengths_sec, bins=75, facecolor='green', alpha=0.75)
+    #        edgecolor='black', linewidth=0.9)
+    # plt.yticks(range(0, 60000, 10000))
     # plt.yscale('log')
-    # plt.title('Sample Length in Seconds')
-    plt.ylabel('count')
-    plt.xlabel('length in seconds')
-    plt.grid(True)
+    plt.title('Sample Length in Seconds', visible=False)
+    plt.ylabel('Count', visible=True)
+    plt.xlabel('Length (s)', visible=True)
+    plt.grid(b=True, which='major', axis='both', linestyle='dashed', linewidth=0.7, aa=False,
+             visible=True)
+    plt.ylim(ymin=0)
+    plt.xlim(xmin=0)
 
     # Finish plot by tightening everything up.
     plt.tight_layout()
@@ -112,7 +116,7 @@ def _plot_wav_lengths(plt, sample_lengths_sec):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _txt_path = os.path.join('./data', 'train.txt')
+    _txt_path = os.path.join('./data', 'dev.txt')
 
     # Display dataset stats.
     calculate_dataset_stats(_txt_path)
