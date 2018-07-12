@@ -33,7 +33,7 @@ Examples that are longer than 2500 feature vectors have been removed.
 ```
 /usr/bin/python3 -u /home/marc/workspace/speech/asr/dataset_util/word_counts.py
 Calculating statistics for /mnt/storage/workspace/speech/data/train.txt
-	Word based statistics:
+Word based statistics:
 	total_words = 8,912,133
 	mean_sentence_length = 15.61 words
 	min_sentence_length = 1 words
