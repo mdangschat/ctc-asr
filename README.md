@@ -14,11 +14,9 @@ git clone https://vcs.zwuenf.org/mdangschat/speech.git
 
 ### Install Required Libraries
 #### Arch Linux
-
-*TODO: Add dependenies: sox, libsox-fmt-mp3*
 ```sh
 # This list is incomplete.
-pacaur -S tr
+pacaur -S tr sox
 
 # Install TensorFlow
 pacaur -S python-tensorflow-opt-cuda tensorbaord
@@ -27,11 +25,11 @@ pacaur -S python-tensorflow-opt-cuda tensorbaord
 
 #### Ubuntu 16.04
 ```sh
-sudo apt install python3-tk
+sudo apt install python3-tk sox libsox-fmt-all
 ```
 
 
-## Prepare Datasets
+## Prepare Datasets (deprecated)
 ```sh
 cd <project_root>/data/
 
@@ -50,6 +48,9 @@ cat libri_speech_train.txt tedlium_train.txt > train.txt
 # Tensorflow
 git clone https://github.com/tensorflow/tensorflow
 cd tensorflow
+
+# Checkout the desired version (e.g. rolling `r1.9` or release `v1.9.0`).
+git checkout v1.9.0
 
 # Run config wizard
 ./configure
@@ -99,10 +100,12 @@ for further informations.
 
 ## Training
 Start training by invoking `python/train.py`.
+Use `python/train.py --delete` to start a clean run and remove the old checkpoints.
 
 
 ## Evaluation
 Evaluate the current model by invoking `python/evaluate.py`.
+Invoke `python/evaluate.py --test` to run on the test dataset, instead of the development one.
  
 
 ## License
