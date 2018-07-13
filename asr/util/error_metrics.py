@@ -3,7 +3,7 @@
 import numpy as np
 
 from asr.params import NP_FLOAT
-from asr.s_labels import itoc
+from asr.labels import itoc
 
 
 def dense_to_text(decoded, originals):

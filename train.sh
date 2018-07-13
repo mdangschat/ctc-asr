@@ -3,7 +3,8 @@
 # Configure a TMUX session named speech and prepare to start the training process.
 # Note: Script MUST be run from the repositories root folder.
 
-#tmux new-session -s speech './log_temp.sh & tail -f temp.log' \; \
+# First, kill all running temp_log.sh scripts.
+pgrep -f "bash ./log_temp.sh" | xargs -n 1 bash -c 'kill "$0"'
 
 tmux new-session -d -s speech '$SHELL'
 tmux set -g window-status-current-bg blue

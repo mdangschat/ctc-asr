@@ -1,6 +1,7 @@
 """Storage and version control helper methods."""
 
 import os
+import time
 
 from git import Repo
 import tensorflow as tf
@@ -51,7 +52,15 @@ def delete_file_if_exists(path):
         Nothing.
     """
     if os.path.exists(path) and os.path.isfile(path):
-        os.remove(path)
+        for i in range(5):
+            try:
+                os.remove(path)
+                break
+            except (OSError, ValueError) as e:
+                print('WARN: Error deleting ({}/5) file: {}'.format(i, path))
+                if i == 4:
+                    raise RuntimeError(path) from e
+                time.sleep(1)
 
 
 def maybe_delete_checkpoints(path, delete):
