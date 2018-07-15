@@ -9,6 +9,15 @@ import tensorflow as tf
 
 from asr.params import FLAGS
 from asr.util import storage
+
+# Evaluation specific flags.
+tf.flags.DEFINE_boolean('test', False,
+                        "`True if evaluation should use the test set, `False` if it should use the "
+                        "dev set.")
+tf.flags.DEFINE_string('eval_dir', '',
+                       ("If set, evaluation log data will be stored here, instead of the default "
+                        "directory `f'{FLAGS.train_dir}_eval'."))
+
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False
@@ -17,8 +26,8 @@ else:
     import asr.model as model
 
 
-# Which dataset *.txt file to use for evaluation. 'test' or 'dev'.
-EVALUATION_TARGET = 'dev'
+# Which dataset TXT file to use for evaluation. 'test' or 'dev'.
+__EVALUATION_TARGET = 'test' if FLAGS.test else 'dev'
 
 
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
@@ -40,12 +49,12 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
         gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
     )
 
-    if EVALUATION_TARGET == 'test':
+    if __EVALUATION_TARGET == 'test':
         num_target_samples = FLAGS.num_examples_test
-    elif EVALUATION_TARGET == 'dev':
+    elif __EVALUATION_TARGET == 'dev':
         num_target_samples = FLAGS.num_examples_dev
     else:
-        raise ValueError('Invalid evaluation target: "{}"'.format(EVALUATION_TARGET))
+        raise ValueError('Invalid evaluation target: "{}"'.format(__EVALUATION_TARGET))
 
     with tf.Session(config=session_config) as sess:
         checkpoint = tf.train.get_checkpoint_state(FLAGS.train_dir)
@@ -96,8 +105,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
                                   mean_ed_batch, wer_batch))
 
                 except tf.errors.OutOfRangeError:
-                    print('WARN: Due to not allowing for smaller final batches, {} batches have not'
-                          ' been evaluated.'.format(num_iter - step))
+                    print('WARN: Due to not allowing for smaller final batches, '
+                          '{} batches have not been evaluated.'.format(num_iter - step))
                     break
 
             # Compute error rates.
@@ -105,8 +114,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
             mean_ed = mean_ed_sum / step
             wer = wer_sum / step
 
-            print('Summarizing averages:')
-            print('{:%Y-%m-%d %H:%M:%S}: loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
+            print('{:%Y-%m-%d %H:%M:%S}: Summarizing averages: '
+                  'loss={:.3f}; mean_edit_distance={:.3f}; WER={:.3f}'
                   .format(datetime.now(), avg_loss, mean_ed, wer))
 
             summary = tf.Summary()
@@ -139,7 +148,7 @@ def evaluate(eval_dir):
     with tf.Graph().as_default() as graph:
         # Get evaluation sequences and ground truth.
         with tf.device('/cpu:0'):
-            inputs = model.inputs(target=EVALUATION_TARGET)
+            inputs = model.inputs(target=__EVALUATION_TARGET)
             sequences, seq_length, labels, label_length, originals = inputs
 
         # Build a graph that computes the logits predictions from the inference model.
@@ -170,7 +179,7 @@ def main(argv=None):
 
     # Determine evaluation log directory.
     eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}'\
-        .format(FLAGS.train_dir, EVALUATION_TARGET)
+        .format(FLAGS.train_dir, __EVALUATION_TARGET)
 
     # Delete old evaluation data if requested.
     storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
