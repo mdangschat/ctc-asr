@@ -13,6 +13,14 @@ Listing of testruns and results.
 | `3d1r2d_local_3000u`  | `run_ds1_3000u`        | cosy16 |  8 | 80 Mel   | local        |  3000 |  20 | 3d1r2d | 34.556 | 0.102 | 0.290 | DS1 w/ global Mel normalization.       |
 
 
+## COSY (Full Dataset)
+| train_dir                 | Branch         | Server | BS | Features | Norm.  | Units | Ep. | Layout | Loss | MED | WER | What was tested? |
+|---------------------------|----------------|--------|---:|----------|--------|------:|----:|-------:|-----:|----:|----:|------------------|
+| `3d1r2d_global_mfcc_full` | `ds1runs_full` | cosy14 |  8 |  80 MFCC | global |  2048 |  20 | 3d1r2d |      |     |     |                  |
+| `3d2r2d_local_mfcc_full`  | `ds1runs_full` | cosy15 |  8 |  80 MFCC |  local |  2048 |  20 | 3d2r2d |      |     |     |                  |
+| `3d3r2d_local_mfcc_full`  | `ds1runs_full` | cosy16 |  8 |  80 MFCC |  local |  2048 |  20 | 3d3r2d |      |     |     |                  |
+
+
 ## GTX1080 (Reduced Dataset)
 *Server isn't able to run w/o crashing*
 
