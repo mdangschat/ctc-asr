@@ -8,10 +8,6 @@ Automatic Speech Recognition (ASR) system implementation inspired by Baidu's
 
 
 ## Installation (incomplete)
-```bash
-git clone https://vcs.zwuenf.org/mdangschat/speech.git
-```
-
 ### Install Required Libraries
 #### Arch Linux
 ```sh
@@ -22,23 +18,21 @@ pacaur -S tr sox
 pacaur -S python-tensorflow-opt-cuda tensorbaord
 ```
 
+```sh
+git clone https://vcs.zwuenf.org/mdangschat/speech.git
+cd speech
+pip install -r requirements.txt
+```
 
 #### Ubuntu 16.04
 ```sh
 sudo apt install python3-tk sox libsox-fmt-all
 ```
 
-
-## Prepare Datasets (deprecated)
 ```sh
-cd <project_root>/data/
-
-cat *_train.txt > train.txt
-cat *_text.txt > text.txt
-cat *_dev.txt > dev.txt
-
-# Alternatively, only use the desired datasets.
-cat libri_speech_train.txt tedlium_train.txt > train.txt
+git clone https://vcs.zwuenf.org/mdangschat/speech.git
+cd speech
+pip3 install -r requirements.txt
 ```
 
 
