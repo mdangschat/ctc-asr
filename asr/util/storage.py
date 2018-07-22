@@ -87,10 +87,10 @@ def maybe_delete_checkpoints(path, delete):
 
 
 def maybe_read_global_step(checkpoint_path):
-    """TODO documentation
+    """Tries to recover the global step value from saved checkpoints.
 
     Args:
-        checkpoint_path ():
+        checkpoint_path (str): Path to the checkpoint directory.
 
     Returns:
         int: Global step if one could be loaded, else -1.
