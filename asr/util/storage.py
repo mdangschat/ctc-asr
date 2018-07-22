@@ -3,8 +3,8 @@
 import os
 import time
 
-from git import Repo
 import tensorflow as tf
+from git import Repo
 
 
 def git_revision_hash():
@@ -84,3 +84,25 @@ def maybe_delete_checkpoints(path, delete):
     else:
         print('Starting a new training run in: {}'.format(path))
         tf.gfile.MakeDirs(path)
+
+
+def maybe_read_global_step(checkpoint_path):
+    """TODO documentation
+
+    Args:
+        checkpoint_path ():
+
+    Returns:
+        int: Global step if one could be loaded, else -1.
+    """
+    if not os.path.exists(checkpoint_path):
+        return -1
+
+    checkpoint = tf.train.get_checkpoint_state(checkpoint_path)
+
+    if checkpoint is None:
+        return -1
+
+    global_step = int(os.path.basename(checkpoint.model_checkpoint_path).split('-')[1])
+    print('DEBUG GS=', global_step)
+    return global_step

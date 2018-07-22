@@ -35,17 +35,19 @@ def train(epoch):
         epoch (int): Whether to use sorted inputs (`epoch=0`) or shuffled inputs for training.
             See SortaGrad approach as documented in `Deep Speech 2`_.
 
+    Returns:
+        bool: True if all training examples of the epoch are completed, else False.
+
     .. _`Deep Speech 2`:
         https://arxiv.org/abs/1512.02595
     """
     print('Starting epoch {}.'.format(epoch))
 
     with tf.Graph().as_default():
-        global_step = tf.train.get_or_create_global_step()
-
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
         # are performed on GPU.
         with tf.device('/cpu:0'):
+            global_step = tf.train.get_or_create_global_step()
             sequences, seq_length, labels, label_length, originals = model.inputs_train(epoch > 0)
 
         # Build the logits (prediction) graph.
@@ -144,22 +146,14 @@ def train(epoch):
         )
 
         with session:
-            current_global_step = tf.train.global_step(session, global_step)
+            while not session.should_stop():
+                try:
+                    _, current_global_step = session.run([train_op, global_step])
 
-            if (epoch > 0 and current_global_step >= __STEPS_EPOCH) or \
-               (epoch <= 0 and current_global_step < __STEPS_EPOCH):
-                while not session.should_stop():
-                    try:
-                        _, current_global_step = session.run([train_op, global_step])
-
-                    except tf.errors.OutOfRangeError:
-                        print('{:%Y-%m-%d %H:%M:%S}: All batches of epoch fed.'
-                              .format(datetime.now()))
-                        # Review if `tf.run()` isn't successful, global step isn't being updated.
-                        # current_global_step += 1
-                        break
-
-    return current_global_step + 1
+                except tf.errors.OutOfRangeError:
+                    print('{:%Y-%m-%d %H:%M:%S}: All batches of epoch fed.'
+                          .format(datetime.now()))
+                    break
 
 
 # noinspection PyUnusedLocal
@@ -178,29 +172,26 @@ def main(argv=None):
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
     print('Parameters: ', get_parameters())
 
+    # Calculate global_step and epoch.
+    current_global_step = storage.maybe_read_global_step(FLAGS.train_dir)
+    epoch = 0 if current_global_step < __STEPS_EPOCH else current_global_step // __STEPS_EPOCH
+    if current_global_step > 0 and epoch == 0:
+        print("""WARN: Resumed before completing the first epoch.
+              This can lead to compromised learning due to the status of the SortaGrad input queue
+              order isn't being stored in the checkpoint.""")
+
     # Main training loop.
-    epoch = 0
-    current_global_step = -1
     while current_global_step < __MAX_STEPS:
-        print('Starting training at epoch {}.'.format(epoch))
+        print('Starting training at epoch {}, global_step {}.'.format(epoch, current_global_step))
         # Start training. `epoch=0` indicates that the 1st epoch uses SortaGrad.
-        current_global_step = train(epoch=epoch)
+        run_validation = train(epoch)
 
         # Validate results after each epoch.
-        if current_global_step % __STEPS_EPOCH == 0:
-            print('Starting evaluation.', current_global_step)  # L8ER
-            evaluate(eval_dir)
-        elif epoch > 0:     # Review if this branch can be removed.
-            print('Starting evaluation (epoch).', current_global_step, epoch)   # L8ER
+        if run_validation:
+            print('Starting evaluation after the {} epoch.'.format(epoch))
             evaluate(eval_dir)
 
-        # Switch to shuffle if the first epoch has finished. See SortaGrad.
-        if current_global_step >= __STEPS_EPOCH:
-            epoch = current_global_step // __STEPS_EPOCH
-        else:
-            print("""WARN: Resumed before completing the first epoch.
-            This can lead to compromised learning due to the status of the SortaGrad input queue
-            order isn't being stored in the checkpoint.""")
+        epoch += 1
 
     print('Completed all epochs.')
 

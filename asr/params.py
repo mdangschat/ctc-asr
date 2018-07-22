@@ -11,7 +11,7 @@ from asr.labels import num_classes
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3d1c2d_global_full',
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 32,
                         "Number of samples within a batch.")
 
 
@@ -44,7 +44,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
 
 
 # CTC loss and decoder.
-tf.flags.DEFINE_integer('beam_width', 1024,
+tf.flags.DEFINE_integer('beam_width', 1,
                         "Beam width used in the CTC `beam_search_decoder`.")
 tf.flags.DEFINE_boolean('use_warp_ctc', False,
                         "Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.")
@@ -64,15 +64,15 @@ tf.flags.DEFINE_string('used_model', 'ds1',
                        ("Used inference model. Supported are 'ds1', and 'ds2'. "
                         "Also see `FLAGS.feature_drop_every_second_frame`."))
 
-tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
+tf.flags.DEFINE_multi_integer('conv_filters', [12, 12, 12],
                               "Number of filters for each convolutional layer.")
 
 tf.flags.DEFINE_integer('num_layers_rnn', 1,
                         "Number of stacked RNN cells.")
-tf.flags.DEFINE_integer('num_units_rnn', 2048,
+tf.flags.DEFINE_integer('num_units_rnn', 64,
                         "Number of hidden units in each of the RNN cells.")
 
-tf.flags.DEFINE_integer('num_units_dense', 2048,
+tf.flags.DEFINE_integer('num_units_dense', 64,
                         "Number of units per dense layer.")
 
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
