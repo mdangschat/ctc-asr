@@ -41,6 +41,7 @@ def train(epoch):
     .. _`Deep Speech 2`:
         https://arxiv.org/abs/1512.02595
     """
+    current_global_step = -1
     print('Starting epoch {}.'.format(epoch))
 
     with tf.Graph().as_default():
@@ -155,6 +156,9 @@ def train(epoch):
                           .format(datetime.now()))
                     break
 
+    tf.reset_default_graph()
+    return current_global_step
+
 
 # noinspection PyUnusedLocal
 def main(argv=None):
@@ -184,10 +188,10 @@ def main(argv=None):
     while current_global_step < __MAX_STEPS:
         print('Starting training at epoch {}, global_step {}.'.format(epoch, current_global_step))
         # Start training. `epoch=0` indicates that the 1st epoch uses SortaGrad.
-        run_validation = train(epoch)
+        current_global_step = train(epoch)
 
         # Validate results after each epoch.
-        if run_validation:
+        if current_global_step > 1:
             print('Starting evaluation after the {} epoch.'.format(epoch))
             evaluate(eval_dir)
 

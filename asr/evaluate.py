@@ -135,6 +135,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
         coord.request_stop()
         coord.join(threads, stop_grace_period_secs=120)
 
+    tf.reset_default_graph()
+
 
 def evaluate(eval_dir):
     """Evaluate the asr model.

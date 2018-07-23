@@ -104,5 +104,4 @@ def maybe_read_global_step(checkpoint_path):
         return -1
 
     global_step = int(os.path.basename(checkpoint.model_checkpoint_path).split('-')[1])
-    print('DEBUG GS=', global_step)
     return global_step
