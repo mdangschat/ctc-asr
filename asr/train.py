@@ -156,7 +156,6 @@ def train(epoch):
                           .format(datetime.now()))
                     break
 
-    tf.reset_default_graph()
     return current_global_step
 
 
