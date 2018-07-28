@@ -3,7 +3,7 @@ Listing of testruns and results.
 
 
 ## COSY (Reduced Dataset)
-| train_dir             | Branch                 | Server | BS | Features | Norm.        | Units | Ep. | Layout |   Loss |   MED |   WER | What was tested?                       |
+| train_dir             | Branch                 | Server | BS | Features | Norm.        | Units | Ep. | Layout | Loss   | MED   |   WER | What was tested?                       |
 |-----------------------|------------------------|--------|---:|----------|--------------|------:|----:|-------:|-------:|------:|------:|----------------------------------------|
 | `3d1r2d_global`       | `run_ds1_global`       | cosy14 |  8 | 80 Mel   | global       |  2048 |  20 | 3d1r2d | 30.594 | 0.113 | 0.319 | DS1 w/ global Mel normalization.       |
 | `3d1r2d_local`        | `run_ds1_local`        | cosy15 |  8 | 80 Mel   | local        |  2048 |  20 | 3d1r2d | 29.022 | 0.107 | 0.309 | DS1 w/ local Mel normalization.        |
@@ -14,11 +14,10 @@ Listing of testruns and results.
 
 
 ## COSY (Full Dataset)
-| train_dir                 | Branch         | Server | BS | Features | Norm.  | Units | Ep. | Layout | Loss | MED | WER | What was tested? |
-|---------------------------|----------------|--------|---:|----------|--------|------:|----:|-------:|-----:|----:|----:|------------------|
-| `3d1r2d_global_mfcc_full` | `ds1runs_full` | cosy14 |  8 |  80 MFCC | global |  2048 |  20 | 3d1r2d |      |     |     |                  |
-| `3d2r2d_local_mfcc_full`  | `ds1runs_full` | cosy15 |  8 |  80 MFCC |  local |  2048 |  20 | 3d2r2d |      |     |     |                  |
-| `3d3r2d_local_mfcc_full`  | `ds1runs_full` | cosy16 |  8 |  80 MFCC |  local |  2048 |  20 | 3d3r2d |      |     |     |                  |
+| train_dir                 | Server | BS | Features | Norm.  | Units | Ep. | Layout | Loss   | MED   | WER   | Notes          |
+|---------------------------|--------|---:|----------|--------|------:|----:|-------:|-------:|------:|------:|----------------|
+| `3d1r2d_global_mfcc_full` | cosy14 |  8 | 80 MFCC  | global |  2048 |  20 | 3d1r2d | 25.606 | 0.106 | 0.304 |                |
+| `3d2r2d_local_mfcc_full`  | cosy15 |  8 | 80 MFCC  | local  |  2048 |  16 | 3d2r2d | 18.988 | 0.074 | 0.211 | Stopped early. |
 
 
 ## GTX1080 (Reduced Dataset)
