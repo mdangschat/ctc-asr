@@ -103,5 +103,4 @@ def maybe_read_global_step(checkpoint_path):
     if checkpoint is None:
         return -1
 
-    global_step = int(os.path.basename(checkpoint.model_checkpoint_path).split('-')[1])
-    return global_step
+    return int(os.path.basename(checkpoint.model_checkpoint_path).split('-')[1])

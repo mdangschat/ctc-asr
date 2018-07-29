@@ -14,5 +14,5 @@ plt.plot(data[:, [0]], data[:, [1]], linestyle='-', linewidth=0.9, color='#1111E
 plt.grid(visible=True)
 plt.ylabel('WER')
 plt.xlabel('Step')
-plt.title('AIDS', visible=False)
+plt.title('TITLE', visible=False)
 plt.show()

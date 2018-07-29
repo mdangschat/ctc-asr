@@ -11,9 +11,10 @@ import numpy as np
 from tqdm import tqdm
 
 from asr.load_sample import load_sample
+from asr.params import BASE_PATH
 
 
-__DATASETS_PATH = '../datasets/speech_data'
+__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __FEATURE_TYPE = 'mel'
 
 
@@ -72,7 +73,7 @@ def __stat_calculator(line):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _test_txt_path = os.path.join('./data', 'train.txt')
+    _test_txt_path = os.path.join(BASE_PATH, 'data', 'train.txt')
 
     # Display dataset stats.
     calculate_dataset_stats(_test_txt_path)

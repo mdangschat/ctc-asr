@@ -4,7 +4,7 @@ import os
 
 import tensorflow as tf
 
-from asr.params import FLAGS, TF_FLOAT
+from asr.params import FLAGS, TF_FLOAT, BASE_PATH
 from asr.load_sample import load_sample, NUM_FEATURES
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
@@ -18,8 +18,7 @@ else:
 # WAV_PATHS = ['../datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV']
 WAV_PATHS = ['/tmp/examples/audio1_16.wav',
              '/tmp/examples/donald_mono_16.wav',
-             '/tmp/poop/gt.wav',
-             '/tmp/poop/youdontunderstandme.wav']
+             os.path.join(BASE_PATH, '../datasets/youdontunderstandme.wav')]
 
 
 def transcribe_once(logits_op, decoded_op, plaintext_op, feed_dict):

@@ -29,6 +29,7 @@ Generated data format:
 import os
 import re
 
+from asr.params import BASE_PATH
 from asr.util import storage
 from asr.dataset_util.tatoeba_loader import tatoeba_loader
 from asr.dataset_util.timit_loader import timit_loader
@@ -38,7 +39,7 @@ from asr.dataset_util.common_voice_loader import common_voice_loader
 
 
 # Dataset base path.
-DATASET_PATH = '../datasets/speech_data'
+DATASET_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 
 # Where to generate the .txt files, e.g. /home/user/../data/<target>.txt
 TXT_TARGET_PATH = './data/'

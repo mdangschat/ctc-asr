@@ -20,8 +20,9 @@ from matplotlib import pyplot as plt
 
 # noinspection PyUnresolvedReferences
 from asr.load_sample import load_sample, WIN_STEP
+from asr.params import BASE_PATH
 
-DATASETS_PATH = '../datasets/speech_data'
+DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 
 
 def display_sample_info(file_path, label=''):
@@ -187,7 +188,7 @@ def display_sample_info(file_path, label=''):
 
 
 if __name__ == '__main__':
-    _test_txt_path = os.path.join('./data', 'train.txt')
+    _test_txt_path = os.path.join(BASE_PATH, 'data', 'train.txt')
 
     # Display specific sample info's.
     with open(_test_txt_path, 'r') as f:
@@ -196,7 +197,7 @@ if __name__ == '__main__':
         # _line = _lines[37748]       # "The cat is on the roof"
         _line = _lines[375]
         _wav_path, txt = _line.split(' ', 1)
-        _wav_path = os.path.join('../datasets/speech_data', _wav_path)
+        _wav_path = os.path.join(DATASETS_PATH, _wav_path)
         _txt = txt.strip()
 
         display_sample_info(_wav_path, label=_txt)

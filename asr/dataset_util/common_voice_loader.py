@@ -9,9 +9,8 @@ from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
-from asr.params import BASE_PATH
 from asr.util.storage import delete_file_if_exists
-from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
 
 
 # Path to the Mozilla Common Voice dataset.

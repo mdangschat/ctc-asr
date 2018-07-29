@@ -141,7 +141,7 @@ def train(epoch):
             # Attach hooks to session.
             hooks=session_hooks,
             # Number of seconds given to threads to stop after close() has been called.
-            stop_grace_period_secs=30,
+            stop_grace_period_secs=60,
             # Attach session config.
             config=session_config
         )

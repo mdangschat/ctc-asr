@@ -8,19 +8,19 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from asr.params import FLAGS, TF_FLOAT
+from asr.params import FLAGS, TF_FLOAT, BASE_PATH
 import asr.labels as s_labels
 from asr.load_sample import load_sample, NUM_FEATURES
 
 
 # Path to train.txt file.
-TRAIN_TXT_PATH = './data/train.txt'
+TRAIN_TXT_PATH = os.path.join(BASE_PATH, 'data/train.txt')
 # Path to train.txt file.
-TEST_TXT_PATH = './data/test.txt'
+TEST_TXT_PATH = os.path.join(BASE_PATH, 'data/test.txt')
 # Path to dev.txt file.
-DEV_TXT_PATH = './data/dev.txt'
+DEV_TXT_PATH = os.path.join(BASE_PATH, 'data/dev.txt')
 # Path to dataset collection folder.
-DATASET_PATH = '../datasets/speech_data/'
+DATASET_PATH = os.path.join(BASE_PATH, '../datasets/speech_data/')
 
 
 def inputs_train(batch_size, shuffle=False):

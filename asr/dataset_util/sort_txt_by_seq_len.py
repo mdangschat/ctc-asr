@@ -11,9 +11,10 @@ from tqdm import tqdm
 from asr.util import storage
 from asr.load_sample import load_sample
 from asr.util.matplotlib_helper import pyplot_display
+from asr.params import BASE_PATH
 
 
-__DATASETS_PATH = '../datasets/speech_data'
+__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 
 
 def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
