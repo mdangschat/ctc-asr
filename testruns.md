@@ -43,7 +43,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 ### FB11-NX-T02; 2xV100 16GB
 | train_dir                    | BS | Input   | Norm. | Units | Ep | Layout | Loss | MED | WER | Notes                 |
 |------------------------------|---:|---------|-------|------:|---:|-------:|-----:|----:|----:|-----------------------|
-| `3c5r2d_mel_local_full_bs16` | 16 | 80 Mel  | local |  2048 | 11 | 3c5r2d |      |     |     | Stopped early.        |
+| `3c5r2d_mel_local_full_bs16` | 16 | 80 Mel  | local |  2048 |    | 3c5r2d |      |     |     |                       |
 
 
 
