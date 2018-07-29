@@ -85,14 +85,14 @@ def train(epoch):
             # Note: cuDNN RNNs do not support distributed saving of parameters.
             sharded=False,
             allow_empty=True,
-            max_to_keep=100,
+            max_to_keep=20,
             save_relative_paths=True
         )
 
         checkpoint_saver_hook = tf.train.CheckpointSaverHook(
             checkpoint_dir=FLAGS.train_dir,
             save_secs=None,
-            save_steps=FLAGS.log_frequency * 20,
+            save_steps=FLAGS.log_frequency * 40,
             saver=checkpoint_saver
         )
 
