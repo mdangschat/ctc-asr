@@ -20,7 +20,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 * dev: libri_speech
 
 
-### COSY (Full Dataset)
+### COSY
 | train_dir                      | Server | BS | Input   | Norm.        | Units | Ep | Layout | Loss   | MED   | WER   | Notes          |
 |--------------------------------|--------|---:|---------|--------------|------:|---:|-------:|-------:|------:|------:|----------------|
 | `3d1r2d_global_mfcc_full`      | cosy14 |  8 | 80 MFCC | global       |  2048 | 20 | 3d1r2d | 25.606 | 0.106 | 0.304 |                |
