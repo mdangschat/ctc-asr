@@ -36,7 +36,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 |-------------------------|---:|-------- |-------|------:|---:|-------:|-----:|----:|----:|-----------------------|
 | `3c3r2d_mel_local`      |  8 | 80 Mel  | local |  2048 | 11 | 3c3r2d |      |     |     | Stopped early.        |
 | `3c4r2d_mel_local_full` |  8 | 80 Mel  | local |  2048 |    | 3c4r2d |      |     |     |                       |
-| `3c7r2d_mel_local_full` |  8 | 80 Mel  | local |  2048 |    | 3c4r2d |      |     |     |                       |
+| `3c7r2d_mel_local_full` |  8 | 80 Mel  | local |  2048 |    | 3c7r2d |      |     |     |                       |
 
 
 ### FB11-NX-T02; 2xV100 16GB
