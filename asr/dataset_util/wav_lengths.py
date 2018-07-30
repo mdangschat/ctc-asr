@@ -18,12 +18,13 @@ from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 __DATASETS_PATH = '../datasets/speech_data'
 
 
-def calculate_dataset_stats(txt_path):
+def calculate_dataset_stats(txt_path, show_buckets=0):
     """Gather mean and standard deviation values. Averaged for every file in the
     training txt data file.
 
     Args:
         txt_path (str): Path to the `train.txt`.
+        show_buckets (int): Display additional bucketing markers if `show_buckets > 0`.
 
     Returns:
         Nothing.
@@ -63,10 +64,28 @@ def calculate_dataset_stats(txt_path):
         print('Loading stored dump from {}'.format(tmp_path))
         sample_lengths_sec = pickle.load(open(tmp_path, 'rb'))
 
+    # Add optional bucket markers.
+    buckets = _bucketing(show_buckets, sample_lengths_sec)
+
     # Plot histogram of WAV length distribution.
-    _plot_wav_lengths(sample_lengths_sec)
+    _plot_wav_lengths(sample_lengths_sec, buckets=buckets)
 
     print('Done.')
+
+
+def _bucketing(number_buckets, sample_lengths):
+    if number_buckets <= 0:
+        return None
+
+    number_examples = len(sample_lengths)
+    step = number_examples // number_buckets
+    sorted_lengths = sorted(sample_lengths)
+    buckets = [sorted_lengths[i] for i in range(0, len(sorted_lengths), step)]
+    # Make sure the last bucket aligns with the highest value.
+    if buckets[-1] != sorted_lengths[-1]:
+        buckets[-1] = sorted_lengths[-1]
+
+    return buckets
 
 
 def _stat_calculator(line):
@@ -93,18 +112,25 @@ def _stat_calculator(line):
 
 
 @pyplot_display
-def _plot_wav_lengths(plt, sample_lengths_sec):
+def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
     # Create figure.
     fig = plt.figure(figsize=(5.90, 2.30))
-    plt.hist(sample_lengths_sec, bins=75, facecolor='green', alpha=0.75)
-    #        edgecolor='black', linewidth=0.9)
+    plt.hist(sample_lengths_sec, bins=75, facecolor='green', alpha=0.75, histtype='bar')
+
+    if buckets is not None:
+        # plt.hist(buckets, bins=len(buckets), facecolor='red', alpha=0.75, stacked=False,
+        #          histtype='bar', edgecolor='black', linewidth=0.6)
+        for bucket in buckets:
+            plt.axvline(bucket, color='red', linewidth=0.5, linestyle='-')
+
     # plt.yticks(range(0, 60000, 10000))
     # plt.yscale('log')
     plt.title('Sample Length in Seconds', visible=False)
     plt.ylabel('Count', visible=True)
     plt.xlabel('Length (s)', visible=True)
+    display_grid = buckets is None
     plt.grid(b=True, which='major', axis='both', linestyle='dashed', linewidth=0.7, aa=False,
-             visible=True)
+             visible=display_grid)
     plt.ylim(ymin=0)
     plt.xlim(xmin=0)
 
@@ -119,4 +145,4 @@ if __name__ == '__main__':
     _txt_path = os.path.join('./data', 'dev.txt')
 
     # Display dataset stats.
-    calculate_dataset_stats(_txt_path)
+    calculate_dataset_stats(_txt_path, show_buckets=63)

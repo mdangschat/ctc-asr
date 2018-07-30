@@ -17,7 +17,7 @@ def pyplot_display(func):
     Returns:
         function: The wrapped function.
     """
-    def wrapper(*args):
+    def wrapper(*args, **kwargs):
         # Setup plot output based on if a display is available or not.
         display = 'DISPLAY' in os.environ or \
                   all(var in os.environ for var in ['PYCHARM_HOSTED', 'PYCHARM_MATPLOTLIB_PORT'])
@@ -27,7 +27,7 @@ def pyplot_display(func):
             matplotlib.use('Agg')
             from matplotlib import pyplot as plt
 
-        fig = func(plt, *args)  # Call wrapped function.
+        fig = func(plt, *args, **kwargs)  # Call wrapped function.
 
         # Display or save the plot.
         if display:
