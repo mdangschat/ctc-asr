@@ -9,6 +9,7 @@ from asr.util import tf_contrib, error_metrics
 import asr.s_input as s_input
 
 if FLAGS.use_warp_ctc:
+    # noinspection PyUnresolvedReferences
     import warpctc_tensorflow as warp_ctc
 
 
@@ -393,7 +394,9 @@ def train(_loss, global_step):
                                     FLAGS.steps_per_decay,
                                     FLAGS.learning_rate_decay_factor,
                                     staircase=True)
-    lr = tf.maximum(lr, 1e-6)   # Set the minimum learning rate.
+
+    # Set the minimum learning rate.
+    lr = tf.maximum(lr, FLAGS.minimum_lr)
 
     # Select a gradient optimizer.
     # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.99)
