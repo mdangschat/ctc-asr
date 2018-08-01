@@ -158,7 +158,7 @@ def create_cell(num_units, keep_prob=1.0):
     # cell = tf.nn.rnn_cell.GRUCell(num_units=num_units)
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/BasicRNNCell
-    cell = tf.nn.rnn_cell.BasicRNNCell(num_units=num_units)
+    cell = tf.nn.rnn_cell.BasicRNNCell(num_units=num_units, activation=tf.nn.tanh)
 
     return tf.nn.rnn_cell.DropoutWrapper(cell,
                                          input_keep_prob=keep_prob,

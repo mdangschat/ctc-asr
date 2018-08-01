@@ -9,9 +9,9 @@ from asr.labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c1r2d_mel_global_full',
+tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c5r2d_mfcc_local_bs16_full',
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
 
 
@@ -24,13 +24,13 @@ tf.flags.DEFINE_integer('num_threads', cpu_count(),
 
 
 # Learning Rate.
-tf.flags.DEFINE_integer('max_epochs', 20,
+tf.flags.DEFINE_integer('max_epochs', 15,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-4,
                       "Initial learning rate.")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
                       "Learning rate decay factor.")
-tf.flags.DEFINE_integer('steps_per_decay', 50000,
+tf.flags.DEFINE_integer('steps_per_decay', 20000,
                         "Number of steps after which learning rate decays.")
 tf.flags.DEFINE_float('minimum_lr', 1e-8,
                       "Minimum value the learning rate can decay to.")
@@ -69,7 +69,7 @@ tf.flags.DEFINE_string('used_model', 'ds2',
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 1,
+tf.flags.DEFINE_integer('num_layers_rnn', 5,
                         "Number of stacked RNN cells.")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         "Number of hidden units in each of the RNN cells.")
@@ -82,7 +82,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 
 
 # Input features.
-tf.flags.DEFINE_string('feature_type', 'mel',
+tf.flags.DEFINE_string('feature_type', 'mfcc',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
@@ -118,7 +118,7 @@ tf.flags.DEFINE_integer('random_seed', 0,
                         "TensorFlow random seed. Set to `0` to use the current timestamp instead.")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         "Whether to log device placement.")
-tf.flags.DEFINE_boolean('allow_vram_growth', True,
+tf.flags.DEFINE_boolean('allow_vram_growth', False,
                         "Allow TensorFlow to allocate VRAM as needed, as opposed to allocating the "
                         "whole VRAM at program start.")
 

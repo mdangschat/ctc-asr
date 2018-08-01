@@ -116,7 +116,7 @@ def inference_ds1(sequences, seq_length, training=True):
             conv_output = tfc.rnn.transpose_batch_time(dense3)
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
-            rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
+            rnn = tfc.cudnn_rnn.CudnnRNNTanh(num_layers=FLAGS.num_layers_rnn,
                                              num_units=FLAGS.num_units_rnn,
                                              input_mode='linear_input',
                                              direction='bidirectional',
@@ -201,7 +201,7 @@ def inference_ds2(sequences, training=True):
             conv_output = tfc.rnn.transpose_batch_time(conv_output)
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
-            rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
+            rnn = tfc.cudnn_rnn.CudnnRNNTanh(num_layers=FLAGS.num_layers_rnn,
                                              num_units=FLAGS.num_units_rnn,
                                              input_mode='linear_input',
                                              direction='bidirectional',
