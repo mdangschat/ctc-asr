@@ -80,7 +80,7 @@ def maybe_delete_checkpoints(path, delete):
         tf.gfile.DeleteRecursively(path)
         tf.gfile.MakeDirs(path)
     elif tf.gfile.Exists(path) and not delete:
-        print('Resuming training from: {}'.format(path))
+        print('Found old checkpoint data at: {}'.format(path))
     else:
         print('Starting a new training run in: {}'.format(path))
         tf.gfile.MakeDirs(path)
