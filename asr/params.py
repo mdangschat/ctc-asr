@@ -30,7 +30,7 @@ tf.flags.DEFINE_float('learning_rate', 1e-4,
                       "Initial learning rate.")
 tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
                       "Learning rate decay factor.")
-tf.flags.DEFINE_integer('steps_per_decay', 35000,
+tf.flags.DEFINE_integer('steps_per_decay', 45000,
                         "Number of steps after which learning rate decays.")
 tf.flags.DEFINE_float('minimum_lr', 1e-7,
                       "Minimum value the learning rate can decay to.")
