@@ -170,6 +170,9 @@ def main(argv=None):
     eval_dir = '{}_dev'.format(FLAGS.train_dir)
     storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
 
+    # Delete old test data if requested.
+    storage.maybe_delete_checkpoints('{}_test'.format(FLAGS.train_dir), FLAGS.delete)
+
     # Logging information's about the run.
     print('Version: {} Branch: {} Commit: {}'
           .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
