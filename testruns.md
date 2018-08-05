@@ -37,6 +37,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3c1r2d_mel_local_full` |  8 | 80 Mel  | local |  2048 | 20 | 3c4r2d | 25.43 | 0.083 | 0.2412 |                       |
 | `3c3r2d_mel_local`      |  8 | 80 Mel  | local |  2048 | 11 | 3c3r2d | 17.32 | 0.062 | 0.1762 | Stopped early.        |
 | `3c4r2d_mel_local_full` |  8 | 80 Mel  | local |  2048 |    | 3c4r2d |       |       |        |                       |
+| `3c5r2d_mel_local_full` |  8 | 80 Mel  | local |  2048 |    | 3c5r2d |       |       |        | LSTM cells.           |
 | `3c7r2d_mel_local_full` |  8 | 80 Mel  | local |  2048 |    | 3c7r2d |       |       |        |                       |
 
 
