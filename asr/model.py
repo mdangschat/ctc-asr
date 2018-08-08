@@ -202,6 +202,7 @@ def inference_ds2(sequences, training=True):
 
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnLSTM
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnGRU
             rnn = tfc.cudnn_rnn.CudnnLSTM(num_layers=FLAGS.num_layers_rnn,
                                           num_units=FLAGS.num_units_rnn,
                                           input_mode='linear_input',
