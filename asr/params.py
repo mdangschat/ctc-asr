@@ -9,9 +9,9 @@ from asr.labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c5r2d_mfcc_local_bs16_lstm',
+tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c1r2d_mel_local_full',
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 16,
+tf.flags.DEFINE_integer('batch_size', 8,
                         "Number of samples within a batch.")
 
 
@@ -28,11 +28,11 @@ tf.flags.DEFINE_integer('max_epochs', 20,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-4,
                       "Initial learning rate.")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 3/4,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 4/5,
                       "Learning rate decay factor.")
-tf.flags.DEFINE_integer('steps_per_decay', 45000,
+tf.flags.DEFINE_integer('steps_per_decay', 75000,
                         "Number of steps after which learning rate decays.")
-tf.flags.DEFINE_float('minimum_lr', 1e-7,
+tf.flags.DEFINE_float('minimum_lr', 1e-6,
                       "Minimum value the learning rate can decay to.")
 
 
@@ -69,7 +69,7 @@ tf.flags.DEFINE_string('used_model', 'ds2',
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 5,
+tf.flags.DEFINE_integer('num_layers_rnn', 1,
                         "Number of stacked RNN cells.")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         "Number of hidden units in each of the RNN cells.")
@@ -82,7 +82,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 
 
 # Input features.
-tf.flags.DEFINE_string('feature_type', 'mfcc',
+tf.flags.DEFINE_string('feature_type', 'mel',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
