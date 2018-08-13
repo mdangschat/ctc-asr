@@ -200,18 +200,18 @@ def inference_ds2(sequences, training=True):
             # cuDNN RNNs only support time major inputs.
             conv_output = tfc.rnn.transpose_batch_time(conv_output)
 
-            # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
+            # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNRelu
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnLSTM
             # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnGRU
-            rnn = tfc.cudnn_rnn.CudnnRNNRelu(num_layers=FLAGS.num_layers_rnn,
-                                             num_units=FLAGS.num_units_rnn,
-                                             input_mode='linear_input',
-                                             direction='bidirectional',
-                                             dropout=dropout_rate,
-                                             seed=FLAGS.random_seed,
-                                             dtype=TF_FLOAT,
-                                             kernel_initializer=None,   # Glorot Uniform Initializer
-                                             bias_initializer=None)     # Constant 0.0 Initializer
+            rnn = tfc.cudnn_rnn.CudnnLSTM(num_layers=FLAGS.num_layers_rnn,
+                                          num_units=FLAGS.num_units_rnn,
+                                          input_mode='linear_input',
+                                          direction='bidirectional',
+                                          dropout=dropout_rate,
+                                          seed=FLAGS.random_seed,
+                                          dtype=TF_FLOAT,
+                                          kernel_initializer=None,   # Glorot Uniform Initializer
+                                          bias_initializer=None)     # Constant 0.0 Initializer
 
             rnn_output, _ = rnn(conv_output)
             rnn_output = tfc.rnn.transpose_batch_time(rnn_output)
