@@ -30,26 +30,26 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3d1r2d_local_scalar_mel_full` | cosy16 |  8 | 80 Mel  | local scalar |  2048 | 15 | 3d1r2d | 31.669 | 0.132 | 0.373 | Stopped early. |
 | `3d1r2d_none_mel_full`         | cosy17 |  8 | 80 Mel  | none         |  2048 | 16 | 3d1r2d | 32.006 | 0.135 | 0.376 | Stopped early. |
 | `3c1r2d_mel_local_full`        | cosy17 |  8 | 80 Mel  | local        |  2048 |    | 3c1r2d |        |       |       | Stopped early  |
-| `3c1r2d_mel_localscalar_full`  | cosy14 |  8 | 80 Mel  | local scalar |  2048 |    | 3c1r2d | 23.579 | 0.090 | 0.256 | Stopped early. |
-| `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |    | 3c1r2d | 24.059 | 0.094 | 0.267 | Stopped early. |
-| `3c1r2d_mel_none_full`         | cosy16 |  8 | 80 Mel  | none         |  2048 |    | 3c1r2d | 26.979 | 0.106 | 0.292 | Stopped early. |
+| `3c1r2d_mel_localscalar_full`  | cosy14 |  8 | 80 Mel  | local scalar |  2048 |  9 | 3c1r2d | 23.579 | 0.090 | 0.256 | Stopped early. |
+| `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |  9 | 3c1r2d | 24.059 | 0.094 | 0.267 | Stopped early. |
+| `3c1r2d_mel_none_full`         | cosy16 |  8 | 80 Mel  | none         |  2048 |  9 | 3c1r2d | 26.979 | 0.106 | 0.292 | Stopped early. |
 
 
 ### FB02TIITs04; V100 32GB
-| train_dir                    | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                 |
-|------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|-----------------------|
-| `3c1r2d_mel_local_full`      |  8 | 80 Mel  | local |  2048 | 20 | 3c4r2d | 25.43 | 0.083 | 0.2412 |                       |
-| `3c3r2d_mel_local`           |  8 | 80 Mel  | local |  2048 | 11 | 3c3r2d | 17.32 | 0.062 | 0.1762 | Stopped early.        |
-| `3c4r2d_mel_local_full_lstm` |  8 | 80 Mel  | local |  2048 |    | 3c4r2d |       |       |        | LSTM cells.           |
-| `3c5r2d_mel_local_full`      |  8 | 80 Mel  | local |  2048 |  9 | 3c5r2d | 13.26 | 0.044 | 0.129  | LSTM cells.           |
+| train_dir                    | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                       |
+|------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|-----------------------------|
+| `3c1r2d_mel_local_full`      |  8 | 80 Mel  | local |  2048 | 20 | 3c4r2d | 25.43 | 0.083 | 0.2412 |                             |
+| `3c3r2d_mel_local`           |  8 | 80 Mel  | local |  2048 | 11 | 3c3r2d | 17.32 | 0.062 | 0.1762 | Stopped early.              |
+| `3c4r2d_mel_local_full_lstm` |  8 | 80 Mel  | local |  2048 |  5 | 3c4r2d | 11.849| 0.045 | 0.1264 | LSTM cells.                 |
+| `3c5r2d_mel_local_full`      |  8 | 80 Mel  | local |  2048 |  9 | 3c5r2d | 13.26 | 0.044 | 0.1292 | LSTM cells. Server crashed. |
 
 
 ### FB11-NX-T02; 2xV100 16GB
-| train_dir                     | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER   | Notes                 |
-|-------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|------:|-----------------------|
-| `3c5r2d_mel_local_full_bs16`  | 16 | 80 Mel  | local |  2048 | 10 | 3c5r2d | 14.02 | 0.057 | 0.158 | Stopped early.        |
-| `3c5r2d_mfcc_local_full_bs16` | 16 | 80 MFCC | local |  2048 | 17 | 3c5r2d | 19.63 | 0.081 | 0.221 | Tanh RNN.             |
-| `3c5r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 |    | 3c5r2d |       |       |       | ReLU RNN.             |
+| train_dir                     | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                 |
+|-------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|-----------------------|
+| `3c5r2d_mel_local_full_bs16`  | 16 | 80 Mel  | local |  2048 | 10 | 3c5r2d | 14.02 | 0.057 | 0.1583 | Stopped early.        |
+| `3c5r2d_mfcc_local_full_bs16` | 16 | 80 MFCC | local |  2048 | 17 | 3c5r2d | 19.63 | 0.081 | 0.2207 | Tanh RNN.             |
+| `3c4r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 | 16 | 3c4r2d | 20.45 | 0.081 | 0.2273 | ReLU RNN. HDD full.   |
 
 
 ### FB11-NX-T01; 1xV100 16GB
