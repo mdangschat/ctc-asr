@@ -30,9 +30,9 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3d1r2d_local_scalar_mel_full` | cosy16 |  8 | 80 Mel  | local scalar |  2048 | 15 | 3d1r2d | 31.669 | 0.132 | 0.373 | Stopped early. |
 | `3d1r2d_none_mel_full`         | cosy17 |  8 | 80 Mel  | none         |  2048 | 16 | 3d1r2d | 32.006 | 0.135 | 0.376 | Stopped early. |
 | `3c1r2d_mel_local_full`        | cosy17 |  8 | 80 Mel  | local        |  2048 |    | 3c1r2d |        |       |       | Stopped early  |
-| `3c1r2d_mel_localscalar_full`  | cosy14 |  8 | 80 Mel  | local scalar |  2048 |    | 3c1r2d |        |       |       | Stopped early. |
-| `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |    | 3c1r2d |        |       |       | Stopped early. |
-| `3c1r2d_mel_none_full`         | cosy16 |  8 | 80 Mel  | none         |  2048 |    | 3c1r2d |        |       |       | Stopped early. |
+| `3c1r2d_mel_localscalar_full`  | cosy14 |  8 | 80 Mel  | local scalar |  2048 |    | 3c1r2d | 23.579 | 0.090 | 0.256 | Stopped early. |
+| `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |    | 3c1r2d | 24.059 | 0.094 | 0.267 | Stopped early. |
+| `3c1r2d_mel_none_full`         | cosy16 |  8 | 80 Mel  | none         |  2048 |    | 3c1r2d | 26.979 | 0.106 | 0.292 | Stopped early. |
 
 
 ### FB02TIITs04; V100 32GB
