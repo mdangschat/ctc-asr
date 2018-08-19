@@ -46,13 +46,13 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 
 
 ### FB11-NX-T02; 2xV100 16GB
-| train_dir                     | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                    |
-|-------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|--------------------------|
-| `3c5r2d_mel_local_full_bs16`  | 16 | 80 Mel  | local |  2048 | 10 | 3c5r2d | 14.02 | 0.057 | 0.1583 | Stopped early.           |
-| `3c5r2d_mfcc_local_full_bs16` | 16 | 80 MFCC | local |  2048 | 17 | 3c5r2d | 19.63 | 0.081 | 0.2207 | Tanh RNN.                |
-| `3c4r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 | 16 | 3c4r2d | 20.45 | 0.081 | 0.2273 | ReLU RNN. HDD full.      |
-| `3c2r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 |    | 3c2r2d |       | 0.    | 0.     | ReLU RNN.                |
-
+| train_dir                     | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                      |
+|-------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|----------------------------|
+| `3c5r2d_mel_local_full_bs16`  | 16 | 80 Mel  | local |  2048 | 10 | 3c5r2d | 14.02 | 0.057 | 0.1583 | Stopped early.             |
+| `3c5r2d_mfcc_local_full_bs16` | 16 | 80 MFCC | local |  2048 | 17 | 3c5r2d | 19.63 | 0.081 | 0.2207 | Tanh RNN.                  |
+| `3c4r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 | 16 | 3c4r2d | 20.45 | 0.081 | 0.2273 | ReLU RNN. HDD full.        |
+| `3c2r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 |    | 3c2r2d |       | 0.    | 0.     | ReLU RNN.                  |
+| `3c4r2d_mel_local`            | 16 | 80 Mel  | local |  2048 |    | 3c4r2d |       | 0.    | 0.     | ReLU cells. For SortaGrad. |
 
 ### FB11-NX-T01; 1xV100 16GB
 | train_dir                      | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                     |
