@@ -82,7 +82,7 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 
 
 # Input features.
-tf.flags.DEFINE_string('feature_type', 'mel',
+tf.flags.DEFINE_string('feature_type', 'mfcc',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
