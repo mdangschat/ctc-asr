@@ -42,7 +42,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3c3r2d_mel_local`           |  8 | 80 Mel  | local |  2048 | 11 | 3c3r2d | 17.32 | 0.062 | 0.1762 | Stopped early.              |
 | `3c4r2d_mel_local_full_lstm` |  8 | 80 Mel  | local |  2048 |  5 | 3c4r2d | 11.849| 0.045 | 0.1264 | LSTM cells.                 |
 | `3c5r2d_mel_local_full`      |  8 | 80 Mel  | local |  2048 |  9 | 3c5r2d | 13.26 | 0.044 | 0.1292 | LSTM cells. Server crashed. |
-| `3c6r2d_mfcc_local`          | 16 | 80 MFCC | local |  2048 |    | 3c5r2d |       | 0.    | 0.     |                             |
+| `3c6r2d_mfcc_local_lstm`     | 16 | 80 MFCC | local |  2048 |    | 3c5r2d |       | 0.    | 0.     | LSTM cells.                 |
 
 
 ### FB11-NX-T02; 2xV100 16GB
@@ -55,8 +55,8 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 
 
 ### FB11-NX-T01; 1xV100 16GB
-| train_dir                     | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                     |
-|-------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|---------------------------|
-| `3c4r2d_mfcc_local_bs16_gru`  | 16 | 80 MFCC | local |  2048 | 10 | 3c4r2d | 16.78 | 0.067 | 0.1913 | GRU cells.                |
-| `3c3r2d_mel_local_bs16_tanh`  | 16 | 80 Mel  | local |  2048 | 15 | 3c3r2d | 17.72 | 0.072 | 0.2059 | ReLU cells, despite name. |
-| `3c3r2d_mel_local_full`       | 16 | 80 Mel  | local |  2048 |  9 | 3c3r2d |       | 0.    | 0.     | ReLU cells.               |
+| train_dir                      | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                     |
+|--------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|---------------------------|
+| `3c4r2d_mfcc_local_bs16_gru`   | 16 | 80 MFCC | local |  2048 | 10 | 3c4r2d | 16.78 | 0.067 | 0.1913 | GRU cells.                |
+| `3c3r2d_mel_local_bs16_tanh`   | 16 | 80 Mel  | local |  2048 | 15 | 3c3r2d | 17.72 | 0.072 | 0.2059 | ReLU cells, despite name. |
+| `3c4r2d_mel_local_nosortagrad` | 16 | 80 Mel  | local |  2048 |    | 3c4r2d |       | 0.    | 0.     | ReLU cells. No SortaGrad. |
