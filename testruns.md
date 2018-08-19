@@ -53,7 +53,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 
 
 ### FB11-NX-T01; 1xV100 16GB
-| train_dir                     | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER   | Notes                 |
-|-------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|------:|-----------------------|
-| `3c5r2d_mfcc_local_bs16_gru`  | 16 | 80 MFCC | local |  2048 | 10 | 3c5r2d | 16.78 | 0.067 | 0.191 | GRU cells.            |
-| `3c3r2d_mel_local_bs16_tanh`  | 16 | 80 Mel  | local |  2048 |    | 3c5r2d |       | 0.    | 0.    |                       |
+| train_dir                     | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                     |
+|-------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|---------------------------|
+| `3c4r2d_mfcc_local_bs16_gru`  | 16 | 80 MFCC | local |  2048 | 10 | 3c4r2d | 16.78 | 0.067 | 0.1913 | GRU cells.                |
+| `3c3r2d_mel_local_bs16_tanh`  | 16 | 80 Mel  | local |  2048 | 15 | 3c3r2d | 17.72 | 0.072 | 0.2059 | ReLU cells, despite name. |
