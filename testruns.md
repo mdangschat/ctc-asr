@@ -21,19 +21,19 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 
 
 ### COSY
-| train_dir                      | Server | BS | Input   | Norm.        | Units | Ep | Layout | Loss   | MED   | WER   | Notes          |
-|--------------------------------|--------|---:|---------|--------------|------:|---:|-------:|-------:|------:|------:|----------------|
-| `3d1r2d_global_mfcc_full`      | cosy14 |  8 | 80 MFCC | global       |  2048 | 20 | 3d1r2d | 25.606 | 0.106 | 0.304 |                |
-| `3d2r2d_local_mfcc_full`       | cosy15 |  8 | 80 MFCC | local        |  2048 | 16 | 3d2r2d | 18.988 | 0.074 | 0.211 | Stopped early. |
-| `3d1r2d_global_mel_full`       | cosy14 |  8 | 80 Mel  | global       |  2048 | 14 | 3d1r2d | 31.399 | 0.131 | 0.371 | Stopped early  |
-| `3d1r2d_local_mel_full`        | cosy15 |  8 | 80 Mel  | local        |  2048 | 15 | 3d1r2d | 29.520 | 0.125 | 0.354 | Stopped early. |
-| `3d1r2d_local_scalar_mel_full` | cosy16 |  8 | 80 Mel  | local scalar |  2048 | 15 | 3d1r2d | 31.669 | 0.132 | 0.373 | Stopped early. |
-| `3d1r2d_none_mel_full`         | cosy17 |  8 | 80 Mel  | none         |  2048 | 16 | 3d1r2d | 32.006 | 0.135 | 0.376 | Stopped early. |
-| `3d1r2d_none_mfcc_full`        | cosy14 |  8 | 80 MFCC | none         |  2048 |    | 3d1r2d |        | 0.    | 0.    | Stopped early. |
-| `3c1r2d_mel_local_full`        | cosy17 |  8 | 80 Mel  | local        |  2048 |    | 3c1r2d |        | 0.    | 0.    | Stopped early  |
-| `3c1r2d_mel_localscalar_full`  | cosy14 |  8 | 80 Mel  | local scalar |  2048 |  9 | 3c1r2d | 23.579 | 0.090 | 0.256 | Stopped early. |
-| `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |  9 | 3c1r2d | 24.059 | 0.094 | 0.267 | Stopped early. |
-| `3c1r2d_mel_none_full`         | cosy16 |  8 | 80 Mel  | none         |  2048 |  9 | 3c1r2d | 26.979 | 0.106 | 0.292 | Stopped early. |
+| train_dir                      | Server | BS | Input   | Norm.        | Units | Ep | Layout | Loss   | MED   | WER    | Notes         |
+|--------------------------------|--------|---:|---------|--------------|------:|---:|-------:|-------:|------:|-------:|---------------|
+| `3d1r2d_global_mfcc_full`      | cosy14 |  8 | 80 MFCC | global       |  2048 | 20 | 3d1r2d | 25.606 | 0.106 | 0.304  |               |
+| `3d2r2d_local_mfcc_full`       | cosy15 |  8 | 80 MFCC | local        |  2048 | 16 | 3d2r2d | 18.988 | 0.074 | 0.211  |               |
+| `3d1r2d_global_mel_full`       | cosy14 |  8 | 80 Mel  | global       |  2048 | 14 | 3d1r2d | 31.399 | 0.131 | 0.371  |               |
+| `3d1r2d_local_mel_full`        | cosy15 |  8 | 80 Mel  | local        |  2048 | 15 | 3d1r2d | 29.520 | 0.125 | 0.354  |               |
+| `3d1r2d_local_scalar_mel_full` | cosy16 |  8 | 80 Mel  | local scalar |  2048 | 15 | 3d1r2d | 31.669 | 0.132 | 0.373  |               |
+| `3d1r2d_none_mel_full`         | cosy17 |  8 | 80 Mel  | none         |  2048 | 16 | 3d1r2d | 32.006 | 0.135 | 0.376  |               |
+| `3d1r2d_none_mfcc_full`        | cosy14 |  8 | 80 MFCC | none         |  2048 |    | 3d1r2d |        | 0.    | 0.     |               |
+| `3c1r2d_mel_local_full`        | cosy17 |  8 | 80 Mel  | local        |  2048 |  8 | 3c1r2d | 22.695 | 0.091 | 0.2557 |               |
+| `3c1r2d_mel_localscalar_full`  | cosy14 |  8 | 80 Mel  | local scalar |  2048 |  9 | 3c1r2d | 23.579 | 0.090 | 0.2556 |               |
+| `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |  9 | 3c1r2d | 24.059 | 0.094 | 0.2674 |               |
+| `3c1r2d_mel_none_full`         | cosy16 |  8 | 80 Mel  | none         |  2048 |  9 | 3c1r2d | 26.979 | 0.106 | 0.2919 |               |
 
 
 ### FB02TIITs04; V100 32GB
