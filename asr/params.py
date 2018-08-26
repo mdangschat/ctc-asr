@@ -9,9 +9,9 @@ from asr.labels import num_classes
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c1r2d_mfcc_localscalar',
+tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c4r2d_mel_local',
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
 
 
@@ -69,7 +69,7 @@ tf.flags.DEFINE_string('used_model', 'ds2',
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 1,
+tf.flags.DEFINE_integer('num_layers_rnn', 4,
                         "Number of stacked RNN cells.")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         "Number of hidden units in each of the RNN cells.")
@@ -82,9 +82,9 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 
 
 # Input features.
-tf.flags.DEFINE_string('feature_type', 'mfcc',
+tf.flags.DEFINE_string('feature_type', 'mel',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
-tf.flags.DEFINE_string('feature_normalization', 'local_scalar',
+tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
                         "Supported are: 'none', 'global', 'local', and 'local_scalar'"))
 tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
