@@ -46,7 +46,8 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3c3r2d_mel_local`           |  8 | 80 Mel  | local |  2048 | 11 | 3c3r2d | 17.32 | 0.062 | 0.1762 | Stopped early.              |
 | `3c4r2d_mel_local_full_lstm` |  8 | 80 Mel  | local |  2048 |  5 | 3c4r2d | 11.849| 0.045 | 0.1264 | LSTM cells.                 |
 | `3c5r2d_mel_local_full`      |  8 | 80 Mel  | local |  2048 |  9 | 3c5r2d | 13.26 | 0.044 | 0.1292 | LSTM cells. Server crashed. |
-| `3c5r2d_mfcc_local_lstm_2`   | 16 | 80 MFCC | local |  2048 |    | 3c5r2d | 12.06 | 0.046 | 0.1271 | LSTM cells.                 |
+| `3c5r2d_mfcc_local_lstm_2`   | 16 | 80 MFCC | local |  2048 |  5 | 3c5r2d | 12.06 | 0.046 | 0.1271 | LSTM cells.                 |
+| `3c4r2d_mel_local`           | 16 | 80 MFCC | local |  2048 |    | 3c5r2d |   .   | 0.    | 0.     | ReLU RNN.                   |
 
 
 ### FB11-NX-T02; 2xV100 16GB
