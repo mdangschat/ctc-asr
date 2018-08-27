@@ -114,7 +114,7 @@ def _stat_calculator(line):
 @pyplot_display
 def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
     # Create figure.
-    fig = plt.figure(figsize=(5.90, 2.30))
+    fig = plt.figure(figsize=(6.30, 2.30))
     plt.hist(sample_lengths_sec, bins=75, facecolor='green', alpha=0.75, histtype='bar')
 
     if buckets is not None:
@@ -123,8 +123,15 @@ def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
         for bucket in buckets:
             plt.axvline(bucket, color='red', linewidth=0.5, linestyle='-')
 
+    # Y axis ticks
     # plt.yticks(range(0, 60000, 10000))
     # plt.yscale('log')
+    ax = plt.gca()
+    import matplotlib
+    ax.get_yaxis().set_major_formatter(
+        matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), '8'))
+    )
+
     plt.title('Sample Length in Seconds', visible=False)
     plt.ylabel('Count', visible=True)
     plt.xlabel('Length (s)', visible=True)
@@ -142,7 +149,7 @@ def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _txt_path = os.path.join('./data', 'train.txt')
+    _txt_path = os.path.join('./data', 'test.txt')
 
     # Display dataset stats.
-    calculate_dataset_stats(_txt_path, show_buckets=63)
+    calculate_dataset_stats(_txt_path, show_buckets=0)
