@@ -160,7 +160,7 @@ def display_sample_info(file_path, label=''):
     plt.subplot(1, 1, 1)
     display.waveplot(y, sr=sr)
 
-    plt.figure(figsize=(6, 4))
+    fig = plt.figure(figsize=(6, 4))
     plt.subplot(2, 1, 2)
     display.specshow(__mfcc, sr=__sr, x_axis='time', y_axis='mel', hop_length=win_step * __sr)
     # plt.set_cmap('magma')
@@ -184,6 +184,7 @@ def display_sample_info(file_path, label=''):
     plt.title('Mel Spectrogram', visible=False)
 
     plt.tight_layout()
+    fig.savefig('/tmp/mel-mfcc-plot-we-did-it.pdf', bbox_inches='tight')
     plt.show()
 
 
