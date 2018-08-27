@@ -142,7 +142,7 @@ def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _txt_path = os.path.join('./data', 'dev.txt')
+    _txt_path = os.path.join('./data', 'train.txt')
 
     # Display dataset stats.
     calculate_dataset_stats(_txt_path, show_buckets=63)
