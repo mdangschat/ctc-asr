@@ -30,7 +30,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3d1r2d_local_scalar_mel_full` | cosy16 |  8 | 80 Mel  | local scalar |  2048 | 15 | 3d1r2d | 31.669 | 0.132 | 0.373  |               |
 | `3d1r2d_none_mel_full`         | cosy17 |  8 | 80 Mel  | none         |  2048 | 16 | 3d1r2d | 32.006 | 0.135 | 0.376  |               |
 | `3d1r2d_none_mfcc_full`        | cosy14 |  8 | 80 MFCC | none         |  2048 |  8 | 3d1r2d | 23.865 | 0.096 | 0.273  |               |
-| `3d1r2d_none_mel_full_2`       | cosy14 |  8 | 80 Mel  | none         |  2048 |  8 | 3d1r2d |   .    | 0.    | 0.     | For R. above. |
+| `3d1r2d_none_mel_full_2`       | cosy14 |  8 | 80 Mel  | none         |  2048 |  8 | 3d1r2d | 28.915 | 0.121 | 0.335  | For R. above. |
 | `3c1r2d_mel_local_full`        | cosy17 |  8 | 80 Mel  | local        |  2048 |  8 | 3c1r2d | 22.695 | 0.091 | 0.2557 |               |
 | `3c1r2d_mel_localscalar_full`  | cosy14 |  8 | 80 Mel  | local scalar |  2048 |  9 | 3c1r2d | 23.579 | 0.090 | 0.2556 |               |
 | `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |  9 | 3c1r2d | 24.059 | 0.094 | 0.2674 |               |
