@@ -36,7 +36,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3c1r2d_mel_global_full`       | cosy15 |  8 | 80 Mel  | global       |  2048 |  9 | 3c1r2d | 24.059 | 0.094 | 0.2674 |               |
 | `3c1r2d_mel_none_full`         | cosy16 |  8 | 80 Mel  | none         |  2048 |  9 | 3c1r2d | 26.979 | 0.106 | 0.2919 |               |
 | `3c1r2d_mfcc_local`            | cosy15 |  8 | 80 MFCC | local        |  2048 | 10 | 3c1r2d | 25.261 | 0.098 | 0.2724 |               |
-| `3c1r2d_mfcc_localscalar`      | cosy16 |  8 | 80 MFCC | local scalar |  2048 |    | 3c1r2d | 28.494 | 0.118 | 0.3235 |               |
+| `3c1r2d_mfcc_localscalar`      | cosy16 |  8 | 80 MFCC | local scalar |  2048 | 12 | 3c1r2d | 28.494 | 0.118 | 0.3235 |               |
 
 
 ### FB02TIITs04; V100 32GB
@@ -81,8 +81,12 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | 1   | 0.290 | 0.709 |
 | 2   | 0.301 | 0.727 |
 | 3   | 0.300 | 0.724 |
-| 4   | 0.    | 0.    |
-| 5   | 0.    | 0.    |
-| 6   | 0.    | 0.    |
+| 4   | 0.297 | 0.724 |
+| 5   | 0.290 | 0.703 |
+| 6   | 0.301 | 0.721 |
+| 7   | 0.    | 0.    |
+| 8   | 0.    | 0.    |
+| 9   | 0.    | 0.    |
+| 10  | 0.    | 0.    |
 
 
