@@ -58,6 +58,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3c4r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 | 16 | 3c4r2d | 20.45 | 0.081 | 0.2273 | ReLU RNN. HDD full.        |
 | `3c2r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 |    | 3c2r2d |       | 0.    | 0.     | ReLU RNN.                  |
 | `3c4r2d_mel_local`            | 16 | 80 Mel  | local |  2048 |    | 3c4r2d |       | 0.    | 0.     | ReLU cells. For SortaGrad. |
+| `3c2r2d_mel_local`            | 16 | 80 Mel  | local |  2048 | 12 | 3c2r2d | 18.19 | 0.076 | 0.215  | ReLU cells.               |
 
 
 ### FB11-NX-T01; 1xV100 16GB
@@ -71,7 +72,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 ## Missing Runs
 | train_dir                      | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                     |
 |--------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|---------------------------|
-| `3c2r2d_mel_local`             | 16 | 80 Mel  | local |  2048 |    | 3c2r2d |   .   | 0.    | 0.     | ReLU cells.               |
+
 
 
 ### Confidence Intervall Runs
