@@ -94,3 +94,7 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | 13  | 0.292 | 0.710 |
 | 14  | 0.294 | 0.718 |
 | 15  | 0.295 | 0.708 |
+| 16  | 0.299 | 0.714 |
+| 17  | 0.296 | 0.722 |
+| 18  | 0.296 | 0.712 |
+| 19  | 0.290 | 0.706 |
