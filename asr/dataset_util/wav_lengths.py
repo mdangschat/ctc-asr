@@ -124,7 +124,7 @@ def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
             plt.axvline(bucket, color='red', linewidth=0.5, linestyle='-')
 
     # Y axis ticks
-    plt.yticks(range(0, 60000, 10000))
+    # plt.yticks(range(0, 60000, 10000))
     # plt.yscale('log')
     ax = plt.gca()
     import matplotlib
@@ -144,14 +144,14 @@ def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
     # Finish plot by tightening everything up.
     plt.tight_layout()
     # This line messes up the pyCharm preview image.
-    fig.savefig('/tmp/length-distribution-train.pdf', bbox_inches='tight')
+    fig.savefig('/tmp/length-distribution-test.pdf', bbox_inches='tight')
 
     return fig
 
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _txt_path = os.path.join('./data', 'train.txt')
+    _txt_path = os.path.join('./data', 'test.txt')
 
     # Display dataset stats.
     calculate_dataset_stats(_txt_path, show_buckets=0)

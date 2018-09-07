@@ -1,5 +1,6 @@
 import os
 import matplotlib
+from matplotlib import rc
 
 
 def pyplot_display(func):
@@ -18,6 +19,12 @@ def pyplot_display(func):
         function: The wrapped function.
     """
     def wrapper(*args, **kwargs):
+        rc('font', **{'family': 'serif',
+                      'serif': ['DejaVu Sans'],
+                      'size': 13
+                      })
+        rc('text', usetex=True)
+
         # Setup plot output based on if a display is available or not.
         display = 'DISPLAY' in os.environ or \
                   all(var in os.environ for var in ['PYCHARM_HOSTED', 'PYCHARM_MATPLOTLIB_PORT'])
