@@ -144,14 +144,14 @@ def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
     # Finish plot by tightening everything up.
     plt.tight_layout()
     # This line messes up the pyCharm preview image.
-    fig.savefig('/tmp/length-distribution-test.pdf', bbox_inches='tight')
+    fig.savefig('/tmp/length-distribution-tedlium.pdf', bbox_inches='tight')
 
     return fig
 
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _txt_path = os.path.join('./data', 'test.txt')
+    _txt_path = os.path.join('./data', 'tedlium_train.txt')
 
     # Display dataset stats.
     calculate_dataset_stats(_txt_path, show_buckets=0)

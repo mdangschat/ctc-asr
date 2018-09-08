@@ -17,10 +17,18 @@ import python_speech_features as psf
 import librosa as rosa
 from librosa import display
 from matplotlib import pyplot as plt
+from matplotlib import rc
 
 # noinspection PyUnresolvedReferences
 from asr.load_sample import load_sample, WIN_STEP
 from asr.params import BASE_PATH
+
+
+rc('font', **{'family': 'serif',
+              'serif': ['DejaVu Sans'],
+              'size': 12
+              })
+rc('text', usetex=True)
 
 DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 
@@ -161,7 +169,6 @@ def display_sample_info(file_path, label=''):
     display.waveplot(y, sr=sr)
 
     fig = plt.figure(figsize=(6, 4))
-    plt.subplot(2, 1, 2)
     display.specshow(__mfcc, sr=__sr, x_axis='time', y_axis='mel', hop_length=win_step * __sr)
     # plt.set_cmap('magma')
     # plt.xticks(rotation=295)

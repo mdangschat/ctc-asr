@@ -21,7 +21,7 @@ def pyplot_display(func):
     def wrapper(*args, **kwargs):
         rc('font', **{'family': 'serif',
                       'serif': ['DejaVu Sans'],
-                      'size': 13
+                      'size': 12
                       })
         rc('text', usetex=True)
 
