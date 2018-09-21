@@ -58,8 +58,8 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3c5r2d_mfcc_local_full_bs16` | 16 | 80 MFCC | local |  2048 | 17 | 3c5r2d | 19.63 | 0.081 | 0.2207 | Tanh RNN.                  |
 | `3c4r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 | 16 | 3c4r2d | 20.45 | 0.081 | 0.2273 | ReLU RNN. HDD full.        |
 | `3c4r2d_mfcc_local_bs16_relu` | 16 | 80 MFCC | local |  2048 | 15 | 3c4r2d | 20.28 | 0.082 | 0.230  | ReLU RNN.                  |
-| `3c4r2d_mel_local`            | 16 | 80 Mel  | local |  2048 |    | 3c4r2d |       | 0.    | 0.     | ReLU cells. For SortaGrad. |
-| `3c2r2d_mel_local`            | 16 | 80 Mel  | local |  2048 | 12 | 3c2r2d | 18.19 | 0.076 | 0.215  | ReLU cells.               |
+| `3c4r2d_mel_local`            | 16 | 80 Mel  | local |  2048 |  9 | 3c4r2d | 17.42 | 0.068 | 0.194  | ReLU cells. For SortaGrad. |
+| `3c2r2d_mel_local`            | 16 | 80 Mel  | local |  2048 | 12 | 3c2r2d | 18.19 | 0.076 | 0.215  | ReLU cells.                |
 
 
 ### FB11-NX-T01; 1xV100 16GB
