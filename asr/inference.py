@@ -16,9 +16,7 @@ else:
 
 # File to transcribe.
 # WAV_PATHS = ['../datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV']
-WAV_PATHS = ['/tmp/examples/audio1_16.wav',
-             '/tmp/examples/donald_mono_16.wav',
-             os.path.join(BASE_PATH, '../datasets/youdontunderstandme.wav')]
+WAV_PATHS = [os.path.join(BASE_PATH, '../datasets/myaudiocorpus/idontunderstandawordyoujustsaid.wav')]
 
 
 def transcribe_once(logits_op, decoded_op, plaintext_op, feed_dict):
@@ -102,7 +100,7 @@ def transcribe(wav_file):
                                          shape=[FLAGS.batch_size, None, NUM_FEATURES])
 
             seq_length = [seq_length] * FLAGS.batch_size
-            seq_length_ph = tf.placeholder(dtype=tf.int32, shape=[FLAGS.batch_size, 1])
+            seq_length_ph = tf.placeholder(dtype=tf.int32, shape=[FLAGS.batch_size, ])
 
             feed_dict = {
                 sequence_ph: sequence,
