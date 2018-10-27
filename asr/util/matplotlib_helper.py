@@ -19,11 +19,11 @@ def pyplot_display(func):
         function: The wrapped function.
     """
     def wrapper(*args, **kwargs):
-        rc('font', **{'family': 'serif',
+        rc('font', **{'family': 'monospace',
                       'serif': ['DejaVu Sans'],
                       'size': 12
                       })
-        rc('text', usetex=True)
+        # rc('text', usetex=True)
 
         # Setup plot output based on if a display is available or not.
         display = 'DISPLAY' in os.environ or \
