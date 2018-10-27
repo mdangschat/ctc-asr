@@ -14,9 +14,9 @@ language model.
 ## Contents
 * [Installation](#installation)
   * [Arch Linux](#arch-linux)
-  * [Ubuntu](#ubuntu-1604)
+  * [Ubuntu](#ubuntu)
+* [Configuration](#configuration)
 * [Datasets](#datasets)
-* [Configutation](#configuration)
 * [Training](#training)
 * [Evaluation](#evaluation)
 * [License](#license)
@@ -27,30 +27,31 @@ The system was tested on Arch Linux and Ubuntu 16.04, with Python version 3.5+ a
 of [TensorFlow](https://www.tensorflow.org/). It is highly recommended to use TensorFlow with GPU
 support for training.
 
+
+### Arch Linux
+```sh
+# Install dependencies.
+pacman -S tr sox python-tensorflow-opt-cuda tensorbaord
+
+# Clone reposetory and install Python depdendencies.
+git clone <URL>
+cd speech
+pip install -r requirements.txt
+```
+
+### Ubuntu
 Be aware that the [requirements.txt](requirements.txt) lists `tensorflow` as dependency, if you
 install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it and 
 install `tensorflow-gpu` manually.
 Based on my experience it is worth the effort to 
 [build TensorFlow from source](https://www.tensorflow.org/install/source).
 
-
-### Arch Linux
 ```sh
-# Install dependencies
-pacman -S tr sox python-tensorflow-opt-cuda tensorbaord
-
-# Clone reposetory and install Python depdendencies
-git clone https://vcs.zwuenf.org/mdangschat/speech.git
-cd speech
-pip install -r requirements.txt
-```
-
-### Ubuntu 16.04
-```sh
+# Install dependencies.
 sudo apt install python3-tk sox libsox-fmt-all
 
-# Clone reposetory and install Python depdendencies
-git clone https://vcs.zwuenf.org/mdangschat/speech.git
+# Clone reposetory and install Python depdendencies. Don't forget tensorflow-gpu.
+git clone <URL>
 cd speech
 pip3 install -r requirements.txt
 ```
@@ -110,7 +111,7 @@ python setup.py install
 python setup.py test
 ```
 
-Reference [Installing TensorFlow from Sources](https://www.tensorflow.org/install/install_sources) 
+Reference [installing TensorFlow from Sources](https://www.tensorflow.org/install/install_sources) 
 and 
 [TensorFlow binding for WarpCTC](https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding) 
 for further information.
@@ -119,6 +120,22 @@ for further information.
 ## Configuration
 The network architecture and training parameters can be configured by adding the appropriate flags
 or by directly editing the [params.py](asr/params.py) configuration file.
+
+
+## Datasets
+The following datasets were used for training and are listed in the `data` directory, however, the
+individual datasets are not part of the repository and have to be acquired by each user.
+
+* [Mozilla Common Voice](https://voice.mozilla.org/en/new) (v1)
+* [LibriSpeech ASR Corpus](http://www.openslr.org/12/)
+* [Tatoeba](https://tatoeba.org/eng/)
+* [TED-Lium](http://www.openslr.org/19/) (v2)
+* [TIMIT](https://catalog.ldc.upenn.edu/LDC93S1)
+
+The test dataset consists of all clean training subsets from those datasets.
+Only the LibriSpeech clean dev set is used as the validation/development set and the LibriSpeech
+and Common Voice clean test sets are used as testing dataset. 
+The ASR system works on 16 kHz mono `.wav` files.
 
 
 ## Training
