@@ -1,7 +1,6 @@
 """Utility and helper methods for TensorFlow speech learning."""
 
 import time
-
 from datetime import datetime
 import tensorflow as tf
 

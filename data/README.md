@@ -1,7 +1,4 @@
 # Dataset Information
-
-
-## General Information
 `train.txt` is sorted by feature sequence length in ascending order.
 `dev.txt` and `test.txt` are unsorted.
 
@@ -11,14 +8,14 @@ Tedlium samples with labels shorter than 5 words have been removed.
 
 ### Used Datasets
 * [LibriSpeech ASR Corpus](http://openslr.org/12)
-* [TED-LIUM v2](http://www.openslr.org/19/)
 * [Mozilla Common Voice](https://voice.mozilla.org/en)
-* [TIMIT](https://catalog.ldc.upenn.edu/ldc93s1)
 * [Tatoeba](https://tatoeba.org/eng/downloads)
+* [TED-LIUM v2](http://www.openslr.org/19/)
+* [TIMIT](https://catalog.ldc.upenn.edu/ldc93s1)
 
 
 ### `train.txt` 906+ Hours
-Examples shorter than 0.7s and longer than 17.0s have been removed.
+Examples shorter than 0.7 and longer than 17.0 seconds have been removed.
 * `libri_speech_train.txt`
 * `timit_train.txt`
 * `tedlium_train.txt`
@@ -55,6 +52,4 @@ Character based statistics:
 	max_label_length = 422 characters
 	Most common characters: [(' ', 8341279), ('e', 4631650), ('t', 3712085), ('o', 3082222), ('a', 2973836), ('i', 2629625), ('n', 2542519), ('s', 2332114), ('h', 2266656), ('r', 2067363), ('d', 1575679), ('l', 1504091), ('u', 1098686), ('m', 1047460), ('w', 928518), ('c', 900106), ('y', 856603), ('g', 783085), ('f', 764710), ('p', 633259), ('b', 563912), ('v', 377197), ('k', 342523), ('x', 56864), ('j', 54972), ('q', 32031), ('z', 23686)]
 	Most common characters: [' ', 'e', 't', 'o', 'a', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'g', 'f', 'p', 'b', 'v', 'k', 'x', 'j', 'q', 'z']
-
-Process finished with exit code 0
 ```

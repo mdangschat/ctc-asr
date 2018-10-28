@@ -31,7 +31,7 @@ support for training.
 ### Arch Linux
 ```sh
 # Install dependencies.
-pacman -S tr sox python-tensorflow-opt-cuda tensorbaord
+pacman -S sox python-tensorflow-opt-cuda tensorbaord
 
 # Clone reposetory and install Python depdendencies.
 git clone <URL>

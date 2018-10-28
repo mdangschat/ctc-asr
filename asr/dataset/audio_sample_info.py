@@ -16,8 +16,8 @@ from scipy.io import wavfile
 import python_speech_features as psf
 import librosa as rosa
 from librosa import display
-from matplotlib import pyplot as plt
 from matplotlib import rc
+from matplotlib import pyplot as plt
 
 # noinspection PyUnresolvedReferences
 from asr.load_sample import load_sample, WIN_STEP
@@ -63,10 +63,13 @@ def display_sample_info(file_path, label=''):
     # Create info string.
     num_samples = y.shape[0]
     duration = rosa.get_duration(y=y, sr=sr)
-    info_str = 'Label: {}\nPath: {}\nDuration={:.3f}s with {:,d} Samples\n' \
-               'Sampling Rate={:,d} Hz\nMin, Max=[{:.2f}, {:.2f}]'
-    info_str = info_str.format(label, file_path, duration, num_samples, sr, np.min(y), np.max(y))
+    info_str_format = 'Label: {}\nPath: {}\nDuration={:.3f}s with {:,d} Samples\n' \
+                      'Sampling Rate={:,d} Hz\nMin, Max=[{:.2f}, {:.2f}]'
+    info_str = info_str_format.format(label, file_path, duration, num_samples, sr,
+                                      np.min(y), np.max(y))
     print(info_str)
+    # Escape some LaTeX special characters
+    info_str_tex = info_str.replace('_', '\\_')
 
     plt.figure(figsize=(10, 7))
     plt.subplot(3, 1, 1)
@@ -83,7 +86,7 @@ def display_sample_info(file_path, label=''):
     # Add file information.
     plt.subplot(3, 1, 3)
     plt.axis('off')
-    plt.text(0.0, 1.0, info_str, color='black', verticalalignment='top')
+    plt.text(0.0, 1.0, info_str_tex, color='black', verticalalignment='top')
     plt.tight_layout()
 
     # Calculating MEL spectrogram and MFCC.
@@ -137,11 +140,11 @@ def display_sample_info(file_path, label=''):
     plt.colorbar(format='%+2.0f dB')
     plt.title('Mel spectrogram')
 
-    # Import project used features (python_speech_features).
+    # TODO Import project used features (python_speech_features).
     # norm_features = 'none'
     # mfcc = load_sample(file_path, feature_type='mfcc', feature_normalization=norm_features)[0]
     # mfcc = np.swapaxes(mfcc, 0, 1)
-
+    #
     # mel = load_sample(file_path, feature_type='mel', feature_normalization=norm_features)[0]
     # mel = np.swapaxes(mel, 0, 1)
 
@@ -165,10 +168,10 @@ def display_sample_info(file_path, label=''):
     __mel = np.swapaxes(__mel, 0, 1)
 
     plt.figure(figsize=(5.2, 1.6))
-    plt.subplot(1, 1, 1)
     display.waveplot(y, sr=sr)
 
     fig = plt.figure(figsize=(6, 4))
+    plt.subplot(2, 1, 2)
     display.specshow(__mfcc, sr=__sr, x_axis='time', y_axis='mel', hop_length=win_step * __sr)
     # plt.set_cmap('magma')
     # plt.xticks(rotation=295)

@@ -1,8 +1,8 @@
 """Collection of hyper parameters, network layout, and reporting options."""
 
-from os import path
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
+from os import path
 from multiprocessing import cpu_count
 
 from asr.labels import num_classes

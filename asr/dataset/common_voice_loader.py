@@ -14,11 +14,13 @@ from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
 
 
 # Path to the Mozilla Common Voice dataset.
+__COMMON_VOICE_URL = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __COMMON_VOICE_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'common_voice/cv_corpus_v1'))
 
-# Define valid accents. Review if '' should be accepted as well.
-__VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand']
+# Define valid accents.
+__VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand', 'ireland',
+                   'scotland', 'wales', '']
 
 
 def common_voice_loader(target):

@@ -1,4 +1,4 @@
-"""Methods the calculate error metrics."""
+"""Methods the calculate cost metrics."""
 
 import numpy as np
 

@@ -42,8 +42,8 @@ def _plot_word_stats(labels):
                   np.min(sentence_length),
                   np.max(sentence_length)))
     print('\tMost common words: ', common_words[: 10])
-    print('\t{} words occurred only 1 time; {} words occurred only 2 times; '
-          '{} words occurred only 5 times; {} words occurred only 10 times.'
+    print('\t{} words occurred only 1 time; {:,d} words occurred only 2 times; '
+          '{:,d} words occurred only 5 times; {:,d} words occurred only 10 times.'
           .format(len(words_only_1), len(words_only_2), len(words_only_5), len(words_only_10)))
 
     # ############## Character based stats #####################

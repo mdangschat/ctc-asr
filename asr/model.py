@@ -5,7 +5,7 @@ import tensorflow as tf
 import tensorflow.contrib as tfc
 
 from asr.params import FLAGS, TF_FLOAT
-from asr.util import tf_contrib, error_metrics
+from asr.util import tf_contrib, cost_metrics
 import asr.s_input as s_input
 
 if FLAGS.use_warp_ctc:
@@ -330,7 +330,7 @@ def decode(logits, seq_len, originals=None):
     originals = originals if originals is not None else np.array([], dtype=np.int32)
 
     # Translate decoded integer data back to character strings.
-    plaintext, plaintext_summary = tf.py_func(error_metrics.dense_to_text, [dense, originals],
+    plaintext, plaintext_summary = tf.py_func(cost_metrics.dense_to_text, [dense, originals],
                                               [tf.string, tf.string], name='py_dense_to_text')
 
     return decoded, plaintext, plaintext_summary
@@ -368,7 +368,7 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
     mean_edit_distance = tf.reduce_mean(edit_distances)
 
     # Word error rates for the batch and average word error rate (WER).
-    wers, wer = tf.py_func(error_metrics.wer_batch, [originals, decoded_texts],
+    wers, wer = tf.py_func(cost_metrics.wer_batch, [originals, decoded_texts],
                            [TF_FLOAT, TF_FLOAT], name='py_wer_batch')
 
     return edit_distances, mean_edit_distance, wers, wer

@@ -23,9 +23,9 @@ def pyplot_display(func):
                       'serif': ['DejaVu Sans'],
                       'size': 12
                       })
-        # rc('text', usetex=True)
+        rc('text', usetex=True)
 
-        # Setup plot output based on if a display is available or not.
+        # Setup plot output based on the availability of a display (PyCharm remote execution).
         display = 'DISPLAY' in os.environ or \
                   all(var in os.environ for var in ['PYCHARM_HOSTED', 'PYCHARM_MATPLOTLIB_PORT'])
         if display:
