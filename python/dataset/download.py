@@ -74,6 +74,6 @@ if __name__ == '__main__':
     dummy_tar = 'https://osdn.net/frs/g_redir.php?m=kent&f=od1n%2Fsamples.tar.gz'
     cv_tar = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
 
-    maybe_download(cv_tar, cache_archive=True)
+    maybe_download(dummy_tar, cache_archive=True)
 
     print('\nDone.')
