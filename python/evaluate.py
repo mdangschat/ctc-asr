@@ -7,8 +7,8 @@ from datetime import datetime
 import numpy as np
 import tensorflow as tf
 
-from asr.params import FLAGS
-from asr.util import storage
+from python.params import FLAGS
+from python.util import storage
 
 # Evaluation specific flags.
 tf.flags.DEFINE_boolean('test', False,
@@ -21,9 +21,9 @@ tf.flags.DEFINE_string('eval_dir', '',
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False
-    import asr.model as model
+    import python.model as model
 else:
-    import asr.model as model
+    import python.model as model
 
 
 # Which dataset TXT file to use for evaluation. 'test' or 'dev'.

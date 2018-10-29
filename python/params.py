@@ -5,7 +5,7 @@ import tensorflow as tf
 from os import path
 from multiprocessing import cpu_count
 
-from asr.labels import num_classes
+from python.labels import num_classes
 
 
 # Constants describing the training process.
@@ -69,7 +69,7 @@ tf.flags.DEFINE_string('used_model', 'ds2',
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 4,
+tf.flags.DEFINE_integer('num_layers_rnn', 1,
                         "Number of stacked RNN cells.")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         "Number of hidden units in each of the RNN cells.")

@@ -4,7 +4,7 @@ import os
 import numpy as np
 from collections import Counter
 
-from asr.params import BASE_PATH
+from python.params import BASE_PATH
 
 
 def _load_labels(path):

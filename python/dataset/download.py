@@ -7,8 +7,8 @@ import tarfile
 from tqdm import tqdm
 from urllib.parse import urlparse
 
-from asr.params import BASE_PATH
-from asr.util import storage
+from python.params import BASE_PATH
+from python.util import storage
 
 # Cache folder.
 __CACHE = os.path.join(BASE_PATH, 'data/cache')

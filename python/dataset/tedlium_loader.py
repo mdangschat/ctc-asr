@@ -9,8 +9,8 @@ from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
-from asr.params import FLAGS, MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
-from asr.util.storage import delete_file_if_exists
+from python.params import FLAGS, MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
+from python.util.storage import delete_file_if_exists
 
 
 # Path to the Tedlium v2 dataset.

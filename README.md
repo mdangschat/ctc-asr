@@ -1,7 +1,11 @@
 # End-to-End Speech Recognition System Using Connectionist Temporal Classification
-Automatic speech recognition (ASR) system implementation inspired by Baidu's
-[Deep Speech: Scaling up end-to-end speech recognition](https://arxiv.org/abs/1412.5567) and
-[Deep Speech 2: End-to-End Speech Recognition in English and Mandarin](https://arxiv.org/abs/1512.02595) 
+Automatic speech recognition (ASR) system implementation that utilizes the 
+[connectionist temporalclassification (CTC)](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.75.6306)
+cost function.
+It is inspired by Baidu's
+[Deep Speech: Scaling up end-to-end speech recognition](https://arxiv.org/abs/1412.5567)
+and
+[Deep Speech 2: End-to-End Speech Recognition in English and Mandarin](https://arxiv.org/abs/1512.02595)
 papers.
 The system is trained on a combined corpus, containing 900+ hours.
 It achieves a word error rate (WER) of 12.6% on the test dataset, without the use of an external
@@ -9,6 +13,8 @@ language model.
 
 ![Deep Speech 1 Network Architecture](images/ds1-network-architecture.png)
 ![Modified Network Architecture](images/ds2-network-architecture.png)
+
+(a) shows the Deep Speech (1) model and (b) a version of the Deep Speech 2 model architecture. 
 
 
 ## Contents
@@ -41,8 +47,8 @@ pip install -r requirements.txt
 
 ### Ubuntu
 Be aware that the [requirements.txt](requirements.txt) lists `tensorflow` as dependency, if you
-install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it and 
-install `tensorflow-gpu` manually.
+install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it and install 
+`tensorflow-gpu` manually.
 Based on my experience it is worth the effort to 
 [build TensorFlow from source](https://www.tensorflow.org/install/source).
 
@@ -119,7 +125,7 @@ for further information.
 
 ## Configuration
 The network architecture and training parameters can be configured by adding the appropriate flags
-or by directly editing the [params.py](asr/params.py) configuration file.
+or by directly editing the [params.py](python/params.py) configuration file.
 
 
 ## Datasets
@@ -139,38 +145,19 @@ The ASR system works on 16 kHz mono `.wav` files.
 
 
 ## Training
-Start training by invoking `ipython asr/train.py`.
-Use `ipython asr/train.py -- --delete` to start a clean run and remove the old checkpoints.
+Start training by invoking `ipython python/train.py`.
+Use `ipython python/train.py -- --delete` to start a clean run and remove the old checkpoints.
 Please note that all commands are expected to be executed from the projects root folder.
 The additional `--` before the actual flags begin is used to indicate the end of IPython flags.
 
+The training progress can be monitored using Tensorboard.
+To start Tensorboard use `tensorboard --logdir <checkpoint directory>`, it can then be viewed on
+[localhost:6006](http://localhost:6006).
 
 ## Evaluation
-Evaluate the current model by invoking `ipython asr/evaluate.py`.
-Use `ipython asr/evaluate.py -- --test` to run on the test dataset, instead of the development one.
-
-
-## License
-Copyright (c) 2018 Marc Dangschat
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
+Evaluate the current model by invoking `ipython python/evaluate.py`.
+Use `ipython python/evaluate.py -- --test` to run on the test dataset, instead of the development 
+set.
 
 
 <!--

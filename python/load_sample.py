@@ -6,7 +6,7 @@ import numpy as np
 import python_speech_features as psf
 from scipy.io import wavfile
 
-from asr.params import FLAGS, NP_FLOAT
+from python.params import FLAGS, NP_FLOAT
 
 
 NUM_FEATURES = 80        # Number of features to extract.

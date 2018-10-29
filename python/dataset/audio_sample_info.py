@@ -20,8 +20,8 @@ from matplotlib import rc
 from matplotlib import pyplot as plt
 
 # noinspection PyUnresolvedReferences
-from asr.load_sample import load_sample, WIN_STEP
-from asr.params import BASE_PATH
+from python.load_sample import load_sample, WIN_STEP
+from python.params import BASE_PATH
 
 
 rc('font', **{'family': 'serif',

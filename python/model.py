@@ -4,9 +4,9 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-from asr.params import FLAGS, TF_FLOAT
-from asr.util import tf_contrib, cost_metrics
-import asr.s_input as s_input
+from python.params import FLAGS, TF_FLOAT
+from python.util import tf_contrib, cost_metrics
+import python.s_input as s_input
 
 if FLAGS.use_warp_ctc:
     # noinspection PyUnresolvedReferences

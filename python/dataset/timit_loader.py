@@ -4,7 +4,7 @@ import os
 
 from scipy.io import wavfile
 
-from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
 
 
 # Path to the TIMIT dataset.

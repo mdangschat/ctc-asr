@@ -10,8 +10,8 @@ from multiprocessing import Pool, Lock, cpu_count
 import numpy as np
 from tqdm import tqdm
 
-from asr.load_sample import load_sample
-from asr.params import BASE_PATH
+from python.load_sample import load_sample
+from python.params import BASE_PATH
 
 
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')

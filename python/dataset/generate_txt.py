@@ -29,13 +29,13 @@ Generated data format:
 import os
 import re
 
-from asr.params import BASE_PATH
-from asr.util import storage
-from asr.dataset.tatoeba_loader import tatoeba_loader
-from asr.dataset.timit_loader import timit_loader
-from asr.dataset.libri_speech_loeader import libri_speech_loader
-from asr.dataset.tedlium_loader import tedlium_loader
-from asr.dataset.common_voice_loader import common_voice_loader
+from python.params import BASE_PATH
+from python.util import storage
+from python.dataset.tatoeba_loader import tatoeba_loader
+from python.dataset.timit_loader import timit_loader
+from python.dataset.libri_speech_loeader import libri_speech_loader
+from python.dataset.tedlium_loader import tedlium_loader
+from python.dataset.common_voice_loader import common_voice_loader
 
 
 # Dataset base path.

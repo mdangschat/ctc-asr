@@ -9,10 +9,10 @@ import time
 import tensorflow as tf
 from datetime import datetime
 
-from asr.params import FLAGS, get_parameters
-from asr.util import storage, tf_contrib
-import asr.model as model
-from asr.evaluate import evaluate
+from python.params import FLAGS, get_parameters
+from python.util import storage, tf_contrib
+import python.model as model
+from python.evaluate import evaluate
 
 
 # General TensorFlow settings and setup.

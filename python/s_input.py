@@ -8,9 +8,9 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from asr.params import FLAGS, TF_FLOAT, BASE_PATH
-import asr.labels as s_labels
-from asr.load_sample import load_sample, NUM_FEATURES
+from python.params import FLAGS, TF_FLOAT, BASE_PATH
+import python.labels as s_labels
+from python.load_sample import load_sample, NUM_FEATURES
 
 
 # Path to train.txt file.
