@@ -11,8 +11,7 @@ The system is trained on a combined corpus, containing 900+ hours.
 It achieves a word error rate (WER) of 12.6% on the test dataset, without the use of an external
 language model.
 
-![Deep Speech 1 Network Architecture](images/ds1-network-architecture.png)
-![Modified Network Architecture](images/ds2-network-architecture.png)
+![Deep Speech 1 and 2 network architectures](images/network-architectures.png)
 
 (a) shows the Deep Speech (1) model and (b) a version of the Deep Speech 2 model architecture. 
 
