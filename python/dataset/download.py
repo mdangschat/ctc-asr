@@ -17,6 +17,8 @@ __CACHE = os.path.join(BASE_PATH, 'data/cache')
 def maybe_download(url, cache_archive=True):
     # TODO Documentation
     # Downloads a tar.gz archive file if it's not cached. The archive gets extracted afterwards.
+    # It is advised to call `cleanup_cache()` after pre-processing to remove the cached extracted
+    # folder.
 
     # TODO This should not be done in here, the individual dataset wrapper prepares the data
 
@@ -48,6 +50,25 @@ def maybe_download(url, cache_archive=True):
         print('Cache file "{}" deleted.'.format(storage_path))
 
 
+def cleanup_cache(directory_name):
+    """
+
+    Args:
+        directory_name (str): Directory name of the extracted folder in the cache folder.
+            This is NOT the folder's path.
+
+    Returns:
+        Nothing.
+    """
+    path = os.path.join(__CACHE, directory_name)
+    storage.delete_directory_if_exists(path)
+
+    if not os.path.exists(path):
+        print('Removed cached folder: {}'.format(path))
+    else:
+        print('WARN: Could not remove cached folder: {}'.format(path))
+
+
 def __dl_with_progress(url, storage_path):
     r = requests.get(url, stream=True)
     content_length = int(r.headers.get('content-length'))
@@ -69,11 +90,15 @@ def __dl_with_progress(url, storage_path):
     print('Download finished.')
 
 
-# TODO delete afterwards, only for testing.
+# For testing purposes.
 if __name__ == '__main__':
     dummy_tar = 'https://osdn.net/frs/g_redir.php?m=kent&f=od1n%2Fsamples.tar.gz'
     cv_tar = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
 
-    maybe_download(dummy_tar, cache_archive=True)
+    maybe_download(cv_tar, cache_archive=True)
+
+    print('Dummy pre-processing here...')
+
+    cleanup_cache('cv_corpus_v1')
 
     print('\nDone.')

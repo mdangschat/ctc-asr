@@ -2,6 +2,7 @@
 
 import os
 import time
+import shutil
 import tensorflow as tf
 from git import Repo
 
@@ -60,6 +61,25 @@ def delete_file_if_exists(path):
                 if i == 4:
                     raise RuntimeError(path) from e
                 time.sleep(1)
+
+
+def delete_directory_if_exists(path):
+    """Recursive delete of a folder and all contained files.
+
+    Args:
+        path (str):  Directory path.
+
+    Returns:
+        Nothing.
+    """
+
+    if os.path.exists(path) and os.path.isdir(path):
+        # https://docs.python.org/3/library/shutil.html#shutil.rmtree
+        # Doesn't state which errors are possible.
+        try:
+            shutil.rmtree(path)
+        except OSError as e:
+            raise e
 
 
 def maybe_delete_checkpoints(path, delete):

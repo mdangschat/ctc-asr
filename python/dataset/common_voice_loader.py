@@ -11,12 +11,17 @@ from scipy.io import wavfile
 
 from python.util.storage import delete_file_if_exists
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
+from python.dataset.download import maybe_download, cleanup_cache
 
 
 # Path to the Mozilla Common Voice dataset.
-__COMMON_VOICE_URL = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
-__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
-__COMMON_VOICE_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'common_voice/cv_corpus_v1'))
+__URL = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
+__FOLDER_NAME = 'cv_corpus_v1'
+__SOURCE_BASE_PATH = os.path.join(BASE_PATH, 'data/cache')
+__SOURCE_PATH = os.path.join(__SOURCE_BASE_PATH, __FOLDER_NAME)
+
+__TARGET_BASE_PATH = os.path.join(BASE_PATH, 'data/corpus')
+__TARGET_PATH = os.path.realpath(os.path.join(__TARGET_BASE_PATH, __FOLDER_NAME))
 
 # Define valid accents.
 __VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand', 'ireland',
@@ -37,8 +42,8 @@ def common_voice_loader(target):
     Returns:
         List[str]: List containing the output string that can be written to *.txt file.
     """
-    if not os.path.isdir(__COMMON_VOICE_PATH):
-        raise ValueError('"{}" is not a directory.'.format(__COMMON_VOICE_PATH))
+    if not os.path.isdir(__SOURCE_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
     # Folders for each target.
     train_folders = ['cv-valid-train']
@@ -57,7 +62,7 @@ def common_voice_loader(target):
     for folder in tqdm(folders, desc='Converting Common Voice data', total=len(folders),
                        file=sys.stdout, unit='CSVs', dynamic_ncols=True):
         # Open .csv file.
-        with open('{}.csv'.format(os.path.join(__COMMON_VOICE_PATH, folder)), 'r') as csv_file:
+        with open('{}.csv'.format(os.path.join(__SOURCE_PATH, folder)), 'r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             csv_lines = list(csv_reader)
             # print('csv_header:', csv_lines[0])
@@ -65,6 +70,12 @@ def common_voice_loader(target):
 
             lock = Lock()
             with Pool(processes=cpu_count()) as pool:
+                # Create target folder if necessary.
+                target_directory = os.path.join(__TARGET_PATH, folder)
+                if not os.path.exists(target_directory):
+                    os.makedirs(target_directory)
+                    print("CREATING DIR: ", target_directory)
+
                 # First line contains header.
                 for result in pool.imap_unordered(__common_voice_loader_helper,
                                                   csv_lines[1:], chunksize=1):
@@ -81,14 +92,14 @@ def __common_voice_loader_helper(line):
     text = line[1].strip().replace('  ', ' ')
     # Enforce min label length.
     if len(text) > 1:
-        # Review: Accept only 2 upvote examples, like documented?
         # Check upvotes vs downvotes.
         if int(line[2]) >= 1 and int(line[3]) / int(line[2]) <= 1 / 4:
             # Check if speaker accent is valid.
             if line[6] in __VALID_ACCENTS:
-                mp3_path = os.path.join(__COMMON_VOICE_PATH, line[0])
+                mp3_path = os.path.join(__SOURCE_PATH, line[0])
                 assert os.path.isfile(mp3_path)
-                wav_path = '{}.wav'.format(mp3_path[:-4])
+                wav_path = os.path.relpath('{}.wav'.format(mp3_path[:-4]), __SOURCE_PATH)
+                wav_path = os.path.join(__TARGET_PATH, wav_path)
 
                 delete_file_if_exists(wav_path)
                 # Convert MP3 to WAV, reduce volume to 0.95, downsample to 16kHz and mono sound.
@@ -103,7 +114,27 @@ def __common_voice_loader_helper(line):
                     return None
 
                 # Add dataset relative to dataset path, label to TXT file buffer.
-                wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
+                wav_path = os.path.relpath(wav_path, __TARGET_BASE_PATH)
                 return '{} {}\n'.format(wav_path, text)
 
     return None
+
+
+# Test download script.
+if __name__ == '__main__':
+    print('__URL:', __URL)
+    print('__FOLDER_NAME:', __FOLDER_NAME)
+    print('__SOURCE_PATH:', __SOURCE_PATH)
+    print('__TARGET_BASE_PATH:', __TARGET_BASE_PATH)
+    print('__TARGET_PATH:', __TARGET_PATH)
+
+    # maybe_download(__URL, cache_archive=True)
+
+    print('Pre-processing...')
+    # common_voice_loader('train')
+    common_voice_loader('dev')
+    # common_voice_loader('test')
+
+    # cleanup_cache(__FOLDER_NAME)
+
+    print('\nDone.')
