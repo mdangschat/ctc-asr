@@ -7,28 +7,26 @@ import tarfile
 from tqdm import tqdm
 from urllib.parse import urlparse
 
-from python.params import BASE_PATH
 from python.util import storage
-
-# Cache folder.
-__CACHE = os.path.join(BASE_PATH, 'data/cache')
+from python.dataset.config import CACHE_DIR
 
 
 def maybe_download(url, cache_archive=True):
-    # TODO Documentation
-    # Downloads a tar.gz archive file if it's not cached. The archive gets extracted afterwards.
-    # It is advised to call `cleanup_cache()` after pre-processing to remove the cached extracted
-    # folder.
+    """Downloads a tar.gz archive file if it's not cached. The archive gets extracted afterwards.
+    It is advised to call `cleanup_cache()` after pre-processing to remove the cached extracted
+    folder.
 
-    # TODO This should not be done in here, the individual dataset wrapper prepares the data
+    Args:
+        url (str):
+            Dataset archive download URL.
+        cache_archive (bool):
+            `True` if the downloaded archive should be kept, `False` if it should be deleted.
 
-    # TODO Wrapper for all used dataset wrappers, that creates the train.txt, test.txt, dev.txt
-
-    # TODO My current preference is to keep the .tar.gz file and delete the extracted data after
-    # processing it.
-
+    Returns:
+        Nothing.
+    """
     file_name = os.path.basename(urlparse(url).path)
-    storage_path = os.path.join(__CACHE, '{}'.format(file_name))
+    storage_path = os.path.join(CACHE_DIR, '{}'.format(file_name))
 
     # Download archive if necessary.
     # L8ER Add optional MD5 check
@@ -41,8 +39,8 @@ def maybe_download(url, cache_archive=True):
     assert tarfile.is_tarfile(storage_path)
     print('Starting extraction of: {}'.format(storage_path))
     with tarfile.open(name=storage_path, mode='r') as tf:
-        tf.extractall(path=__CACHE)
-        print('Completed extraction to: {}'.format(__CACHE))
+        tf.extractall(path=CACHE_DIR)
+        print('Completed extraction to: {}'.format(CACHE_DIR))
 
     # Delete cached archive if requested.
     if not cache_archive:
@@ -60,7 +58,7 @@ def cleanup_cache(directory_name):
     Returns:
         Nothing.
     """
-    path = os.path.join(__CACHE, directory_name)
+    path = os.path.join(CACHE_DIR, directory_name)
     storage.delete_directory_if_exists(path)
 
     if not os.path.exists(path):
@@ -92,7 +90,6 @@ def __dl_with_progress(url, storage_path):
 
 # For testing purposes.
 if __name__ == '__main__':
-    dummy_tar = 'https://osdn.net/frs/g_redir.php?m=kent&f=od1n%2Fsamples.tar.gz'
     cv_tar = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
 
     maybe_download(cv_tar, cache_archive=True)

@@ -9,26 +9,63 @@ from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.util.storage import delete_file_if_exists
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
 from python.dataset.download import maybe_download, cleanup_cache
+from python.dataset.txt_files import generate_txt
 
 
 # Path to the Mozilla Common Voice dataset.
 __URL = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
+__MD5 = 'f1007e78cf91ab76b7cd3f1e8f554110'
 __FOLDER_NAME = 'cv_corpus_v1'
-__SOURCE_BASE_PATH = os.path.join(BASE_PATH, 'data/cache')
-__SOURCE_PATH = os.path.join(__SOURCE_BASE_PATH, __FOLDER_NAME)
+__SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
+__NAME = 'commonvoice'
 
-__TARGET_BASE_PATH = os.path.join(BASE_PATH, 'data/corpus')
-__TARGET_PATH = os.path.realpath(os.path.join(__TARGET_BASE_PATH, __FOLDER_NAME))
+__TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 # Define valid accents.
 __VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand', 'ireland',
                    'scotland', 'wales', '']
 
 
-def common_voice_loader(target):
+def common_voice_loader():
+    # Download and extract the dataset if necessary.
+    maybe_download(__URL, cache_archive=True)
+    if not os.path.isdir(__SOURCE_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
+
+    # Folders for each target.
+    targets = [
+        {
+            'name': 'train',
+            'folders': ['cv-valid-train']
+        },
+        {
+            'name': 'test',
+            'folders': ['cv-valid-test']
+        },
+        {
+            'name': 'dev',
+            'folders': ['cv-valid-dev']
+        }
+    ]
+
+    txt_paths = []
+    for target in targets:
+        # Generate the WAV and a string for the `<target>.txt` file.
+        output = __common_voice_loader(target['folders'])
+        # Generate the `<target>.txt` file.
+        txt_paths.append(generate_txt(__NAME, target['name'], output))
+
+    # Cleanup extracted folder.
+    cleanup_cache(__FOLDER_NAME)
+
+    return txt_paths
+
+
+def __common_voice_loader(folders):
     """Build the output string that can be written to the desired *.txt file.
 
     Uses only the valid datasets, additional constraints are:
@@ -37,26 +74,11 @@ def common_voice_loader(target):
     * Accepting samples with only 1 upvote at the moment.
 
     Args:
-        target (str): 'train', 'test', or 'dev'
+        folders (str): A list containing folder names, e.g. `['train-valid', 'train-other']`.
 
     Returns:
         List[str]: List containing the output string that can be written to *.txt file.
     """
-    if not os.path.isdir(__SOURCE_PATH):
-        raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
-
-    # Folders for each target.
-    train_folders = ['cv-valid-train']
-    test_folders = ['cv-valid-test']
-    dev_folders = ['cv-valid-dev']
-
-    # Assign target folders.
-    if target == 'train':
-        folders = train_folders
-    elif target == 'test':
-        folders = test_folders
-    else:
-        folders = dev_folders
 
     output = []
     for folder in tqdm(folders, desc='Converting Common Voice data', total=len(folders),
@@ -114,7 +136,7 @@ def __common_voice_loader_helper(line):
                     return None
 
                 # Add dataset relative to dataset path, label to TXT file buffer.
-                wav_path = os.path.relpath(wav_path, __TARGET_BASE_PATH)
+                wav_path = os.path.relpath(wav_path, CORPUS_DIR)
                 return '{} {}\n'.format(wav_path, text)
 
     return None
@@ -122,19 +144,6 @@ def __common_voice_loader_helper(line):
 
 # Test download script.
 if __name__ == '__main__':
-    print('__URL:', __URL)
-    print('__FOLDER_NAME:', __FOLDER_NAME)
-    print('__SOURCE_PATH:', __SOURCE_PATH)
-    print('__TARGET_BASE_PATH:', __TARGET_BASE_PATH)
-    print('__TARGET_PATH:', __TARGET_PATH)
-
-    # maybe_download(__URL, cache_archive=True)
-
-    print('Pre-processing...')
-    # common_voice_loader('train')
-    common_voice_loader('dev')
-    # common_voice_loader('test')
-
-    # cleanup_cache(__FOLDER_NAME)
+    print('Common Voice txt_paths: ', common_voice_loader())
 
     print('\nDone.')
