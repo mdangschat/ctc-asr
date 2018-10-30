@@ -11,14 +11,16 @@ from python.util import storage
 from python.dataset.config import CACHE_DIR
 
 
-def maybe_download(url, cache_archive=True):
+def maybe_download(url, md5=None, cache_archive=True):
     """Downloads a tar.gz archive file if it's not cached. The archive gets extracted afterwards.
     It is advised to call `cleanup_cache()` after pre-processing to remove the cached extracted
     folder.
 
     Args:
         url (str):
-            Dataset archive download URL.
+            URL for dataset download.
+        md5 (str):
+            Checksum for optional integrity check or `None`.
         cache_archive (bool):
             `True` if the downloaded archive should be kept, `False` if it should be deleted.
 
@@ -29,11 +31,15 @@ def maybe_download(url, cache_archive=True):
     storage_path = os.path.join(CACHE_DIR, '{}'.format(file_name))
 
     # Download archive if necessary.
-    # L8ER Add optional MD5 check
     if not os.path.isfile(storage_path):
         __dl_with_progress(url, storage_path)
     else:
         print('Using cached archive: {}'.format(storage_path))
+
+    # Optional md5 integrity check.
+    if md5:
+        md5sum = storage.md5(storage_path)
+        assert md5 == md5sum, 'Checksum does not match.'
 
     # Extract archive to cache directory.
     assert tarfile.is_tarfile(storage_path)

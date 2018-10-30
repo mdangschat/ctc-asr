@@ -9,11 +9,22 @@ from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
-from python.params import FLAGS, MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.util.storage import delete_file_if_exists
+from python.dataset import download
+from python.dataset.txt_files import generate_txt
 
 
 # Path to the Tedlium v2 dataset.
+__URL = 'http://www.openslr.org/resources/19/TEDLIUM_release2.tar.gz'
+__MD5 = b'7ffb54fa30189df794dcc5445d013368'
+__NAME = ''
+__FOLDER_NAME = ''
+__SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
+__TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
+
+
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __TEDLIUM_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tedlium'))
 

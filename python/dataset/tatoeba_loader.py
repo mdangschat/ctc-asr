@@ -10,11 +10,22 @@ from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
-from python.util.storage import delete_file_if_exists
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
-
+from python.dataset.config import CACHE_DIR, CORPUS_DIR
+from python.util.storage import delete_file_if_exists
+from python.dataset import download
+from python.dataset.txt_files import generate_txt
 
 # Path to the Taboeba dataset.
+__URL = ''  # TODO: https://tatoeba.org/eng/downloads --- Not sure what archive I used and if I downloaded additional sentence ratings.
+__MD5 = b''  # TODO
+__NAME = 'tatoeba'
+__FOLDER_NAME = ''
+__SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
+__TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
+
+
+
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __TATOEBA_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tatoeba/tatoeba_audio_eng'))
 

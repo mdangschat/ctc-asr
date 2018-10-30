@@ -17,7 +17,7 @@ Generated data format:
     http://openslr.org/19
 
 .. _TIMIT:
-    https://vcs.zwuenf.org/agct_data/timit
+    https://catalog.ldc.upenn.edu/LDC93S1
 
 .. _TATOEBA:
     https://tatoeba.org/eng/downloads
@@ -27,6 +27,9 @@ Generated data format:
 """
 
 import os
+
+from python.dataset.config import TXT_DIR
+from python.dataset.common_voice_loader import common_voice_loader
 
 
 def _merge_txt_files(txt_files, target):
@@ -50,39 +53,37 @@ def _merge_txt_files(txt_files, target):
             buffer.extend(f.readlines())
 
     # Write data to target file.
-    target_file = os.path.join(TXT_TARGET_PATH, '{}.txt'.format(target))
+    target_file = os.path.join(TXT_DIR, '{}.txt'.format(target))
     with open(target_file, 'w') as f:
         f.writelines(buffer)
         print('Added {:,d} lines to: {}'.format(len(buffer), target_file))
 
 
 if __name__ == '__main__':
-    __dry_run = False
+    # Generate data.
+    # Common Voice
+    cv_train, cv_test, cv_dev = common_voice_loader()
 
-    __train = [
-        # generate_list('tedlium', 'train', dry_run=__dry_run),
-        # generate_list('timit', 'train', dry_run=__dry_run),
-        # generate_list('libri_speech', 'train', dry_run=__dry_run),
-        generate_list('common_voice', 'train', dry_run=__dry_run),
-        # generate_list('tatoeba', 'train', dry_run=__dry_run),
-    ]
+    # Libri Speech ASR
+    # TODO
 
-    __dev = [
-        # generate_list('tedlium', 'dev', dry_run=__dry_run),
-        # generate_list('libri_speech', 'dev', dry_run=__dry_run),
-        # generate_list('common_voice', 'dev', dry_run=__dry_run),
-    ]
+    # Tatoeba
+    # TODO
 
-    __test = [
-        # generate_list('tedlium', 'test', dry_run=__dry_run),
-        # generate_list('timit', 'test', dry_run=__dry_run),
-        # generate_list('libri_speech', 'test', dry_run=__dry_run),
-        generate_list('common_voice', 'test', dry_run=__dry_run),
-    ]
+    # TEDLIUM
+    # TODO
 
-    if not __dry_run:
-        _merge_txt_files(__test, 'test')
-        _merge_txt_files(__dev, 'dev')
-        _merge_txt_files(__train, 'train')
+    # TIMIT
+    # TODO
+
+    # TODO Assemble and merge .txt files.
+    # Train
+    _merge_txt_files([cv_train], 'train')
+    # Test
+    _merge_txt_files([cv_test], 'test')
+    # Dev
+    _merge_txt_files([cv_dev], 'dev')
+
+    # TODO Sort train.txt file (SortaGrad).
 
     print('Done.')

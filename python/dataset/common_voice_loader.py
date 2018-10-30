@@ -12,17 +12,16 @@ from scipy.io import wavfile
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.util.storage import delete_file_if_exists
-from python.dataset.download import maybe_download, cleanup_cache
+from python.dataset import download
 from python.dataset.txt_files import generate_txt
 
 
 # Path to the Mozilla Common Voice dataset.
 __URL = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
-__MD5 = 'f1007e78cf91ab76b7cd3f1e8f554110'
+__MD5 = b'f1007e78cf91ab76b7cd3f1e8f554110'
+__NAME = 'commonvoice'
 __FOLDER_NAME = 'cv_corpus_v1'
 __SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
-__NAME = 'commonvoice'
-
 __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 # Define valid accents.
@@ -31,8 +30,10 @@ __VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand'
 
 
 def common_voice_loader():
+    # TODO Documentation
+
     # Download and extract the dataset if necessary.
-    maybe_download(__URL, cache_archive=True)
+    download.maybe_download(__URL, md5=__MD5, cache_archive=True)
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
@@ -41,12 +42,10 @@ def common_voice_loader():
         {
             'name': 'train',
             'folders': ['cv-valid-train']
-        },
-        {
+        }, {
             'name': 'test',
             'folders': ['cv-valid-test']
-        },
-        {
+        }, {
             'name': 'dev',
             'folders': ['cv-valid-dev']
         }
@@ -60,13 +59,14 @@ def common_voice_loader():
         txt_paths.append(generate_txt(__NAME, target['name'], output))
 
     # Cleanup extracted folder.
-    cleanup_cache(__FOLDER_NAME)
+        download.cleanup_cache(__FOLDER_NAME)
 
-    return txt_paths
+    return tuple(txt_paths)
 
 
 def __common_voice_loader(folders):
     """Build the output string that can be written to the desired *.txt file.
+    TODO Update
 
     Uses only the valid datasets, additional constraints are:
     * Downvotes must be at maximum 1/4 of upvotes.
@@ -74,7 +74,7 @@ def __common_voice_loader(folders):
     * Accepting samples with only 1 upvote at the moment.
 
     Args:
-        folders (str): A list containing folder names, e.g. `['train-valid', 'train-other']`.
+        folders (List(str)): A list containing folder names, e.g. `['train-valid', 'train-other']`.
 
     Returns:
         List[str]: List containing the output string that can be written to *.txt file.
@@ -145,5 +145,4 @@ def __common_voice_loader_helper(line):
 # Test download script.
 if __name__ == '__main__':
     print('Common Voice txt_paths: ', common_voice_loader())
-
     print('\nDone.')

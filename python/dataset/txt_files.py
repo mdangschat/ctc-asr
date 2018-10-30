@@ -7,7 +7,7 @@ from python.util import storage
 from python.dataset.config import TXT_DIR
 
 
-# RegEX filter pattern for valid characters.
+# (Whitelist) RegEX filter pattern for valid characters.
 __PATTERN = re.compile(r'[^a-z ]+')
 
 
