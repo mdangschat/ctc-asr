@@ -78,6 +78,7 @@ def tedlium_loader():
 
 def __tedlium_loader(target_folder):
     """Build the output string that can be written to the desired *.txt file.
+    TODO Documentation
 
      Note:
          Since TEDLIUM data is one large .wav file per speaker. Therefore this method creates

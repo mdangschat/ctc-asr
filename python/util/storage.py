@@ -4,6 +4,7 @@ import os
 import time
 import shutil
 import hashlib
+import tarfile
 import tensorflow as tf
 from git import Repo
 
@@ -140,3 +141,25 @@ def md5(file_path):
         for chunk in iter(lambda: f.read(4096), b''):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
+
+def tar_extract_all(tar_path, target_path):
+    """Extract a TAR archive. Overrides existing files.
+
+    Args:
+        tar_path (str): Path of TAR archive.
+        target_path (str): Where to extract the archive.
+
+    Returns:
+        Nothing.
+    """
+    assert os.path.exists(target_path) and os.path.isdir(target_path), 'target_path does not exist.'
+    with tarfile.open(tar_path, 'r') as tar:
+        for f in tar:
+            try:
+                tar.extract(f, path=target_path)
+            except IOError:
+                os.remove(os.path.join(target_path, f.name))
+                tar.extract(f, path=target_path)
+            finally:
+                os.chmod(os.path.join(target_path, f.name), f.mode)

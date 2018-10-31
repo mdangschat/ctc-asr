@@ -51,9 +51,10 @@ def maybe_download(url, md5=None, cache_archive=True):
     # Extract archive to cache directory.
     assert tarfile.is_tarfile(storage_path)
     print('Starting extraction of: {}'.format(storage_path))
-    with tarfile.open(name=storage_path, mode='r') as tf:
-        tf.extractall(path=CACHE_DIR)
-        print('Completed extraction to: {}'.format(CACHE_DIR))
+    # with tarfile.open(name=storage_path, mode='r') as tf:    TODO remove if other way works
+    #     tf.extractall(path=CACHE_DIR)
+    storage.tar_extract_all(storage_path, CACHE_DIR)
+    print('Completed extraction of: {}'.format(storage_path))
 
     # Delete cached archive if requested.
     if not cache_archive:

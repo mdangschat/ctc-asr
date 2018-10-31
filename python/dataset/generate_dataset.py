@@ -4,6 +4,9 @@ and `TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ and `Common Voice`_ datasets.
 The selected parts of various datasets are merged into combined files at
 the end.
 
+TODO: Add approximate download size and approximate disk space for extraction and approximate disk
+TODO: space for `data/corpus`.
+
 Generated data format:
     `path/to/sample.wav transcription of the sample wave file<new_line>`
 
@@ -30,10 +33,10 @@ import os
 
 from python.dataset.config import TXT_DIR
 from python.dataset.common_voice_loader import common_voice_loader
-# lirbispeech
+from python.dataset.libri_speech_loeader import libri_speech_loader
 # tatoeba
 from python.dataset.tedlium_loader import tedlium_loader
-# timit
+from python.dataset.timit_loader import timit_loader
 
 
 def _merge_txt_files(txt_files, target):
@@ -69,7 +72,7 @@ if __name__ == '__main__':
     cv_train, cv_test, cv_dev = common_voice_loader()
 
     # Libri Speech ASR
-    # TODO
+    ls_train, ls_test, ls_dev = libri_speech_loader()
 
     # Tatoeba
     # TODO
@@ -78,11 +81,11 @@ if __name__ == '__main__':
     ted_train, ted_test, ted_dev = tedlium_loader()
 
     # TIMIT
-    # TODO
+    timit_train, timit_test = timit_loader()
 
     # TODO Assemble and merge .txt files.
     # Train
-    _merge_txt_files([cv_train, ted_train], 'train')
+    _merge_txt_files([cv_train, ted_train, timit_train], 'train')
     # Test
     _merge_txt_files([cv_test, ted_test], 'test')
     # Dev
@@ -91,3 +94,4 @@ if __name__ == '__main__':
     # TODO Sort train.txt file (SortaGrad).
 
     print('Done.')
+    print('Please verify that ./data/cache only contains required data.')

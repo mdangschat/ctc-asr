@@ -1,7 +1,7 @@
 """Load the LibriSpeech ASR corpus."""
 
 import os
-import shutil
+import subprocess
 
 from scipy.io import wavfile
 
@@ -67,6 +67,7 @@ def libri_speech_loader():
 
 def __libri_speech_loader(folders):
     """Build the output string that can be written to the desired *.txt file.
+    TODO Documentation
 
     Args:
         target (str): 'train', 'test', or 'dev'
@@ -99,7 +100,15 @@ def __libri_speech_loader(folders):
 
                 for file_id, txt in lines:
                     # Absolute path.
+                    flac_path = os.path.join(root, '{}.flac'.format(file_id))
+                    assert os.path.isfile(flac_path), '{} not found.'.format(flac_path)
+
+                    # Convert FLAC file WAV file and move it to the `data/corpus/..` directory.
                     wav_path = os.path.join(root, '{}.wav'.format(file_id))
+                    wav_path = os.path.join(CORPUS_DIR, os.path.relpath(wav_path, CACHE_DIR))
+                    os.makedirs(os.path.dirname(wav_path), exist_ok=True)
+                    subprocess.call(['sox', '-v', '0.95', flac_path, '-r', '16k', wav_path,
+                                     'remix', '1'])
                     assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
                     # Validate that the example length is within boundaries.
@@ -108,15 +117,8 @@ def __libri_speech_loader(folders):
                     if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
                         continue
 
-                    # Move WAV file from `data/cache` directory to `data/corpus` directory.
-                    src = wav_path
-                    dest = os.path.join(CORPUS_DIR, os.path.relpath(src, CACHE_DIR))
-                    print("src: ", wav_path, " ; dest: ", dest)
-                    break
-                    shutil.move(src, dest)
-
                     # Relative path to `DATASET_PATH`.
-                    wav_path = os.path.relpath(dest, CORPUS_DIR)
+                    wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
                     output.append('{} {}\n'.format(wav_path, txt.strip()))
 

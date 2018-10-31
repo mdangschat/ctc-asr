@@ -24,8 +24,6 @@ __FOLDER_NAME = ''
 __SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
 __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
-
-
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __TATOEBA_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tatoeba/tatoeba_audio_eng'))
 
