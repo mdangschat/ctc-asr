@@ -11,6 +11,13 @@ from python.util import storage
 from python.dataset.config import CACHE_DIR
 
 
+def maybe_download_batch(urls, md5s, cache_archives=True):
+    # TODO Document
+
+    for url, md5 in zip(urls, md5s):
+        maybe_download(url, md5=md5, cache_archive=cache_archives)
+
+
 def maybe_download(url, md5=None, cache_archive=True):
     """Downloads a tar.gz archive file if it's not cached. The archive gets extracted afterwards.
     It is advised to call `cleanup_cache()` after pre-processing to remove the cached extracted

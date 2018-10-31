@@ -18,7 +18,7 @@ from python.dataset.txt_files import generate_txt
 
 # Path to the Taboeba dataset.
 __URL = ''  # TODO: https://tatoeba.org/eng/downloads --- Not sure what archive I used and if I downloaded additional sentence ratings.
-__MD5 = b''  # TODO
+__MD5 = ''  # TODO
 __NAME = 'tatoeba'
 __FOLDER_NAME = ''
 __SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)

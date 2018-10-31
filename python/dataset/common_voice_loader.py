@@ -18,7 +18,7 @@ from python.dataset.txt_files import generate_txt
 
 # Path to the Mozilla Common Voice dataset.
 __URL = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
-__MD5 = b'f1007e78cf91ab76b7cd3f1e8f554110'
+__MD5 = 'f1007e78cf91ab76b7cd3f1e8f554110'
 __NAME = 'commonvoice'
 __FOLDER_NAME = 'cv_corpus_v1'
 __SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
@@ -59,7 +59,7 @@ def common_voice_loader():
         txt_paths.append(generate_txt(__NAME, target['name'], output))
 
     # Cleanup extracted folder.
-        download.cleanup_cache(__FOLDER_NAME)
+    download.cleanup_cache(__FOLDER_NAME)
 
     return tuple(txt_paths)
 
@@ -96,7 +96,6 @@ def __common_voice_loader(folders):
                 target_directory = os.path.join(__TARGET_PATH, folder)
                 if not os.path.exists(target_directory):
                     os.makedirs(target_directory)
-                    print("CREATING DIR: ", target_directory)
 
                 # First line contains header.
                 for result in pool.imap_unordered(__common_voice_loader_helper,

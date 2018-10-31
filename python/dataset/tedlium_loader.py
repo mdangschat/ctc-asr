@@ -4,12 +4,13 @@ import sys
 import os
 import re
 import math
+import subprocess
 
 from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, FLAGS
 from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.util.storage import delete_file_if_exists
 from python.dataset import download
@@ -18,15 +19,11 @@ from python.dataset.txt_files import generate_txt
 
 # Path to the Tedlium v2 dataset.
 __URL = 'http://www.openslr.org/resources/19/TEDLIUM_release2.tar.gz'
-__MD5 = b'7ffb54fa30189df794dcc5445d013368'
-__NAME = ''
-__FOLDER_NAME = ''
+__MD5 = '7ffb54fa30189df794dcc5445d013368'
+__NAME = 'tedlium'
+__FOLDER_NAME = 'TEDLIUM_release2'
 __SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
 __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
-
-
-__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
-__TEDLIUM_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tedlium'))
 
 # Flag that marks time segments that should be skipped.
 __IGNORE_FLAG = 'ignore_time_segment_in_scoring'
@@ -36,7 +33,50 @@ __PATTERN = re.compile(
     r"[.\w]+ [0-9] [.\w]+ ([0-9]+(?:\.[0-9]+)?) ([0-9]+(?:\.[0-9]+)?) <[\w,]+> ([\w ']+)")
 
 
-def tedlium_loader(target):
+def tedlium_loader():
+    # TODO Documentation
+    # Requires lots of disk space, since the original format (SPH) is converted to WAV and then
+    # split up into parts.
+
+    # Download and extract the dataset if necessary.
+    download.maybe_download(__URL, md5=__MD5, cache_archive=True)
+    if not os.path.isdir(__SOURCE_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
+
+    # Folders for each target.
+    targets = [
+        {
+            'name': 'train',
+            'folder': 'train'
+        }, {
+            'name': 'test',
+            'folder': 'test'
+        }, {
+            'name': 'dev',
+            'folder': 'dev'
+        }
+    ]
+
+    txt_paths = []
+    for target in targets:
+        # Create target folder if necessary.
+        target_directory = os.path.join(__TARGET_PATH, target['folder'], 'sph')
+        if not os.path.exists(target_directory):
+            os.makedirs(target_directory)
+
+        # Generate the WAV and a string for the `<target>.txt` file.
+        source_directory = os.path.join(__SOURCE_PATH, target['folder'])
+        output = __tedlium_loader(source_directory)
+        # Generate the `<target>.txt` file.
+        txt_paths.append(generate_txt(__NAME, target['name'], output))
+
+    # Cleanup extracted folder.
+    download.cleanup_cache(__FOLDER_NAME)
+
+    return tuple(txt_paths)
+
+
+def __tedlium_loader(target_folder):
     """Build the output string that can be written to the desired *.txt file.
 
      Note:
@@ -52,16 +92,6 @@ def tedlium_loader(target):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
-    if not os.path.isdir(__TEDLIUM_PATH):
-        raise ValueError('"{}" is not a directory.'.format(__TEDLIUM_PATH))
-
-    target_folders = {
-        'dev': 'dev',
-        'test': 'test',
-        'train': 'train'
-    }
-
-    target_folder = os.path.join(__TEDLIUM_PATH, 'TEDLIUM_release2', target_folders[target])
 
     files = os.listdir(os.path.join(target_folder, 'stm'))
 
@@ -91,8 +121,15 @@ def _tedlium_loader_helper(args):
     with open(stm_file_path, 'r') as f:
         lines = f.readlines()
 
-        wav_path = os.path.join(__TEDLIUM_PATH, 'TEDLIUM_release2', target_folder, 'sph',
+        sph_path = os.path.join(__SOURCE_PATH, target_folder, 'sph', '{}.sph'
+                                .format(os.path.splitext(stm_file)[0]))
+        assert os.path.isfile(sph_path), '{} not found.'.format(sph_path)
+
+        wav_path = os.path.join(__SOURCE_PATH, target_folder, 'sph',
                                 '{}.wav'.format(os.path.splitext(stm_file)[0]))
+
+        # Convert SPH to WAV.
+        subprocess.call(['sox', '-v', '0.95', sph_path, '-r', '16k', wav_path, 'remix', '1'])
         assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
         # Load the audio data, to later split it into a part per audio segment.
@@ -116,6 +153,8 @@ def _tedlium_loader_helper(args):
 
             # Create new partial .wav file.
             part_path = '{}_{}.wav'.format(wav_path[: -4], i)
+            part_path = os.path.relpath(part_path, CACHE_DIR)
+            part_path = os.path.join(CORPUS_DIR, part_path)
             _write_part_to_wav(wav_data, part_path, start_time, end_time)
 
             # Validate that the example length is within boundaries.
@@ -125,7 +164,7 @@ def _tedlium_loader_helper(args):
                 continue
 
             # Relative path to __DATASETS_PATH.
-            part_path = os.path.relpath(part_path, __DATASETS_PATH)
+            part_path = os.path.relpath(part_path, CORPUS_DIR)
 
             # Sanitize lines.
             text = text.lower().replace(" '", '').replace('  ', ' ').strip()
@@ -154,3 +193,9 @@ def _seconds_to_sample(seconds, start=True, sr=16000):
         return int(math.floor(seconds * sr))
     else:
         return int(math.ceil(seconds * sr))
+
+
+# Test download script.
+if __name__ == '__main__':
+    print('Common Voice txt_paths: ', tedlium_loader())
+    print('\nDone.')

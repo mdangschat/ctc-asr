@@ -30,6 +30,10 @@ import os
 
 from python.dataset.config import TXT_DIR
 from python.dataset.common_voice_loader import common_voice_loader
+# lirbispeech
+# tatoeba
+from python.dataset.tedlium_loader import tedlium_loader
+# timit
 
 
 def _merge_txt_files(txt_files, target):
@@ -71,16 +75,16 @@ if __name__ == '__main__':
     # TODO
 
     # TEDLIUM
-    # TODO
+    ted_train, ted_test, ted_dev = tedlium_loader()
 
     # TIMIT
     # TODO
 
     # TODO Assemble and merge .txt files.
     # Train
-    _merge_txt_files([cv_train], 'train')
+    _merge_txt_files([cv_train, ted_train], 'train')
     # Test
-    _merge_txt_files([cv_test], 'test')
+    _merge_txt_files([cv_test, ted_test], 'test')
     # Dev
     _merge_txt_files([cv_dev], 'dev')
 

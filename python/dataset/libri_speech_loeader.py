@@ -10,7 +10,7 @@ from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.dataset import download
 from python.dataset.txt_files import generate_txt
 
-
+# L8ER Add the `other` datasets as well and see if they improve the results.
 # Path to the LibriSpeech ASR dataset.
 __URLs = [
     'http://www.openslr.org/resources/12/dev-clean.tar.gz',
@@ -19,10 +19,10 @@ __URLs = [
     'http://www.openslr.org/resources/12/train-clean-360.tar.gz'
 ]
 __MD5s = [
-    b'42e2234ba48799c1f50f24a7926300a1',
-    b'32fa31d27d2e1cad72775fee3f4849a9',
-    b'2a93770f6d5c6c964bc36631d331a522',
-    b'c0e676e450a7ff2f54aeade5171606fa'
+    '42e2234ba48799c1f50f24a7926300a1',
+    '32fa31d27d2e1cad72775fee3f4849a9',
+    '2a93770f6d5c6c964bc36631d331a522',
+    'c0e676e450a7ff2f54aeade5171606fa'
 ]
 __NAME = 'librispeech'
 __FOLDER_NAME = 'LibriSpeech'
@@ -34,7 +34,7 @@ def libri_speech_loader():
     # TODO Documentation
 
     # Download and extract the dataset if necessary.
-    download.maybe_download(__URL, md5=__MD5, cache_archive=True)
+    download.maybe_download_batch(__URLs, md5s=__MD5s, cache_archives=True)
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
