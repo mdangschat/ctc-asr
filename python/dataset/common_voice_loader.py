@@ -29,11 +29,11 @@ __VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand'
                    'scotland', 'wales', '']
 
 
-def common_voice_loader():
+def common_voice_loader(keep_archive):
     # TODO Documentation
 
     # Download and extract the dataset if necessary.
-    download.maybe_download(__URL, md5=__MD5, cache_archive=True)
+    download.maybe_download(__URL, md5=__MD5, cache_archive=keep_archive)
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
@@ -143,5 +143,5 @@ def __common_voice_loader_helper(line):
 
 # Test download script.
 if __name__ == '__main__':
-    print('Common Voice txt_paths: ', common_voice_loader())
+    print('Common Voice txt_paths: ', common_voice_loader(True))
     print('\nDone.')

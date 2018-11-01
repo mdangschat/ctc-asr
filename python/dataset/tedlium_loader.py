@@ -33,13 +33,13 @@ __PATTERN = re.compile(
     r"[.\w]+ [0-9] [.\w]+ ([0-9]+(?:\.[0-9]+)?) ([0-9]+(?:\.[0-9]+)?) <[\w,]+> ([\w ']+)")
 
 
-def tedlium_loader():
+def tedlium_loader(keep_archive):
     # TODO Documentation
     # Requires lots of disk space, since the original format (SPH) is converted to WAV and then
     # split up into parts.
 
     # Download and extract the dataset if necessary.
-    download.maybe_download(__URL, md5=__MD5, cache_archive=True)
+    download.maybe_download(__URL, md5=__MD5, cache_archive=keep_archive)
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
@@ -198,5 +198,5 @@ def _seconds_to_sample(seconds, start=True, sr=16000):
 
 # Test download script.
 if __name__ == '__main__':
-    print('Common Voice txt_paths: ', tedlium_loader())
+    print('TEDLIUM txt_paths: ', tedlium_loader(True))
     print('\nDone.')

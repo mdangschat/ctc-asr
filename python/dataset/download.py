@@ -4,6 +4,7 @@ import os
 import sys
 import requests
 import tarfile
+import zipfile
 from tqdm import tqdm
 from urllib.parse import urlparse
 
@@ -39,7 +40,7 @@ def maybe_download(url, md5=None, cache_archive=True):
 
     # Download archive if necessary.
     if not os.path.isfile(storage_path):
-        __dl_with_progress(url, storage_path)
+        download_with_progress(url, storage_path)
     else:
         print('Using cached archive: {}'.format(storage_path))
 
@@ -49,11 +50,14 @@ def maybe_download(url, md5=None, cache_archive=True):
         assert md5 == md5sum, 'Checksum does not match.'
 
     # Extract archive to cache directory.
-    assert tarfile.is_tarfile(storage_path)
     print('Starting extraction of: {}'.format(storage_path))
-    # with tarfile.open(name=storage_path, mode='r') as tf:    TODO remove if other way works
-    #     tf.extractall(path=CACHE_DIR)
-    storage.tar_extract_all(storage_path, CACHE_DIR)
+    if tarfile.is_tarfile(storage_path):
+        storage.tar_extract_all(storage_path, CACHE_DIR)
+    elif zipfile.is_zipfile(storage_path):
+        with zipfile.ZipFile(storage_path, 'r') as zip:
+            zip.extractall(CACHE_DIR)
+    else:
+        raise ValueError('Compression method not supported: ', storage_path)
     print('Completed extraction of: {}'.format(storage_path))
 
     # Delete cached archive if requested.
@@ -81,7 +85,7 @@ def cleanup_cache(directory_name):
         print('WARN: Could not remove cached folder: {}'.format(path))
 
 
-def __dl_with_progress(url, storage_path):
+def download_with_progress(url, storage_path):
     r = requests.get(url, stream=True)
     content_length = int(r.headers.get('content-length'))
     chunk_size = 1024

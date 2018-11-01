@@ -34,9 +34,10 @@ import os
 from python.dataset.config import TXT_DIR
 from python.dataset.common_voice_loader import common_voice_loader
 from python.dataset.libri_speech_loeader import libri_speech_loader
-# tatoeba
+from python.dataset.tatoeba_loader import tatoeba_loader
 from python.dataset.tedlium_loader import tedlium_loader
 from python.dataset.timit_loader import timit_loader
+from python.dataset.sort_txt_by_seq_len import sort_txt_by_seq_len
 
 
 def _merge_txt_files(txt_files, target):
@@ -65,33 +66,38 @@ def _merge_txt_files(txt_files, target):
         f.writelines(buffer)
         print('Added {:,d} lines to: {}'.format(len(buffer), target_file))
 
+    return target_file
 
+
+# Generate data.
 if __name__ == '__main__':
-    # Generate data.
+    keep_archives = True    # Cache downloaded archive files?
+
     # Common Voice
-    cv_train, cv_test, cv_dev = common_voice_loader()
+    cv_train, cv_test, cv_dev = common_voice_loader(keep_archives)
 
     # Libri Speech ASR
-    ls_train, ls_test, ls_dev = libri_speech_loader()
+    ls_train, ls_test, ls_dev = libri_speech_loader(keep_archives)
 
     # Tatoeba
-    # TODO
+    tatoeba_train = tatoeba_loader(keep_archives)
 
     # TEDLIUM
-    ted_train, ted_test, ted_dev = tedlium_loader()
+    ted_train, ted_test, ted_dev = tedlium_loader(keep_archives)
 
     # TIMIT
     timit_train, timit_test = timit_loader()
 
-    # TODO Assemble and merge .txt files.
+    # Assemble and merge .txt files.
     # Train
-    _merge_txt_files([cv_train, ted_train, timit_train], 'train')
+    train_txt = _merge_txt_files([cv_train, ted_train, timit_train], 'train')
     # Test
-    _merge_txt_files([cv_test, ted_test], 'test')
+    test_txt = _merge_txt_files([cv_test, ls_test], 'test')
     # Dev
-    _merge_txt_files([cv_dev], 'dev')
+    dev_txt = _merge_txt_files([ls_dev], 'dev')
 
     # TODO Sort train.txt file (SortaGrad).
+    sort_txt_by_seq_len(train_txt)
 
     print('Done.')
-    print('Please verify that ./data/cache only contains required data.')
+    print('Please verify that `./data/cache` only contains data that you want to keep.')

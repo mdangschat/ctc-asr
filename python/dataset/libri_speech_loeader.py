@@ -30,11 +30,11 @@ __SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
 __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
-def libri_speech_loader():
+def libri_speech_loader(keep_archive):
     # TODO Documentation
 
     # Download and extract the dataset if necessary.
-    download.maybe_download_batch(__URLs, md5s=__MD5s, cache_archives=True)
+    download.maybe_download_batch(__URLs, md5s=__MD5s, cache_archives=keep_archive)
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
@@ -127,5 +127,5 @@ def __libri_speech_loader(folders):
 
 # Test download script.
 if __name__ == '__main__':
-    print('Libri Speech txt_paths: ', libri_speech_loader())
+    print('Libri Speech txt_paths: ', libri_speech_loader(True))
     print('\nDone.')
