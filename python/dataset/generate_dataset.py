@@ -96,7 +96,7 @@ if __name__ == '__main__':
     # Dev
     dev_txt = _merge_txt_files([ls_dev], 'dev')
 
-    # TODO Sort train.txt file (SortaGrad).
+    # Sort train.txt file (SortaGrad).
     sort_txt_by_seq_len(train_txt)
 
     print('Done.')
