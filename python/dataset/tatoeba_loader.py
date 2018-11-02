@@ -32,7 +32,7 @@ def tatoeba_loader(keep_archive):
         keep_archive (bool): Keep or delete the downloaded archive afterwards.
 
     Returns:
-        Tuple[str]: Tuple containing the output string that can be written to TXT files.
+        str: String containing the output string that can be written to TXT files.
     """
 
     # Download and extract the dataset if necessary.
@@ -55,7 +55,7 @@ def tatoeba_loader(keep_archive):
     # Cleanup extracted folder.
     download.cleanup_cache(__FOLDER_NAME)
 
-    return tuple([txt_path])
+    return txt_path
 
 
 def __tatoeba_loader(target):
