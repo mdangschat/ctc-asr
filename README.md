@@ -98,8 +98,8 @@ cd ..
 
 # Set environment variables.
 export CUDA_HOME="/usr/local/cuda"
-export TENSORFLOW_SRC_PATH="/home/marc/workspace/tensorflow"
-export WARP_CTC_PATH="/home/marc/workspace/warp-ctc/build"
+export TENSORFLOW_SRC_PATH=<tensorflow_repo>
+export WARP_CTC_PATH="<path_to_repo>/warp-ctc/build"
 
 git clone https://vcs.zwuenf.org/mdangschat/warp-ctc.git
 cd warp-ctc
