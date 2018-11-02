@@ -1,14 +1,17 @@
 """Load the LibriSpeech ASR corpus."""
 
 import os
+import sys
 import subprocess
 
+from tqdm import tqdm
 from scipy.io import wavfile
 
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.dataset import download
 from python.dataset.txt_files import generate_txt
+
 
 # L8ER Add the `other` datasets as well and see if they improve the results.
 # Path to the LibriSpeech ASR dataset.
@@ -31,7 +34,16 @@ __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
 def libri_speech_loader(keep_archive):
-    # TODO Documentation
+    """Download, extract and build the output strings that can be written to the desired TXT files.
+
+    L8ER: Can this be parallelized?
+
+    Args:
+        keep_archive (bool): Keep or delete the downloaded archive afterwards.
+
+    Returns:
+        Tuple[str]: Tuple containing the output string that can be written to TXT files.
+    """
 
     # Download and extract the dataset if necessary.
     download.maybe_download_batch(__URLs, md5s=__MD5s, cache_archives=keep_archive)
@@ -67,10 +79,10 @@ def libri_speech_loader(keep_archive):
 
 def __libri_speech_loader(folders):
     """Build the output string that can be written to the desired *.txt file.
-    TODO Documentation
 
     Args:
-        target (str): 'train', 'test', or 'dev'
+        folders (List[str]): List of directories to include, e.g.
+            `['train-clean-100', 'train-clean-360']`
 
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
@@ -79,7 +91,9 @@ def __libri_speech_loader(folders):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
     output = []
-    for folder in [os.path.join(__SOURCE_PATH, f) for f in folders]:
+    folders_ = [os.path.join(__SOURCE_PATH, f) for f in folders]
+    for folder in tqdm(folders_, desc='Converting Libri Speech data', total=len(folders_),
+                       file=sys.stdout, dynamic_ncols=True, unit='Folder'):
         for root, dirs, files in os.walk(folder):
             if len(dirs) is 0:
                 # Get list of `.trans.txt` files.

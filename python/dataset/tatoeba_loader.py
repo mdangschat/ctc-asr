@@ -26,7 +26,14 @@ __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
 def tatoeba_loader(keep_archive):
-    # TODO Documentation
+    """Download, extract and build the output strings that can be written to the desired TXT files.
+
+    Args:
+        keep_archive (bool): Keep or delete the downloaded archive afterwards.
+
+    Returns:
+        Tuple[str]: Tuple containing the output string that can be written to TXT files.
+    """
 
     # Download and extract the dataset if necessary.
     download.maybe_download(__URL, md5=__MD5, cache_archive=keep_archive)
@@ -52,13 +59,13 @@ def tatoeba_loader(keep_archive):
 
 
 def __tatoeba_loader(target):
-    """Build the output string that can be written to the desired *.txt file.
+    """Build the output string that can be written to the desired TXT file.
 
     Args:
-        target (str): 'train'
+        target (str): Only 'train' is supported for the Tatoeba dataset.
 
     Returns:
-        List[str]: List containing the output string that can be written to *.txt file.
+        str: List containing the output string that can be written to TXT file.
     """
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))

@@ -1,4 +1,4 @@
-"""Configuration file for dataset creation. Also reference `generate_dataset.py`."""
+"""Configuration file for dataset creation. Also reference `python/dataset/generate_dataset.py`."""
 
 import os
 

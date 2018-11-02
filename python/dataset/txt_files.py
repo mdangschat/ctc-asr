@@ -26,7 +26,7 @@ def generate_txt(dataset_name, target, output):
             String containing the content for the `<dataset_name>_<target>.txt` file.
 
     Returns:
-        (str): Path to the created TXT file.
+        str: Path to the created TXT file.
     """
 
     target_txt_path = os.path.join(TXT_DIR, '{}_{}.txt'.format(dataset_name, target))

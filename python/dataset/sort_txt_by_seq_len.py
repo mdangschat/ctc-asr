@@ -1,5 +1,5 @@
 """
-Sort a train.txt like file by it's audio files sequence length.
+Sort a train.txt like file by its audio files sequence length.
 """
 
 import os

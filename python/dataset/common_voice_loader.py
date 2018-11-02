@@ -25,12 +25,33 @@ __SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
 __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 # Define valid accents.
-__VALID_ACCENTS = ['us', 'england', 'canada', 'australia', 'wales', 'newzealand', 'ireland',
-                   'scotland', 'wales', '']
+__VALID_ACCENTS = ['us',
+                   'england',
+                   'canada',
+                   'australia',
+                   'wales',
+                   'newzealand',
+                   'ireland',
+                   'scotland',
+                   'wales',
+                   '']
 
 
 def common_voice_loader(keep_archive):
-    # TODO Documentation
+    """Download and extract the common voice archive. Then build the output strings that can be
+    written to the desired TXT files.
+
+    Uses only the valid datasets, additional constraints are:
+    * Downvotes must be at maximum 1/4 of upvotes.
+    * Valid accents are: 'us', 'england', 'canada', 'australia'.
+    * Accepting samples with only 1 upvote at the moment.
+
+    Args:
+        keep_archive (bool): Keep or delete the downloaded archive afterwards.
+
+    Returns:
+        Tuple[str]: Tuple containing the output strings that can be written to TXT files.
+    """
 
     # Download and extract the dataset if necessary.
     download.maybe_download(__URL, md5=__MD5, cache_archive=keep_archive)
@@ -65,8 +86,7 @@ def common_voice_loader(keep_archive):
 
 
 def __common_voice_loader(folders):
-    """Build the output string that can be written to the desired *.txt file.
-    TODO Update
+    """Build the output string that can be written to the desired TXT file.
 
     Uses only the valid datasets, additional constraints are:
     * Downvotes must be at maximum 1/4 of upvotes.
@@ -109,6 +129,8 @@ def __common_voice_loader(folders):
 
 
 def __common_voice_loader_helper(line):
+    # Helper method for thread pool.
+
     # Cleanup label text.
     text = line[1].strip().replace('  ', ' ')
     # Enforce min label length.

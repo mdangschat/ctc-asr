@@ -16,7 +16,11 @@ __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
 def timit_loader():
-    # TODO Documentation
+    """Build the output string that can be written to the desired *.txt file.
+
+    Returns:
+        Tuple[str]: Tuple containing the output string that can be written to TXT file.
+    """
 
     targets = ['train', 'test']
 
@@ -81,7 +85,7 @@ def __timit_loader(target):
                 continue
 
             # Relative path to `DATASET_PATH`.
-            wav_path = os.path.relpath(wav_path, __TARGET_PATH)
+            wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
             output.append('{} {}\n'.format(wav_path, txt.strip()))
 

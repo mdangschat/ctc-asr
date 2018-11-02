@@ -13,16 +13,26 @@ from python.dataset.config import CACHE_DIR
 
 
 def maybe_download_batch(urls, md5s, cache_archives=True):
-    # TODO Document
+    """Download and extract a batch of archives.
+
+    Args:
+        urls (List[str]): List of download URLs.
+        md5s (List[str]): List of MD5 checksums.
+        cache_archives (bool): Keep the downloaded archives after extraction?
+
+    Returns:
+        Nothing.
+    """
 
     for url, md5 in zip(urls, md5s):
         maybe_download(url, md5=md5, cache_archive=cache_archives)
 
 
 def maybe_download(url, md5=None, cache_archive=True):
-    """Downloads a tar.gz archive file if it's not cached. The archive gets extracted afterwards.
+    """Downloads a archive file if it's not cached. The archive gets extracted afterwards.
     It is advised to call `cleanup_cache()` after pre-processing to remove the cached extracted
     folder.
+    Currently only TAR and ZIP files are supported.
 
     Args:
         url (str):
@@ -54,8 +64,8 @@ def maybe_download(url, md5=None, cache_archive=True):
     if tarfile.is_tarfile(storage_path):
         storage.tar_extract_all(storage_path, CACHE_DIR)
     elif zipfile.is_zipfile(storage_path):
-        with zipfile.ZipFile(storage_path, 'r') as zip:
-            zip.extractall(CACHE_DIR)
+        with zipfile.ZipFile(storage_path, 'r') as zip_:
+            zip_.extractall(CACHE_DIR)
     else:
         raise ValueError('Compression method not supported: ', storage_path)
     print('Completed extraction of: {}'.format(storage_path))

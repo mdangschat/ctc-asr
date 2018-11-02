@@ -1,4 +1,4 @@
-"""Load the Tedlium v2 dataset."""
+"""Load the TEDLIUM v2 dataset."""
 
 import sys
 import os
@@ -34,9 +34,17 @@ __PATTERN = re.compile(
 
 
 def tedlium_loader(keep_archive):
-    # TODO Documentation
-    # Requires lots of disk space, since the original format (SPH) is converted to WAV and then
-    # split up into parts.
+    """Download, extract and build the output strings that can be written to the desired TXT files.
+
+    Requires lots of disk space, since the original format (SPH) is converted to WAV and then split
+    up into parts.
+
+    Args:
+        keep_archive (bool): Keep or delete the downloaded archive afterwards.
+
+    Returns:
+        Tuple[str]: Tuple containing the output strings that can be written to TXT files.
+    """
 
     # Download and extract the dataset if necessary.
     download.maybe_download(__URL, md5=__MD5, cache_archive=keep_archive)
@@ -77,8 +85,7 @@ def tedlium_loader(keep_archive):
 
 
 def __tedlium_loader(target_folder):
-    """Build the output string that can be written to the desired *.txt file.
-    TODO Documentation
+    """Build the output string that can be written to the desired TXT file.
 
      Note:
          Since TEDLIUM data is one large .wav file per speaker. Therefore this method creates
@@ -88,7 +95,7 @@ def __tedlium_loader(target_folder):
         selected.
 
     Args:
-        target (str): 'train', 'test', or 'dev'
+        target_folder (str): E.g. 'train', 'test', or 'dev'
 
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
