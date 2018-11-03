@@ -94,9 +94,9 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         "The sampling rate of the audio files (2 * 8kHz).")
-tf.flags.DEFINE_integer('num_examples_train', 570854,
+tf.flags.DEFINE_integer('num_examples_train', 693361,
                         "Number of examples in the training set. `test.txt`")
-tf.flags.DEFINE_integer('num_examples_test', 3556,
+tf.flags.DEFINE_integer('num_examples_test', 6038,
                         "Number of examples in the testing/evaluation set. `test.txt`")
 tf.flags.DEFINE_integer('num_examples_dev', 2590,
                         "Number of examples in the validation set. `dev.txt`")
