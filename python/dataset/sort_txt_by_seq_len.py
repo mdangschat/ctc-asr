@@ -77,6 +77,8 @@ def sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
     with open(txt_path, 'r') as f:
         print('Successfully sorted {} lines of {}'.format(len(f.readlines()), txt_path))
 
+    return buckets[: -1]
+
 
 def _feature_length(line):
     # Python multiprocessing helper method.

@@ -8,7 +8,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from python.params import FLAGS, TF_FLOAT, BASE_PATH
+from python.params import FLAGS, TF_FLOAT, BASE_PATH, BOUNDARIES
 import python.labels as s_labels
 from python.load_sample import load_sample, NUM_FEATURES
 
@@ -20,7 +20,7 @@ TEST_TXT_PATH = os.path.join(BASE_PATH, 'data/test.txt')
 # Path to dev.txt file.
 DEV_TXT_PATH = os.path.join(BASE_PATH, 'data/dev.txt')
 # Path to dataset collection folder.
-DATASET_PATH = os.path.join(BASE_PATH, '../datasets/speech_data/')
+DATASET_PATH = os.path.join(BASE_PATH, 'data/corpus/')
 
 
 def inputs_train(batch_size, shuffle=False):
@@ -288,19 +288,11 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    if FLAGS.features_drop_every_second_frame:
-        boundaries = [147, 157, 165, 172, 179, 183, 186, 192, 193, 197, 204, 208, 211, 219, 220,
-                      222, 229, 233, 237, 244, 247, 251, 258, 262, 269, 273, 280, 287, 294, 302,
-                      312, 323, 335, 348, 363, 378, 395, 414, 433, 455, 479, 503, 534, 563, 599,
-                      640, 688, 741, 797, 861, 935, 1022, 1115, 1202, 1271, 1329, 1376, 1417, 1454,
-                      1489, 1522, 1556, 1592]
+    if not FLAGS.features_drop_every_second_frame:
+        boundaries = BOUNDARIES
 
     else:
-        boundaries = [73, 78, 82, 86, 89, 91, 93, 96, 96, 98, 102, 104, 105, 109, 110, 111, 114,
-                      116, 118, 122, 123, 125, 129, 131, 134, 136, 140, 143, 147, 151, 156, 161,
-                      167, 174, 181, 189, 197, 207, 216, 227, 239, 251, 267, 281, 299, 320, 344,
-                      370, 398, 430, 467, 511, 557, 601, 635, 664, 688, 708, 727, 744, 761, 778,
-                      796]
+        boundaries = (np.array(BOUNDARIES) // 2).tolist()
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_len, (sequences, labels, label_len, originals) = \

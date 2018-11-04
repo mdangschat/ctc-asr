@@ -2,10 +2,12 @@
 
 import numpy as np
 import tensorflow as tf
-from os import path
 from multiprocessing import cpu_count
 
 from python.labels import num_classes
+from python.util.params_helper import BASE_PATH, TRAIN_SIZE, TEST_SIZE, DEV_SIZE, BOUNDARIES
+BASE_PATH = BASE_PATH
+BOUNDARIES = BOUNDARIES
 
 
 # Constants describing the training process.
@@ -93,12 +95,12 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
 
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
-                        "The sampling rate of the audio files (2 * 8kHz).")
-tf.flags.DEFINE_integer('num_examples_train', 693361,
+                        "The sampling rate of the audio files (e.g. 2 * 8kHz).")
+tf.flags.DEFINE_integer('num_examples_train', TRAIN_SIZE,
                         "Number of examples in the training set. `test.txt`")
-tf.flags.DEFINE_integer('num_examples_test', 6038,
+tf.flags.DEFINE_integer('num_examples_test', TEST_SIZE,
                         "Number of examples in the testing/evaluation set. `test.txt`")
-tf.flags.DEFINE_integer('num_examples_dev', 2590,
+tf.flags.DEFINE_integer('num_examples_dev', DEV_SIZE,
                         "Number of examples in the validation set. `dev.txt`")
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         "Number of classes. Contains the additional CTC <blank> label.")
@@ -126,8 +128,6 @@ tf.flags.DEFINE_boolean('allow_vram_growth', False,
 # Export names.
 TF_FLOAT = tf.float32   # ctc_*** functions don't support float64. See #13
 NP_FLOAT = np.float32   # ctc_*** functions don't support float64. See #13
-
-BASE_PATH = path.split(path.dirname(path.realpath(__file__)))[0]    # Path to git root.
 
 MIN_EXAMPLE_LENGTH = 0.7    # Minimum length of examples in datasets (in seconds).
 MAX_EXAMPLE_LENGTH = 17.0   # Maximum length of examples in datasets (in seconds).

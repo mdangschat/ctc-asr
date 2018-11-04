@@ -29,8 +29,10 @@ Generated data format:
 """
 
 import os
+import json
 
 from python.dataset.config import TXT_DIR
+from python.util.params_helper import JSON
 from python.dataset.common_voice_loader import common_voice_loader
 from python.dataset.libri_speech_loeader import libri_speech_loader
 from python.dataset.tatoeba_loader import tatoeba_loader
@@ -71,18 +73,21 @@ def generate_dataset(keep_archives=True, use_timit=True):
     # Assemble and merge .txt files.
     # Train
     train = [cv_train, ls_train, tatoeba_train, ted_train, timit_train]
-    train_txt = _merge_txt_files(train, 'train')
+    train_txt, train_len = _merge_txt_files(train, 'train')
 
     # Test
     test = [cv_test, ls_test]
-    _ = _merge_txt_files(test, 'test')
+    _, test_len = _merge_txt_files(test, 'test')
 
     # Dev
     dev = [ls_dev]
-    _ = _merge_txt_files(dev, 'dev')
+    _, dev_len = _merge_txt_files(dev, 'dev')
 
     # Sort train.txt file (SortaGrad).
-    sort_txt_by_seq_len(train_txt)
+    boundaries = sort_txt_by_seq_len(train_txt)
+
+    # Write corpus metadata to JSON.
+    store_corpus_json((train_len, test_len, dev_len, boundaries))
 
 
 def _merge_txt_files(txt_files, target):
@@ -111,7 +116,26 @@ def _merge_txt_files(txt_files, target):
         f.writelines(buffer)
         print('Added {:,d} lines to: {}'.format(len(buffer), target_file))
 
-    return target_file
+    return target_file, len(buffer)
+
+
+def store_corpus_json(metadata):
+    """Store corpus metadata in `/python/data/corpus.json`.
+
+    Args:
+        metadata (Tuple[int, int, int, Array[int]):
+
+    Returns:
+        Nothing.
+    """
+    with open(JSON, 'w') as f:
+        data = {
+            'train_size': metadata[0],
+            'test_size': metadata[1],
+            'dev_size': metadata[2],
+            'boundaries': metadata[3]
+        }
+        json.dump(data, f, indent=2)
 
 
 # Generate data.
