@@ -14,11 +14,11 @@ if os.path.exists(JSON):
     with open(JSON, 'r') as f:
         data = json.load(f)
 
-        print("DATA:", data)
+        TRAIN_SIZE = data['train_size']
+        TEST_SIZE = data['test_size']
+        DEV_SIZE = data['dev_size']
+        BOUNDARIES = data['boundaries']
 else:
-    raise RuntimeError('corpus.json file not found.')
-
-TRAIN_SIZE = data['train_size']
-TEST_SIZE = data['test_size']
-DEV_SIZE = data['dev_size']
-BOUNDARIES = data['boundaries']
+    print('WARN: No "corpus.json" present.')
+    TRAIN_SIZE = TEST_SIZE = DEV_SIZE = -1
+    BOUNDARIES = []
