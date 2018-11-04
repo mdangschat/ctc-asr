@@ -36,7 +36,10 @@ support for training.
 ### Arch Linux
 ```sh
 # Install dependencies.
-pacman -S sox python-tensorflow-opt-cuda tensorbaord
+sudo pacman -S sox python-tensorflow-opt-cuda tensorbaord
+
+# Install optional dependencies.
+sudo pacman -S texlive-most
 
 # Clone reposetory and install Python depdendencies.
 git clone <URL>
@@ -54,6 +57,9 @@ Based on my experience it is worth the effort to
 ```sh
 # Install dependencies.
 sudo apt install python3-tk sox libsox-fmt-all
+
+# Install optional dependencies.
+sudo apt install texlive
 
 # Clone reposetory and install Python depdendencies. Don't forget tensorflow-gpu.
 git clone <URL>
