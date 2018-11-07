@@ -16,6 +16,8 @@ from python.evaluate import evaluate
 
 
 # General TensorFlow settings and setup.
+from python.util.hooks import GPUStatisticsHook
+
 tf.logging.set_verbosity(tf.logging.INFO)
 __random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 tf.set_random_seed(FLAGS.random_seed)
@@ -103,6 +105,13 @@ def train(epoch):
                                                        summary_writer=file_writer,
                                                        summary_op=summary_op)
 
+        # GPU statistics hook.
+        gpu_stats_hook = GPUStatisticsHook(
+            every_n_steps=FLAGS.log_frequency * 40,
+            stats=['mem_util', 'gpu_util'],
+            summary_writer=file_writer
+        )
+
         # Stop after steps hook.
         last_step = (epoch + 1) * __STEPS_EPOCH
         stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
@@ -117,6 +126,8 @@ def train(epoch):
             checkpoint_saver_hook,
             # Summary saver hook.
             summary_saver_hook,
+            # GPU statistics hook.
+            gpu_stats_hook,
             # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
             # Deactivated `TraceHook`, because it's computational intensive.
             # TraceHook(file_writer, FLAGS.log_frequency * 5),
