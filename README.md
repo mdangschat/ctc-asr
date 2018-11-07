@@ -149,6 +149,11 @@ Only the LibriSpeech clean dev set is used as the validation/development set and
 and Common Voice clean test sets are used as testing dataset. 
 The ASR system works on 16 kHz mono `.wav` files.
 
+A helper that downloads the free corpora and prepares the data and creates the merged corpora can
+be found in [python/dataset/generate_dataset.py](python/dataset/generate_dataset.py).
+The file needs to be adjusted for the datasets that should be used, it further expects the TIMIT
+dataset to be present.
+
 
 ### `train.txt` 906+ Hours
 Examples shorter than 0.7 and longer than 17.0 seconds have been removed.

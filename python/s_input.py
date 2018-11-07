@@ -8,7 +8,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from python.params import FLAGS, TF_FLOAT, BASE_PATH
+from python.params import FLAGS, TF_FLOAT, BASE_PATH, BOUNDARIES
 import python.labels as s_labels
 from python.load_sample import load_sample, NUM_FEATURES
 
@@ -20,7 +20,7 @@ TEST_TXT_PATH = os.path.join(BASE_PATH, 'data/test.txt')
 # Path to dev.txt file.
 DEV_TXT_PATH = os.path.join(BASE_PATH, 'data/dev.txt')
 # Path to dataset collection folder.
-DATASET_PATH = os.path.join(BASE_PATH, '../datasets/speech_data/')
+DATASET_PATH = os.path.join(BASE_PATH, 'data/corpus/')
 
 
 def inputs_train(batch_size, shuffle=False):
@@ -288,17 +288,11 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
         tf.Tensor: `originals`
             2D Tensor with the original strings.
     """
-    if FLAGS.features_drop_every_second_frame:
-        boundaries = [143, 154, 161, 168, 172, 179, 183, 186, 193, 197, 203, 204, 208, 211, 212,
-                      219, 222, 229, 233, 237, 244, 247, 251, 255, 258, 263, 273, 276, 283, 294,
-                      300, 311, 323, 337, 353, 373, 400, 431, 472, 517, 575, 640, 708, 772, 834,
-                      901, 975, 1056, 1136, 1207, 1266, 1315, 1357, 1393, 1425, 1455, 1484, 1512,
-                      1540, 1568, 1600]
+    if not FLAGS.features_drop_every_second_frame:
+        boundaries = BOUNDARIES
+
     else:
-        boundaries = [71, 77, 80, 84, 86, 89, 91, 93, 96, 98, 101, 102, 104, 105, 106, 109, 111,
-                      114, 116, 118, 122, 123, 125, 127, 129, 131, 136, 138, 141, 147, 150, 155,
-                      161, 168, 176, 186, 200, 215, 236, 258, 287, 320, 354, 386, 417, 450, 487,
-                      528, 568, 603, 633, 657, 678, 696, 712, 727, 742, 756, 770, 784, 800, 849]
+        boundaries = (np.array(BOUNDARIES) // 2).tolist()
 
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_len, (sequences, labels, label_len, originals) = \

@@ -10,33 +10,72 @@ from multiprocessing import Pool, Lock, cpu_count
 from tqdm import tqdm
 from scipy.io import wavfile
 
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.util.storage import delete_file_if_exists
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
-
+from python.dataset import download
+from python.dataset.txt_files import generate_txt
 
 # Path to the Taboeba dataset.
-__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
-__TATOEBA_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'tatoeba/tatoeba_audio_eng'))
+__URL = 'https://downloads.tatoeba.org/audio/tatoeba_audio_eng.zip'
+__MD5 = 'd76252fd704734fc3d8bf5b44e029809'
+__NAME = 'tatoeba'
+__FOLDER_NAME = 'tatoeba_audio_eng'
+__SOURCE_PATH = os.path.join(CACHE_DIR, __FOLDER_NAME)
+__TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
-def tatoeba_loader(target):
-    """Build the output string that can be written to the desired *.txt file.
+def tatoeba_loader(keep_archive):
+    """Download, extract and build the output strings that can be written to the desired TXT files.
 
     Args:
-        target (str): 'train'
+        keep_archive (bool): Keep or delete the downloaded archive afterwards.
 
     Returns:
-        List[str]: List containing the output string that can be written to *.txt file.
+        str: String containing the output string that can be written to TXT files.
     """
-    if not os.path.isdir(__TATOEBA_PATH):
-        raise ValueError('"{}" is not a directory.'.format(__TATOEBA_PATH))
+
+    # Download and extract the dataset if necessary.
+    download.maybe_download(__URL, md5=__MD5, cache_archive=keep_archive)
+    if not os.path.isdir(__SOURCE_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
+
+    # Download user ratings CSV file.
+    csv_path = os.path.join(__SOURCE_PATH, 'users_sentences.csv')
+    download.download_with_progress('http://downloads.tatoeba.org/exports/users_sentences.csv',
+                                    csv_path)
+    assert os.path.exists(csv_path)
+
+    target = 'train'
+    # Generate the WAV and a string for the `<target>.txt` file.
+    output = __tatoeba_loader(target)
+    # Generate the `<target>.txt` file.
+    txt_path = generate_txt(__NAME, target, output)
+
+    # Cleanup extracted folder.
+    download.cleanup_cache(__FOLDER_NAME)
+
+    return txt_path
+
+
+def __tatoeba_loader(target):
+    """Build the output string that can be written to the desired TXT file.
+
+    Args:
+        target (str): Only 'train' is supported for the Tatoeba dataset.
+
+    Returns:
+        str: List containing the output string that can be written to TXT file.
+    """
+    if not os.path.isdir(__SOURCE_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
     if target != 'train':
         raise ValueError('Invalid target. Tatoeba only has a train dataset.')
 
     validated_samples = set()     # Set of all sample IDs that have been validated.
     # Parse dataset meta data information to filter out low ranked samples.
-    with open(os.path.join(__TATOEBA_PATH, 'users_sentences.csv'), 'r') as csv_handle:
+    with open(os.path.join(__SOURCE_PATH, 'users_sentences.csv'), 'r') as csv_handle:
         csv_reader = csv.reader(csv_handle, delimiter='\t')
         csv_lines = list(csv_reader)
         # print('csv_header: username\tsentence_id\trating\tdate_added\tdate_modified')
@@ -44,12 +83,12 @@ def tatoeba_loader(target):
         for username, _id, rating, _, _ in csv_lines:
             rating = int(rating)
             if rating >= 1:
-                path = os.path.join(__TATOEBA_PATH, 'audio', username, _id)
+                path = os.path.join(__SOURCE_PATH, 'audio', username, _id)
                 validated_samples.add(path)
 
     samples = []     # List of dictionaries of all files and labels and in the dataset.
     # Parse dataset meta data information to filter out low ranked samples.
-    with open(os.path.join(__TATOEBA_PATH, 'sentences_with_audio.csv'), 'r') as csv_handle:
+    with open(os.path.join(__SOURCE_PATH, 'sentences_with_audio.csv'), 'r') as csv_handle:
         csv_reader = csv.reader(csv_handle, delimiter='\t')
         csv_lines = list(csv_reader)
         csv_lines = csv_lines[1:]  # Remove CSV header.
@@ -58,9 +97,15 @@ def tatoeba_loader(target):
         for _id, username, text in tqdm(csv_lines,
                                         desc='Loading Tatoeba CSV', total=len(csv_lines),
                                         file=sys.stdout, unit='entries', dynamic_ncols=True):
-            path = os.path.join(__TATOEBA_PATH, 'audio', username, _id)
+            path = os.path.join(__SOURCE_PATH, 'audio', username, _id)
             if path in validated_samples:
                 samples.append({'path': path, 'text': text})
+
+    # Create target folder structure.
+    for sample in samples:
+        dir_path = os.path.join(__TARGET_PATH, os.path.relpath(sample['path'], __SOURCE_PATH))
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
 
     lock = Lock()
     buffer = []
@@ -87,6 +132,7 @@ def __tatoeba_loader_helper(sample):
     text = sample['text']
     mp3_path = '{}.mp3'.format(path)
     wav_path = '{}.wav'.format(path)
+    wav_path = os.path.join(__TARGET_PATH, os.path.relpath(wav_path, __SOURCE_PATH))
 
     # Check if audio file MP3 exists.
     if not os.path.isfile(mp3_path):
@@ -121,5 +167,12 @@ def __tatoeba_loader_helper(sample):
                 raise
             time.sleep(1)
 
-    wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
+    # TODO: Copy used files to corpus dir
+    wav_path = os.path.relpath(wav_path, CORPUS_DIR)
     return '{} {}\n'.format(wav_path, text.strip())
+
+
+# Test download script.
+if __name__ == '__main__':
+    print('Tatoeba txt_paths: ', tatoeba_loader(True))
+    print('\nDone.')

@@ -1,6 +1,7 @@
 import os
 import matplotlib
 from matplotlib import rc
+from distutils.spawn import find_executable
 
 
 def pyplot_display(func):
@@ -23,7 +24,8 @@ def pyplot_display(func):
                       'serif': ['DejaVu Sans'],
                       'size': 12
                       })
-        rc('text', usetex=True)
+        usetex = find_executable('latex') is not None
+        rc('text', usetex=usetex)
 
         # Setup plot output based on the availability of a display (PyCharm remote execution).
         display = 'DISPLAY' in os.environ or \

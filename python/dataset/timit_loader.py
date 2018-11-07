@@ -4,15 +4,35 @@ import os
 
 from scipy.io import wavfile
 
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, BASE_PATH
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from python.dataset.config import CORPUS_DIR
+from python.dataset.txt_files import generate_txt
 
 
 # Path to the TIMIT dataset.
-__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
-__TIMIT_PATH = os.path.realpath(os.path.join(__DATASETS_PATH, 'timit/TIMIT'))
+__NAME = 'timit'
+__FOLDER_NAME = 'timit/TIMIT'
+__TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
-def timit_loader(target):
+def timit_loader():
+    """Build the output string that can be written to the desired *.txt file.
+
+    Returns:
+        Tuple[str]: Tuple containing the output string that can be written to TXT file.
+    """
+
+    targets = ['train', 'test']
+
+    txt_paths = []
+    for target in targets:
+        output = __timit_loader(target)
+        txt_paths.append(generate_txt(__NAME, target, output))
+
+    return tuple(txt_paths)
+
+
+def __timit_loader(target):
     """Build the output string that can be written to the desired *.txt file.
 
     Args:
@@ -21,15 +41,15 @@ def timit_loader(target):
     Returns:
         [str]: List containing the output string that can be written to *.txt file.
     """
-    if not os.path.isdir(__TIMIT_PATH):
-        raise ValueError('"{}" is not a directory.'.format(__TIMIT_PATH))
+    if not os.path.isdir(__TARGET_PATH):
+        raise ValueError('"{}" is not a directory.'.format(__TARGET_PATH))
 
     if target != 'test' and target != 'train':
         raise ValueError('Timit only supports "train" and "test" targets.')
 
     # Location of timit intern .txt file listings.
-    train_txt_path = os.path.join(__TIMIT_PATH, 'train_all.txt')
-    test_txt_path = os.path.join(__TIMIT_PATH, 'test_all.txt')
+    train_txt_path = os.path.join(__TARGET_PATH, 'train_all.txt')
+    test_txt_path = os.path.join(__TARGET_PATH, 'test_all.txt')
 
     # Select target.
     master_txt_path = train_txt_path if target == 'train' else test_txt_path
@@ -43,7 +63,7 @@ def timit_loader(target):
 
     for line in master_data:
         wav_path, txt_path, _, _ = line.split(',')
-        txt_path = os.path.join(__TIMIT_PATH, txt_path)
+        txt_path = os.path.join(__TARGET_PATH, txt_path)
 
         # Skip SAx.WAV files, since they are repeated by every speaker in the dataset.
         basename = os.path.basename(wav_path)
@@ -56,7 +76,7 @@ def timit_loader(target):
             txt = txt[0].split(' ', 2)[2]
 
             # Absolute path.
-            wav_path = os.path.join(__TIMIT_PATH, wav_path)
+            wav_path = os.path.join(__TARGET_PATH, wav_path)
 
             # Validate that the example length is within boundaries.
             (sr, y) = wavfile.read(wav_path)
@@ -65,7 +85,7 @@ def timit_loader(target):
                 continue
 
             # Relative path to `DATASET_PATH`.
-            wav_path = os.path.relpath(wav_path, __DATASETS_PATH)
+            wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
             output.append('{} {}\n'.format(wav_path, txt.strip()))
 

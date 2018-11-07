@@ -1,5 +1,5 @@
 """
-Sort a train.txt like file by it's audio files sequence length.
+Sort a train.txt like file by its audio files sequence length.
 """
 
 import os
@@ -11,13 +11,10 @@ from tqdm import tqdm
 from python.util import storage
 from python.load_sample import load_sample
 from python.util.matplotlib_helper import pyplot_display
-from python.params import BASE_PATH
+from python.dataset.config import CORPUS_DIR, TXT_DIR
 
 
-__DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
-
-
-def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
+def sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
     """Sort a train.txt like file by it's audio files sequence length.
     Additionally outputs longer than `max_length` are being discarded from the given TXT file.
     Also it prints out optimal bucket sizes after computation.
@@ -80,11 +77,13 @@ def _sort_txt_by_seq_len(txt_path, num_buckets=64, max_length=1700):
     with open(txt_path, 'r') as f:
         print('Successfully sorted {} lines of {}'.format(len(f.readlines()), txt_path))
 
+    return buckets[: -1]
+
 
 def _feature_length(line):
     # Python multiprocessing helper method.
     wav_path, label = line.split(' ', 1)
-    length = int(load_sample(os.path.join(__DATASETS_PATH, wav_path))[1])
+    length = int(load_sample(os.path.join(CORPUS_DIR, wav_path))[1])
     return length, wav_path, label
 
 
@@ -103,7 +102,7 @@ def _plot_sequence_lengths(plt, lengths):
 
 if __name__ == '__main__':
     # Path to `train.txt` file.
-    _txt_path = os.path.join('./data', 'train.txt')
+    _txt_path = os.path.join(TXT_DIR, 'train.txt')
 
     # Display dataset stats.
-    _sort_txt_by_seq_len(_txt_path)
+    sort_txt_by_seq_len(_txt_path)

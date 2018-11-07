@@ -2,6 +2,9 @@
 
 import os
 import time
+import shutil
+import hashlib
+import tarfile
 import tensorflow as tf
 from git import Repo
 
@@ -62,6 +65,25 @@ def delete_file_if_exists(path):
                 time.sleep(1)
 
 
+def delete_directory_if_exists(path):
+    """Recursive delete of a folder and all contained files.
+
+    Args:
+        path (str):  Directory path.
+
+    Returns:
+        Nothing.
+    """
+
+    if os.path.exists(path) and os.path.isdir(path):
+        # https://docs.python.org/3/library/shutil.html#shutil.rmtree
+        # Doesn't state which errors are possible.
+        try:
+            shutil.rmtree(path)
+        except OSError as e:
+            raise e
+
+
 def maybe_delete_checkpoints(path, delete):
     """Delete a TensorFlow checkpoint directory if requested and necessary.
 
@@ -103,3 +125,41 @@ def maybe_read_global_step(checkpoint_path):
         return -1
 
     return int(os.path.basename(checkpoint.model_checkpoint_path).split('-')[1])
+
+
+def md5(file_path):
+    """Calculate the md5 checksum of files that do not fit in memory.
+
+    Args:
+        file_path (str): Path to file.
+
+    Returns:
+        str: md5 checksum.
+    """
+    hash_md5 = hashlib.md5()
+    with open(file_path, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b''):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
+def tar_extract_all(tar_path, target_path):
+    """Extract a TAR archive. Overrides existing files.
+
+    Args:
+        tar_path (str): Path of TAR archive.
+        target_path (str): Where to extract the archive.
+
+    Returns:
+        Nothing.
+    """
+    assert os.path.exists(target_path) and os.path.isdir(target_path), 'target_path does not exist.'
+    with tarfile.open(tar_path, 'r') as tar:
+        for f in tar:
+            try:
+                tar.extract(f, path=target_path)
+            except IOError:
+                os.remove(os.path.join(target_path, f.name))
+                tar.extract(f, path=target_path)
+            finally:
+                os.chmod(os.path.join(target_path, f.name), f.mode)
