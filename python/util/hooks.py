@@ -1,8 +1,13 @@
+import time
+from datetime import datetime
 import pynvml as nvml
 import tensorflow as tf
+
 from tensorflow.core.framework.summary_pb2 import Summary
 from tensorflow.python.platform import tf_logging as logging
 from tensorflow.python.training import summary_io, training_util, session_run_hook
+
+from python.params import FLAGS
 
 
 class GPUStatisticsHook(tf.train.SessionRunHook):
@@ -76,7 +81,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
             self._summary_writer = summary_io.SummaryWriterCache.get(self._output_dir)
 
         # Get read access to the global step tensor.
-        self._global_step_tensor = training_util._get_or_create_global_step_read()  # pylint: disable=protected-access
+        # pylint: disable=protected-access
+        self._global_step_tensor = training_util._get_or_create_global_step_read()
         if self._global_step_tensor is None:
             raise RuntimeError("Global step should be created to use StepCounterHook.")
 
@@ -169,3 +175,72 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
             self._global_step_check_count = 0
 
         self._last_global_step = stale_global_step
+
+
+# The following code has been inspired by <https://stackoverflow.com/a/45681782>:
+class TraceHook(tf.train.SessionRunHook):
+    """Hook to perform Traces every N steps."""
+
+    def __init__(self, file_writer, log_frequency, trace_level=tf.RunOptions.FULL_TRACE):
+        self._trace = log_frequency == 1
+        self.writer = file_writer
+        self.trace_level = trace_level
+        self.log_frequency = log_frequency
+        self._global_step_tensor = None
+
+    def begin(self):
+        self._global_step_tensor = tf.train.get_global_step()
+        if self._global_step_tensor is None:
+            raise RuntimeError("Global step should be created to use TraceHook.")
+
+    def before_run(self, run_context):
+        if self._trace:
+            options = tf.RunOptions(trace_level=self.trace_level)
+        else:
+            options = None
+
+        return tf.train.SessionRunArgs(fetches=self._global_step_tensor, options=options)
+
+    def after_run(self, run_context, run_values):
+        global_step = run_values.results - 1
+        if self._trace:
+            self._trace = False
+            self.writer.add_run_metadata(run_values.run_metadata, '{}'.format(global_step))
+        if not (global_step + 1) % self.log_frequency:
+            self._trace = True
+
+
+class LoggerHook(tf.train.SessionRunHook):
+    """Log loss and runtime."""
+
+    def __init__(self, loss_op):
+        self.loss_op = loss_op
+        self._global_step_tensor = None
+        self._start_time = 0
+
+    def begin(self):
+        self._global_step_tensor = tf.train.get_global_step()
+        self._start_time = time.time()
+
+    def before_run(self, run_context):
+        # Asks for loss value and global step.
+        return tf.train.SessionRunArgs(fetches=[self.loss_op, self._global_step_tensor])
+
+    def after_run(self, run_context, run_values):
+        loss_value, global_step = run_values.results
+
+        if global_step % FLAGS.log_frequency == 0:
+            current_time = time.time()
+            duration = current_time - self._start_time
+            self._start_time = current_time
+
+            examples_per_sec = FLAGS.log_frequency * FLAGS.batch_size / duration
+            sec_per_batch = duration / float(FLAGS.log_frequency)
+            batch_per_sec = float(FLAGS.log_frequency) / duration
+
+            print('{:%Y-%m-%d %H:%M:%S}: Epoch {:,d} (step={:,d}); loss={:.4f}; '
+                  '{:.1f} examples/sec ({:.3f} sec/batch) ({:.2f} batch/sec)'
+                  .format(datetime.now(),
+                          global_step // (FLAGS.num_examples_train // FLAGS.batch_size - 1),
+                          global_step, loss_value, examples_per_sec,
+                          sec_per_batch, batch_per_sec))
