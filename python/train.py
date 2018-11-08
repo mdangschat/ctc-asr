@@ -10,9 +10,11 @@ import tensorflow as tf
 from datetime import datetime
 
 from python.params import FLAGS, get_parameters
-from python.util import storage, tf_contrib
+from python.util import storage
 import python.model as model
 from python.evaluate import evaluate
+
+from python.util.hooks import GPUStatisticsHook, LoggerHook
 
 
 # General TensorFlow settings and setup.
@@ -103,6 +105,14 @@ def train(epoch):
                                                        summary_writer=file_writer,
                                                        summary_op=summary_op)
 
+        # GPU statistics hook.
+        gpu_stats_hook = GPUStatisticsHook(
+            every_n_steps=FLAGS.log_frequency,
+            stats=['mem_util', 'gpu_util'],
+            summary_writer=file_writer,
+            suppress_stdout=False
+        )
+
         # Stop after steps hook.
         last_step = (epoch + 1) * __STEPS_EPOCH
         stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
@@ -117,11 +127,13 @@ def train(epoch):
             checkpoint_saver_hook,
             # Summary saver hook.
             summary_saver_hook,
+            # GPU statistics hook.
+            gpu_stats_hook,
             # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
             # Deactivated `TraceHook`, because it's computational intensive.
             # TraceHook(file_writer, FLAGS.log_frequency * 5),
             # LoggingHook.
-            tf_contrib.LoggerHook(loss)
+            LoggerHook(loss)
         ]
 
         # The MonitoredTrainingSession takes care of session initialization, session resumption,
