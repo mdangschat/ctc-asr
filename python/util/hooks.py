@@ -137,7 +137,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                 name = nvml.nvmlDeviceGetName(handle).decode('utf-8')
 
                 # Log utilization information with INFO level.
-                logging.info("%s (%s): %s", gpu_tag, name, 'gpu util: {} %, mem_io util: {} %'
+                logging.info("%s (%s): %s", gpu_tag, name, 'gpu util: {}%, mem_io util: {}%'
                              .format(summaries['mem_util'], summaries['gpu_util']))
 
     def after_run(self, run_context, run_values):

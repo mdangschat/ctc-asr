@@ -110,7 +110,7 @@ def train(epoch):
             every_n_steps=FLAGS.log_frequency,
             stats=['mem_util', 'gpu_util'],
             summary_writer=file_writer,
-            suppress_stdout=False
+            suppress_stdout=True
         )
 
         # Stop after steps hook.
