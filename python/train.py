@@ -14,7 +14,7 @@ from python.util import storage
 import python.model as model
 from python.evaluate import evaluate
 
-from python.util.hooks import GPUStatisticsHook, LoggerHook
+from python.util.hooks import LoggerHook
 
 
 # General TensorFlow settings and setup.
@@ -105,14 +105,6 @@ def train(epoch):
                                                        summary_writer=file_writer,
                                                        summary_op=summary_op)
 
-        # GPU statistics hook.
-        gpu_stats_hook = GPUStatisticsHook(
-            every_n_steps=FLAGS.log_frequency,
-            stats=['mem_util', 'gpu_util'],
-            summary_writer=file_writer,
-            suppress_stdout=True
-        )
-
         # Stop after steps hook.
         last_step = (epoch + 1) * __STEPS_EPOCH
         stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
@@ -127,8 +119,6 @@ def train(epoch):
             checkpoint_saver_hook,
             # Summary saver hook.
             summary_saver_hook,
-            # GPU statistics hook.
-            gpu_stats_hook,
             # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
             # Deactivated `TraceHook`, because it's computational intensive.
             # TraceHook(file_writer, FLAGS.log_frequency * 5),
@@ -186,8 +176,8 @@ def main(argv=None):
     storage.maybe_delete_checkpoints('{}_test'.format(FLAGS.train_dir), FLAGS.delete)
 
     # Logging information's about the run.
-    print('Version: {} Branch: {} Commit: {}'
-          .format(storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
+    print('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}'.format(
+        tf.VERSION, storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
     print('Parameters: ', get_parameters())
 
     # Calculate global_step and epoch.

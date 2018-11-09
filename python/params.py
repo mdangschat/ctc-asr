@@ -50,7 +50,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
 # CTC loss and decoder.
 tf.flags.DEFINE_integer('beam_width', 1024,
                         "Beam width used in the CTC `beam_search_decoder`.")
-tf.flags.DEFINE_boolean('use_warp_ctc', False,
+tf.flags.DEFINE_boolean('use_warp_ctc', False,      # L8ER: WarpCTC support is getting removed soon.
                         "Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.")
 
 
