@@ -1,141 +1,17 @@
 """Train the asr model.
 
 Tested with Python 3.5, 3.6 and 3.7.
-Note: No Python 2 compatibility is being provided.
+No Python 2 compatibility is being provided.
 """
 
 import time
-
 import tensorflow as tf
-from datetime import datetime
 
 from python.params import FLAGS, get_parameters
 from python.util import storage
-from python import model
+from python.model import model_fn
 from python.s_input import train_input_fn, eval_input_fn, pred_input_fn
 from python.util.hooks import LoggerHook
-
-
-__STEPS_EPOCH = (FLAGS.num_examples_train // FLAGS.batch_size) - 1
-__MAX_STEPS = __STEPS_EPOCH * FLAGS.max_epochs
-
-
-def train(epoch):
-    """Train the network for a number of steps. Uses SortaGrad to start training (first epoch)
-     on short sequences, and increase their length throughout the first epoch. After that it
-     uses shuffled inputs.
-     This leads to a very low loss at the beginning of training, and also much faster computation
-     times at the start of the first epoch.
-
-    Args:
-        epoch (int): Whether to use sorted inputs (`epoch=0`) or shuffled inputs for training.
-            See SortaGrad approach as documented in `Deep Speech 2`_.
-
-    Returns:
-        bool: True if all training examples of the epoch are completed, else False.
-
-    .. _`Deep Speech 2`:
-        https://arxiv.org/abs/1512.02595
-    """
-    current_global_step = -1
-    tf.logging.info('Starting epoch {}.'.format(epoch))
-
-    with tf.Graph().as_default():
-        # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
-        # are performed on GPU.
-        with tf.device('/cpu:0'):
-            global_step = tf.train.get_or_create_global_step()
-            sequences, seq_length, labels, label_length, originals = model.inputs_train(epoch > 0)
-
-        # Build the logits (prediction) graph.
-        logits, seq_length = model.inference(sequences, seq_length, training=True)
-
-        with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
-            # Calculate loss/cost.
-            loss = model.loss(logits, seq_length, labels)
-            tf.summary.scalar('ctc_loss', loss)
-
-            # Decode.
-            decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
-            tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
-
-            # Error metrics for decoded text.
-            eds, mean_ed, wers, wer = model.decoded_error_rates(labels, originals, decoded,
-                                                                plaintext)
-            tf.summary.histogram('edit_distances', eds)
-            tf.summary.scalar('mean_edit_distance', mean_ed)
-            tf.summary.histogram('word_error_rates', wers)
-            tf.summary.scalar('word_error_rate', wer)
-
-        # Build the training graph, that updates the model parameters after each batch.
-        train_op = model.train(loss, global_step)
-
-        # The MonitoredTrainingSession takes care of session initialization, session resumption,
-        # creating checkpoints, and some basic error handling.
-        session = tf.train.MonitoredTrainingSession(
-            checkpoint_dir=FLAGS.train_dir,
-            # Don't use the sessions default checkpoint saver.
-            save_checkpoint_steps=None,
-            save_checkpoint_secs=None,
-            # Don't use the sessions default summary saver.
-            save_summaries_steps=None,
-            save_summaries_secs=None,
-            # The frequency, in number of global steps, that the global_step/sec is logged.
-            log_step_count_steps=FLAGS.log_frequency * 20,
-            # Set session scaffolding.
-            scaffold=tf.train.Scaffold(saver=checkpoint_saver),
-            # Attach hooks to session.
-            hooks=session_hooks,
-            # Number of seconds given to threads to stop after close() has been called.
-            stop_grace_period_secs=60,
-            # Attach session config.
-            config=session_config
-        )
-
-        with session:
-            while not session.should_stop():
-                try:
-                    _, current_global_step = session.run([train_op, global_step])
-
-                except tf.errors.OutOfRangeError:
-                    print('{:%Y-%m-%d %H:%M:%S}: All batches of epoch fed.'
-                          .format(datetime.now()))
-                    break
-
-    return current_global_step
-
-
-def model_fn(features, mode, params):
-    # TODO Documentation
-
-    spectrograms = tf.feature_column.input_layer(features,
-                                                 params['feature_columns'], ['spectrogram'])
-
-    logits = model.inference(spectrograms, spectrograms_lengths)
-
-    if mode == tf.estimator.ModeKeys.PREDICT:
-        raise NotImplementedError('Prediction is not implemented.')
-
-    loss = model.loss(logits, spectrograms_lengths, labels)
-
-    # During training.
-    if mode == tf.estimator.ModeKeys.TRAIN:
-        # Set up the optimizer for training.
-        global_step = tf.train.get_global_step()
-        optimizer = tf.train.AdamOptimizer(learning_rate=FLAGS.learning_rate,
-                                           beta1=FLAGS.adam_beta1, beta2=FLAGS.adam_beta2,
-                                           epsilon=FLAGS.adam_epsilon)
-        train_op = optimizer.minimize(loss=loss, global_step=global_step)
-
-        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
-
-    # During evaluation.
-    if mode == tf.estimator.ModeKeys.EVAL:
-        eval_metrics_ops = {
-            'accuracy': tf.metrics.accuracy(None, None, name='accuracy')
-        }
-
-        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metrics_ops)
 
 
 def hooks():
@@ -168,7 +44,7 @@ def hooks():
     # Session hooks.
     session_hooks = [
         # Monitors the loss tensor and stops training if loss is NaN.
-        tf.train.NanTensorHook(loss),
+        # tf.train.NanTensorHook(loss), TODO fix
         # Checkpoint saver hook.
         checkpoint_saver_hook,
         # Summary saver hook.
@@ -177,7 +53,7 @@ def hooks():
         # Deactivated `TraceHook`, because it's computational intensive.
         # TraceHook(file_writer, FLAGS.log_frequency * 5),
         # LoggingHook.
-        LoggerHook(loss)
+        # LoggerHook(loss)    # TODO fix
     ]
 
     return session_hooks
@@ -219,7 +95,7 @@ def main(argv=None):
 
     # Construct the estimator that embodies the model.
     estimator = tf.estimator.Estimator(
-        model_fn=None,
+        model_fn=model_fn,
         model_dir=FLAGS.train_dir,
         config=config,
         params=None
@@ -228,14 +104,15 @@ def main(argv=None):
     # Train the model.
     estimator.train(input_fn=train_input_fn, hooks=hooks, steps=steps)
 
-    # Evaluate the trained model.
-    evaluation_result = estimator.evaluate(input_fn=eval_input_fn, hooks=hooks, steps=None,
-                                           checkpoint_path=eval_dir)
-    tf.logging.info('Evaluation result: {}'.format(evaluation_result))
-
-    prediction_result = estimator.predict(input_fn=pred_input_fn, predict_keys=[''])
-
-    tf.logging.info('Completed all epochs.')
+    # TODO: Removed for now. Complete training first.
+    # # Evaluate the trained model.
+    # evaluation_result = estimator.evaluate(input_fn=eval_input_fn, hooks=hooks, steps=None,
+    #                                        checkpoint_path=eval_dir)
+    # tf.logging.info('Evaluation result: {}'.format(evaluation_result))
+    #
+    # prediction_result = estimator.predict(input_fn=pred_input_fn, predict_keys=[''])
+    #
+    # tf.logging.info('Completed all epochs.')
 
 
 if __name__ == '__main__':

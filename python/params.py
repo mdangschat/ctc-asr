@@ -1,17 +1,20 @@
 """Collection of hyper parameters, network layout, and reporting options."""
 
+import os
 import numpy as np
 import tensorflow as tf
 from multiprocessing import cpu_count
 
 from python.labels import num_classes
 from python.util.params_helper import BASE_PATH, TRAIN_SIZE, TEST_SIZE, DEV_SIZE, BOUNDARIES
+
 BASE_PATH = BASE_PATH
 BOUNDARIES = BOUNDARIES
 
 
 # Constants describing the training process.
-tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c4r2d_mfcc_relu',
+tf.flags.DEFINE_string('train_dir',
+                       os.path.join(BASE_PATH, '../speech_checkpoints/3c3r2d_mfcc_lstm'),
                        "Directory where to write event logs and checkpoints.")
 tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
@@ -69,10 +72,13 @@ tf.flags.DEFINE_string('used_model', 'ds2',
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 4,
+tf.flags.DEFINE_integer('num_layers_rnn', 3,
                         "Number of stacked RNN cells.")
 tf.flags.DEFINE_integer('num_units_rnn', 2048,
                         "Number of hidden units in each of the RNN cells.")
+tf.flags.DEFINE_string('rnn_cell_type', 'rnn_relu',     # TODO Implement
+                       "Used RNN cell type. Supported are the RNN versions 'relu' and 'tanh',"
+                       "as well as the 'lstm' and 'gru' cells")
 
 tf.flags.DEFINE_integer('num_units_dense', 2048,
                         "Number of units per dense layer.")
@@ -86,7 +92,7 @@ tf.flags.DEFINE_string('feature_type', 'mfcc',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
-                        "Supported are: 'none', 'global', 'local', and 'local_scalar'"))
+                        "Supported are: 'none', 'local', and 'local_scalar'"))
 tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
 

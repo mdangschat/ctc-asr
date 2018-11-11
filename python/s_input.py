@@ -10,7 +10,7 @@ import tensorflow as tf
 from tensorflow import contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT, BASE_PATH, BOUNDARIES
-import python.labels as s_labels
+from python import labels as s_labels
 from python.load_sample import load_sample, NUM_FEATURES
 
 
@@ -28,24 +28,20 @@ DATASET_PATH = os.path.join(BASE_PATH, 'data/corpus/')
 def train_input_fn():
     # TODO Document
 
-    # TODO Acquire train data.
-    audio_features = None
-    labels = None
+    # Acquire train data.
+    audio_files, labels_encoded, labels_plaintext = _read_file_list(TRAIN_TXT_PATH)
 
     # Create dataset.
-    dataset = tf.data.Dataset.from_tensor_slices((audio_features, labels))
+    dataset = tf.data.Dataset.from_tensor_slices((audio_files, labels_encoded, labels_plaintext))
 
-    # TODO Optional preprocessing.
-    # dataset = dataset.map(tf_preprocess_example, num_parallel_calls=FLAGS.num_threads)
-    # Optional caching of preprocessed features.
+    # Load and pre-process the actual data.
+    dataset = dataset.map(_process_example, num_parallel_calls=FLAGS.num_threads)
+
+    # L8ER Optional caching of preprocessed features.
     # dataset.cache()
 
-    # Number of times to iterate over the dataset.
-    dataset = dataset.repeat(1)
-    # Construct mini-batches.
-    dataset = dataset.batch(FLAGS.batch_size)
-    # Prefetch a number of batches.
-    dataset = dataset.prefetch(64)
+    # `repeat` = times to iterate over the dataset; `batch` = batch size; `prefetch` = cache size
+    dataset = dataset.repeat(1).batch(FLAGS.batch_size).prefetch(64)
 
     return dataset
 
@@ -61,7 +57,7 @@ def eval_input_fn():
     dataset = tf.data.Dataset.from_tensor_slices((audio_features, labels))
 
     # TODO Optional preprocessing.
-    # dataset = dataset.map(tf_preprocess_example, num_parallel_calls=FLAGS.num_threads)
+    dataset = dataset.map(_process_example, num_parallel_calls=FLAGS.num_threads)
     # Optional caching of preprocessed features.
     # dataset.cache()
 
@@ -96,6 +92,26 @@ def pred_input_fn():
     dataset = dataset.batch(FLAGS.batch_size)
 
     return dataset
+
+
+def _process_example(audio_file, label_encoded, label_plaintext):
+    # TODO Document
+
+    # Load audio file and extract features.
+    spectrogram, spectrogram_length = load_sample(audio_file,
+                                                  FLAGS.feature_type,
+                                                  FLAGS.feature_normalization)
+
+    features = {
+        'spectrogram': spectrogram,
+        'spectrogram_length': spectrogram_length
+    }
+
+    # Convert label to string tensor.
+    label_encoded = tf.convert_to_tensor(label_encoded, dtype=tf.string)
+    label_plaintext = tf.convert_to_tensor(label_plaintext, dtype=tf.string)
+
+    return features, label_encoded, label_plaintext
 
 
 # ### Legacy code below! ### #

@@ -6,19 +6,57 @@ import tensorflow.contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT
 from python.util import tf_contrib, cost_metrics
-import python.s_input as s_input
+
+
+def model_fn(features, labels, mode, params):
+    # TODO Documentation
+    # TODO Move to model.py
+
+    spectrogram = tf.feature_column.input_layer(
+        features, params['feature_columns']['spectrogram'])
+    spectrogram_length = tf.feature_column.input_layer(
+        features, params['feature_columns']['spectrogram_length'])
+
+    logits = inference(spectrogram, spectrogram_length)
+
+    if mode == tf.estimator.ModeKeys.PREDICT:
+        raise NotImplementedError('Prediction is not implemented.')
+
+    loss = loss_fn(logits, spectrogram_length, labels)
+
+    # During training.
+    if mode == tf.estimator.ModeKeys.TRAIN:
+        # Set up the optimizer for training.
+        global_step = tf.train.get_global_step()
+        optimizer = tf.train.AdamOptimizer(learning_rate=FLAGS.learning_rate,
+                                           beta1=FLAGS.adam_beta1, beta2=FLAGS.adam_beta2,
+                                           epsilon=FLAGS.adam_epsilon)
+        train_op = optimizer.minimize(loss=loss, global_step=global_step)
+
+        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
+
+    # During evaluation.
+    if mode == tf.estimator.ModeKeys.EVAL:
+        eval_metrics_ops = {
+            'accuracy': tf.metrics.accuracy(None, None, name='accuracy')
+        }
+
+        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metrics_ops)
 
 
 def inference(sequences, seq_length, training=True):
-    """Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
+    """
+    Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
     Supports the default [Deep Speech 1] model ('ds1') and an [Deep Speech 2] inspired
     implementation ('ds2').
 
     Args:
         sequences (tf.Tensor):
             3D float Tensor with input sequences. [batch_size, time, NUM_INPUTS]
+
         seq_length (tf.Tensor):
             1D int Tensor with sequence length. [batch_size]
+
         training (bool):
             If `True` apply dropout else if `False` the data is passed through unaltered.
 
@@ -136,8 +174,9 @@ def inference(sequences, seq_length, training=True):
     return logits, seq_length
 
 
-def loss(logits, seq_length, labels):
-    """Calculate the networks CTC loss.
+def loss_fn(logits, seq_length, labels):
+    """
+    Calculate the networks CTC loss.
 
     Args:
         logits (tf.Tensor):
@@ -171,7 +210,8 @@ def loss(logits, seq_length, labels):
 
 
 def decode(logits, seq_len, originals=None):
-    """Decode a given inference (`logits`) and convert it to plaintext.
+    """
+    Decode a given inference (`logits`) and convert it to plaintext.
 
     Args:
         logits (tf.Tensor):
@@ -211,7 +251,8 @@ def decode(logits, seq_len, originals=None):
 
 
 def decoded_error_rates(labels, originals, decoded, decoded_texts):
-    """Calculate edit distance and word error rate.
+    """
+    Calculate edit distance and word error rate.
 
     Args:
         labels (tf.SparseTensor or tf.Tensor):
@@ -244,68 +285,3 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
                            [TF_FLOAT, TF_FLOAT], name='py_wer_batch')
 
     return edit_distances, mean_edit_distance, wers, wer
-
-
-def train(_loss, global_step):
-    """Train operator for the asr model.
-
-    Create an optimizer and apply to all trainable variables.
-
-    Args:
-        _loss (tf.Tensor):
-            Scalar Tensor of type float containing total loss from the loss() function.
-
-        global_step (tf.Tensor):
-            Scalar Tensor of type int32 counting the number of training steps processed.
-
-    Returns:
-        tf.Tensor:
-            Optimizer operator for training.
-    """
-    # Decay the learning rate exponentially based on the number of steps.
-    lr = tf.train.exponential_decay(FLAGS.learning_rate,
-                                    global_step,
-                                    FLAGS.steps_per_decay,
-                                    FLAGS.learning_rate_decay_factor,
-                                    staircase=True)
-
-    # Set the minimum learning rate.
-    lr = tf.maximum(lr, FLAGS.minimum_lr)
-
-    # Select a gradient optimizer.
-    # optimizer = tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.99)
-    # optimizer = tf.train.AdagradOptimizer(learning_rate=lr)
-    optimizer = tf.train.AdamOptimizer(learning_rate=lr, beta1=FLAGS.adam_beta1,
-                                       beta2=FLAGS.adam_beta2, epsilon=FLAGS.adam_epsilon)
-    # optimizer = tf.train.RMSPropOptimizer(learning_rate=lr)
-
-    tf.summary.scalar('learning_rate', lr)
-
-    return optimizer.minimize(_loss, global_step=global_step)
-
-
-def inputs_train(shuffle):
-    """Construct input for the asr training.
-
-    Args:
-        shuffle (bool): Shuffle data or not. See `s_input.inputs_train()`.
-
-    Returns:
-        See `s_input.inputs_train()`.
-    """
-    return s_input.inputs_train(FLAGS.batch_size, shuffle=shuffle)
-
-
-def inputs(target):
-    """Construct input for the asr evaluation.
-
-    Args:
-        target (str): 'train' or 'dev'.
-
-    Returns:
-        See `s_input.inputs()`.
-    """
-    if target != 'test' and target != 'dev':
-        raise ValueError('"{}" is not a valid target.'.format(target))
-
-    return s_input.inputs(FLAGS.batch_size, target)
