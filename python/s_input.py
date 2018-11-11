@@ -1,4 +1,5 @@
-"""Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
+"""
+Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
 """
 
 import os
@@ -13,6 +14,7 @@ import python.labels as s_labels
 from python.load_sample import load_sample, NUM_FEATURES
 
 
+# TODO Update paths
 # Path to train.txt file.
 TRAIN_TXT_PATH = os.path.join(BASE_PATH, 'data/train.txt')
 # Path to train.txt file.
@@ -23,6 +25,80 @@ DEV_TXT_PATH = os.path.join(BASE_PATH, 'data/dev.txt')
 DATASET_PATH = os.path.join(BASE_PATH, 'data/corpus/')
 
 
+def train_input_fn():
+    # TODO Document
+
+    # TODO Acquire train data.
+    audio_features = None
+    labels = None
+
+    # Create dataset.
+    dataset = tf.data.Dataset.from_tensor_slices((audio_features, labels))
+
+    # TODO Optional preprocessing.
+    # dataset = dataset.map(tf_preprocess_example, num_parallel_calls=FLAGS.num_threads)
+    # Optional caching of preprocessed features.
+    # dataset.cache()
+
+    # Number of times to iterate over the dataset.
+    dataset = dataset.repeat(1)
+    # Construct mini-batches.
+    dataset = dataset.batch(FLAGS.batch_size)
+    # Prefetch a number of batches.
+    dataset = dataset.prefetch(64)
+
+    return dataset
+
+
+def eval_input_fn():
+    # TODO Document
+
+    # TODO Acquire eval/dev data.
+    audio_features = None
+    labels = None
+
+    # Create dataset.
+    dataset = tf.data.Dataset.from_tensor_slices((audio_features, labels))
+
+    # TODO Optional preprocessing.
+    # dataset = dataset.map(tf_preprocess_example, num_parallel_calls=FLAGS.num_threads)
+    # Optional caching of preprocessed features.
+    # dataset.cache()
+
+    # Number of times to iterate over the dataset.
+    dataset = dataset.repeat(1)
+    # Construct mini-batches.
+    dataset = dataset.batch(FLAGS.batch_size)
+    # Prefetch a number of batches.
+    dataset = dataset.prefetch(32)
+
+    return dataset
+
+
+def pred_input_fn():
+    # TODO Document
+
+    # TODO Acquire prediction data.
+    audio_features = None
+    labels = None
+
+    # Create dataset.
+    dataset = tf.data.Dataset.from_tensor_slices((audio_features, labels))
+
+    # TODO Optional preprocessing.
+    # dataset = dataset.map(tf_preprocess_example, num_parallel_calls=FLAGS.num_threads)
+    # Optional caching of preprocessed features.
+    # dataset.cache()
+
+    # Number of times to iterate over the dataset.
+    dataset = dataset.repeat(1)
+    # Construct mini-batches.
+    dataset = dataset.batch(FLAGS.batch_size)
+
+    return dataset
+
+
+# ### Legacy code below! ### #
 def inputs_train(batch_size, shuffle=False):
     """Construct input for asr training.
 

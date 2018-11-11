@@ -47,11 +47,9 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       "Adam optimizer epsilon.")
 
 
-# CTC loss and decoder.
+# CTC decoder.
 tf.flags.DEFINE_integer('beam_width', 1024,
                         "Beam width used in the CTC `beam_search_decoder`.")
-tf.flags.DEFINE_boolean('use_warp_ctc', False,      # L8ER: WarpCTC support is getting removed soon.
-                        "Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.")
 
 
 # Dropout.
@@ -114,13 +112,13 @@ tf.flags.DEFINE_integer('num_samples_to_report', 4,
 
 
 # Miscellaneous.
-tf.flags.DEFINE_bool('delete', False,
-                     "Whether to delete old checkpoints, or resume training.")
+tf.flags.DEFINE_boolean('delete', False,
+                        "Whether to delete old checkpoints, or resume training.")
 tf.flags.DEFINE_integer('random_seed', 0,
                         "TensorFlow random seed. Set to `0` to use the current timestamp instead.")
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         "Whether to log device placement.")
-tf.flags.DEFINE_boolean('allow_vram_growth', False,
+tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         "Allow TensorFlow to allocate VRAM as needed, as opposed to allocating the "
                         "whole VRAM at program start.")
 
@@ -142,7 +140,7 @@ def get_parameters():
         (str): Summary of training parameters.
     """
     s = '\nLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
-        'GPU-Options (use_warp_ctc={}; use_cudnn={});\n' \
+        'GPU-Options (use_cudnn={});\n' \
         'Model (used_model={}, beam_width={:,d})\n' \
         'Conv (conv_filters={}); Dense (num_units={:,d});\n' \
         'RNN (num_units={:,d}, num_layers={:,d});\n' \
@@ -151,7 +149,7 @@ def get_parameters():
         'Features (type={}, normalization={}, skip_every_2nd_frame={});'
 
     s = s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
-                 FLAGS.use_warp_ctc, FLAGS.use_cudnn,
+                 FLAGS.use_cudnn,
                  FLAGS.used_model, FLAGS.beam_width,
                  FLAGS.conv_filters, FLAGS.num_units_dense,
                  FLAGS.num_units_rnn, FLAGS.num_layers_rnn,

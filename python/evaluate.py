@@ -1,7 +1,4 @@
-"""Evaluate the trained asr model.
-
-L8ER: Add accuracy table.
-"""
+"""Evaluate the trained ASR model."""
 
 from datetime import datetime
 import numpy as np
@@ -9,6 +6,8 @@ import tensorflow as tf
 
 from python.params import FLAGS
 from python.util import storage
+from python import model
+
 
 # Evaluation specific flags.
 tf.flags.DEFINE_boolean('test', False,
@@ -17,13 +16,6 @@ tf.flags.DEFINE_boolean('test', False,
 tf.flags.DEFINE_string('eval_dir', '',
                        ("If set, evaluation log data will be stored here, instead of the default "
                         "directory `f'{FLAGS.train_dir}_eval'."))
-
-# WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
-if FLAGS.use_warp_ctc:
-    FLAGS.use_warp_ctc = False
-    import python.model as model
-else:
-    import python.model as model
 
 
 # Which dataset TXT file to use for evaluation. 'test' or 'dev'.
@@ -156,7 +148,7 @@ def evaluate(eval_dir):
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate error rates
-            loss_op = model.loss(logits, seq_length, labels, label_length)
+            loss_op = model.loss(logits, seq_length, labels)
 
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])

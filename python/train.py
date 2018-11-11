@@ -1,6 +1,6 @@
 """Train the asr model.
 
-Tested with Python 3.5 and 3.6.
+Tested with Python 3.5, 3.6 and 3.7.
 Note: No Python 2 compatibility is being provided.
 """
 
@@ -11,16 +11,10 @@ from datetime import datetime
 
 from python.params import FLAGS, get_parameters
 from python.util import storage
-import python.model as model
-from python.evaluate import evaluate
-
+from python import model
+from python.s_input import train_input_fn, eval_input_fn, pred_input_fn
 from python.util.hooks import LoggerHook
 
-
-# General TensorFlow settings and setup.
-tf.logging.set_verbosity(tf.logging.INFO)
-__random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
-tf.set_random_seed(FLAGS.random_seed)
 
 __STEPS_EPOCH = (FLAGS.num_examples_train // FLAGS.batch_size) - 1
 __MAX_STEPS = __STEPS_EPOCH * FLAGS.max_epochs
@@ -44,7 +38,7 @@ def train(epoch):
         https://arxiv.org/abs/1512.02595
     """
     current_global_step = -1
-    print('Starting epoch {}.'.format(epoch))
+    tf.logging.info('Starting epoch {}.'.format(epoch))
 
     with tf.Graph().as_default():
         # Prepare the training data on CPU, to avoid a possible slowdown in case some operations
@@ -58,7 +52,7 @@ def train(epoch):
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate loss/cost.
-            loss = model.loss(logits, seq_length, labels, label_length)
+            loss = model.loss(logits, seq_length, labels)
             tf.summary.scalar('ctc_loss', loss)
 
             # Decode.
@@ -75,56 +69,6 @@ def train(epoch):
 
         # Build the training graph, that updates the model parameters after each batch.
         train_op = model.train(loss, global_step)
-
-        # Session configuration.
-        session_config = tf.ConfigProto(
-            log_device_placement=FLAGS.log_device_placement,
-            gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
-        )
-
-        # Checkpoint saver hook.
-        checkpoint_saver = tf.train.Saver(
-            # Note: cuDNN RNNs do not support distributed saving of parameters.
-            sharded=False,
-            allow_empty=True,
-            max_to_keep=20,
-            save_relative_paths=True
-        )
-
-        checkpoint_saver_hook = tf.train.CheckpointSaverHook(
-            checkpoint_dir=FLAGS.train_dir,
-            save_secs=None,
-            save_steps=FLAGS.log_frequency * 40,
-            saver=checkpoint_saver
-        )
-
-        # Summary hook.
-        summary_op = tf.summary.merge_all()
-        file_writer = tf.summary.FileWriterCache.get(FLAGS.train_dir)
-        summary_saver_hook = tf.train.SummarySaverHook(save_steps=FLAGS.log_frequency,
-                                                       summary_writer=file_writer,
-                                                       summary_op=summary_op)
-
-        # Stop after steps hook.
-        last_step = (epoch + 1) * __STEPS_EPOCH
-        stop_step_hook = tf.train.StopAtStepHook(last_step=last_step)
-
-        # Session hooks.
-        session_hooks = [
-            # Requests stop at a specified step.
-            stop_step_hook,
-            # Monitors the loss tensor and stops training if loss is NaN.
-            tf.train.NanTensorHook(loss),
-            # Checkpoint saver hook.
-            checkpoint_saver_hook,
-            # Summary saver hook.
-            summary_saver_hook,
-            # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
-            # Deactivated `TraceHook`, because it's computational intensive.
-            # TraceHook(file_writer, FLAGS.log_frequency * 5),
-            # LoggingHook.
-            LoggerHook(loss)
-        ]
 
         # The MonitoredTrainingSession takes care of session initialization, session resumption,
         # creating checkpoints, and some basic error handling.
@@ -161,6 +105,84 @@ def train(epoch):
     return current_global_step
 
 
+def model_fn(features, mode, params):
+    # TODO Documentation
+
+    spectrograms = tf.feature_column.input_layer(features,
+                                                 params['feature_columns'], ['spectrogram'])
+
+    logits = model.inference(spectrograms, spectrograms_lengths)
+
+    if mode == tf.estimator.ModeKeys.PREDICT:
+        raise NotImplementedError('Prediction is not implemented.')
+
+    loss = model.loss(logits, spectrograms_lengths, labels)
+
+    # During training.
+    if mode == tf.estimator.ModeKeys.TRAIN:
+        # Set up the optimizer for training.
+        global_step = tf.train.get_global_step()
+        optimizer = tf.train.AdamOptimizer(learning_rate=FLAGS.learning_rate,
+                                           beta1=FLAGS.adam_beta1, beta2=FLAGS.adam_beta2,
+                                           epsilon=FLAGS.adam_epsilon)
+        train_op = optimizer.minimize(loss=loss, global_step=global_step)
+
+        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
+
+    # During evaluation.
+    if mode == tf.estimator.ModeKeys.EVAL:
+        eval_metrics_ops = {
+            'accuracy': tf.metrics.accuracy(None, None, name='accuracy')
+        }
+
+        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metrics_ops)
+
+
+def hooks():
+    # TODO Documentation
+    # TODO Assemble hooks.
+
+    # Checkpoint saver hook.
+    checkpoint_saver = tf.train.Saver(
+        # Note: cuDNN RNNs do not support distributed saving of parameters.
+        sharded=False,
+        allow_empty=True,
+        max_to_keep=20,
+        save_relative_paths=True
+    )
+
+    checkpoint_saver_hook = tf.train.CheckpointSaverHook(
+        checkpoint_dir=FLAGS.train_dir,
+        save_secs=None,
+        save_steps=FLAGS.log_frequency * 40,
+        saver=checkpoint_saver
+    )
+
+    # Summary hook.
+    summary_op = tf.summary.merge_all()
+    file_writer = tf.summary.FileWriterCache.get(FLAGS.train_dir)
+    summary_saver_hook = tf.train.SummarySaverHook(save_steps=FLAGS.log_frequency,
+                                                   summary_writer=file_writer,
+                                                   summary_op=summary_op)
+
+    # Session hooks.
+    session_hooks = [
+        # Monitors the loss tensor and stops training if loss is NaN.
+        tf.train.NanTensorHook(loss),
+        # Checkpoint saver hook.
+        checkpoint_saver_hook,
+        # Summary saver hook.
+        summary_saver_hook,
+        # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
+        # Deactivated `TraceHook`, because it's computational intensive.
+        # TraceHook(file_writer, FLAGS.log_frequency * 5),
+        # LoggingHook.
+        LoggerHook(loss)
+    ]
+
+    return session_hooks
+
+
 # noinspection PyUnusedLocal
 def main(argv=None):
     """TensorFlow starting routine."""
@@ -168,41 +190,59 @@ def main(argv=None):
     # Delete old training data if requested.
     storage.maybe_delete_checkpoints(FLAGS.train_dir, FLAGS.delete)
 
-    # Delete old evaluation data if requested.
+    # Delete old validation/evaluation data if requested.
     eval_dir = '{}_dev'.format(FLAGS.train_dir)
     storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
 
     # Delete old test data if requested.
-    storage.maybe_delete_checkpoints('{}_test'.format(FLAGS.train_dir), FLAGS.delete)
+    test_dir = '{}_test'.format(FLAGS.train_dir)
+    storage.maybe_delete_checkpoints(test_dir, FLAGS.delete)
 
-    # Logging information's about the run.
-    print('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}'.format(
-        tf.VERSION, storage.git_latest_tag(), storage.git_branch(), storage.git_revision_hash()))
-    print('Parameters: ', get_parameters())
+    # Logging information about the run.
+    tf.logging.info('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}\n'
+                    'Parameters: {}'
+                    .format(tf.VERSION, storage.git_latest_tag(), storage.git_branch(),
+                            storage.git_revision_hash(), get_parameters()))
 
-    # Calculate global_step and epoch.
-    current_global_step = storage.maybe_read_global_step(FLAGS.train_dir)
-    epoch = 0 if current_global_step < __STEPS_EPOCH else current_global_step // __STEPS_EPOCH
-    if current_global_step > 0 and epoch == 0:
-        print("""WARN: Resumed before completing the first epoch.
-              This can lead to compromised learning due to the status of the SortaGrad input queue
-              order isn't being stored in the checkpoint.""")
+    # Setup TensorFlow run configuration and hooks.
+    config = tf.estimator.RunConfig(
+        session_config=tf.ConfigProto(
+            log_device_placement=FLAGS.log_device_placement,
+            gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
+        )
+    )
 
-    # Main training loop.
-    while current_global_step < __MAX_STEPS:
-        print('Starting training at epoch {}, global_step {}.'.format(epoch, current_global_step))
-        # Start training. `epoch=0` indicates that the 1st epoch uses SortaGrad.
-        current_global_step = train(epoch)
+    # Iterate until the complete dataset is consumed.
+    steps = None
 
-        # Validate results after each epoch.
-        if current_global_step > 1:
-            print('Starting evaluation after the {} epoch.'.format(epoch))
-            evaluate(eval_dir)
+    # TODO Feature transform function.
 
-        epoch += 1
+    # Construct the estimator that embodies the model.
+    estimator = tf.estimator.Estimator(
+        model_fn=None,
+        model_dir=FLAGS.train_dir,
+        config=config,
+        params=None
+    )
 
-    print('Completed all epochs.')
+    # Train the model.
+    estimator.train(input_fn=train_input_fn, hooks=hooks, steps=steps)
+
+    # Evaluate the trained model.
+    evaluation_result = estimator.evaluate(input_fn=eval_input_fn, hooks=hooks, steps=None,
+                                           checkpoint_path=eval_dir)
+    tf.logging.info('Evaluation result: {}'.format(evaluation_result))
+
+    prediction_result = estimator.predict(input_fn=pred_input_fn, predict_keys=[''])
+
+    tf.logging.info('Completed all epochs.')
 
 
 if __name__ == '__main__':
+    # General TensorFlow setup.
+    tf.logging.set_verbosity(tf.logging.INFO)
+    random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
+    tf.set_random_seed(FLAGS.random_seed)
+
+    # Run training.
     tf.app.run()

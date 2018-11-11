@@ -8,10 +8,6 @@ from python.params import FLAGS, TF_FLOAT
 from python.util import tf_contrib, cost_metrics
 import python.s_input as s_input
 
-if FLAGS.use_warp_ctc:
-    # noinspection PyUnresolvedReferences
-    import warpctc_tensorflow as warp_ctc
-
 
 def inference(sequences, seq_length, training=True):
     """Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
@@ -140,7 +136,7 @@ def inference(sequences, seq_length, training=True):
     return logits, seq_length
 
 
-def loss(logits, seq_length, labels, label_length):
+def loss(logits, seq_length, labels):
     """Calculate the networks CTC loss.
 
     Args:
@@ -158,41 +154,17 @@ def loss(logits, seq_length, labels, label_length):
         seq_length (tf.Tensor):
             1D int32 vector, size [batch_size]. The sequence lengths.
 
-        label_length (tf.Tensor):
-            1D Tensor with the length of each label within the batch. Shape [batch_size].
-
     Returns:
         tf.Tensor:
             1D float Tensor with size [1], containing the mean loss.
     """
-    if FLAGS.use_warp_ctc:
-        # Labels need to be a 1D vector, with every label concatenated.
-        flat_labels = tf.reshape(labels, [-1])
-
-        # Remove padding from labels.
-        partitions = tf.cast(tf.equal(flat_labels, 0), tf.int32)
-        flat_labels, _ = tf.dynamic_partition(flat_labels, partitions, 2)
-
-        # `label_length` needs to be a 1D vector.
-        flat_label_length = tf.reshape(label_length, [-1])
-
-        # https://github.com/baidu-research/warp-ctc
-        total_loss = warp_ctc.ctc(activations=logits,
-                                  flat_labels=flat_labels,
-                                  label_lengths=flat_label_length,
-                                  input_lengths=seq_length,
-                                  blank_label=28)
-
-        # total_loss = tf.Print(total_loss, [total_loss], message='total_loss ')
-
-    else:
-        # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
-        total_loss = tf.nn.ctc_loss(labels=labels,
-                                    inputs=logits,
-                                    sequence_length=seq_length,
-                                    preprocess_collapse_repeated=False,
-                                    ctc_merge_repeated=True,
-                                    time_major=True)
+    # https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
+    total_loss = tf.nn.ctc_loss(labels=labels,
+                                inputs=logits,
+                                sequence_length=seq_length,
+                                preprocess_collapse_repeated=False,
+                                ctc_merge_repeated=True,
+                                time_major=True)
 
     # Return average CTC loss.
     return tf.reduce_mean(total_loss)
@@ -262,8 +234,6 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
         tf.Tensor: Word error rates for the batch.
         tf.Tensor: Word error rate.
     """
-    if FLAGS.use_warp_ctc:
-        labels = tfc.layers.dense_to_sparse(labels)
 
     # Edit distances and average edit distance.
     edit_distances = tf.edit_distance(decoded, labels)
