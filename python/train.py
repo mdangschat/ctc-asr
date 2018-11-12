@@ -6,12 +6,14 @@ No Python 2 compatibility is being provided.
 
 import time
 import tensorflow as tf
+import tensorflow.contrib as tfc
 
 from python.params import FLAGS, get_parameters, TF_FLOAT
 from python.util import storage
 from python.model import model_fn
-from python.s_input import train_input_fn, eval_input_fn, pred_input_fn
-from python.util.hooks import LoggerHook
+# from python.s_input import train_input_fn, eval_input_fn, pred_input_fn
+# from python.util.hooks import LoggerHook
+from python.dataset.corpus_input import train_input_fn
 
 
 def hooks():
@@ -92,12 +94,16 @@ def main(argv=None):
     steps = None
 
     # TODO Feature transform function.
-    spectrogram_fc = tf.feature_column.numeric_column(key='spectrogram',
-                                                      shape=(None, 64),
-                                                      dtype=TF_FLOAT)
-    spectrogram_length_fc = tf.feature_column.numeric_column(key='spectrogram_length',
-                                                             shape=(1, ),
-                                                             dtype=TF_FLOAT)
+    # spectrogram_fc = tf.feature_column.numeric_column(key='spectrogram',
+    #                                                   shape=(None, 80),
+    #                                                   dtype=TF_FLOAT)
+    # spectrogram_length_fc = tf.feature_column.numeric_column(key='spectrogram_length',
+    #                                                          shape=(1, ),
+    #                                                          dtype=TF_FLOAT)
+    spectrogram_fc = tfc.feature_column.sequence_numeric_column(key='spectrogram')
+    spectrogram_length_fc = tfc.feature_column.sequence_numeric_column(key='spectrogram_length')
+
+    tf.parse_example(features=tf.feature_column.make_parse_example_spec(spectrogram_fc))
 
     # Construct the estimator that embodies the model.
     estimator = tf.estimator.Estimator(
@@ -105,15 +111,12 @@ def main(argv=None):
         model_dir=FLAGS.train_dir,
         config=config,
         params={
-            'feature_columns': {
-                'spectrogram': spectrogram_fc,
-                'spectrogram_length': spectrogram_length_fc
-            }
+            'feature_columns': [spectrogram_fc, spectrogram_length_fc]
         }
     )
 
     # Train the model.
-    estimator.train(input_fn=train_input_fn, hooks=hooks, steps=steps)
+    estimator.train(input_fn=train_input_fn, hooks=hooks(), steps=steps)
 
     # TODO: Removed for now. Complete training first.
     # # Evaluate the trained model.

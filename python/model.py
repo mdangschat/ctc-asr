@@ -12,9 +12,9 @@ def model_fn(features, labels, mode, params):
     # TODO Documentation
     # TODO Move to model.py
 
-    spectrogram = tf.feature_column.input_layer(
+    spectrogram = tfc.feature_column.sequence_input_layer(
         features, params['feature_columns']['spectrogram'])
-    spectrogram_length = tf.feature_column.input_layer(
+    spectrogram_length = tfc.feature_column.sequence_input_layer(
         features, params['feature_columns']['spectrogram_length'])
 
     logits = inference(spectrogram, spectrogram_length)
