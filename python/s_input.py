@@ -33,6 +33,11 @@ def train_input_fn():
 
     # Create dataset.
     dataset = tf.data.Dataset.from_tensor_slices((audio_files, labels_encoded, labels_plaintext))
+    # dataset = tf.data.Dataset.from_generator(lambda: dataset_list,
+    #                                          tf.as_dtype(dataset_list[0].dtype),
+    #                                          tf.TensorShape([None, 32, 64]))
+    print("TYPES:", dataset.output_types)
+    print("SHAPES:", dataset.output_shapes)
 
     # Load and pre-process the actual data.
     dataset = dataset.map(_process_example, num_parallel_calls=FLAGS.num_threads)

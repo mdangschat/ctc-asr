@@ -7,7 +7,7 @@ No Python 2 compatibility is being provided.
 import time
 import tensorflow as tf
 
-from python.params import FLAGS, get_parameters
+from python.params import FLAGS, get_parameters, TF_FLOAT
 from python.util import storage
 from python.model import model_fn
 from python.s_input import train_input_fn, eval_input_fn, pred_input_fn
@@ -92,13 +92,24 @@ def main(argv=None):
     steps = None
 
     # TODO Feature transform function.
+    spectrogram_fc = tf.feature_column.numeric_column(key='spectrogram',
+                                                      shape=(None, 64),
+                                                      dtype=TF_FLOAT)
+    spectrogram_length_fc = tf.feature_column.numeric_column(key='spectrogram_length',
+                                                             shape=(1, ),
+                                                             dtype=TF_FLOAT)
 
     # Construct the estimator that embodies the model.
     estimator = tf.estimator.Estimator(
         model_fn=model_fn,
         model_dir=FLAGS.train_dir,
         config=config,
-        params=None
+        params={
+            'feature_columns': {
+                'spectrogram': spectrogram_fc,
+                'spectrogram_length': spectrogram_length_fc
+            }
+        }
     )
 
     # Train the model.
