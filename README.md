@@ -152,7 +152,42 @@ The ASR system works on 16 kHz mono `.wav` files.
 A helper that downloads the free corpora and prepares the data and creates the merged corpora can
 be found in [python/dataset/generate_dataset.py](python/dataset/generate_dataset.py).
 The file needs to be adjusted for the datasets that should be used, it further expects the TIMIT
-dataset to be present.
+dataset to be present. 
+The following tree shows a possible folder structure for the data directory.
+
+```
+data
+├── cache
+│   ├── cv_corpus_v1.tar.gz
+│   ├── dev-clean.tar.gz
+│   ├── tatoeba_audio_eng.zip
+│   ├── TEDLIUM_release2.tar.gz
+│   ├── test-clean.tar.gz
+│   ├── train-clean-100.tar.gz
+│   └── train-clean-360.tar.gz
+├── commonvoice_dev.txt
+├── commonvoice_test.txt
+├── commonvoice_train.txt
+├── corpus
+│   ├── cv_corpus_v1
+│   ├── LibriSpeech
+│   ├── tatoeba_audio_eng
+│   ├── TEDLIUM_release2
+│   └── timit
+├── corpus.json
+├── dev.txt
+├── librispeech_dev.txt
+├── librispeech_test.txt
+├── librispeech_train.txt
+├── tatoeba_train.txt
+├── tedlium_dev.txt
+├── tedlium_test.txt
+├── tedlium_train.txt
+├── test.txt
+├── timit_test.txt
+├── timit_train.txt
+└── train.txt
+```
 
 
 ### `train.txt` 906+ Hours
