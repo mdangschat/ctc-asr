@@ -1,5 +1,6 @@
 """Contains the TS model definition."""
 
+import sys
 import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
@@ -8,21 +9,25 @@ from python.params import FLAGS, TF_FLOAT
 from python.util import tf_contrib, cost_metrics
 
 
-def model_fn(features, labels, mode, params):
+def model_fn(features, labels, mode):
     # TODO Documentation
-    # TODO Move to model.py
 
-    spectrogram = tfc.feature_column.sequence_input_layer(
-        features, params['feature_columns']['spectrogram'])
-    spectrogram_length = tfc.feature_column.sequence_input_layer(
-        features, params['feature_columns']['spectrogram_length'])
+    # Convert dense labels tensor into sparse tensor.
+    labels = tfc.layers.dense_to_sparse(labels)
 
-    logits = inference(spectrogram, spectrogram_length)
+    spectrogram_length = features['spectrogram_length']
+    print('spectrogram_length:', spectrogram_length)
+
+    # spectrogram = tf.split(features['spectrogram'], spectrogram_length, 1)
+    spectrogram = features['spectrogram']
+    print('spectrogram:', spectrogram)
+
+    logits, seq_length = inference(spectrogram, spectrogram_length, training=True)
 
     if mode == tf.estimator.ModeKeys.PREDICT:
         raise NotImplementedError('Prediction is not implemented.')
 
-    loss = loss_fn(logits, spectrogram_length, labels)
+    loss = loss_fn(logits, seq_length, labels)
 
     # During training.
     if mode == tf.estimator.ModeKeys.TRAIN:
@@ -37,11 +42,12 @@ def model_fn(features, labels, mode, params):
 
     # During evaluation.
     if mode == tf.estimator.ModeKeys.EVAL:
-        eval_metrics_ops = {
-            'accuracy': tf.metrics.accuracy(None, None, name='accuracy')
-        }
-
-        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metrics_ops)
+        raise NotImplementedError('Evaluation is not implemented.')
+        # eval_metrics_ops = {
+        #     'accuracy': tf.metrics.accuracy(None, None, name='accuracy')
+        # }
+        #
+        # return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metrics_ops)
 
 
 def inference(sequences, seq_length, training=True):

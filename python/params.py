@@ -14,7 +14,7 @@ BOUNDARIES = BOUNDARIES
 
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir',
-                       os.path.join(BASE_PATH, '../speech_checkpoints/3c3r2d_mfcc_lstm'),
+                       os.path.join(BASE_PATH, '../speech_checkpoints/3c1r2d_mfcc_lstm'),
                        "Directory where to write event logs and checkpoints.")
 tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
@@ -72,15 +72,15 @@ tf.flags.DEFINE_string('used_model', 'ds2',
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 3,
+tf.flags.DEFINE_integer('num_layers_rnn', 1,
                         "Number of stacked RNN cells.")
-tf.flags.DEFINE_integer('num_units_rnn', 2048,
+tf.flags.DEFINE_integer('num_units_rnn', 512,
                         "Number of hidden units in each of the RNN cells.")
 tf.flags.DEFINE_string('rnn_cell_type', 'rnn_relu',     # TODO Implement
                        "Used RNN cell type. Supported are the RNN versions 'relu' and 'tanh',"
                        "as well as the 'lstm' and 'gru' cells")
 
-tf.flags.DEFINE_integer('num_units_dense', 2048,
+tf.flags.DEFINE_integer('num_units_dense', 512,
                         "Number of units per dense layer.")
 
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
@@ -145,14 +145,14 @@ def get_parameters():
     Returns:
         (str): Summary of training parameters.
     """
-    s = '\nLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
-        'GPU-Options (use_cudnn={});\n' \
-        'Model (used_model={}, beam_width={:,d})\n' \
-        'Conv (conv_filters={}); Dense (num_units={:,d});\n' \
-        'RNN (num_units={:,d}, num_layers={:,d});\n' \
-        'Training (batch_size={:,d}, max_epochs={:,d} ({:,d} steps; ' \
+    s = '\n\tLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
+        '\tGPU-Options (use_cudnn={});\n' \
+        '\tModel (used_model={}, beam_width={:,d})\n' \
+        '\tConv (conv_filters={}); Dense (num_units={:,d});\n' \
+        '\tRNN (num_units={:,d}, num_layers={:,d});\n' \
+        '\tTraining (batch_size={:,d}, max_epochs={:,d} ({:,d} steps; ' \
         '{:,d} steps_per_epoch), log_frequency={:,d});\n' \
-        'Features (type={}, normalization={}, skip_every_2nd_frame={});'
+        '\tFeatures (type={}, normalization={}, skip_every_2nd_frame={});'
 
     s = s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
                  FLAGS.use_cudnn,

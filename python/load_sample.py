@@ -32,11 +32,6 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
             Whether to normalize the generated features with the stated method or not.
             Please consult `sample_normalization` for a complete list of normalization methods.
 
-            'global': Uses global mean and standard deviation values from `train.txt`.
-                The normalization is being applied element wise.
-                ([sample] - [mean]^T) / [std]^T
-                Where brackets denote matrices or vectors.
-
             'local': Use local (in sample) mean and standard deviation values, and apply the
                 normalization element wise, like in `global`.
 
@@ -47,12 +42,12 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
 
     Returns:
         Tuple[np.ndarray. np.ndarray]:
-            2D array with [time, num_features] shape, containing float.
+            2D array with [time, num_features] shape, containing `NP_FLOAT`.
 
             Array containing a single int32.
     """
     __supported_feature_types = ['mel', 'mfcc']
-    __supported_feature_normalizations = ['none', 'global', 'local', 'local_scalar']
+    __supported_feature_normalizations = ['none', 'local', 'local_scalar']
 
     feature_type = feature_type if feature_type is not None else FLAGS.feature_type
     feature_normalization = feature_normalization if feature_normalization is not None \

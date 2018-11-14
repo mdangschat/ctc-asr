@@ -1,4 +1,4 @@
-"""Train the asr model.
+"""Train the ASR model.
 
 Tested with Python 3.5, 3.6 and 3.7.
 No Python 2 compatibility is being provided.
@@ -77,13 +77,14 @@ def main(argv=None):
     storage.maybe_delete_checkpoints(test_dir, FLAGS.delete)
 
     # Logging information about the run.
-    tf.logging.info('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}\n'
-                    'Parameters: {}'
-                    .format(tf.VERSION, storage.git_latest_tag(), storage.git_branch(),
-                            storage.git_revision_hash(), get_parameters()))
+    print('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}\nParameters: {}'
+          .format(tf.VERSION, storage.git_latest_tag(), storage.git_branch(),
+                  storage.git_revision_hash(), get_parameters()))
 
     # Setup TensorFlow run configuration and hooks.
     config = tf.estimator.RunConfig(
+        tf_random_seed=FLAGS.random_seed,
+        model_dir=FLAGS.train_dir,
         session_config=tf.ConfigProto(
             log_device_placement=FLAGS.log_device_placement,
             gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
@@ -93,30 +94,15 @@ def main(argv=None):
     # Iterate until the complete dataset is consumed.
     steps = None
 
-    # TODO Feature transform function.
-    # spectrogram_fc = tf.feature_column.numeric_column(key='spectrogram',
-    #                                                   shape=(None, 80),
-    #                                                   dtype=TF_FLOAT)
-    # spectrogram_length_fc = tf.feature_column.numeric_column(key='spectrogram_length',
-    #                                                          shape=(1, ),
-    #                                                          dtype=TF_FLOAT)
-    spectrogram_fc = tfc.feature_column.sequence_numeric_column(key='spectrogram')
-    spectrogram_length_fc = tfc.feature_column.sequence_numeric_column(key='spectrogram_length')
-
-    tf.parse_example(features=tf.feature_column.make_parse_example_spec(spectrogram_fc))
-
     # Construct the estimator that embodies the model.
     estimator = tf.estimator.Estimator(
         model_fn=model_fn,
         model_dir=FLAGS.train_dir,
-        config=config,
-        params={
-            'feature_columns': [spectrogram_fc, spectrogram_length_fc]
-        }
+        config=config
     )
 
     # Train the model.
-    estimator.train(input_fn=train_input_fn, hooks=hooks(), steps=steps)
+    estimator.train(input_fn=train_input_fn, hooks=None, steps=None, max_steps=100)
 
     # TODO: Removed for now. Complete training first.
     # # Evaluate the trained model.
@@ -131,8 +117,9 @@ def main(argv=None):
 
 if __name__ == '__main__':
     # General TensorFlow setup.
+    tf.enable_eager_execution()     # TODO This is for debug tf.print()
     tf.logging.set_verbosity(tf.logging.INFO)
-    random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
+    random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time()) # TODO move to params.py ?
     tf.set_random_seed(FLAGS.random_seed)
 
     # Run training.

@@ -2,9 +2,8 @@
 
 import os
 import tensorflow as tf
-import tensorflow.contrib as tfc
 
-from python.params import BASE_PATH, FLAGS
+from python.params import BASE_PATH
 from python.load_sample import load_sample
 from python.labels import ctoi
 
@@ -32,7 +31,19 @@ def train_input_fn():
         # dataset = dataset.prefetch(batch_size * 32)
         dataset = dataset.prefetch(4)
 
-        return dataset.make_one_shot_iterator().get_next()
+        # Number of epochs.
+        dataset = dataset.repeat(1)
+
+        iterator = dataset.make_one_shot_iterator()
+        spectrogram, spectrogram_length, label_encoded, label_plaintext = iterator.get_next()
+
+        features = {
+            'spectrogram': spectrogram,
+            'spectrogram_length': spectrogram_length,
+            'label_plaintext': label_plaintext
+        }
+
+        return features, label_encoded
 
 
 def generator(*args):

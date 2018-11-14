@@ -52,51 +52,11 @@ def train_input_fn():
 
 
 def eval_input_fn():
-    # TODO Document
-
-    # TODO Acquire eval/dev data.
-    audio_features = None
-    labels = None
-
-    # Create dataset.
-    dataset = tf.data.Dataset.from_tensor_slices((audio_features, labels))
-
-    # TODO Optional preprocessing.
-    dataset = dataset.map(_process_example, num_parallel_calls=FLAGS.num_threads)
-    # Optional caching of preprocessed features.
-    # dataset.cache()
-
-    # Number of times to iterate over the dataset.
-    dataset = dataset.repeat(1)
-    # Construct mini-batches.
-    dataset = dataset.batch(FLAGS.batch_size)
-    # Prefetch a number of batches.
-    dataset = dataset.prefetch(32)
-
-    return dataset
+    pass
 
 
 def pred_input_fn():
-    # TODO Document
-
-    # TODO Acquire prediction data.
-    audio_features = None
-    labels = None
-
-    # Create dataset.
-    dataset = tf.data.Dataset.from_tensor_slices((audio_features, labels))
-
-    # TODO Optional preprocessing.
-    # dataset = dataset.map(tf_preprocess_example, num_parallel_calls=FLAGS.num_threads)
-    # Optional caching of preprocessed features.
-    # dataset.cache()
-
-    # Number of times to iterate over the dataset.
-    dataset = dataset.repeat(1)
-    # Construct mini-batches.
-    dataset = dataset.batch(FLAGS.batch_size)
-
-    return dataset
+    pass
 
 
 def _process_example(audio_file, label_encoded, label_plaintext):
@@ -121,7 +81,8 @@ def _process_example(audio_file, label_encoded, label_plaintext):
 
 # ### Legacy code below! ### #
 def inputs_train(batch_size, shuffle=False):
-    """Construct input for asr training.
+    """
+    Construct input for asr training.
 
     Args:
         batch_size (int):
@@ -211,7 +172,8 @@ def inputs_train(batch_size, shuffle=False):
 
 
 def inputs(batch_size, target):
-    """Construct input for asr evaluation. This method always returns unaltered data.
+    """
+    Construct input for asr evaluation. This method always returns unaltered data.
 
     Args:
         batch_size (int):
@@ -302,7 +264,8 @@ def inputs(batch_size, target):
 
 
 def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_size):
-    """Construct a queued batch of sample sequences and labels.
+    """
+    Construct a queued batch of sample sequences and labels.
 
     Args:
         sequence (tf.Tensor):
@@ -349,7 +312,8 @@ def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_
 
 
 def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_size, capacity):
-    """Construct a queued batch of sample sequences and labels using buckets.
+    """
+    Construct a queued batch of sample sequences and labels using buckets.
 
     Args:
         sequence (tf.Tensor):
@@ -408,7 +372,8 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
 
 
 def _read_file_list(txt_path):
-    """Generate synchronous lists of all samples with their respective lengths and labels.
+    """
+    Generate synchronous lists of all samples with their respective lengths and labels.
     Labels are converted from characters to integers.
 
     Also see `s_labels` documentation.
