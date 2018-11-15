@@ -1,17 +1,19 @@
-"""Load the LibriSpeech ASR corpus."""
+"""
+Load the LibriSpeech ASR corpus.
+"""
 
 import os
-import sys
 import subprocess
+import sys
 
-from tqdm import tqdm
 from scipy.io import wavfile
+from tqdm import tqdm
 
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
-from python.dataset.config import CACHE_DIR, CORPUS_DIR
 from python.dataset import download
-from python.dataset.txt_files import generate_txt
-
+from python.dataset.config import CACHE_DIR, CORPUS_DIR
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.csv_file_helper import generate_csv
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 # L8ER Add the `other` datasets as well and see if they improve the results.
 # Path to the LibriSpeech ASR dataset.
@@ -34,7 +36,9 @@ __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
 def libri_speech_loader(keep_archive):
-    """Download, extract and build the output strings that can be written to the desired TXT files.
+    """
+    Download, extract and convert the Libri Speech archive.
+    Then build all possible CSV files (e.g. `<dataset_name>_train.csv`, `<dataset_name>_test.csv`).
 
     L8ER: Can this be parallelized?
 
@@ -42,7 +46,7 @@ def libri_speech_loader(keep_archive):
         keep_archive (bool): Keep or delete the downloaded archive afterwards.
 
     Returns:
-        Tuple[str]: Tuple containing the output string that can be written to TXT files.
+        List[str]: List containing the created CSV file paths.
     """
 
     # Download and extract the dataset if necessary.
@@ -64,28 +68,29 @@ def libri_speech_loader(keep_archive):
         }
     ]
 
-    txt_paths = []
+    csv_paths = []
     for target in targets:
         # Generate the WAV and a string for the `<target>.txt` file.
         output = __libri_speech_loader(target['folders'])
         # Generate the `<target>.txt` file.
-        txt_paths.append(generate_txt(__NAME, target['name'], output))
+        csv_paths.append(generate_csv(__NAME, target['name'], output))
 
     # Cleanup extracted folder.
     download.cleanup_cache(__FOLDER_NAME)
 
-    return tuple(txt_paths)
+    return csv_paths
 
 
 def __libri_speech_loader(folders):
-    """Build the output string that can be written to the desired *.txt file.
+    """
+    Build the data that can be written to the desired CSV file.
 
     Args:
         folders (List[str]): List of directories to include, e.g.
             `['train-clean-100', 'train-clean-360']`
 
     Returns:
-        [str]: List containing the output string that can be written to *.txt file.
+        List[Dict]: List containing the CSV dictionaries that can be written to the CSV file.
     """
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
@@ -99,7 +104,7 @@ def __libri_speech_loader(folders):
                 # Get list of `.trans.txt` files.
                 trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
                 # Verify that a `*.trans.txt` file exists.
-                assert len(trans_txt_files) == 1, 'No .tans.txt file found: {}'\
+                assert len(trans_txt_files) == 1, 'No .tans.txt file found: {}' \
                     .format(trans_txt_files)
 
                 # Absolute path.
@@ -112,7 +117,7 @@ def __libri_speech_loader(folders):
                 # Sanitize lines.
                 lines = [line.lower().strip().split(' ', 1) for line in lines]
 
-                for file_id, txt in lines:
+                for file_id, text in lines:
                     # Absolute path.
                     flac_path = os.path.join(root, '{}.flac'.format(file_id))
                     assert os.path.isfile(flac_path), '{} not found.'.format(flac_path)
@@ -134,12 +139,12 @@ def __libri_speech_loader(folders):
                     # Relative path to `DATASET_PATH`.
                     wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
-                    output.append('{} {}\n'.format(wav_path, txt.strip()))
+                    output.append({CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()})
 
     return output
 
 
 # Test download script.
 if __name__ == '__main__':
-    print('Libri Speech txt_paths: ', libri_speech_loader(True))
+    print('Libri Speech csv_paths: ', libri_speech_loader(True))
     print('\nDone.')

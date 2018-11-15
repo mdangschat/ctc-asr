@@ -1,4 +1,5 @@
-"""Generate `train.txt`, `dev.txt`, and `test.txt` for the `LibriSpeech`_
+"""
+Generate `train.txt`, `dev.txt`, and `test.txt` for the `LibriSpeech`_
 and `TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ and `Common Voice`_ datasets.
 
 The selected parts of various datasets are merged into combined files at the end.
@@ -28,21 +29,22 @@ Generated data format:
     https://catalog.ldc.upenn.edu/LDC93S1
 """
 
-import os
 import json
+import os
 
-from python.dataset.config import TXT_DIR
-from python.util.params_helper import JSON
 from python.dataset.common_voice_loader import common_voice_loader
+from python.dataset.config import CSV_DIR
+from python.dataset.csv_file_helper import sort_csv_by_seq_len
 from python.dataset.libri_speech_loeader import libri_speech_loader
 from python.dataset.tatoeba_loader import tatoeba_loader
 from python.dataset.tedlium_loader import tedlium_loader
 from python.dataset.timit_loader import timit_loader
-from python.dataset.sort_txt_by_seq_len import sort_txt_by_seq_len
+from python.util.params_helper import JSON
 
 
 def generate_dataset(keep_archives=True, use_timit=True):
-    """Download and preprocess the corpus.
+    """
+    Download and pre-process the corpus.
 
     Args:
         keep_archives (bool): Cache downloaded archive files?
@@ -50,7 +52,7 @@ def generate_dataset(keep_archives=True, use_timit=True):
             `./data/corpus/TIMIT/` directory by hand.
 
     Returns:
-        Nothing
+        Nothing.
     """
     # Common Voice
     cv_train, cv_test, cv_dev = common_voice_loader(keep_archives)
@@ -73,25 +75,26 @@ def generate_dataset(keep_archives=True, use_timit=True):
     # Assemble and merge .txt files.
     # Train
     train = [cv_train, ls_train, tatoeba_train, ted_train, timit_train]
-    train_txt, train_len = _merge_txt_files(train, 'train')
+    train_txt, train_len = _merge_csv_files(train, 'train')
 
     # Test
     test = [cv_test, ls_test]
-    _, test_len = _merge_txt_files(test, 'test')
+    _, test_len = _merge_csv_files(test, 'test')
 
     # Dev
     dev = [ls_dev]
-    _, dev_len = _merge_txt_files(dev, 'dev')
+    _, dev_len = _merge_csv_files(dev, 'dev')
 
     # Sort train.txt file (SortaGrad).
-    boundaries, train_len = sort_txt_by_seq_len(train_txt)
+    boundaries, train_len_seconds = sort_csv_by_seq_len(train_txt)
 
     # Write corpus metadata to JSON.
-    store_corpus_json(train_len, test_len, dev_len, boundaries, train_len)
+    store_corpus_json(train_len, test_len, dev_len, boundaries, train_len_seconds)
 
 
-def _merge_txt_files(txt_files, target):
-    """Merge a list of TXT files into a single target TXT file.
+def _merge_csv_files(txt_files, target):
+    """
+    Merge a list of CSV files into a single target CSV file.
 
     Args:
         txt_files (List[str]): List of paths to dataset TXT files.
@@ -111,7 +114,7 @@ def _merge_txt_files(txt_files, target):
             buffer.extend(f.readlines())
 
     # Write data to target file.
-    target_file = os.path.join(TXT_DIR, '{}.txt'.format(target))
+    target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
     with open(target_file, 'w') as f:
         f.writelines(buffer)
         print('Added {:,d} lines to: {}'.format(len(buffer), target_file))
@@ -120,7 +123,8 @@ def _merge_txt_files(txt_files, target):
 
 
 def store_corpus_json(train_size, test_size, dev_size, boundaries, train_length):
-    """Store corpus metadata in `/python/data/corpus.json`.
+    """
+    Store corpus metadata in `/python/data/corpus.json`.
 
     Args:
         train_size (int): Number of training examples.
@@ -132,7 +136,7 @@ def store_corpus_json(train_size, test_size, dev_size, boundaries, train_length)
     Returns:
         Nothing.
     """
-    with open(JSON, 'w') as f:
+    with open(JSON, 'w', encoding='utf-8') as f:
         data = {
             'train_size': train_size,
             'test_size': test_size,
@@ -145,8 +149,8 @@ def store_corpus_json(train_size, test_size, dev_size, boundaries, train_length)
 
 # Generate data.
 if __name__ == '__main__':
-    print('Starting to generate dataset.')
+    print('Starting to generate corpus.')
 
     generate_dataset(keep_archives=True, use_timit=True)
 
-    print('Done. Please verify that `./data/cache` only contains data that you want to keep.')
+    print('Done. Please verify that "data/cache" contains only data that you want to keep.')

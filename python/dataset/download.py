@@ -1,19 +1,23 @@
-"""Utility to download corpus data, if necessary."""
+"""
+Utility to download corpus data, if necessary.
+"""
 
 import os
 import sys
-import requests
 import tarfile
 import zipfile
-from tqdm import tqdm
 from urllib.parse import urlparse
 
-from python.util import storage
+import requests
+from tqdm import tqdm
+
 from python.dataset.config import CACHE_DIR
+from python.util import storage
 
 
 def maybe_download_batch(urls, md5s, cache_archives=True):
-    """Download and extract a batch of archives.
+    """
+    Download and extract a batch of archives.
 
     Args:
         urls (List[str]): List of download URLs.
@@ -29,7 +33,8 @@ def maybe_download_batch(urls, md5s, cache_archives=True):
 
 
 def maybe_download(url, md5=None, cache_archive=True):
-    """Downloads a archive file if it's not cached. The archive gets extracted afterwards.
+    """
+    Downloads a archive file if it's not cached. The archive gets extracted afterwards.
     It is advised to call `cleanup_cache()` after pre-processing to remove the cached extracted
     folder.
     Currently only TAR and ZIP files are supported.
@@ -78,6 +83,7 @@ def maybe_download(url, md5=None, cache_archive=True):
 
 def cleanup_cache(directory_name):
     """
+    TODO: Documentation.
 
     Args:
         directory_name (str): Directory name of the extracted folder in the cache folder.
@@ -96,6 +102,8 @@ def cleanup_cache(directory_name):
 
 
 def download_with_progress(url, storage_path):
+    # TODO: Documentation
+
     r = requests.get(url, stream=True)
     content_length = int(r.headers.get('content-length'))
     chunk_size = 1024

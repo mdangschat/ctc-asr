@@ -1,20 +1,23 @@
-"""Load the Tatoeba dataset."""
+"""
+Load the Tatoeba dataset.
+"""
 
-import sys
-import os
 import csv
+import os
 import subprocess
+import sys
 import time
-
 from multiprocessing import Pool, Lock, cpu_count
-from tqdm import tqdm
-from scipy.io import wavfile
 
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
-from python.dataset.config import CACHE_DIR, CORPUS_DIR
-from python.util.storage import delete_file_if_exists
+from scipy.io import wavfile
+from tqdm import tqdm
+
 from python.dataset import download
-from python.dataset.txt_files import generate_txt
+from python.dataset.config import CACHE_DIR, CORPUS_DIR
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.csv_file_helper import generate_csv
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from python.util.storage import delete_file_if_exists
 
 # Path to the Taboeba dataset.
 __URL = 'https://downloads.tatoeba.org/audio/tatoeba_audio_eng.zip'
@@ -26,13 +29,15 @@ __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
 def tatoeba_loader(keep_archive):
-    """Download, extract and build the output strings that can be written to the desired TXT files.
+    """
+    Download, extract and convert the Tatoeba archive.
+    Then build all possible CSV files (e.g. `<dataset_name>_train.csv`, `<dataset_name>_test.csv`).
 
     Args:
         keep_archive (bool): Keep or delete the downloaded archive afterwards.
 
     Returns:
-        str: String containing the output string that can be written to TXT files.
+        List[str]: List containing the created CSV file paths.
     """
 
     # Download and extract the dataset if necessary.
@@ -50,22 +55,23 @@ def tatoeba_loader(keep_archive):
     # Generate the WAV and a string for the `<target>.txt` file.
     output = __tatoeba_loader(target)
     # Generate the `<target>.txt` file.
-    txt_path = generate_txt(__NAME, target, output)
+    csv_path = generate_csv(__NAME, target, output)
 
     # Cleanup extracted folder.
     download.cleanup_cache(__FOLDER_NAME)
 
-    return txt_path
+    return csv_path
 
 
 def __tatoeba_loader(target):
-    """Build the output string that can be written to the desired TXT file.
+    """
+    Build the data that can be written to the desired CSV file.
 
     Args:
         target (str): Only 'train' is supported for the Tatoeba dataset.
 
     Returns:
-        str: List containing the output string that can be written to TXT file.
+        List[Dict]: List containing the CSV dictionaries that can be written to the CSV file.
     """
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
@@ -73,7 +79,7 @@ def __tatoeba_loader(target):
     if target != 'train':
         raise ValueError('Invalid target. Tatoeba only has a train dataset.')
 
-    validated_samples = set()     # Set of all sample IDs that have been validated.
+    validated_samples = set()  # Set of all sample IDs that have been validated.
     # Parse dataset meta data information to filter out low ranked samples.
     with open(os.path.join(__SOURCE_PATH, 'users_sentences.csv'), 'r') as csv_handle:
         csv_reader = csv.reader(csv_handle, delimiter='\t')
@@ -86,7 +92,7 @@ def __tatoeba_loader(target):
                 path = os.path.join(__SOURCE_PATH, 'audio', username, _id)
                 validated_samples.add(path)
 
-    samples = []     # List of dictionaries of all files and labels and in the dataset.
+    samples = []  # List of dictionaries of all files and labels and in the dataset.
     # Parse dataset meta data information to filter out low ranked samples.
     with open(os.path.join(__SOURCE_PATH, 'sentences_with_audio.csv'), 'r') as csv_handle:
         csv_reader = csv.reader(csv_handle, delimiter='\t')
@@ -169,10 +175,11 @@ def __tatoeba_loader_helper(sample):
 
     # TODO: Copy used files to corpus dir
     wav_path = os.path.relpath(wav_path, CORPUS_DIR)
-    return '{} {}\n'.format(wav_path, text.strip())
+
+    return {CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()}
 
 
 # Test download script.
 if __name__ == '__main__':
-    print('Tatoeba txt_paths: ', tatoeba_loader(True))
+    print('Tatoeba csv_paths: ', tatoeba_loader(True))
     print('\nDone.')

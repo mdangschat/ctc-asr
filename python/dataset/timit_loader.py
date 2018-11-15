@@ -1,13 +1,15 @@
-"""Load the TIMIT dataset."""
+"""
+Load the TIMIT dataset.
+"""
 
 import os
 
 from scipy.io import wavfile
 
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 from python.dataset.config import CORPUS_DIR
-from python.dataset.txt_files import generate_txt
-
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.csv_file_helper import generate_csv
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 # Path to the TIMIT dataset.
 __NAME = 'timit'
@@ -16,30 +18,34 @@ __TARGET_PATH = os.path.realpath(os.path.join(CORPUS_DIR, __FOLDER_NAME))
 
 
 def timit_loader():
-    """Build the output string that can be written to the desired *.txt file.
+    """
+    Build all possible CSV files (e.g. `<dataset_name>_train.csv`, `<dataset_name>_test.csv`).
 
     Returns:
-        Tuple[str]: Tuple containing the output string that can be written to TXT file.
+        List[str]: List containing the created CSV file paths.
     """
 
     targets = ['train', 'test']
 
-    txt_paths = []
+    csv_paths = []
     for target in targets:
+        # Generate the path and label for the `<target>.csv` file.
         output = __timit_loader(target)
-        txt_paths.append(generate_txt(__NAME, target, output))
+        # Generate the `<target>.csv` file.
+        csv_paths.append(generate_csv(__NAME, target, output))
 
-    return tuple(txt_paths)
+    return csv_paths
 
 
 def __timit_loader(target):
-    """Build the output string that can be written to the desired *.txt file.
+    """
+    Build the data that can be written to the desired CSV file.
 
     Args:
         target (str): 'train' or 'test'.
 
     Returns:
-        [str]: List containing the output string that can be written to *.txt file.
+        List[Dict]: List containing the dictionary entries for the timit_<target>.csv file.
     """
     if not os.path.isdir(__TARGET_PATH):
         raise ValueError('"{}" is not a directory.'.format(__TARGET_PATH))
@@ -87,6 +93,6 @@ def __timit_loader(target):
             # Relative path to `DATASET_PATH`.
             wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
-            output.append('{} {}\n'.format(wav_path, txt.strip()))
+            output.append({CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: txt.strip()})
 
     return output

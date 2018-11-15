@@ -1,21 +1,23 @@
-"""Load the TEDLIUM v2 dataset."""
+"""
+Load the TEDLIUM (v2) dataset.
+"""
 
-import sys
+import math
 import os
 import re
-import math
 import subprocess
-
+import sys
 from multiprocessing import Pool, Lock, cpu_count
-from tqdm import tqdm
+
 from scipy.io import wavfile
+from tqdm import tqdm
 
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, FLAGS
-from python.dataset.config import CACHE_DIR, CORPUS_DIR
-from python.util.storage import delete_file_if_exists
 from python.dataset import download
-from python.dataset.txt_files import generate_txt
-
+from python.dataset.config import CACHE_DIR, CORPUS_DIR
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.csv_file_helper import generate_csv
+from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, FLAGS
+from python.util.storage import delete_file_if_exists
 
 # Path to the Tedlium v2 dataset.
 __URL = 'http://www.openslr.org/resources/19/TEDLIUM_release2.tar.gz'
@@ -34,7 +36,9 @@ __PATTERN = re.compile(
 
 
 def tedlium_loader(keep_archive):
-    """Download, extract and build the output strings that can be written to the desired TXT files.
+    """
+    Download, extract and convert the TEDLIUM archive.
+    Then build all possible CSV files (e.g. `<dataset_name>_train.csv`, `<dataset_name>_test.csv`).
 
     Requires lots of disk space, since the original format (SPH) is converted to WAV and then split
     up into parts.
@@ -43,7 +47,7 @@ def tedlium_loader(keep_archive):
         keep_archive (bool): Keep or delete the downloaded archive afterwards.
 
     Returns:
-        Tuple[str]: Tuple containing the output strings that can be written to TXT files.
+        List[str]: List containing the created CSV file paths.
     """
 
     # Download and extract the dataset if necessary.
@@ -76,7 +80,7 @@ def tedlium_loader(keep_archive):
         source_directory = os.path.join(__SOURCE_PATH, target['folder'])
         output = __tedlium_loader(source_directory)
         # Generate the `<target>.txt` file.
-        txt_paths.append(generate_txt(__NAME, target['name'], output))
+        txt_paths.append(generate_csv(__NAME, target['name'], output))
 
     # Cleanup extracted folder.
     download.cleanup_cache(__FOLDER_NAME)
@@ -85,7 +89,8 @@ def tedlium_loader(keep_archive):
 
 
 def __tedlium_loader(target_folder):
-    """Build the output string that can be written to the desired TXT file.
+    """
+    Build the data that can be written to the desired CSV file.
 
      Note:
          Since TEDLIUM data is one large .wav file per speaker. Therefore this method creates
@@ -95,10 +100,10 @@ def __tedlium_loader(target_folder):
         selected.
 
     Args:
-        target_folder (str): E.g. 'train', 'test', or 'dev'
+        target_folder (str): E.g. `'train'`, `'test'`, or `'dev'`.
 
     Returns:
-        [str]: List containing the output string that can be written to *.txt file.
+        List[Dict]: List containing the CSV dictionaries that can be written to the CSV file.
     """
 
     files = os.listdir(os.path.join(target_folder, 'stm'))
@@ -179,7 +184,7 @@ def _tedlium_loader_helper(args):
 
             # Skip labels with less than 5 words.
             if len(text.split(' ')) > 4:
-                output.append('{} {}\n'.format(part_path, text))
+                output.append({CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()})
 
         return output
 
@@ -205,5 +210,5 @@ def _seconds_to_sample(seconds, start=True, sr=16000):
 
 # Test download script.
 if __name__ == '__main__':
-    print('TEDLIUM txt_paths: ', tedlium_loader(True))
+    print('TEDLIUM csv_paths: ', tedlium_loader(True))
     print('\nDone.')
