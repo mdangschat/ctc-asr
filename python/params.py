@@ -110,6 +110,13 @@ tf.flags.DEFINE_integer('log_frequency', 500,
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         "The maximum number of decoded and original text samples to report.")
 
+# GPUStatisticsHook
+tf.flags.DEFINE_integer('gpu_hook_query_frequency', 5,
+                        "How often (every `gpu_hook_query_frequency` steps) statistics are "
+                        "queried from the GPUs.")
+tf.flags.DEFINE_integer('gpu_hook_average_queries', 100,
+                        "The number of queries to store for calculating average values.")
+
 
 # Miscellaneous.
 tf.flags.DEFINE_bool('delete', False,
