@@ -1,37 +1,48 @@
-"""Testing environment for the `tf.data` modules."""
+"""
+TODO: Documentation.
+"""
 
 import os
 import tensorflow as tf
 
-from python.params import BASE_PATH
+from python.params import BASE_PATH, FLAGS
 from python.load_sample import load_sample
 from python.labels import ctoi
 
 
-train_txt = os.path.join(BASE_PATH, 'data/train.txt')
-batch_size = 2
-assert os.path.exists(train_txt) and os.path.isfile(train_txt)
-
-
 def train_input_fn():
-    # Experimental function.
+    return _input_fn(FLAGS.train_txt)
+
+
+def test_input_fn():
+    return _input_fn(FLAGS.test_txt)
+
+
+def dev_input_fn():
+    # TODO: For testing, since dev.txt does not exist in correct format
+    # return _input_fn(FLAGS.dev_txt)
+    return train_input_fn()
+
+
+def _input_fn(txt_path):
+    # TODO: Documentation.
+
+    assert os.path.exists(txt_path) and os.path.isfile(txt_path)
 
     with tf.device('/cpu:0'):
-        dataset = tf.data.Dataset.from_generator(generator,
+        dataset = tf.data.Dataset.from_generator(input_generator,
                                                  (tf.float32, tf.int32, tf.int32, tf.string),
                                                  (tf.TensorShape([None, 80]), tf.TensorShape([]),
                                                   tf.TensorShape([None]), tf.TensorShape([])),
-                                                 args=[])
+                                                 args=[txt_path])
 
-        # dataset = dataset.batch(batch_size, drop_remainder=True)
-        dataset = dataset.padded_batch(batch_size=batch_size,
+        dataset = dataset.padded_batch(batch_size=FLAGS.batch_size,
                                        padded_shapes=([None, 80], [], [None], []),
                                        drop_remainder=True)
 
-        # dataset = dataset.prefetch(batch_size * 32)
-        dataset = dataset.prefetch(4)
+        dataset = dataset.prefetch(32)
 
-        # Number of epochs.
+        # TODO: Number of epochs.
         dataset = dataset.repeat(1)
 
         iterator = dataset.make_one_shot_iterator()
@@ -46,10 +57,10 @@ def train_input_fn():
         return features, label_encoded
 
 
-def generator(*args):
-    print('ARGS:', args)
+def input_generator(*args):
+    # TODO: Documentation
 
-    with open(train_txt) as f:
+    with open(args[0]) as f:
         lines = f.readlines()
 
         for line in lines:
@@ -63,13 +74,13 @@ def generator(*args):
             yield spectrogram, spectrogram_length, label_encoded, label
 
 
-# L8ER: Test function, remove later on.
+# Create a dataset for testing purposes.
 if __name__ == '__main__':
     next_element = train_input_fn()
 
     with tf.Session() as session:
         # for example in range(FLAGS.num_examples_train):
-        for example in range(1):
-            print('DEBUG:', session.run(next_element))
+        for example in range(5):
+            print('Dataset elements:', session.run(next_element))
 
     print('The End.')

@@ -16,13 +16,13 @@ BOUNDARIES = BOUNDARIES
 tf.flags.DEFINE_string('train_dir',
                        os.path.join(BASE_PATH, '../speech_checkpoints/3c1r2d_mfcc_lstm'),
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 16,
+tf.flags.DEFINE_integer('batch_size', 8,
                         "Number of samples within a batch.")
 
 
 # Performance.
 tf.flags.DEFINE_boolean('use_cudnn', True,
-                        "Whether to use Nvidia cuDNN implementations or (False) the default "
+                        "Whether to use Nvidia cuDNN implementations or (`False`) the default "
                         "TensorFlow implementation.")
 tf.flags.DEFINE_integer('num_threads', cpu_count(),
                         """Number of threads used to preload data.""")
@@ -74,13 +74,13 @@ tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
 
 tf.flags.DEFINE_integer('num_layers_rnn', 1,
                         "Number of stacked RNN cells.")
-tf.flags.DEFINE_integer('num_units_rnn', 512,
+tf.flags.DEFINE_integer('num_units_rnn', 128,
                         "Number of hidden units in each of the RNN cells.")
 tf.flags.DEFINE_string('rnn_cell_type', 'rnn_relu',     # TODO Implement
                        "Used RNN cell type. Supported are the RNN versions 'relu' and 'tanh',"
                        "as well as the 'lstm' and 'gru' cells")
 
-tf.flags.DEFINE_integer('num_units_dense', 512,
+tf.flags.DEFINE_integer('num_units_dense', 256,
                         "Number of units per dense layer.")
 
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
@@ -98,16 +98,24 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
 
 
 # Dataset.
-tf.flags.DEFINE_integer('sampling_rate', 16000,
-                        "The sampling rate of the audio files (e.g. 2 * 8kHz).")
+tf.flags.DEFINE_string('train_txt', os.path.join(BASE_PATH, 'data/train.txt'),
+                       "Path to the `train.txt` file.")
+tf.flags.DEFINE_string('test_txt', os.path.join(BASE_PATH, 'data/test.txt'),
+                       "Path to the `test.txt` file.")
+tf.flags.DEFINE_string('dev_txt', os.path.join(BASE_PATH, 'data/dev.txt'),
+                       "Path to the `dev.txt` file.")
+
 tf.flags.DEFINE_integer('num_examples_train', TRAIN_SIZE,
                         "Number of examples in the training set. `test.txt`")
 tf.flags.DEFINE_integer('num_examples_test', TEST_SIZE,
                         "Number of examples in the testing/evaluation set. `test.txt`")
 tf.flags.DEFINE_integer('num_examples_dev', DEV_SIZE,
                         "Number of examples in the validation set. `dev.txt`")
+
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         "Number of classes. Contains the additional CTC <blank> label.")
+tf.flags.DEFINE_integer('sampling_rate', 16000,
+                        "The sampling rate of the audio files (e.g. 2 * 8kHz).")
 
 
 # Logging.

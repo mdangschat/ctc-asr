@@ -1,19 +1,20 @@
-"""Train the ASR model.
+"""
+Train the ASR model.
 
-Tested with Python 3.5, 3.6 and 3.7.
-No Python 2 compatibility is being provided.
+Tested with Python 3.5, 3.6 and 3.7. No Python 2 compatibility is being provided.
 """
 
 import time
 import tensorflow as tf
-import tensorflow.contrib as tfc
 
-from python.params import FLAGS, get_parameters, TF_FLOAT
+from python.params import FLAGS, get_parameters
 from python.util import storage
-from python.model import model_fn
-# from python.s_input import train_input_fn, eval_input_fn, pred_input_fn
+from python.model import CTCModel
+from input_functions import *
 # from python.util.hooks import LoggerHook
-from python.dataset.corpus_input import train_input_fn
+
+
+FLAGS.random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 
 
 def hooks():
@@ -91,12 +92,11 @@ def main(argv=None):
         )
     )
 
-    # Iterate until the complete dataset is consumed.
-    steps = None
+    model = CTCModel()
 
     # Construct the estimator that embodies the model.
     estimator = tf.estimator.Estimator(
-        model_fn=model_fn,
+        model_fn=model.model_fn,
         model_dir=FLAGS.train_dir,
         config=config
     )
@@ -104,12 +104,12 @@ def main(argv=None):
     # Train the model.
     estimator.train(input_fn=train_input_fn, hooks=None, steps=None, max_steps=100)
 
+    # Evaluate the trained model.
+    evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None, steps=None)
+                                           # checkpoint_path=eval_dir)
+    tf.logging.info('Evaluation result: {}'.format(evaluation_result))
+
     # TODO: Removed for now. Complete training first.
-    # # Evaluate the trained model.
-    # evaluation_result = estimator.evaluate(input_fn=eval_input_fn, hooks=hooks, steps=None,
-    #                                        checkpoint_path=eval_dir)
-    # tf.logging.info('Evaluation result: {}'.format(evaluation_result))
-    #
     # prediction_result = estimator.predict(input_fn=pred_input_fn, predict_keys=[''])
     #
     # tf.logging.info('Completed all epochs.')
@@ -117,9 +117,7 @@ def main(argv=None):
 
 if __name__ == '__main__':
     # General TensorFlow setup.
-    tf.enable_eager_execution()     # TODO This is for debug tf.print()
     tf.logging.set_verbosity(tf.logging.INFO)
-    random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time()) # TODO move to params.py ?
     tf.set_random_seed(FLAGS.random_seed)
 
     # Run training.
