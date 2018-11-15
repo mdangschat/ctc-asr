@@ -184,7 +184,7 @@ def _tedlium_loader_helper(args):
 
             # Skip labels with less than 5 words.
             if len(text.split(' ')) > 4:
-                output.append({CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()})
+                output.append({CSV_HEADER_PATH: part_path, CSV_HEADER_LABEL: text.strip()})
 
         return output
 

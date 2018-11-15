@@ -173,7 +173,7 @@ def __tatoeba_loader_helper(sample):
                 raise
             time.sleep(1)
 
-    # TODO: Copy used files to corpus dir
+    # TODO: Copy used files to corpus dir (is this already done by the sox call?)
     wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
     return {CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()}

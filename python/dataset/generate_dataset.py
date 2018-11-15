@@ -1,5 +1,5 @@
 """
-Generate `train.txt`, `dev.txt`, and `test.txt` for the `LibriSpeech`_
+Generate `train.csv`, `dev.csv`, and `test.csv` for the `LibriSpeech`_
 and `TEDLIUMv2`_ and `TIMIT`_ and `TATOEBA`_ and `Common Voice`_ datasets.
 
 The selected parts of various datasets are merged into combined files at the end.
@@ -29,11 +29,13 @@ Generated data format:
     https://catalog.ldc.upenn.edu/LDC93S1
 """
 
+import csv
 import json
 import os
 
 from python.dataset.common_voice_loader import common_voice_loader
-from python.dataset.config import CSV_DIR
+from python.dataset.config import CSV_DIR, CSV_DELIMITER
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
 from python.dataset.csv_file_helper import sort_csv_by_seq_len
 from python.dataset.libri_speech_loeader import libri_speech_loader
 from python.dataset.tatoeba_loader import tatoeba_loader
@@ -72,10 +74,10 @@ def generate_dataset(keep_archives=True, use_timit=True):
     else:
         timit_train = _ = ''
 
-    # Assemble and merge .txt files.
+    # Assemble and merge CSV files.
     # Train
     train = [cv_train, ls_train, tatoeba_train, ted_train, timit_train]
-    train_txt, train_len = _merge_csv_files(train, 'train')
+    train_csv, train_len = _merge_csv_files(train, 'train')
 
     # Test
     test = [cv_test, ls_test]
@@ -85,23 +87,23 @@ def generate_dataset(keep_archives=True, use_timit=True):
     dev = [ls_dev]
     _, dev_len = _merge_csv_files(dev, 'dev')
 
-    # Sort train.txt file (SortaGrad).
-    boundaries, train_len_seconds = sort_csv_by_seq_len(train_txt)
+    # Sort train.csv file (SortaGrad).
+    boundaries, train_len_seconds = sort_csv_by_seq_len(train_csv)
 
     # Write corpus metadata to JSON.
     store_corpus_json(train_len, test_len, dev_len, boundaries, train_len_seconds)
 
 
-def _merge_csv_files(txt_files, target):
+def _merge_csv_files(csv_files, target):
     """
     Merge a list of CSV files into a single target CSV file.
 
     Args:
-        txt_files (List[str]): List of paths to dataset TXT files.
+        csv_files (List[str]): List of paths to dataset CSV files.
         target (str): 'test', 'dev', 'train'
 
     Returns:
-        str: Path to the created TXT file.
+        str: Path to the created CSV file.
     """
     if target not in ['test', 'dev', 'train']:
         raise ValueError('Invalid target.')
@@ -109,14 +111,22 @@ def _merge_csv_files(txt_files, target):
     buffer = []
 
     # Read and merge files.
-    for txt_file in txt_files:
-        with open(txt_file, 'r') as f:
-            buffer.extend(f.readlines())
+    for csv_file in csv_files:
+        with open(csv_file, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f, delimiter=CSV_DELIMITER,
+                                    fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
+            # Add CSV data (except header) to buffer.
+            buffer.extend(reader[1:])
 
     # Write data to target file.
     target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
     with open(target_file, 'w') as f:
-        f.writelines(buffer)
+        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER,
+                                fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
+        writer.writeheader()
+
+        writer.writerows(buffer)
+
         print('Added {:,d} lines to: {}'.format(len(buffer), target_file))
 
     return target_file, len(buffer)
