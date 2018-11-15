@@ -95,15 +95,8 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=1700):
         reader = csv.DictReader(f, delimiter=CSV_DELIMITER,
                                 fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
 
-        # # Read all lines into memory. Remove CSV header.
+        # Read all lines into memory and remove CSV header.
         lines = [line for line in reader][1:]
-
-        # TODO: REMOVE DEBUG STUFF
-        entry = lines[0]
-        print("LINES:", lines[:5])
-        print("ENTRY:", entry)
-        print("PATH:", entry[CSV_HEADER_PATH])
-        print("LABEL:", entry[CSV_HEADER_LABEL])
 
         # Setup thread pool.
         lock = Lock()
