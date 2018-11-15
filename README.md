@@ -156,10 +156,11 @@ dataset to be present.
 The following tree shows a possible folder structure for the data directory.
 
 ```
-data
+data/
 ├── cache
 │   ├── cv_corpus_v1.tar.gz
 │   ├── dev-clean.tar.gz
+│   ├── .gitignore
 │   ├── tatoeba_audio_eng.zip
 │   ├── TEDLIUM_release2.tar.gz
 │   ├── test-clean.tar.gz
@@ -170,12 +171,14 @@ data
 ├── commonvoice_train.txt
 ├── corpus
 │   ├── cv_corpus_v1
+│   ├── .gitignore
 │   ├── LibriSpeech
 │   ├── tatoeba_audio_eng
 │   ├── TEDLIUM_release2
 │   └── timit
 ├── corpus.json
 ├── dev.txt
+├── .gitignore
 ├── librispeech_dev.txt
 ├── librispeech_test.txt
 ├── librispeech_train.txt
