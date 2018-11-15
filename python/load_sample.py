@@ -8,9 +8,8 @@ from scipy.io import wavfile
 
 from python.params import FLAGS, NP_FLOAT
 
-
-NUM_FEATURES = 80        # Number of features to extract.
-WIN_STEP = 0.010         # The step between successive windows in seconds.
+NUM_FEATURES = 80  # Number of features to extract.
+WIN_STEP = 0.010  # The step between successive windows in seconds.
 
 # Mean and standard deviation values for normalization, according to `sd_estimator.py`.
 __global_mean_mel = [2.3643725, 2.3658302, 2.4267118, 2.493714, 2.4358225, 2.457301, 2.6084883,
@@ -74,7 +73,8 @@ __global_std_mfcc = np.array(__global_std_mfcc, dtype=NP_FLOAT).reshape([1, NUM_
 
 
 def load_sample(file_path, feature_type=None, feature_normalization=None):
-    """Loads the wave file and converts it into feature vectors.
+    """
+    Loads the wave file and converts it into feature vectors.
 
     Args:
         file_path (str or bytes):
@@ -142,11 +142,11 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
                            .format(sr, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    win_len = 0.025         # Window length in ms.
-    win_step = WIN_STEP     # Number of milliseconds between successive frames.
-    f_max = sr / 2.         # Maximum frequency (Nyquist rate).
-    f_min = 64.             # Minimum frequency.
-    n_fft = 1024            # Number of samples in a frame.
+    win_len = 0.025  # Window length in ms.
+    win_step = WIN_STEP  # Number of milliseconds between successive frames.
+    f_max = sr / 2.  # Maximum frequency (Nyquist rate).
+    f_min = 64.  # Minimum frequency.
+    n_fft = 1024  # Number of samples in a frame.
 
     if feature_type == 'mfcc':
         sample = _mfcc(y, sr, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max)
@@ -173,7 +173,8 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
 
 
 def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
-    """Convert a wav signal into Mel Frequency Cepstral Coefficients (MFCC).
+    """
+    Convert a wav signal into Mel Frequency Cepstral Coefficients (MFCC).
 
     Args:
         y (np.ndarray): Wav signal.
@@ -205,7 +206,8 @@ def _mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
 
 
 def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
-    """Convert a wav signal into a logarithmically scaled mel filterbank.
+    """
+    Convert a wav signal into a logarithmically scaled mel filterbank.
 
     Args:
         y (np.ndarray): Wav signal.
@@ -227,7 +229,8 @@ def _mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
 
 
 def _feature_normalization(features, method, feature_type):
-    """Normalize the given feature vector `y`, with the stated normalization `method`.
+    """
+    Normalize the given feature vector `y`, with the stated normalization `method`.
 
     Args:
         features (np.ndarray): The signal array

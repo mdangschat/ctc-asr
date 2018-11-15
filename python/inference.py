@@ -1,11 +1,14 @@
-"""Transcribe a given audio file."""
+"""
+Transcribe a given audio file.
+"""
 
 import os
 
 import tensorflow as tf
 
-from python.params import FLAGS, TF_FLOAT, BASE_PATH
 from python.load_sample import load_sample, NUM_FEATURES
+from python.params import FLAGS, TF_FLOAT, BASE_PATH
+
 # WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
 if FLAGS.use_warp_ctc:
     FLAGS.use_warp_ctc = False
@@ -13,14 +16,15 @@ if FLAGS.use_warp_ctc:
 else:
     import python.model as model
 
-
 # File to transcribe.
 # WAV_PATHS = ['../datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV']
-WAV_PATHS = [os.path.join(BASE_PATH, '../datasets/myaudiocorpus/idontunderstandawordyoujustsaid.wav')]
+WAV_PATHS = [
+    os.path.join(BASE_PATH, '../datasets/myaudiocorpus/idontunderstandawordyoujustsaid.wav')]
 
 
 def transcribe_once(logits_op, decoded_op, plaintext_op, feed_dict):
-    """Restore model from latest checkpoint and run the inference for the provided `sequence`.
+    """
+    Restore model from latest checkpoint and run the inference for the provided `sequence`.
 
     Args:
         logits_op (tf.Tensor):
@@ -79,7 +83,8 @@ def transcribe_once(logits_op, decoded_op, plaintext_op, feed_dict):
 
 
 def transcribe(wav_file):
-    """Load an audio file and prepare the TensorFlow graph for inference.
+    """
+    Load an audio file and prepare the TensorFlow graph for inference.
 
     Args:
         wav_file (str): Path to WAV file.
@@ -117,7 +122,7 @@ def transcribe(wav_file):
 
 # noinspection PyUnusedLocal
 def main(argv=None):
-    """TensorFlow starting routine."""
+    # TensorFlow starting routine.
     for wav_path in WAV_PATHS:
         transcribe(wav_path)
 

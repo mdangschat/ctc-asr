@@ -1,21 +1,23 @@
-"""Collection of hyper parameters, network layout, and reporting options."""
+"""
+Collection of hyper parameters, network layout, and reporting options.
+"""
+
+from multiprocessing import cpu_count
 
 import numpy as np
 import tensorflow as tf
-from multiprocessing import cpu_count
 
 from python.labels import num_classes
 from python.util.params_helper import BASE_PATH, TRAIN_SIZE, TEST_SIZE, DEV_SIZE, BOUNDARIES
+
 BASE_PATH = BASE_PATH
 BOUNDARIES = BOUNDARIES
-
 
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir', '../speech_checkpoints/3c4r2d_mfcc_relu',
                        "Directory where to write event logs and checkpoints.")
 tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
-
 
 # Performance.
 tf.flags.DEFINE_boolean('use_cudnn', True,
@@ -24,19 +26,17 @@ tf.flags.DEFINE_boolean('use_cudnn', True,
 tf.flags.DEFINE_integer('num_threads', cpu_count(),
                         """Number of threads used to preload data.""")
 
-
 # Learning Rate.
 tf.flags.DEFINE_integer('max_epochs', 20,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-4,
                       "Initial learning rate.")
-tf.flags.DEFINE_float('learning_rate_decay_factor', 4/5,
+tf.flags.DEFINE_float('learning_rate_decay_factor', 4 / 5,
                       "Learning rate decay factor.")
 tf.flags.DEFINE_integer('steps_per_decay', 75000,
                         "Number of steps after which learning rate decays.")
 tf.flags.DEFINE_float('minimum_lr', 1e-6,
                       "Minimum value the learning rate can decay to.")
-
 
 # Adam Optimizer.
 tf.flags.DEFINE_float('adam_beta1', 0.9,
@@ -46,13 +46,11 @@ tf.flags.DEFINE_float('adam_beta2', 0.999,
 tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       "Adam optimizer epsilon.")
 
-
 # CTC loss and decoder.
 tf.flags.DEFINE_integer('beam_width', 1024,
                         "Beam width used in the CTC `beam_search_decoder`.")
-tf.flags.DEFINE_boolean('use_warp_ctc', False,      # L8ER: WarpCTC support is getting removed soon.
+tf.flags.DEFINE_boolean('use_warp_ctc', False,  # L8ER: WarpCTC support is getting removed soon.
                         "Weather to use Baidu's `warp_ctc_loss` or TensorFlow's `ctc_loss`.")
-
 
 # Dropout.
 tf.flags.DEFINE_float('conv_dropout_rate', 0.0,
@@ -61,7 +59,6 @@ tf.flags.DEFINE_float('rnn_dropout_rate', 0.0,
                       "Dropout rate for the RNN cell layers.")
 tf.flags.DEFINE_float('dense_dropout_rate', 0.1,
                       "Dropout rate for dense layers.")
-
 
 # Layer and activation options.
 tf.flags.DEFINE_string('used_model', 'ds2',
@@ -82,7 +79,6 @@ tf.flags.DEFINE_integer('num_units_dense', 2048,
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       "Cutoff ReLU activations that exceed the cutoff.")
 
-
 # Input features.
 tf.flags.DEFINE_string('feature_type', 'mfcc',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
@@ -91,7 +87,6 @@ tf.flags.DEFINE_string('feature_normalization', 'local',
                         "Supported are: 'none', 'global', 'local', and 'local_scalar'"))
 tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
-
 
 # Dataset.
 tf.flags.DEFINE_integer('sampling_rate', 16000,
@@ -105,13 +100,11 @@ tf.flags.DEFINE_integer('num_examples_dev', DEV_SIZE,
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         "Number of classes. Contains the additional CTC <blank> label.")
 
-
 # Logging.
 tf.flags.DEFINE_integer('log_frequency', 500,
                         "How often (every `log_frequency` steps) to log results.")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         "The maximum number of decoded and original text samples to report.")
-
 
 # Miscellaneous.
 tf.flags.DEFINE_bool('delete', False,
@@ -124,19 +117,19 @@ tf.flags.DEFINE_boolean('allow_vram_growth', False,
                         "Allow TensorFlow to allocate VRAM as needed, as opposed to allocating the "
                         "whole VRAM at program start.")
 
-
 # Export names.
-TF_FLOAT = tf.float32   # ctc_*** functions don't support float64. See #13
-NP_FLOAT = np.float32   # ctc_*** functions don't support float64. See #13
+TF_FLOAT = tf.float32  # ctc_*** functions don't support float64. See #13
+NP_FLOAT = np.float32  # ctc_*** functions don't support float64. See #13
 
-MIN_EXAMPLE_LENGTH = 0.7    # Minimum length of examples in datasets (in seconds).
-MAX_EXAMPLE_LENGTH = 17.0   # Maximum length of examples in datasets (in seconds).
+MIN_EXAMPLE_LENGTH = 0.7  # Minimum length of examples in datasets (in seconds).
+MAX_EXAMPLE_LENGTH = 17.0  # Maximum length of examples in datasets (in seconds).
 
 FLAGS = tf.flags.FLAGS
 
 
 def get_parameters():
-    """Generate a summary containing the training, and network parameters.
+    """
+    Generate a summary containing the training, and network parameters.
 
     Returns:
         (str): Summary of training parameters.

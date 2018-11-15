@@ -1,4 +1,5 @@
-"""Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
+"""
+Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
 """
 
 import os
@@ -8,10 +9,9 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import contrib as tfc
 
-from python.params import FLAGS, TF_FLOAT, BASE_PATH, BOUNDARIES
 import python.labels as s_labels
 from python.load_sample import load_sample, NUM_FEATURES
-
+from python.params import FLAGS, TF_FLOAT, BASE_PATH, BOUNDARIES
 
 # Path to train.txt file.
 TRAIN_TXT_PATH = os.path.join(BASE_PATH, 'data/train.txt')
@@ -24,7 +24,8 @@ DATASET_PATH = os.path.join(BASE_PATH, 'data/corpus/')
 
 
 def inputs_train(batch_size, shuffle=False):
-    """Construct input for asr training.
+    """
+    Construct input for asr training.
 
     Args:
         batch_size (int):
@@ -86,7 +87,7 @@ def inputs_train(batch_size, shuffle=False):
         # Restore shape, since `py_func` forgets it.
         # See: https://www.tensorflow.org/api_docs/python/tf/Tensor#set_shape
         sequence.set_shape([None, NUM_FEATURES])
-        seq_len.set_shape([])    # Shape for scalar is [].
+        seq_len.set_shape([])  # Shape for scalar is [].
 
         print('Generating training batches of size {}. Queue capacity is {}.'
               .format(batch_size, capacity))
@@ -114,7 +115,8 @@ def inputs_train(batch_size, shuffle=False):
 
 
 def inputs(batch_size, target):
-    """Construct input for asr evaluation. This method always returns unaltered data.
+    """
+    Construct input for asr evaluation. This method always returns unaltered data.
 
     Args:
         batch_size (int):
@@ -205,7 +207,8 @@ def inputs(batch_size, target):
 
 
 def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_size):
-    """Construct a queued batch of sample sequences and labels.
+    """
+    Construct a queued batch of sample sequences and labels.
 
     Args:
         sequence (tf.Tensor):
@@ -252,7 +255,8 @@ def _generate_sorted_batch(sequence, seq_len, label, label_len, original, batch_
 
 
 def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_size, capacity):
-    """Construct a queued batch of sample sequences and labels using buckets.
+    """
+    Construct a queued batch of sample sequences and labels using buckets.
 
     Args:
         sequence (tf.Tensor):
@@ -297,21 +301,22 @@ def _generate_bucket_batch(sequence, seq_len, label, label_len, original, batch_
     # https://www.tensorflow.org/api_docs/python/tf/contrib/training/bucket_by_sequence_length
     seq_len, (sequences, labels, label_len, originals) = \
         tfc.training.bucket_by_sequence_length(
-        input_length=seq_len,
-        tensors=[sequence, label, label_len, original],
-        batch_size=batch_size,
-        bucket_boundaries=boundaries,
-        num_threads=FLAGS.num_threads,
-        capacity=capacity // len(boundaries),
-        # Pads smaller batch elements (sequence and label) to the size of the longest one.
-        dynamic_pad=True,
-        allow_smaller_final_batch=False
-    )
+            input_length=seq_len,
+            tensors=[sequence, label, label_len, original],
+            batch_size=batch_size,
+            bucket_boundaries=boundaries,
+            num_threads=FLAGS.num_threads,
+            capacity=capacity // len(boundaries),
+            # Pads smaller batch elements (sequence and label) to the size of the longest one.
+            dynamic_pad=True,
+            allow_smaller_final_batch=False
+        )
     return sequences, seq_len, labels, label_len, originals
 
 
 def _read_file_list(txt_path):
-    """Generate synchronous lists of all samples with their respective lengths and labels.
+    """
+    Generate synchronous lists of all samples with their respective lengths and labels.
     Labels are converted from characters to integers.
 
     Also see `s_labels` documentation.

@@ -1,7 +1,8 @@
-"""Validate the TensorFlow installation and availability of GFU support."""
+"""
+Validate the TensorFlow installation and availability of GPU support.
+"""
 
 import tensorflow as tf
-
 
 tf.logging.set_verbosity(tf.logging.INFO)
 

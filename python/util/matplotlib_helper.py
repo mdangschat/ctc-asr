@@ -1,11 +1,13 @@
 import os
+from distutils.spawn import find_executable
+
 import matplotlib
 from matplotlib import rc
-from distutils.spawn import find_executable
 
 
 def pyplot_display(func):
-    """Provides decorator for `matplotlib.pyplot` plots.
+    """
+    Provides decorator for `matplotlib.pyplot` plots.
     It only uses `show()` display or PyCharm remote has been found.
     Else the plot is being saved to /tmp/<func name>.png.
 
@@ -19,6 +21,7 @@ def pyplot_display(func):
     Returns:
         function: The wrapped function.
     """
+
     def wrapper(*args, **kwargs):
         rc('font', **{'family': 'monospace',
                       'serif': ['DejaVu Sans'],

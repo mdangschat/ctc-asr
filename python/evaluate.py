@@ -1,9 +1,11 @@
-"""Evaluate the trained asr model.
+"""
+Evaluate the trained asr model.
 
 L8ER: Add accuracy table.
 """
 
 from datetime import datetime
+
 import numpy as np
 import tensorflow as tf
 
@@ -25,13 +27,13 @@ if FLAGS.use_warp_ctc:
 else:
     import python.model as model
 
-
 # Which dataset TXT file to use for evaluation. 'test' or 'dev'.
 __EVALUATION_TARGET = 'test' if FLAGS.test else 'dev'
 
 
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
-    """Run the evaluation once over all test inputs.
+    """
+    Run the evaluation once over all test inputs.
 
     Args:
         loss_op (tf.Tensor): CTC loss operator.
@@ -137,7 +139,8 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
 
 
 def evaluate(eval_dir):
-    """Evaluate the asr model.
+    """
+    Evaluate the asr model.
 
     Args:
         eval_dir (str): Path where to store evaluation summaries.
@@ -175,10 +178,10 @@ def evaluate(eval_dir):
 
 # noinspection PyUnusedLocal
 def main(argv=None):
-    """TensorFlow starting routine."""
+    # TensorFlow starting routine.
 
     # Determine evaluation log directory.
-    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}'\
+    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}' \
         .format(FLAGS.train_dir, __EVALUATION_TARGET)
 
     # Delete old evaluation data if requested.

@@ -1,21 +1,20 @@
-"""Train the asr model.
+"""
+Train the ASR model.
 
 Tested with Python 3.5 and 3.6.
 Note: No Python 2 compatibility is being provided.
 """
 
 import time
-
-import tensorflow as tf
 from datetime import datetime
 
-from python.params import FLAGS, get_parameters
-from python.util import storage
+import tensorflow as tf
+
 import python.model as model
 from python.evaluate import evaluate
-
+from python.params import FLAGS, get_parameters
+from python.util import storage
 from python.util.hooks import LoggerHook
-
 
 # General TensorFlow settings and setup.
 tf.logging.set_verbosity(tf.logging.INFO)
@@ -27,11 +26,12 @@ __MAX_STEPS = __STEPS_EPOCH * FLAGS.max_epochs
 
 
 def train(epoch):
-    """Train the network for a number of steps. Uses SortaGrad to start training (first epoch)
-     on short sequences, and increase their length throughout the first epoch. After that it
-     uses shuffled inputs.
-     This leads to a very low loss at the beginning of training, and also much faster computation
-     times at the start of the first epoch.
+    """
+    Train the network for a number of steps. Uses SortaGrad to start training (first epoch)
+    on short sequences, and increase their length throughout the first epoch. After that it
+    uses shuffled inputs.
+    This leads to a very low loss at the beginning of training, and also much faster computation
+    times at the start of the first epoch.
 
     Args:
         epoch (int): Whether to use sorted inputs (`epoch=0`) or shuffled inputs for training.
@@ -163,7 +163,7 @@ def train(epoch):
 
 # noinspection PyUnusedLocal
 def main(argv=None):
-    """TensorFlow starting routine."""
+    # TensorFlow starting routine.
 
     # Delete old training data if requested.
     storage.maybe_delete_checkpoints(FLAGS.train_dir, FLAGS.delete)

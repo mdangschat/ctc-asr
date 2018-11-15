@@ -1,8 +1,12 @@
+"""
+Collection of TensorFlow hooks.
+"""
+
 import time
 from datetime import datetime
+
 import pynvml as nvml
 import tensorflow as tf
-
 from tensorflow.core.framework.summary_pb2 import Summary
 from tensorflow.python.platform import tf_logging as logging
 from tensorflow.python.training import summary_io, training_util, session_run_hook
@@ -179,7 +183,9 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
 
 # The following code has been inspired by <https://stackoverflow.com/a/45681782>:
 class TraceHook(tf.train.SessionRunHook):
-    """Hook to perform Traces every N steps."""
+    """
+    Hook to perform Traces every N steps.
+    """
 
     def __init__(self, file_writer, log_frequency, trace_level=tf.RunOptions.FULL_TRACE):
         self._trace = log_frequency == 1
@@ -211,7 +217,9 @@ class TraceHook(tf.train.SessionRunHook):
 
 
 class LoggerHook(tf.train.SessionRunHook):
-    """Log loss and runtime."""
+    """
+    Log loss and runtime.
+    """
 
     def __init__(self, loss_op):
         self.loss_op = loss_op

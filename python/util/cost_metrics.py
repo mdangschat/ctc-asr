@@ -1,13 +1,16 @@
-"""Methods the calculate cost metrics."""
+"""
+Methods the calculate cost metrics.
+"""
 
 import numpy as np
 
-from python.params import NP_FLOAT
 from python.labels import itoc
+from python.params import NP_FLOAT
 
 
 def dense_to_text(decoded, originals):
-    """Convert a dense, integer encoded `tf.Tensor` into a readable string.
+    """
+    Convert a dense, integer encoded `tf.Tensor` into a readable string.
     Create a summary comparing the decoded plaintext with a given original string.
 
         Args:
@@ -49,7 +52,8 @@ def dense_to_text(decoded, originals):
 # The following function has been taken from:
 # <https://github.com/mozilla/DeepSpeech/blob/master/util/text.py#L85>
 def wer(original, result):
-    """The Word Error Rate (WER) is defined as the editing/Levenshtein distance
+    """
+    The Word Error Rate (WER) is defined as the editing/Levenshtein distance
     on word level divided by the amount of words in the original text.
     In case of the original having more words (N) than the result and both
     being totally different (all N words resulting in 1 edit operation each),
@@ -75,7 +79,8 @@ def wer(original, result):
 # The following functiom has been taken from:
 # <https://github.com/mozilla/DeepSpeech/blob/master/util/text.py#L99>
 def wer_batch(originals, results):
-    """Calculate the Word Error Rate (WER) for a batch.
+    """
+    Calculate the Word Error Rate (WER) for a batch.
 
     Args:
         originals (np.ndarray): 2D string Tensor with the original sentences. [batch_size, 1]
@@ -110,7 +115,8 @@ def wer_batch(originals, results):
 # version 1.0. This software is distributed without any warranty. For more
 # information, see <http://creativecommons.org/publicdomain/zero/1.0>
 def levenshtein(a, b):
-    """Calculate the Levenshtein distance between `a` and `b`.
+    """
+    Calculate the Levenshtein distance between `a` and `b`.
 
     Args:
         a (str): Original word.

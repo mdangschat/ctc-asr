@@ -1,12 +1,14 @@
-"""Contains the TS model definition."""
+"""
+Contains the TS model definition.
+"""
 
 import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
+import python.s_input as s_input
 from python.params import FLAGS, TF_FLOAT
 from python.util import tf_contrib, cost_metrics
-import python.s_input as s_input
 
 if FLAGS.use_warp_ctc:
     # noinspection PyUnresolvedReferences
@@ -14,7 +16,8 @@ if FLAGS.use_warp_ctc:
 
 
 def inference(sequences, seq_length, training=True):
-    """Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
+    """
+    Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
     Supports the default [Deep Speech 1] model ('ds1') and an [Deep Speech 2] inspired
     implementation ('ds2').
 
@@ -98,7 +101,7 @@ def inference(sequences, seq_length, training=True):
                                                                        time_major=False)
             # rnn_output = [batch_size, time, num_units_rnn * 2]
 
-        else:   # FLAGS.use_cudnn
+        else:  # FLAGS.use_cudnn
             # cuDNN RNNs only support time major inputs.
             conv_output = tfc.rnn.transpose_batch_time(output_3)
 
@@ -112,8 +115,8 @@ def inference(sequences, seq_length, training=True):
                                           dropout=dropout_rate,
                                           seed=FLAGS.random_seed,
                                           dtype=TF_FLOAT,
-                                          kernel_initializer=None,   # Glorot Uniform Initializer
-                                          bias_initializer=None)     # Constant 0.0 Initializer
+                                          kernel_initializer=None,  # Glorot Uniform Initializer
+                                          bias_initializer=None)  # Constant 0.0 Initializer
 
             rnn_output, _ = rnn(conv_output)
             rnn_output = tfc.rnn.transpose_batch_time(rnn_output)
@@ -141,7 +144,8 @@ def inference(sequences, seq_length, training=True):
 
 
 def loss(logits, seq_length, labels, label_length):
-    """Calculate the networks CTC loss.
+    """
+    Calculate the network's CTC loss.
 
     Args:
         logits (tf.Tensor):
@@ -199,7 +203,8 @@ def loss(logits, seq_length, labels, label_length):
 
 
 def decode(logits, seq_len, originals=None):
-    """Decode a given inference (`logits`) and convert it to plaintext.
+    """
+    Decode a given inference (`logits`) and convert it to plaintext.
 
     Args:
         logits (tf.Tensor):
@@ -239,7 +244,8 @@ def decode(logits, seq_len, originals=None):
 
 
 def decoded_error_rates(labels, originals, decoded, decoded_texts):
-    """Calculate edit distance and word error rate.
+    """
+    Calculate edit distance and word error rate.
 
     Args:
         labels (tf.SparseTensor or tf.Tensor):
@@ -277,7 +283,8 @@ def decoded_error_rates(labels, originals, decoded, decoded_texts):
 
 
 def train(_loss, global_step):
-    """Train operator for the asr model.
+    """
+    Train operator for the asr model.
 
     Create an optimizer and apply to all trainable variables.
 
@@ -315,7 +322,8 @@ def train(_loss, global_step):
 
 
 def inputs_train(shuffle):
-    """Construct input for the asr training.
+    """
+    Construct input for the asr training.
 
     Args:
         shuffle (bool): Shuffle data or not. See `s_input.inputs_train()`.
@@ -327,7 +335,8 @@ def inputs_train(shuffle):
 
 
 def inputs(target):
-    """Construct input for the asr evaluation.
+    """
+    Construct input for the asr evaluation.
 
     Args:
         target (str): 'train' or 'dev'.

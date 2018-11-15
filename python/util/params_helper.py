@@ -1,7 +1,9 @@
-"""Support routines for `python/params.py`."""
+"""
+Support routines for `python/params.py`.
+"""
 
-import os
 import json
+import os
 
 # Path to git root.
 BASE_PATH = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../../'))
