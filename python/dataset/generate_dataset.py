@@ -112,11 +112,18 @@ def _merge_csv_files(csv_files, target):
 
     # Read and merge files.
     for csv_file in csv_files:
+        if not (os.path.exists(csv_file) and os.path.isfile(csv_file)):
+            raise ValueError('File does not exist: ', csv_file)
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f, delimiter=CSV_DELIMITER,
                                     fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
-            # Add CSV data (except header) to buffer.
-            buffer.extend(reader[1:])
+
+            # Serialize reader data and remove header.
+            lines = list(reader)[1:]
+
+            # Add CSV data to buffer.
+            buffer.extend(lines)
 
     # Write data to target file.
     target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
