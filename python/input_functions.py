@@ -30,7 +30,7 @@ def _input_fn(txt_path):
     assert os.path.exists(txt_path) and os.path.isfile(txt_path)
 
     with tf.device('/cpu:0'):
-        dataset = tf.data.Dataset.from_generator(input_generator,
+        dataset = tf.data.Dataset.from_generator(_input_generator,
                                                  (tf.float32, tf.int32, tf.int32, tf.string),
                                                  (tf.TensorShape([None, 80]), tf.TensorShape([]),
                                                   tf.TensorShape([None]), tf.TensorShape([])),
@@ -57,7 +57,7 @@ def _input_fn(txt_path):
         return features, label_encoded
 
 
-def input_generator(*args):
+def _input_generator(*args):
     # TODO: Documentation
 
     with open(args[0]) as f:

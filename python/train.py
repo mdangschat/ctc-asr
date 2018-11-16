@@ -5,14 +5,12 @@ Tested with Python 3.5, 3.6 and 3.7. No Python 2 compatibility is being provided
 """
 
 import time
-import tensorflow as tf
 
-from python.params import FLAGS, get_parameters
-from python.util import storage
-from python.model import CTCModel
 from input_functions import *
-# from python.util.hooks import LoggerHook
-
+from python.model import CTCModel
+from python.params import get_parameters
+from python.util import storage
+from python.util.hooks import GPUStatisticsHook
 
 FLAGS.random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 
@@ -21,22 +19,6 @@ def hooks():
     # TODO Documentation
     # TODO Assemble hooks.
 
-    # Checkpoint saver hook.
-    checkpoint_saver = tf.train.Saver(
-        # Note: cuDNN RNNs do not support distributed saving of parameters.
-        sharded=False,
-        allow_empty=True,
-        max_to_keep=20,
-        save_relative_paths=True
-    )
-
-    checkpoint_saver_hook = tf.train.CheckpointSaverHook(
-        checkpoint_dir=FLAGS.train_dir,
-        save_secs=None,
-        save_steps=FLAGS.log_frequency * 40,
-        saver=checkpoint_saver
-    )
-
     # Summary hook.
     summary_op = tf.summary.merge_all()
     file_writer = tf.summary.FileWriterCache.get(FLAGS.train_dir)
@@ -44,19 +26,23 @@ def hooks():
                                                    summary_writer=file_writer,
                                                    summary_op=summary_op)
 
+    # GPU statistics hook.
+    gpu_stats_hook = GPUStatisticsHook(
+        log_every_n_steps=FLAGS.log_frequency,
+        query_every_n_steps=FLAGS.gpu_hook_query_frequency,
+        average_n=FLAGS.gpu_hook_average_queries,
+        stats=['mem_util', 'gpu_util'],
+        summary_writer=file_writer,
+        suppress_stdout=False,
+        group_tag='gpus'
+    )
+
     # Session hooks.
     session_hooks = [
         # Monitors the loss tensor and stops training if loss is NaN.
         # tf.train.NanTensorHook(loss), TODO fix
-        # Checkpoint saver hook.
-        checkpoint_saver_hook,
-        # Summary saver hook.
-        summary_saver_hook,
-        # Monitor hook for TensorBoard to trace compute time, memory usage, and more.
-        # Deactivated `TraceHook`, because it's computational intensive.
-        # TraceHook(file_writer, FLAGS.log_frequency * 5),
-        # LoggingHook.
-        # LoggerHook(loss)    # TODO fix
+        gpu_stats_hook,
+        summary_saver_hook
     ]
 
     return session_hooks
@@ -106,7 +92,6 @@ def main(argv=None):
 
     # Evaluate the trained model.
     evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None, steps=None)
-                                           # checkpoint_path=eval_dir)
     tf.logging.info('Evaluation result: {}'.format(evaluation_result))
 
     # TODO: Removed for now. Complete training first.
