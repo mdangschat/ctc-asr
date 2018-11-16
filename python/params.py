@@ -98,11 +98,11 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
 
 
 # Dataset.
-tf.flags.DEFINE_string('train_txt', os.path.join(BASE_PATH, 'data/train.txt'),
+tf.flags.DEFINE_string('train_csv', os.path.join(BASE_PATH, 'data/train.csv'),
                        "Path to the `train.txt` file.")
-tf.flags.DEFINE_string('test_txt', os.path.join(BASE_PATH, 'data/test.txt'),
+tf.flags.DEFINE_string('test_csv', os.path.join(BASE_PATH, 'data/test.csv'),
                        "Path to the `test.txt` file.")
-tf.flags.DEFINE_string('dev_txt', os.path.join(BASE_PATH, 'data/dev.txt'),
+tf.flags.DEFINE_string('dev_csv', os.path.join(BASE_PATH, 'data/dev.csv'),
                        "Path to the `dev.txt` file.")
 
 tf.flags.DEFINE_integer('num_examples_train', TRAIN_SIZE,

@@ -104,7 +104,7 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
 
     # Reshape to: conv3 = [batch_size, time, 10 * NUM_FILTERS], where 10 is the number of
     # frequencies left over from convolutions.
-    output = tf.reshape(output, [output.shape[0], -1, 10 * filters[-1]])
+    output = tf.reshape(output, [tf.shape(output)[0], -1, 10 * filters[-1]])
 
     # Update seq_length to convolutions. shape[1] = time steps; shape[0] = batch_size
     # Note that the shortest samples within a batch are stretched to the convolutional

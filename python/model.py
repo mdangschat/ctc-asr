@@ -30,6 +30,8 @@ class CTCModel(object):
         spectrogram = features['spectrogram']
         print('spectrogram:', spectrogram)
 
+        # print_op = tf.print('spectrogram', tf.shape(spectrogram), spectrogram_length)
+        # with tf.control_dependencies([print_op]):
         logits, seq_length = self.inference(spectrogram, spectrogram_length, training=True)
 
         if mode == tf.estimator.ModeKeys.PREDICT:
@@ -53,7 +55,7 @@ class CTCModel(object):
             eval_metrics_ops = {
                 # 'accuracy': tf.metrics.average_precision_at_k(labels, logits, name='accuracy')
             }
-            eval_metrics_ops=None
+            eval_metrics_ops = None
 
             return tf.estimator.EstimatorSpec(mode=mode, loss=self.loss_op,
                                               eval_metric_ops=eval_metrics_ops)
@@ -113,17 +115,18 @@ class CTCModel(object):
                                          kernel_initializer=initializer,
                                          kernel_regularizer=regularizer)
                 dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
-                output_3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate, training=training)
-                # output_3 = [batch_size, time, num_units_dense]
+                output3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate,
+                                            training=training)
+                # output3 = [batch_size, time, num_units_dense]
 
         elif FLAGS.used_model == 'ds2':
             # Convolutional input layers.
             with tf.variable_scope('conv'):
                 # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
-                sequences = tf.reshape(sequences, [sequences.shape[0], -1, sequences.shape[2], 1])
+                sequences = tf.expand_dims(sequences, 3)
 
                 # Apply convolutions.
-                output_3, seq_length = tf_contrib.conv_layers(sequences)
+                output3, seq_length = tf_contrib.conv_layers(sequences)
         else:
             raise ValueError('Unsupported model "{}" in flags.'.format(FLAGS.used_model))
 
@@ -140,7 +143,7 @@ class CTCModel(object):
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
                 rnn_output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(
                     fw_cells, bw_cells,
-                    inputs=output_3,
+                    inputs=output3,
                     dtype=TF_FLOAT,
                     sequence_length=seq_length,
                     parallel_iterations=64,
@@ -148,9 +151,9 @@ class CTCModel(object):
                 )
                 # rnn_output = [batch_size, time, num_units_rnn * 2]
 
-            else:   # FLAGS.use_cudnn
+            else:  # FLAGS.use_cudnn
                 # cuDNN RNNs only support time major inputs.
-                conv_output = tfc.rnn.transpose_batch_time(output_3)
+                conv_output = tfc.rnn.transpose_batch_time(output3)
 
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNRelu
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnLSTM
@@ -162,8 +165,8 @@ class CTCModel(object):
                                               dropout=dropout_rate,
                                               seed=FLAGS.random_seed,
                                               dtype=TF_FLOAT,
-                                              kernel_initializer=None,   # Glorot Uniform Initializer
-                                              bias_initializer=None)     # Constant 0.0 Initializer
+                                              kernel_initializer=None,  # Glorot Uniform Initializer
+                                              bias_initializer=None)  # Constant 0.0 Initializer
 
                 rnn_output, _ = rnn(conv_output)
                 rnn_output = tfc.rnn.transpose_batch_time(rnn_output)

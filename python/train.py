@@ -55,6 +55,7 @@ def main(argv=None):
     # Delete old training data if requested.
     storage.maybe_delete_checkpoints(FLAGS.train_dir, FLAGS.delete)
 
+    # TODO: Are those folders still needed?
     # Delete old validation/evaluation data if requested.
     eval_dir = '{}_dev'.format(FLAGS.train_dir)
     storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
@@ -88,7 +89,7 @@ def main(argv=None):
     )
 
     # Train the model.
-    estimator.train(input_fn=train_input_fn, hooks=None, steps=None, max_steps=100)
+    estimator.train(input_fn=train_input_fn, hooks=None, steps=None, max_steps=None)
 
     # Evaluate the trained model.
     evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None, steps=None)

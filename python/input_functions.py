@@ -5,45 +5,62 @@ TODO: Documentation.
 import os
 import tensorflow as tf
 
-from python.params import BASE_PATH, FLAGS
+from python.params import BASE_PATH, BOUNDARIES, FLAGS
 from python.load_sample import load_sample
 from python.labels import ctoi
 
 
 def train_input_fn():
-    return _input_fn(FLAGS.train_txt)
+    return _input_fn(FLAGS.train_csv)
 
 
 def test_input_fn():
-    return _input_fn(FLAGS.test_txt)
+    return _input_fn(FLAGS.test_csv)
 
 
 def dev_input_fn():
     # TODO: For testing, since dev.txt does not exist in correct format
-    # return _input_fn(FLAGS.dev_txt)
-    return train_input_fn()
+    # return _input_fn(FLAGS.dev_csv)
+    return test_input_fn()
 
 
-def _input_fn(txt_path):
+def _input_fn(csv_path, sorta_grad=True, epochs=1):
     # TODO: Documentation.
+    # TODO: Debug defaults.
 
-    assert os.path.exists(txt_path) and os.path.isfile(txt_path)
+    def element_length_fn(_spectrogram, _spectrogram_length, _label_encoded, _label_plaintext):
+        del _spectrogram
+        del _label_encoded
+        del _label_plaintext
+        return _spectrogram_length
+
+    assert os.path.exists(csv_path) and os.path.isfile(csv_path)
 
     with tf.device('/cpu:0'):
         dataset = tf.data.Dataset.from_generator(_input_generator,
                                                  (tf.float32, tf.int32, tf.int32, tf.string),
                                                  (tf.TensorShape([None, 80]), tf.TensorShape([]),
                                                   tf.TensorShape([None]), tf.TensorShape([])),
-                                                 args=[txt_path])
+                                                 args=[csv_path])
 
-        dataset = dataset.padded_batch(batch_size=FLAGS.batch_size,
-                                       padded_shapes=([None, 80], [], [None], []),
-                                       drop_remainder=True)
+        if sorta_grad:
+            dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(
+                element_length_func=element_length_fn,
+                bucket_boundaries=BOUNDARIES,
+                bucket_batch_sizes=[FLAGS.batch_size] * (len(BOUNDARIES) + 1),
+                pad_to_bucket_boundary=False,
+                no_padding=False)
+            )
 
-        dataset = dataset.prefetch(32)
+        else:
+            dataset = dataset.padded_batch(batch_size=FLAGS.batch_size,
+                                           padded_shapes=([None, 80], [], [None], []),
+                                           drop_remainder=True)
 
-        # TODO: Number of epochs.
-        dataset = dataset.repeat(1)
+        dataset = dataset.prefetch(64)
+
+        # Number of epochs.
+        dataset = dataset.repeat(epochs)
 
         iterator = dataset.make_one_shot_iterator()
         spectrogram, spectrogram_length, label_encoded, label_plaintext = iterator.get_next()
@@ -59,12 +76,14 @@ def _input_fn(txt_path):
 
 def _input_generator(*args):
     # TODO: Documentation
+    # TODO: Use CSV
 
     with open(args[0]) as f:
         lines = f.readlines()
+        lines = lines[1:]   # Remove CSV header.
 
         for line in lines:
-            path, label = map(lambda s: s.strip(), line.split(':', 1))
+            path, label = map(lambda s: s.strip(), line.split(';', 1))
             path = os.path.join(BASE_PATH, 'data/corpus', path)
 
             spectrogram, spectrogram_length = load_sample(path)
