@@ -6,46 +6,12 @@ Tested with Python 3.5, 3.6 and 3.7. No Python 2 compatibility is being provided
 
 import time
 
-from input_functions import *
+import tensorflow as tf
+
+from input_functions import train_input_fn, dev_input_fn
 from python.model import CTCModel
-from python.params import get_parameters
+from python.params import FLAGS, get_parameters
 from python.util import storage
-from python.util.hooks import GPUStatisticsHook
-
-FLAGS.random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
-
-
-def hooks():
-    # TODO Documentation
-    # TODO Assemble hooks.
-
-    # Summary hook.
-    summary_op = tf.summary.merge_all()
-    file_writer = tf.summary.FileWriterCache.get(FLAGS.train_dir)
-    summary_saver_hook = tf.train.SummarySaverHook(save_steps=FLAGS.log_frequency,
-                                                   summary_writer=file_writer,
-                                                   summary_op=summary_op)
-
-    # GPU statistics hook.
-    gpu_stats_hook = GPUStatisticsHook(
-        log_every_n_steps=FLAGS.log_frequency,
-        query_every_n_steps=FLAGS.gpu_hook_query_frequency,
-        average_n=FLAGS.gpu_hook_average_queries,
-        stats=['mem_util', 'gpu_util'],
-        summary_writer=file_writer,
-        suppress_stdout=False,
-        group_tag='gpus'
-    )
-
-    # Session hooks.
-    session_hooks = [
-        # Monitors the loss tensor and stops training if loss is NaN.
-        # tf.train.NanTensorHook(loss), TODO fix
-        gpu_stats_hook,
-        summary_saver_hook
-    ]
-
-    return session_hooks
 
 
 # noinspection PyUnusedLocal
@@ -104,7 +70,8 @@ def main(argv=None):
 if __name__ == '__main__':
     # General TensorFlow setup.
     tf.logging.set_verbosity(tf.logging.INFO)
-    tf.set_random_seed(FLAGS.random_seed)
+    random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
+    tf.set_random_seed(random_seed)
 
     # Run training.
     tf.app.run()

@@ -1,30 +1,31 @@
 """
-TODO: Documentation.
+Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
 """
 
 import os
+
 import tensorflow as tf
 
-from python.params import BASE_PATH, BOUNDARIES, FLAGS
-from python.load_sample import load_sample
 from python.labels import ctoi
+from python.load_sample import load_sample
+from python.params import BASE_PATH, BOUNDARIES, FLAGS
 
 
 def train_input_fn():
-    return _input_fn(FLAGS.train_csv)
+    return _input_fn(FLAGS.train_csv, use_buckets=True, epochs=FLAGS.max_epochs)
 
 
 def test_input_fn():
-    return _input_fn(FLAGS.test_csv)
+    return _input_fn(FLAGS.test_csv, use_buckets=False, epochs=1)
 
 
 def dev_input_fn():
-    # TODO: For testing, since dev.txt does not exist in correct format
-    # return _input_fn(FLAGS.dev_csv)
+    # TODO: For testing, since dev.csv does not exist in correct format
+    # return _input_fn(FLAGS.dev_csv, use_buckets=True, epochs=1)
     return test_input_fn()
 
 
-def _input_fn(csv_path, sorta_grad=True, epochs=1):
+def _input_fn(csv_path, use_buckets=True, epochs=2):
     # TODO: Documentation.
     # TODO: Debug defaults.
 
@@ -43,20 +44,20 @@ def _input_fn(csv_path, sorta_grad=True, epochs=1):
                                                   tf.TensorShape([None]), tf.TensorShape([])),
                                                  args=[csv_path])
 
-        if sorta_grad:
+        if use_buckets:
             dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(
                 element_length_func=element_length_fn,
                 bucket_boundaries=BOUNDARIES,
                 bucket_batch_sizes=[FLAGS.batch_size] * (len(BOUNDARIES) + 1),
                 pad_to_bucket_boundary=False,
-                no_padding=False)
-            )
+                no_padding=False))
 
         else:
             dataset = dataset.padded_batch(batch_size=FLAGS.batch_size,
                                            padded_shapes=([None, 80], [], [None], []),
                                            drop_remainder=True)
 
+        # dataset.cache()
         dataset = dataset.prefetch(64)
 
         # Number of epochs.
@@ -80,7 +81,7 @@ def _input_generator(*args):
 
     with open(args[0]) as f:
         lines = f.readlines()
-        lines = lines[1:]   # Remove CSV header.
+        lines = lines[1:]  # Remove CSV header.
 
         for line in lines:
             path, label = map(lambda s: s.strip(), line.split(';', 1))
