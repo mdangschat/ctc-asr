@@ -1,7 +1,8 @@
 import os
+from distutils.spawn import find_executable
+
 import matplotlib
 from matplotlib import rc
-from distutils.spawn import find_executable
 
 
 def pyplot_display(func):
@@ -20,6 +21,7 @@ def pyplot_display(func):
     Returns:
         function: The wrapped function.
     """
+
     def wrapper(*args, **kwargs):
         rc('font', **{'family': 'monospace',
                       'serif': ['DejaVu Sans'],

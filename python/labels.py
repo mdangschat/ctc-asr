@@ -1,4 +1,5 @@
-"""Convert characters (chr) to integer (int) labels and vice versa.
+"""
+Convert characters (chr) to integer (int) labels and vice versa.
 
 REVIEW: index 0 bug, also see:
 <https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding>
@@ -8,10 +9,9 @@ REVIEW: index 0 bug, also see:
 See: https://www.tensorflow.org/api_docs/python/tf/nn/ctc_loss
 """
 
-
-__map = r' abcdefghijklmnopqrstuvwxyz'      # 27 characters including <space>.
+__map = r' abcdefghijklmnopqrstuvwxyz'  # 27 characters including <space>.
 __ctoi = dict()
-__itoc = dict([(0, '')])   # This is in case the net decodes a 0 on step 0.
+__itoc = dict([(0, '')])  # This is in case the net decodes a 0 on step 0.
 
 if len(__ctoi) == 0 or len(__itoc) == 0:
     for i, c in enumerate(__map):
@@ -20,7 +20,8 @@ if len(__ctoi) == 0 or len(__itoc) == 0:
 
 
 def ctoi(char):
-    """Convert character label to integer.
+    """
+    Convert character label to integer.
 
     Args:
         char (char): Character label.
@@ -37,7 +38,8 @@ def ctoi(char):
 
 
 def itoc(integer):
-    """Convert integer label to character.
+    """
+    Convert integer label to character.
 
     Args:
         integer (int): Integer label.
@@ -52,7 +54,8 @@ def itoc(integer):
 
 
 def num_classes():
-    """Return number of different classes +1 for the <blank> label.
+    """
+    Return number of different classes, +1 for the <blank> label.
 
     Returns:
         int: Number of labels +1.

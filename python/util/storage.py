@@ -2,11 +2,12 @@
 Storage and version control helper methods.
 """
 
-import os
-import time
-import shutil
 import hashlib
+import os
+import shutil
 import tarfile
+import time
+
 import tensorflow as tf
 from git import Repo
 

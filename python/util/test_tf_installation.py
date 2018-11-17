@@ -4,7 +4,6 @@ Validate the TensorFlow installation and availability of GFU support.
 
 import tensorflow as tf
 
-
 tf.logging.set_verbosity(tf.logging.INFO)
 
 
