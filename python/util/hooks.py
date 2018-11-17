@@ -283,8 +283,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                 Sadly you have to take a look at 'tensorflow/python/training/session_run_hook.py'
                 for more details.
         """
-        # Not sure what this is supposed to do -_-.
-        # TODO: Does this trigger some internal magic?
+        # Ignore input argument.
         _ = run_context
 
         # Get the values of the tensors requested inside the `before_run` function.

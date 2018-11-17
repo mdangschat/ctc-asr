@@ -20,9 +20,30 @@ class CTCModel(object):
         self.train_op = None
 
     def model_fn(self, features, labels, mode):
-        # TODO Documentation
-        # This method sets the `self.loss_op` and `self.train_op` variables.
+        """
+        Model function that constructs the model's graph and returns the configured
+        `tf.estimator.EstimatorSpec`.
 
+        This method sets the `self.loss_op` and `self.train_op` variables.
+
+        Args:
+            features (tf.Tensor or Dict[tf.Tensor]):
+                This is the first item returned from the `input_fn` passed to `train`, `evaluate`,
+                and `predict`. This should be a single `tf.Tensor` or `dict` of same.
+
+            labels:
+                This is the second item returned from the `input_fn` passed to `train`, `evaluate`,
+                and `predict`. This should be a single `tf.Tensor` or `dict` of same
+                (for multi-head models). If mode is `tf.estimator.ModeKeys.PREDICT`, `labels=None`
+                will be passed. If the `model_fn`'s signature does not accept `mode`, the `model_fn`
+                must still be able to handle `labels=None`.
+
+            mode (tf.estimator.ModeKeys): Optional.
+                Specifies if this training, evaluation or prediction. See `tf.estimator.ModeKeys`.
+
+        Returns:
+            `tf.estimator.EstimatorSpec`
+        """
         # Convert dense labels tensor into sparse tensor.
         labels = tfc.layers.dense_to_sparse(labels)
 
