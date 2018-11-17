@@ -1,16 +1,13 @@
-"""
-Evaluate the trained asr model.
-
-L8ER: Add accuracy table.
-"""
+"""Evaluate the trained ASR model."""
 
 from datetime import datetime
-
 import numpy as np
 import tensorflow as tf
 
 from python.params import FLAGS
 from python.util import storage
+from python import model
+
 
 # Evaluation specific flags.
 tf.flags.DEFINE_boolean('test', False,
@@ -20,20 +17,13 @@ tf.flags.DEFINE_string('eval_dir', '',
                        ("If set, evaluation log data will be stored here, instead of the default "
                         "directory `f'{FLAGS.train_dir}_eval'."))
 
-# WarpCTC crashes during evaluation. Even if it's only imported and not actually being used.
-if FLAGS.use_warp_ctc:
-    FLAGS.use_warp_ctc = False
-    import python.model as model
-else:
-    import python.model as model
 
 # Which dataset TXT file to use for evaluation. 'test' or 'dev'.
 __EVALUATION_TARGET = 'test' if FLAGS.test else 'dev'
 
 
 def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
-    """
-    Run the evaluation once over all test inputs.
+    """Run the evaluation once over all test inputs.
 
     Args:
         loss_op (tf.Tensor): CTC loss operator.
@@ -139,8 +129,7 @@ def evaluate_once(loss_op, mean_ed_op, wer_op, summary_op, summary_writer):
 
 
 def evaluate(eval_dir):
-    """
-    Evaluate the asr model.
+    """Evaluate the asr model.
 
     Args:
         eval_dir (str): Path where to store evaluation summaries.
@@ -159,7 +148,7 @@ def evaluate(eval_dir):
 
         with tf.variable_scope('loss', reuse=tf.AUTO_REUSE):
             # Calculate error rates
-            loss_op = model.loss(logits, seq_length, labels, label_length)
+            loss_op = model.loss(logits, seq_length, labels)
 
             decoded, plaintext, plaintext_summary = model.decode(logits, seq_length, originals)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
@@ -178,10 +167,10 @@ def evaluate(eval_dir):
 
 # noinspection PyUnusedLocal
 def main(argv=None):
-    # TensorFlow starting routine.
+    """TensorFlow starting routine."""
 
     # Determine evaluation log directory.
-    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}' \
+    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}'\
         .format(FLAGS.train_dir, __EVALUATION_TARGET)
 
     # Delete old evaluation data if requested.

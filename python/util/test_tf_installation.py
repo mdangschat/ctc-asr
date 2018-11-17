@@ -1,5 +1,5 @@
 """
-Validate the TensorFlow installation and availability of GPU support.
+Validate the TensorFlow installation and availability of GFU support.
 """
 
 import tensorflow as tf
