@@ -1,4 +1,6 @@
-"""Collection of hyper parameters, network layout, and reporting options."""
+"""
+Collection of hyper parameters, network layout, and reporting options.
+"""
 
 import os
 from multiprocessing import cpu_count
@@ -24,7 +26,7 @@ tf.flags.DEFINE_string('used_model', 'ds2',
                        ("Used inference model. Supported are 'ds1', and 'ds2'. "
                         "Also see `FLAGS.feature_drop_every_second_frame`."))
 
-tf.flags.DEFINE_integer('num_units_dense', 128,
+tf.flags.DEFINE_integer('num_units_dense', 256,
                         "Number of units per dense layer.")
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       "Cutoff ReLU activations that exceed the cutoff.")
@@ -32,9 +34,9 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 1,
+tf.flags.DEFINE_integer('num_layers_rnn', 2,
                         "Number of stacked RNN cells.")
-tf.flags.DEFINE_integer('num_units_rnn', 128,
+tf.flags.DEFINE_integer('num_units_rnn', 256,
                         "Number of hidden units in each of the RNN cells.")
 tf.flags.DEFINE_string('rnn_cell_type', 'rnn_relu',  # TODO: Implement this.
                        "Used RNN cell type. Supported are the RNN versions 'relu' and 'tanh',"
@@ -50,7 +52,7 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
 
 # Learning Rate.
-tf.flags.DEFINE_integer('max_epochs', 1,
+tf.flags.DEFINE_integer('max_epochs', 2,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-4,
                       "Initial learning rate.")
@@ -70,7 +72,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       "Adam optimizer epsilon.")
 
 # CTC decoder.
-tf.flags.DEFINE_integer('beam_width', 128,
+tf.flags.DEFINE_integer('beam_width', 256,
                         "Beam width used in the CTC `beam_search_decoder`.")
 
 # Dropout.

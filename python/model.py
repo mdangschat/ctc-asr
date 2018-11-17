@@ -1,4 +1,6 @@
-"""Contains the ASR system's model definition."""
+"""
+Contains the ASR system's model definition.
+"""
 
 import numpy as np
 import tensorflow as tf

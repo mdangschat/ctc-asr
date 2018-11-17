@@ -8,27 +8,20 @@ import time
 
 import tensorflow as tf
 
-from input_functions import train_input_fn, dev_input_fn
+from input_functions import input_fn_generator
 from python.model import CTCModel
 from python.params import FLAGS, get_parameters
 from python.util import storage
+
+RANDOM_SEED = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 
 
 # noinspection PyUnusedLocal
 def main(argv=None):
     """TensorFlow starting routine."""
 
-    # Delete old training data if requested.
+    # Delete old model data if requested.
     storage.maybe_delete_checkpoints(FLAGS.train_dir, FLAGS.delete)
-
-    # TODO: Are those folders still needed?
-    # Delete old validation/evaluation data if requested.
-    eval_dir = '{}_dev'.format(FLAGS.train_dir)
-    storage.maybe_delete_checkpoints(eval_dir, FLAGS.delete)
-
-    # Delete old test data if requested.
-    test_dir = '{}_test'.format(FLAGS.train_dir)
-    storage.maybe_delete_checkpoints(test_dir, FLAGS.delete)
 
     # Logging information about the run.
     print('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}\nParameters: {}'
@@ -37,12 +30,16 @@ def main(argv=None):
 
     # Setup TensorFlow run configuration and hooks.
     config = tf.estimator.RunConfig(
-        tf_random_seed=FLAGS.random_seed,
         model_dir=FLAGS.train_dir,
+        tf_random_seed=RANDOM_SEED,
+        save_summary_steps=FLAGS.log_frequency,
         session_config=tf.ConfigProto(
             log_device_placement=FLAGS.log_device_placement,
             gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
-        )
+        ),
+        keep_checkpoint_max=5,
+        log_step_count_steps=FLAGS.log_frequency,
+        train_distribute=None
     )
 
     model = CTCModel()
@@ -55,23 +52,30 @@ def main(argv=None):
     )
 
     # Train the model.
-    estimator.train(input_fn=train_input_fn, hooks=None, steps=None, max_steps=None)
+    curriculum_train_input_fn = input_fn_generator('train_batch')
+    estimator.train(input_fn=curriculum_train_input_fn, hooks=None, steps=None, max_steps=None)
 
     # Evaluate the trained model.
+    dev_input_fn = input_fn_generator('dev')
     evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None, steps=None)
-    tf.logging.info('Evaluation result: {}'.format(evaluation_result))
+    tf.logging.info('Evaluation results of epoch {}: {}'.format(1, evaluation_result))
 
-    # TODO: Removed for now. Complete training first.
-    # prediction_result = estimator.predict(input_fn=pred_input_fn, predict_keys=[''])
-    #
-    # tf.logging.info('Completed all epochs.')
+    # Train the model and evaluate after each epoch.
+    for epoch in range(2, FLAGS.max_epochs + 1):
+        # Train the model.
+        train_input_fn = input_fn_generator('train_bucket')
+        estimator.train(input_fn=train_input_fn, hooks=None, steps=None, max_steps=None)
+
+        # Evaluate the trained model.
+        dev_input_fn = input_fn_generator('dev')
+        evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None, steps=None)
+        tf.logging.info('Evaluation results of epoch {}: {}'.format(epoch, evaluation_result))
 
 
 if __name__ == '__main__':
     # General TensorFlow setup.
     tf.logging.set_verbosity(tf.logging.INFO)
-    random_seed = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
-    tf.set_random_seed(random_seed)
+    tf.set_random_seed(RANDOM_SEED)
 
     # Run training.
     tf.app.run()

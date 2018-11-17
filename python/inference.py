@@ -1,13 +1,16 @@
-"""Transcribe a given audio file."""
+"""
+Transcribe a given audio file.
+
+# TODO: This needs to be updated to Estimator and `tf.data`.
+"""
 
 import os
 
 import tensorflow as tf
 
-from python.params import FLAGS, TF_FLOAT, BASE_PATH
-from python.load_sample import load_sample, NUM_FEATURES
 from python import model
-
+from python.input_functions import load_sample, NUM_FEATURES
+from python.params import FLAGS, TF_FLOAT, BASE_PATH
 
 # File to transcribe.
 # WAV_PATHS = ['../datasets/speech_data/timit/TIMIT/TRAIN/DR4/FALR0/SA1.WAV']

@@ -1,13 +1,17 @@
-"""Evaluate the trained ASR model."""
+"""
+Evaluate the trained ASR model.
+
+# TODO: This needs to be updated to Estimator and `tf.data`. Only evaluate on the test corpus.
+"""
 
 from datetime import datetime
+
 import numpy as np
 import tensorflow as tf
 
+from python import model
 from python.params import FLAGS
 from python.util import storage
-from python import model
-
 
 # Evaluation specific flags.
 tf.flags.DEFINE_boolean('test', False,
@@ -16,7 +20,6 @@ tf.flags.DEFINE_boolean('test', False,
 tf.flags.DEFINE_string('eval_dir', '',
                        ("If set, evaluation log data will be stored here, instead of the default "
                         "directory `f'{FLAGS.train_dir}_eval'."))
-
 
 # Which dataset TXT file to use for evaluation. 'test' or 'dev'.
 __EVALUATION_TARGET = 'test' if FLAGS.test else 'dev'
@@ -170,7 +173,7 @@ def main(argv=None):
     """TensorFlow starting routine."""
 
     # Determine evaluation log directory.
-    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}'\
+    eval_dir = FLAGS.eval_dir if len(FLAGS.eval_dir) > 0 else '{}_{}' \
         .format(FLAGS.train_dir, __EVALUATION_TARGET)
 
     # Delete old evaluation data if requested.
