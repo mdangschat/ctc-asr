@@ -77,15 +77,15 @@ def generate_dataset(keep_archives=True, use_timit=True):
     # Assemble and merge CSV files.
     # Train
     train = [cv_train, ls_train, tatoeba_train, ted_train, timit_train]
-    train_csv, train_len = _merge_csv_files(train, 'train')
+    train_csv, train_len = __merge_csv_files(train, 'train')
 
     # Test
     test = [cv_test, ls_test]
-    _, test_len = _merge_csv_files(test, 'test')
+    _, test_len = __merge_csv_files(test, 'test')
 
     # Dev
     dev = [ls_dev]
-    _, dev_len = _merge_csv_files(dev, 'dev')
+    _, dev_len = __merge_csv_files(dev, 'dev')
 
     # Sort train.csv file (SortaGrad).
     boundaries, train_len_seconds = sort_csv_by_seq_len(train_csv)
@@ -94,7 +94,7 @@ def generate_dataset(keep_archives=True, use_timit=True):
     store_corpus_json(train_len, test_len, dev_len, boundaries, train_len_seconds)
 
 
-def _merge_csv_files(csv_files, target):
+def __merge_csv_files(csv_files, target):
     """
     Merge a list of CSV files into a single target CSV file.
 
@@ -103,7 +103,7 @@ def _merge_csv_files(csv_files, target):
         target (str): 'test', 'dev', 'train'
 
     Returns:
-        str: Path to the created CSV file.
+        Tuple[str, int]: Path to the created CSV file and the number of examples in it.
     """
     if target not in ['test', 'dev', 'train']:
         raise ValueError('Invalid target.')

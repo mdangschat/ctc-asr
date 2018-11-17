@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 from python.dataset.config import CORPUS_DIR, CSV_DIR, CSV_DELIMITER
 from python.dataset.config import LABEL_WHITELIST_PATTERN, CSV_HEADER_PATH, CSV_HEADER_LABEL
-from python.load_sample import load_sample
+from python.input_functions import WIN_STEP, load_sample
 from python.util import storage
 from python.util.matplotlib_helper import pyplot_display
 
@@ -134,7 +134,7 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=1700):
         _plot_sequence_lengths(lengths)
 
         # Determine total corpus length in seconds.
-        total_length_seconds = sum(map(lambda x: x[0], buffer)) / 0.1
+        total_length_seconds = sum(map(lambda x: x[0], buffer)) * WIN_STEP
 
         # Remove sequence length from tuples, therefore, restoring the CSV entry list.
         csv_data = [csv_entry for _, csv_entry in buffer]
