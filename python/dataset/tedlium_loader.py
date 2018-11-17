@@ -1,5 +1,8 @@
 """
-Load the TEDLIUM (v2) dataset.
+Load the `TEDLIUM` (v2) dataset.
+
+.. _TEDLIUM:
+    http://openslr.org/19
 """
 
 import math

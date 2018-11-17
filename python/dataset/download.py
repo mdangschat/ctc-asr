@@ -83,7 +83,7 @@ def maybe_download(url, md5=None, cache_archive=True):
 
 def cleanup_cache(directory_name):
     """
-    TODO: Documentation.
+    Remove the given directory name from the projects `cache` directory.
 
     Args:
         directory_name (str): Directory name of the extracted folder in the cache folder.
@@ -102,7 +102,16 @@ def cleanup_cache(directory_name):
 
 
 def download_with_progress(url, storage_path):
-    # TODO: Documentation
+    """
+    Download a given `url` to the `storage_path` and display a progressbar.
+
+    Args:
+        url (str): The URL to download.
+        storage_path (str): Where to store the download, e.g. `/tmp/archive.tar.gz`.
+
+    Returns:
+        Nothing.
+    """
 
     r = requests.get(url, stream=True)
     content_length = int(r.headers.get('content-length'))

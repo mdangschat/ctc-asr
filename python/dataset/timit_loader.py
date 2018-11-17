@@ -1,5 +1,8 @@
 """
-Load the TIMIT dataset.
+Load the `TIMIT`_ dataset.
+
+.. _TIMIT:
+    https://catalog.ldc.upenn.edu/LDC93S1
 """
 
 import os

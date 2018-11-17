@@ -1,5 +1,8 @@
 """
-Load the Mozilla Common Voice (v1) dataset.
+Load the Mozilla `Common Voice`_ (v1) dataset.
+
+.. Common Voice:
+    https://voice.mozilla.org/en
 """
 
 import csv

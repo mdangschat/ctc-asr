@@ -1,5 +1,8 @@
 """
-Load the Tatoeba dataset.
+Load the `Tatoeba`_ dataset.
+
+.. _Tatoeba:
+    https://tatoeba.org/eng/downloads
 """
 
 import csv
@@ -101,7 +104,7 @@ def __tatoeba_loader(target):
         # print('csv_header: sentence_id\tusername\ttext')
 
         for _id, username, text in tqdm(csv_lines,
-                                        desc='Loading Tatoeba CSV', total=len(csv_lines),
+                                        desc='Parsing Tatoeba CSV', total=len(csv_lines),
                                         file=sys.stdout, unit='entries', dynamic_ncols=True):
             path = os.path.join(__SOURCE_PATH, 'audio', username, _id)
             if path in validated_samples:
@@ -109,9 +112,11 @@ def __tatoeba_loader(target):
 
     # Create target folder structure.
     for sample in samples:
-        dir_path = os.path.join(__TARGET_PATH, os.path.relpath(sample['path'], __SOURCE_PATH))
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
+        source_dir_path = os.path.join(os.path.relpath(sample['path'], __SOURCE_PATH), '..')
+        target_dir_path = os.path.realpath(os.path.join(__TARGET_PATH, source_dir_path))
+
+        if not os.path.exists(target_dir_path):
+            os.makedirs(target_dir_path)
 
     lock = Lock()
     buffer = []
@@ -145,16 +150,18 @@ def __tatoeba_loader_helper(sample):
         # print('WARN: Audio file missing: {}'.format(mp3_path))
         return None
 
-    # Check if file isn't empty.
+    # Make sure the file isn't empty.
     try:
         if os.path.getsize(mp3_path) <= 4048:
             return None
     except OSError:
         return None
 
+    # If a WAV file with the desired name already exist, delete it.
     delete_file_if_exists(wav_path)
 
     # Convert MP3 file into WAV file, reduce volume to 0.95, downsample to 16kHz mono sound.
+    # Note that this call produces the WAV files in the `data/corpus` directory.
     ret = subprocess.call(['sox', '-v', '0.95', mp3_path, '-r', '16k', wav_path, 'remix', '1'])
     if not os.path.isfile(wav_path):
         raise RuntimeError('Failed to create WAV file with error code={}: {}'.format(ret, wav_path))
@@ -173,7 +180,6 @@ def __tatoeba_loader_helper(sample):
                 raise
             time.sleep(1)
 
-    # TODO: Copy used files to corpus dir (is this already done by the sox call?)
     wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
     return {CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()}

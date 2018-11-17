@@ -1,5 +1,8 @@
 """
-Load the LibriSpeech ASR corpus.
+Load the `LibriSpeech`_ ASR corpus.
+
+.. _LibriSpeech:
+    http://openslr.org/12
 """
 
 import os
@@ -15,7 +18,7 @@ from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
 from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
-# L8ER Add the `other` datasets as well and see if they improve the results.
+# L8ER: Add the `other` datasets as well and see if they improve the results.
 # Path to the LibriSpeech ASR dataset.
 __URLs = [
     'http://www.openslr.org/resources/12/dev-clean.tar.gz',
