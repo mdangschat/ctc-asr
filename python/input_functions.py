@@ -41,6 +41,9 @@ def input_fn_generator(target):
 
     def input_fn():
         # TODO: Documentation.
+        # TODO: Try out the following two:
+        #  https://www.tensorflow.org/api_docs/python/tf/data/experimental/latency_stats
+        # https://www.tensorflow.org/api_docs/python/tf/data/experimental/StatsAggregator
 
         def element_length_fn(_spectrogram, _spectrogram_length, _label_encoded, _label_plaintext):
             del _spectrogram
@@ -59,6 +62,8 @@ def input_fn_generator(target):
                 args=[csv_path])
 
             if use_buckets:
+                dataset = dataset.shuffle(16384)
+
                 dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(
                     element_length_func=element_length_fn,
                     bucket_boundaries=BOUNDARIES,
