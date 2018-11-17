@@ -5,7 +5,8 @@ from distutils.spawn import find_executable
 
 
 def pyplot_display(func):
-    """Provides decorator for `matplotlib.pyplot` plots.
+    """
+    Provides decorator for `matplotlib.pyplot` plots.
     It only uses `show()` display or PyCharm remote has been found.
     Else the plot is being saved to /tmp/<func name>.png.
 

@@ -25,7 +25,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                  stats=('mem_used', 'mem_free', 'mem_total', 'mem_util', 'gpu_util'),
                  average_n=1,
                  suppress_stdout=False,
-                 group_tag='gpus'):
+                 group_tag='gpu'):
         """
         Create an instance of `GPUStatisticsHook`.
 
@@ -68,7 +68,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                 logging with INFO level.
             group_tag (str):
                 Name of the tag under which the values will appear in tensorboard.
-                Default is 'gpus'
+                Default is 'gpu'
         """
 
         # Check if only log_every_n_steps or only log_every_n_secs is set.

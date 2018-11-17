@@ -1,4 +1,6 @@
-"""Validate the TensorFlow installation and availability of GFU support."""
+"""
+Validate the TensorFlow installation and availability of GFU support.
+"""
 
 import tensorflow as tf
 

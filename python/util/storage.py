@@ -1,4 +1,6 @@
-"""Storage and version control helper methods."""
+"""
+Storage and version control helper methods.
+"""
 
 import os
 import time
@@ -10,7 +12,8 @@ from git import Repo
 
 
 def git_revision_hash():
-    """Return the git revision id/hash.
+    """
+    Return the git revision id/hash.
 
     Returns:
         str: Git revision hash.
@@ -20,7 +23,8 @@ def git_revision_hash():
 
 
 def git_branch():
-    """Return the active git branches name.
+    """
+    Return the active git branches name.
 
     Returns:
         str: Git branch.
@@ -34,7 +38,8 @@ def git_branch():
 
 
 def git_latest_tag():
-    """Return the latest added git tag.
+    """
+    Return the latest added git tag.
 
     Returns:
         str: Git tag.
@@ -45,7 +50,8 @@ def git_latest_tag():
 
 
 def delete_file_if_exists(path):
-    """Delete the file for the given path, if it exists.
+    """
+    Delete the file for the given path, if it exists.
 
     Args:
         path (str): File path.
@@ -66,7 +72,8 @@ def delete_file_if_exists(path):
 
 
 def delete_directory_if_exists(path):
-    """Recursive delete of a folder and all contained files.
+    """
+    Recursive delete of a folder and all contained files.
 
     Args:
         path (str):  Directory path.
@@ -85,7 +92,8 @@ def delete_directory_if_exists(path):
 
 
 def maybe_delete_checkpoints(path, delete):
-    """Delete a TensorFlow checkpoint directory if requested and necessary.
+    """
+    Delete a TensorFlow checkpoint directory if requested and necessary.
 
     Args:
         path (str):
@@ -108,7 +116,8 @@ def maybe_delete_checkpoints(path, delete):
 
 
 def maybe_read_global_step(checkpoint_path):
-    """Tries to recover the global step value from saved checkpoints.
+    """
+    Tries to recover the global step value from saved checkpoints.
 
     Args:
         checkpoint_path (str): Path to the checkpoint directory.
@@ -128,7 +137,8 @@ def maybe_read_global_step(checkpoint_path):
 
 
 def md5(file_path):
-    """Calculate the md5 checksum of files that do not fit in memory.
+    """
+    Calculate the md5 checksum of files that do not fit in memory.
 
     Args:
         file_path (str): Path to file.
@@ -144,7 +154,8 @@ def md5(file_path):
 
 
 def tar_extract_all(tar_path, target_path):
-    """Extract a TAR archive. Overrides existing files.
+    """
+    Extract a TAR archive. Overrides existing files.
 
     Args:
         tar_path (str): Path of TAR archive.

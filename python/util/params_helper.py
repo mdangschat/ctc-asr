@@ -1,4 +1,6 @@
-"""Support routines for `python/params.py`."""
+"""
+Support routines for `python/params.py`.
+"""
 
 import os
 import json

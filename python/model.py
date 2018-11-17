@@ -15,8 +15,7 @@ class CTCModel(object):
     """
 
     def __init__(self):
-        # TODO: Documentation
-
+        # Initialize member variables.
         self.loss_op = None
         self.train_op = None
 
@@ -323,7 +322,12 @@ class CTCModel(object):
         return edit_distances, mean_edit_distance, wers, wer
 
     def hooks_fn(self):
-        # TODO Documentation
+        """
+        Produce and configure session hooks.
+
+        Returns:
+            List[tf.Tensor]: List containing TensorFlow hooks.
+        """
 
         # Summary hook.
         summary_op = tf.summary.merge_all()
