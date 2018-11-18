@@ -95,19 +95,17 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
         csv_data = [csv_entry for csv_entry in reader][1:]
 
     # Sort entries by sequence length.
-    print("IN:", csv_data[0:2])  # TODO: Remove
     csv_data = sorted(csv_data, key=lambda x: x[CSV_HEADER_LENGTH])
-    print("OUT:", csv_data[0:2])  # TODO: Remove
 
     # Remove samples longer than `max_length` points.
     if max_length > 0:
         number_of_entries = len(csv_data)
-        csv_data = [d for d in csv_data if d[CSV_HEADER_LENGTH] < max_length]
+        csv_data = [d for d in csv_data if float(d[CSV_HEADER_LENGTH]) < max_length]
         print('Removed {:,d} examples because they are too long.'
               .format(number_of_entries - len(csv_data)))
 
     # Calculate optimal bucket sizes.
-    lengths = [int(d[CSV_HEADER_LENGTH] * WIN_STEP) for d in csv_data]
+    lengths = [int(float(d[CSV_HEADER_LENGTH]) * WIN_STEP) for d in csv_data]
     step = len(lengths) // num_buckets
 
     buckets = set()
@@ -120,7 +118,7 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     __plot_sequence_lengths(lengths)
 
     # Determine total corpus length in seconds.
-    total_length_seconds = sum(map(lambda x: x[CSV_HEADER_LENGTH], csv_data))
+    total_length_seconds = sum(map(lambda x: float(x[CSV_HEADER_LENGTH]), csv_data))
 
     # Write CSV data back to file.
     storage.delete_file_if_exists(csv_path)
