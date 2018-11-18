@@ -9,10 +9,10 @@ import os
 BASE_PATH = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../../'))
 
 # Path to corpus description.
-JSON = os.path.join(BASE_PATH, 'data/corpus.json')
+CORPUS_JSON_PATH = os.path.join(BASE_PATH, 'data/corpus.json')
 
-if os.path.exists(JSON):
-    with open(JSON, 'r') as f:
+if os.path.exists(CORPUS_JSON_PATH):
+    with open(CORPUS_JSON_PATH, 'r') as f:
         data = json.load(f)
 
         TRAIN_SIZE = data['train_size']

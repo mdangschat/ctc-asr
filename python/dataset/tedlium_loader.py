@@ -116,7 +116,7 @@ def __tedlium_loader(target_folder):
     with Pool(processes=cpu_count()) as pool:
         for result in tqdm(pool.imap_unordered(__tedlium_loader_helper,
                                                zip(files, [target_folder] * len(files))),
-                           desc='Reading audio files', total=len(files), file=sys.stdout,
+                           desc='Reading TEDLIUM files', total=len(files), file=sys.stdout,
                            unit='files', dynamic_ncols=True):
             if result is not None:
                 lock.acquire()

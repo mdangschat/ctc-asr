@@ -11,7 +11,7 @@ from python.params import BASE_PATH, FLAGS
 CACHE_DIR = os.path.join(BASE_PATH, 'data/cache')
 CORPUS_DIR = os.path.join(BASE_PATH, 'data/corpus')
 
-# Where to generate the .txt files, e.g. /home/user/../<project_name>/data/<target>.txt
+# Where to generate the CSV files, e.g. /home/user/../<project_name>/data/<target>.csv
 CSV_DIR = os.path.join(BASE_PATH, 'data')
 
 CSV_DELIMITER = ';'

@@ -35,13 +35,13 @@ import os
 
 from python.dataset.common_voice_loader import common_voice_loader
 from python.dataset.config import CSV_DIR, CSV_DELIMITER
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
 from python.dataset.csv_file_helper import sort_csv_by_seq_len
 from python.dataset.libri_speech_loeader import libri_speech_loader
 from python.dataset.tatoeba_loader import tatoeba_loader
 from python.dataset.tedlium_loader import tedlium_loader
 from python.dataset.timit_loader import timit_loader
-from python.util.params_helper import JSON
+from python.util.params_helper import CORPUS_JSON_PATH
 
 
 def generate_dataset(keep_archives=True, use_timit=True):
@@ -108,6 +108,7 @@ def __merge_csv_files(csv_files, target):
     if target not in ['test', 'dev', 'train']:
         raise ValueError('Invalid target.')
 
+    csv_fieldnames = [CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH]
     buffer = []
 
     # Read and merge files.
@@ -116,8 +117,7 @@ def __merge_csv_files(csv_files, target):
             raise ValueError('File does not exist: ', csv_file)
 
         with open(csv_file, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f, delimiter=CSV_DELIMITER,
-                                    fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
+            reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=csv_fieldnames)
 
             # Serialize reader data and remove header.
             lines = list(reader)[1:]
@@ -127,9 +127,8 @@ def __merge_csv_files(csv_files, target):
 
     # Write data to target file.
     target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
-    with open(target_file, 'w') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER,
-                                fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
+    with open(target_file, 'w', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=csv_fieldnames)
         writer.writeheader()
 
         writer.writerows(buffer)
@@ -153,7 +152,7 @@ def store_corpus_json(train_size, test_size, dev_size, boundaries, train_length)
     Returns:
         Nothing.
     """
-    with open(JSON, 'w', encoding='utf-8') as f:
+    with open(CORPUS_JSON_PATH, 'w', encoding='utf-8') as f:
         data = {
             'train_size': train_size,
             'test_size': test_size,
