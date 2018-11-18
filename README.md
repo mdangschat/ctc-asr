@@ -20,7 +20,6 @@ language model.
 * [Installation](#installation)
   * [Arch Linux](#arch-linux)
   * [Ubuntu](#ubuntu)
-  * [WarpCTC](#compile-and-install-with-warpctc-support)
 * [Configuration](#configuration)
 * [Datasets](#datasets)
 * [Training](#training)
@@ -67,66 +66,6 @@ git clone <URL>
 cd speech
 pip3 install -r requirements.txt
 ```
-
-
-### Compile and Install with WarpCTC-Support
-**Update 2018-10-27:** Please note that this method has not been tested with later versions of 
-TensorFlow and that a pull-request to WarpCTC, that should fix the problem, has been merged.
-
-
-#### Compile TensorFlow
-```sh
-# Tensorflow
-git clone https://github.com/tensorflow/tensorflow
-cd tensorflow
-
-# Checkout the desired version (e.g. rolling `r1.9` or release `v1.9.0`).
-git checkout v1.9.0
-
-# Run config wizard
-./configure
-
-# Build tensorflow
-bazel build --config=opt --config=cuda --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //tensorflow/tools/pip_package:build_pip_package
-
-# Build pip installer
-bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
-
-# Install or upgrade package.
-sudo pip install /tmp/tensorflow_pkg/tensorflow-X.X.X-cp35-cp35m-linux_x86_64.whl
-sudo pip install -U /tmp/tensorflow_pkg/tensorflow-X.X.X-cp35-cp35m-linux_x86_64.whl
-```
-
-
-#### Compile WarpCTC
-```sh
-# Back to base folder
-cd ..
-
-# Set environment variables.
-export CUDA_HOME="/usr/local/cuda"
-export TENSORFLOW_SRC_PATH=<tensorflow_repo>
-export WARP_CTC_PATH="<path_to_repo>/warp-ctc/build"
-
-git clone https://vcs.zwuenf.org/mdangschat/warp-ctc.git
-cd warp-ctc
-
-mkdir build && cd build
-cmake ../
-make
-
-# Install TensorFlow python bindings/
-cd ../tensorflow_binding
-python setup.py install
-
-# Test Warp CTC.
-python setup.py test
-```
-
-Reference [installing TensorFlow from Sources](https://www.tensorflow.org/install/install_sources) 
-and 
-[TensorFlow binding for WarpCTC](https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding) 
-for further information.
 
 
 ## Configuration
