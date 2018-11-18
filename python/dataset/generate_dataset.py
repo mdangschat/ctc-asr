@@ -75,16 +75,22 @@ def generate_dataset(keep_archives=True, use_timit=True):
 
     # Assemble and merge CSV files.
     # Train
-    train = [cv_train, ls_train, tatoeba_train, ted_train, timit_train]
-    train_csv, train_len = __merge_csv_files(train, 'train')
+    train_csv, train_len = __merge_csv_files(
+        [cv_train, ls_train, tatoeba_train, ted_train, timit_train],
+        'train'
+    )
 
     # Test
-    test = [cv_test, ls_test]
-    _, test_len = __merge_csv_files(test, 'test')
+    _, test_len = __merge_csv_files(
+        [cv_test, ls_test],
+        'test'
+    )
 
     # Dev
-    dev = [ls_dev]
-    _, dev_len = __merge_csv_files(dev, 'dev')
+    _, dev_len = __merge_csv_files(
+        [ls_dev],
+        'dev'
+    )
 
     # Sort train.csv file (SortaGrad).
     boundaries, train_len_seconds = sort_csv_by_seq_len(train_csv)

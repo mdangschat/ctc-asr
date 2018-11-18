@@ -105,13 +105,14 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
               .format(number_of_entries - len(csv_data)))
 
     # Calculate optimal bucket sizes.
-    lengths = [int(float(d[CSV_HEADER_LENGTH]) * WIN_STEP) for d in csv_data]
+    lengths = [int(float(d[CSV_HEADER_LENGTH]) / WIN_STEP) for d in csv_data]
     step = len(lengths) // num_buckets
 
     buckets = set()
     for i in range(step, len(lengths), step):
         buckets.add(lengths[i])
-    buckets = list(buckets).sort()
+    buckets = list(buckets)
+    buckets.sort()
     print('Suggested buckets: ', buckets)
 
     # Plot histogram of feature vector length distribution.
@@ -131,7 +132,7 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     with open(csv_path, 'r', encoding='utf-8') as f:
         print('Successfully sorted {} lines of {}'.format(len(f.readlines()), csv_path))
 
-        return buckets[: -1], total_length_seconds
+        return buckets, total_length_seconds
 
 
 @pyplot_display
