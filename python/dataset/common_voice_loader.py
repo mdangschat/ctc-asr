@@ -15,7 +15,7 @@ from scipy.io import wavfile
 from tqdm import tqdm
 
 from python.dataset import download
-from python.dataset.config import CACHE_DIR, CORPUS_DIR
+from python.dataset.config import CACHE_DIR, CORPUS_DIR, sox_commandline
 from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
 from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
@@ -153,8 +153,7 @@ def __common_voice_loader_helper(line):
 
                 delete_file_if_exists(wav_path)
                 # Convert MP3 to WAV, reduce volume to 0.95, downsample to 16kHz and mono sound.
-                subprocess.call(['sox', '-v', '0.95', mp3_path, '-r', '16k', wav_path,
-                                 'remix', '1'])
+                subprocess.call(sox_commandline(mp3_path, wav_path))
                 assert os.path.isfile(wav_path)
 
                 # Validate that the example length is within boundaries.
