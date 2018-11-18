@@ -18,8 +18,24 @@ WIN_STEP = 0.010  # The step between successive windows in seconds.
 
 
 def input_fn_generator(target):
-    # TODO: Documentation
+    """
+    Generate the `input_fn` for the TensorFlow estimator.
 
+    Args:
+        target (str): The type of input, this affects the used CSV file, batching method and epochs.
+            Supported targets are:
+            * 'train_bucket': Creates 1 epoch of training data, using bucketing.
+                Examples are shuffled.
+            * 'train_batch': Creates 1 epoch of training data, using batches.
+                Examples are in the order of the `train.csv` file.
+            * 'dev': Creates 1 epoch of evaluation data from the `dev.csv` file.
+                Uses buckets. Examples are shuffled.
+            * 'test': Creates 1 epoch of evaluation data from the `test.csv` file.
+                Uses buckets. Examples are shuffled.
+
+    Returns:
+        func: Input function pointer.
+    """
     if target == 'train_bucket':
         csv_path = FLAGS.train_csv
         use_buckets = True
@@ -40,9 +56,8 @@ def input_fn_generator(target):
         raise ValueError('Invalid target: "{}"'.format(target))
 
     def input_fn():
-        # TODO: Documentation.
-        # TODO: Try out the following two:
-        #  https://www.tensorflow.org/api_docs/python/tf/data/experimental/latency_stats
+        # L8ER: Try out the following two:
+        # https://www.tensorflow.org/api_docs/python/tf/data/experimental/latency_stats
         # https://www.tensorflow.org/api_docs/python/tf/data/experimental/StatsAggregator
 
         def element_length_fn(_spectrogram, _spectrogram_length, _label_encoded, _label_plaintext):
@@ -97,7 +112,6 @@ def input_fn_generator(target):
 
 
 def __input_generator(*args):
-    # TODO: Documentation
     # TODO: Use CSV reader `csv.DictReader()`
 
     csv_path = args[0]
