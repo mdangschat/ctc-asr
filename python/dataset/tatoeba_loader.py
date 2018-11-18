@@ -16,8 +16,8 @@ from scipy.io import wavfile
 from tqdm import tqdm
 
 from python.dataset import download
-from python.dataset.config import CACHE_DIR, CORPUS_DIR
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.config import CACHE_DIR, CORPUS_DIR, sox_commandline
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
 from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 from python.util.storage import delete_file_if_exists
@@ -162,11 +162,12 @@ def __tatoeba_loader_helper(sample):
 
     # Convert MP3 file into WAV file, reduce volume to 0.95, downsample to 16kHz mono sound.
     # Note that this call produces the WAV files in the `data/corpus` directory.
-    ret = subprocess.call(['sox', '-v', '0.95', mp3_path, '-r', '16k', wav_path, 'remix', '1'])
+    ret = subprocess.call(sox_commandline(mp3_path, wav_path))
     if not os.path.isfile(wav_path):
         raise RuntimeError('Failed to create WAV file with error code={}: {}'.format(ret, wav_path))
 
     # Validate that the example length is within boundaries.
+    length_sec = None
     for i in range(5):
         try:
             (sr, y) = wavfile.read(wav_path)
@@ -182,7 +183,11 @@ def __tatoeba_loader_helper(sample):
 
     wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
-    return {CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()}
+    return {
+        CSV_HEADER_PATH: wav_path,
+        CSV_HEADER_LABEL: text.strip(),
+        CSV_HEADER_LENGTH: length_sec
+    }
 
 
 # Test download script.

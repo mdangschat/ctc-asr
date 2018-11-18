@@ -10,7 +10,7 @@ import os
 from scipy.io import wavfile
 
 from python.dataset.config import CORPUS_DIR
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
 from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
@@ -96,6 +96,10 @@ def __timit_loader(target):
             # Relative path to `DATASET_PATH`.
             wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
-            output.append({CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: txt.strip()})
+            output.append({
+                CSV_HEADER_PATH: wav_path,
+                CSV_HEADER_LABEL: txt.strip(),
+                CSV_HEADER_LENGTH: length_sec
+            })
 
     return output

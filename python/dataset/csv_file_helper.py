@@ -5,14 +5,10 @@ Helper methods to generate the CSV files.
 import csv
 import os
 import re
-import sys
-from multiprocessing import Pool, Lock, cpu_count
 
-from tqdm import tqdm
-
-from python.dataset.config import CORPUS_DIR, CSV_DIR, CSV_DELIMITER
-from python.dataset.config import LABEL_WHITELIST_PATTERN, CSV_HEADER_PATH, CSV_HEADER_LABEL
-from python.input_functions import WIN_STEP, load_sample
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
+from python.dataset.config import LABEL_WHITELIST_PATTERN, CSV_DIR, CSV_DELIMITER
+from python.input_functions import WIN_STEP
 from python.util import storage
 from python.util.matplotlib_helper import pyplot_display
 
@@ -21,6 +17,7 @@ def generate_csv(dataset_name, target, csv_data):
     """
     Generate CSV files containing the audio path and the corresponding sentence.
     Generated files are being stored at `CSV_TARGET_PATH`.
+    Examples with labels consisting of one or two characters are omitted.
 
     Return additional data set information, see below.
 
@@ -61,7 +58,7 @@ def generate_csv(dataset_name, target, csv_data):
     # Write data to the file.
     with open(target_csv_path, 'w', encoding='utf-8') as f:
         writer = csv.DictWriter(f, delimiter=CSV_DELIMITER,
-                                fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
+                                fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH])
         writer.writeheader()
 
         writer.writerows(csv_data)
@@ -69,7 +66,7 @@ def generate_csv(dataset_name, target, csv_data):
     return target_csv_path
 
 
-def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=1700):
+def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     """
     Sort a train.csv like file by it's audio files sequence length.
     Additionally outputs longer than `max_length` are being discarded from the given CSV file.
@@ -82,9 +79,9 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=1700):
         num_buckets (int):
             Number ob buckets to split the input into.
 
-        max_length (int):
-            Positive integer. Max length for a feature vector to keep.
-            Set to `0` to keep everything.
+        max_length (float):
+            Positive float. Maximum length in seconds for a feature vector to keep.
+            Set to `0.` to keep everything.
 
     Returns:
         Tuple[List[int], float]:
@@ -96,54 +93,43 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=1700):
                                 fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
 
         # Read all lines into memory and remove CSV header.
-        lines = [line for line in reader][1:]
+        csv_data = [csv_entry for csv_entry in reader][1:]
 
-        # Setup thread pool.
-        lock = Lock()
-        buffer = []  # Output buffer.
+    # Sort entries by sequence length.
+    print("IN:", csv_data[0:2])
+    csv_data = sorted(csv_data, key=CSV_HEADER_LENGTH)
+    print("OUT:", csv_data[0:2])
 
-        with Pool(processes=cpu_count()) as pool:
-            for result in tqdm(pool.imap_unordered(_feature_length_fn, lines, chunksize=4),
-                               desc='Reading audio samples', total=len(lines), file=sys.stdout,
-                               unit='samples', dynamic_ncols=True):
-                lock.acquire()
-                buffer.append(result)
-                lock.release()
+    # Remove samples longer than `max_length` points.
+    if max_length > 0:
+        number_of_entries = len(csv_data)
+        csv_data = [d for d in csv_data if d[CSV_HEADER_LENGTH] < max_length]
+        print('Removed {:,d} examples because they are too long.'
+              .format(number_of_entries - len(csv_data)))
 
-        # Sort by sequence length.
-        buffer = sorted(buffer, key=lambda x: x[0])
+    # Calculate optimal bucket sizes.
+    lengths = [int(d[CSV_HEADER_LENGTH] * WIN_STEP) for d in csv_data]
+    step = len(lengths) // num_buckets
 
-        # Remove samples longer than `max_length` points.
-        if max_length > 0:
-            original_length = len(buffer)
-            buffer = [s for s in buffer if s[0] < max_length]
-            print('Removed {:,d} samples from training, because they are too long.'
-                  .format(original_length - len(buffer)))
+    buckets = set()
+    for i in range(step, len(lengths), step):
+        buckets.add(lengths[i])
+    buckets = list(buckets).sort()
+    print('Suggested buckets: ', buckets)
 
-        # Calculate optimal bucket sizes.
-        lengths = [l[0] for l in buffer]
-        step = len(lengths) // num_buckets
-        buckets = set()
-        for i in range(step, len(lengths), step):
-            buckets.add(lengths[i])
-        buckets = list(buckets)
-        buckets.sort()
-        print('Suggested buckets: ', buckets)
+    # Plot histogram of feature vector length distribution.
+    __plot_sequence_lengths(lengths)
 
-        # Plot histogram of feature vector length distribution.
-        _plot_sequence_lengths(lengths)
+    # Determine total corpus length in seconds.
+    total_length_seconds = sum(map(lambda x: x[CSV_HEADER_LENGTH], csv_data))
 
-        # Determine total corpus length in seconds.
-        total_length_seconds = sum(map(lambda x: x[0], buffer)) * WIN_STEP
-
-        # Remove sequence length from tuples, therefore, restoring the CSV entry list.
-        csv_data = [csv_entry for _, csv_entry in buffer]
-
-    # Write back to file.
+    # Write CSV data back to file.
     storage.delete_file_if_exists(csv_path)
     with open(csv_path, 'w', encoding='utf-8') as f:
         writer = csv.DictWriter(f, delimiter=CSV_DELIMITER,
-                                fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
+                                fieldnames=[CSV_HEADER_PATH,
+                                            CSV_HEADER_LABEL,
+                                            CSV_HEADER_LENGTH])
         writer.writeheader()
 
         writer.writerows(csv_data)
@@ -151,18 +137,11 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=1700):
     with open(csv_path, 'r', encoding='utf-8') as f:
         print('Successfully sorted {} lines of {}'.format(len(f.readlines()), csv_path))
 
-    return buckets[: -1], total_length_seconds
-
-
-def _feature_length_fn(csv_entry):
-    # Python multiprocessing helper method.
-
-    length = int(load_sample(os.path.join(CORPUS_DIR, csv_entry[CSV_HEADER_PATH]))[1])
-    return length, csv_entry
+        return buckets[: -1], total_length_seconds
 
 
 @pyplot_display
-def _plot_sequence_lengths(plt, lengths):
+def __plot_sequence_lengths(plt, lengths):
     # Plot histogram of feature vector length distribution.
     fig = plt.figure()
     plt.hist(lengths, bins=50, facecolor='green', alpha=0.75, edgecolor='black', linewidth=0.9)

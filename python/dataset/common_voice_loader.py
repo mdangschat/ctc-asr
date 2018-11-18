@@ -16,7 +16,7 @@ from tqdm import tqdm
 
 from python.dataset import download
 from python.dataset.config import CACHE_DIR, CORPUS_DIR
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
 from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 from python.util.storage import delete_file_if_exists
@@ -166,7 +166,11 @@ def __common_voice_loader_helper(line):
                 # Add dataset relative to dataset path, label to CSV file buffer.
                 wav_path = os.path.relpath(wav_path, CORPUS_DIR)
 
-                return {CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text}
+                return {
+                    CSV_HEADER_PATH: wav_path,
+                    CSV_HEADER_LABEL: text,
+                    CSV_HEADER_LENGTH: length_sec
+                }
 
     return None
 

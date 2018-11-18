@@ -3,7 +3,6 @@ Collection of hyper parameters, network layout, and reporting options.
 """
 
 import os
-from multiprocessing import cpu_count
 
 import numpy as np
 import tensorflow as tf
@@ -111,8 +110,8 @@ tf.flags.DEFINE_integer('gpu_hook_average_queries', 100,
 tf.flags.DEFINE_boolean('use_cudnn', True,
                         "Whether to use Nvidia cuDNN implementations or (`False`) the default "
                         "TensorFlow implementation.")
-tf.flags.DEFINE_integer('num_threads', cpu_count(),
-                        """Number of threads used to preload data.""")
+# tf.flags.DEFINE_integer('num_threads', cpu_count(),     # TODO: `num_threads` still needed?
+#                         """Number of threads used to preload data.""")
 
 # Miscellaneous.
 tf.flags.DEFINE_boolean('delete', False,

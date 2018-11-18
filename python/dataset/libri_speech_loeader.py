@@ -8,13 +8,14 @@ Load the `LibriSpeech`_ ASR corpus.
 import os
 import subprocess
 import sys
+from multiprocessing import Pool, Lock, cpu_count
 
 from scipy.io import wavfile
 from tqdm import tqdm
 
 from python.dataset import download
-from python.dataset.config import CACHE_DIR, CORPUS_DIR
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.config import CACHE_DIR, CORPUS_DIR, sox_commandline
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
 from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
@@ -42,8 +43,6 @@ def libri_speech_loader(keep_archive):
     """
     Download, extract and convert the Libri Speech archive.
     Then build all possible CSV files (e.g. `<dataset_name>_train.csv`, `<dataset_name>_test.csv`).
-
-    L8ER: Can this be parallelized?
 
     Args:
         keep_archive (bool): Keep or delete the downloaded archive afterwards.
@@ -98,53 +97,81 @@ def __libri_speech_loader(folders):
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
+    # Absolute folder paths.
+    folders = [os.path.join(__SOURCE_PATH, folder) for folder in folders]
+    # List of `os.walk` results. Tuple[str, List[str], List[str]]
+    root_dir_files = []
+    for folder in folders:
+        root_dir_files.extend(os.walk(folder))
+    # Remove non-leaf folders.
+    root_dir_files = list(filter(lambda x: len(x[1]) == 0, root_dir_files))
+
+    lock = Lock()
     output = []
-    folders_ = [os.path.join(__SOURCE_PATH, f) for f in folders]
-    for folder in tqdm(folders_, desc='Converting Libri Speech data', total=len(folders_),
-                       file=sys.stdout, dynamic_ncols=True, unit='Folder'):
-        for root, dirs, files in os.walk(folder):
-            if len(dirs) is 0:
-                # Get list of `.trans.txt` files.
-                trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
-                # Verify that a `*.trans.txt` file exists.
-                assert len(trans_txt_files) == 1, 'No .tans.txt file found: {}' \
-                    .format(trans_txt_files)
+    with Pool(processes=cpu_count()) as pool:
+        for result in tqdm(pool.imap_unordered(__libri_speech_loader_helper, root_dir_files),
+                           desc='Converting Libri Speech data', total=len(root_dir_files),
+                           file=sys.stdout, dynamic_ncols=True, unit='directories'):
+            if result is not None:
+                lock.acquire()
+                output.extend(result)
+                lock.release()
 
-                # Absolute path.
-                trans_txt_path = os.path.join(root, trans_txt_files[0])
+        return output
 
-                # Load `.trans.txt` contents.
-                with open(trans_txt_path, 'r') as f:
-                    lines = f.readlines()
 
-                # Sanitize lines.
-                lines = [line.lower().strip().split(' ', 1) for line in lines]
+def __libri_speech_loader_helper(args):
+    root = args[0]
+    dirs = args[1]
+    files = args[2]
 
-                for file_id, text in lines:
-                    # Absolute path.
-                    flac_path = os.path.join(root, '{}.flac'.format(file_id))
-                    assert os.path.isfile(flac_path), '{} not found.'.format(flac_path)
+    if len(dirs) != 0:
+        return None
 
-                    # Convert FLAC file WAV file and move it to the `data/corpus/..` directory.
-                    wav_path = os.path.join(root, '{}.wav'.format(file_id))
-                    wav_path = os.path.join(CORPUS_DIR, os.path.relpath(wav_path, CACHE_DIR))
-                    os.makedirs(os.path.dirname(wav_path), exist_ok=True)
-                    subprocess.call(['sox', '-v', '0.95', flac_path, '-r', '16k', wav_path,
-                                     'remix', '1'])
-                    assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
+    # Get list of `.trans.txt` files.
+    trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
+    # Verify that a `*.trans.txt` file exists.
+    assert len(trans_txt_files) == 1, 'No .tans.txt file found: {}'.format(trans_txt_files)
 
-                    # Validate that the example length is within boundaries.
-                    (sr, y) = wavfile.read(wav_path)
-                    length_sec = len(y) / sr
-                    if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
-                        continue
+    # Absolute path.
+    trans_txt_path = os.path.join(root, trans_txt_files[0])
 
-                    # Relative path to `DATASET_PATH`.
-                    wav_path = os.path.relpath(wav_path, CORPUS_DIR)
+    # Load `.trans.txt` contents.
+    with open(trans_txt_path, 'r') as f:
+        lines = f.readlines()
 
-                    output.append({CSV_HEADER_PATH: wav_path, CSV_HEADER_LABEL: text.strip()})
+    # Sanitize lines.
+    lines = [line.lower().strip().split(' ', 1) for line in lines]
 
-    return output
+    buffer = []
+    for file_id, label in lines:
+        # Absolute path.
+        flac_path = os.path.join(root, '{}.flac'.format(file_id))
+        assert os.path.isfile(flac_path), '{} not found.'.format(flac_path)
+
+        # Convert FLAC file WAV file and move it to the `data/corpus/..` directory.
+        wav_path = os.path.join(root, '{}.wav'.format(file_id))
+        wav_path = os.path.join(CORPUS_DIR, os.path.relpath(wav_path, CACHE_DIR))
+        os.makedirs(os.path.dirname(wav_path), exist_ok=True)
+        subprocess.call(sox_commandline(flac_path, wav_path))
+        assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
+
+        # Validate that the example length is within boundaries.
+        (sr, y) = wavfile.read(wav_path)
+        length_sec = len(y) / sr
+        if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
+            continue
+
+        # Relative path to `DATASET_PATH`.
+        wav_path = os.path.relpath(wav_path, CORPUS_DIR)
+
+        buffer.append({
+            CSV_HEADER_PATH: wav_path,
+            CSV_HEADER_LABEL: label.strip(),
+            CSV_HEADER_LENGTH: length_sec
+        })
+
+    return buffer
 
 
 # Test download script.

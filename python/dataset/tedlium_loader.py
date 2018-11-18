@@ -1,5 +1,5 @@
 """
-Load the `TEDLIUM` (v2) dataset.
+Load the `TEDLIUM`_ (v2) dataset.
 
 .. _TEDLIUM:
     http://openslr.org/19
@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 from python.dataset import download
 from python.dataset.config import CACHE_DIR, CORPUS_DIR
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL
+from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
 from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, FLAGS
 from python.util.storage import delete_file_if_exists
@@ -114,7 +114,7 @@ def __tedlium_loader(target_folder):
     lock = Lock()
     output = []
     with Pool(processes=cpu_count()) as pool:
-        for result in tqdm(pool.imap_unordered(_tedlium_loader_helper,
+        for result in tqdm(pool.imap_unordered(__tedlium_loader_helper,
                                                zip(files, [target_folder] * len(files))),
                            desc='Reading audio files', total=len(files), file=sys.stdout,
                            unit='files', dynamic_ncols=True):
@@ -126,7 +126,7 @@ def __tedlium_loader(target_folder):
     return output
 
 
-def _tedlium_loader_helper(args):
+def __tedlium_loader_helper(args):
     stm_file, target_folder = args
     if os.path.splitext(stm_file)[1] != '.stm':
         # This check is required, since there are swap files, etc. in the TEDLIUM dataset.
@@ -171,7 +171,7 @@ def _tedlium_loader_helper(args):
             part_path = '{}_{}.wav'.format(wav_path[: -4], i)
             part_path = os.path.relpath(part_path, CACHE_DIR)
             part_path = os.path.join(CORPUS_DIR, part_path)
-            _write_part_to_wav(wav_data, part_path, start_time, end_time)
+            __write_part_to_wav(wav_data, part_path, start_time, end_time)
 
             # Validate that the example length is within boundaries.
             (sr, y) = wavfile.read(part_path)
@@ -187,12 +187,16 @@ def _tedlium_loader_helper(args):
 
             # Skip labels with less than 5 words.
             if len(text.split(' ')) > 4:
-                output.append({CSV_HEADER_PATH: part_path, CSV_HEADER_LABEL: text.strip()})
+                output.append({
+                    CSV_HEADER_PATH: part_path,
+                    CSV_HEADER_LABEL: text.strip(),
+                    CSV_HEADER_LENGTH: length_sec
+                })
 
         return output
 
 
-def _write_part_to_wav(wav_data, path, start, end, sr=16000):
+def __write_part_to_wav(wav_data, path, start, end, sr=16000):
     assert 0. <= start < (len(wav_data) / sr)
     assert start < end <= (len(wav_data) / sr)
 
@@ -200,11 +204,11 @@ def _write_part_to_wav(wav_data, path, start, end, sr=16000):
     #       .format(seconds_to_sample(start), start, seconds_to_sample(end), end, path))
 
     delete_file_if_exists(path)
-    wavfile.write(path, sr, wav_data[_seconds_to_sample(start, True):
-                                     _seconds_to_sample(end, False)])
+    wavfile.write(path, sr, wav_data[__seconds_to_sample(start, True):
+                                     __seconds_to_sample(end, False)])
 
 
-def _seconds_to_sample(seconds, start=True, sr=16000):
+def __seconds_to_sample(seconds, start=True, sr=16000):
     if start:
         return int(math.floor(seconds * sr))
     else:
