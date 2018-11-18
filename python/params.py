@@ -128,9 +128,8 @@ tf.flags.DEFINE_boolean('allow_vram_growth', True,
 TF_FLOAT = tf.float32  # ctc_* functions don't support float64. See #13
 NP_FLOAT = np.float32  # ctc_* functions don't support float64. See #13
 
-# Minimum length of examples in datasets (in seconds).
+# Minimum and maximum length of examples in datasets (in seconds).
 MIN_EXAMPLE_LENGTH = 0.7
-# Maximum length of examples in datasets (in seconds).
 MAX_EXAMPLE_LENGTH = 17.0
 
 FLAGS = tf.flags.FLAGS

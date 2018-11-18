@@ -6,7 +6,7 @@ import csv
 import os
 import re
 
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
+from python.dataset.config import CSV_HEADER_LABEL, CSV_HEADER_LENGTH, CSV_FIELDNAMES
 from python.dataset.config import LABEL_WHITELIST_PATTERN, CSV_DIR, CSV_DELIMITER
 from python.input_functions import WIN_STEP
 from python.util import storage
@@ -57,8 +57,7 @@ def generate_csv(dataset_name, target, csv_data):
 
     # Write data to the file.
     with open(target_csv_path, 'w', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER,
-                                fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH])
+        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
         writer.writeheader()
 
         writer.writerows(csv_data)
@@ -87,10 +86,10 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
         Tuple[List[int], float]:
             A tuple containing the boundary array and the total corpus length in seconds.
     """
+
     # Read train.csv file.
     with open(csv_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f, delimiter=CSV_DELIMITER,
-                                fieldnames=[CSV_HEADER_PATH, CSV_HEADER_LABEL])
+        reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
 
         # Read all lines into memory and remove CSV header.
         csv_data = [csv_entry for csv_entry in reader][1:]
@@ -126,10 +125,7 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     # Write CSV data back to file.
     storage.delete_file_if_exists(csv_path)
     with open(csv_path, 'w', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER,
-                                fieldnames=[CSV_HEADER_PATH,
-                                            CSV_HEADER_LABEL,
-                                            CSV_HEADER_LENGTH])
+        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
         writer.writeheader()
 
         writer.writerows(csv_data)

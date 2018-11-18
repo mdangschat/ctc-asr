@@ -34,8 +34,7 @@ import json
 import os
 
 from python.dataset.common_voice_loader import common_voice_loader
-from python.dataset.config import CSV_DIR, CSV_DELIMITER
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
+from python.dataset.config import CSV_DIR, CSV_DELIMITER, CSV_FIELDNAMES
 from python.dataset.csv_file_helper import sort_csv_by_seq_len
 from python.dataset.libri_speech_loeader import libri_speech_loader
 from python.dataset.tatoeba_loader import tatoeba_loader
@@ -108,7 +107,6 @@ def __merge_csv_files(csv_files, target):
     if target not in ['test', 'dev', 'train']:
         raise ValueError('Invalid target.')
 
-    csv_fieldnames = [CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH]
     buffer = []
 
     # Read and merge files.
@@ -117,7 +115,7 @@ def __merge_csv_files(csv_files, target):
             raise ValueError('File does not exist: ', csv_file)
 
         with open(csv_file, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=csv_fieldnames)
+            reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
 
             # Serialize reader data and remove header.
             lines = list(reader)[1:]
@@ -128,7 +126,7 @@ def __merge_csv_files(csv_files, target):
     # Write data to target file.
     target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
     with open(target_file, 'w', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=csv_fieldnames)
+        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
         writer.writeheader()
 
         writer.writerows(buffer)
