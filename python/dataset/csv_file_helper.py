@@ -95,9 +95,9 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
         csv_data = [csv_entry for csv_entry in reader][1:]
 
     # Sort entries by sequence length.
-    print("IN:", csv_data[0:2])
-    csv_data = sorted(csv_data, key=CSV_HEADER_LENGTH)
-    print("OUT:", csv_data[0:2])
+    print("IN:", csv_data[0:2])  # TODO: Remove
+    csv_data = sorted(csv_data, key=lambda x: x[CSV_HEADER_LENGTH])
+    print("OUT:", csv_data[0:2])  # TODO: Remove
 
     # Remove samples longer than `max_length` points.
     if max_length > 0:
