@@ -98,14 +98,16 @@ def input_fn_generator(target):
 
 def __input_generator(*args):
     # TODO: Documentation
-    # TODO: Use CSV
+    # TODO: Use CSV reader `csv.DictReader()`
 
-    with open(args[0]) as f:
+    csv_path = args[0]
+    with open(csv_path, encoding='utf-8') as f:
         lines = f.readlines()
         lines = lines[1:]  # Remove CSV header.
 
         for line in lines:
-            path, label = map(lambda s: s.strip(), line.split(';', 1))
+            # CSV format is: [CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH]
+            path, label, _ = map(lambda s: s.strip(), line.split(';', 2))
             path = os.path.join(BASE_PATH, 'data/corpus', path)
 
             spectrogram, spectrogram_length = load_sample(path)
