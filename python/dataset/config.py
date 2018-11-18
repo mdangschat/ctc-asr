@@ -42,7 +42,7 @@ def sox_commandline(input_path, target_path):
     """
 
     return ['sox',
-            # '-V1',                      # Verbosity set to only errors (default is 2).
+            '-V1',  # Verbosity set to only errors (default is 2).
             '--volume', '0.95',
             input_path,
             '--rate', str(FLAGS.sampling_rate),
