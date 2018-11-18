@@ -22,6 +22,11 @@ from python.dataset.csv_file_helper import generate_csv
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH, FLAGS
 from python.util.storage import delete_file_if_exists
 
+# L8ER: Configuration for TEDLIUM v3: http://www.openslr.org/51/
+# __URL = 'http://www.openslr.org/resources/51/TEDLIUM_release-3.tgz'
+# __MD5 = 'becdb94aad390cb4a7b221cf507b66cd'
+# __FOLDER_NAME = 'TEDLIUM_release-3'
+
 # Path to the Tedlium v2 dataset.
 __URL = 'http://www.openslr.org/resources/19/TEDLIUM_release2.tar.gz'
 __MD5 = '7ffb54fa30189df794dcc5445d013368'
