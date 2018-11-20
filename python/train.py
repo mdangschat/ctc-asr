@@ -51,12 +51,9 @@ def main(argv=None):
         config=config
     )
 
-    # TODO: Setup TensorFlow hooks.
-    # hooks = model.hooks_fn()
-
     # Train the model.
     curriculum_train_input_fn = input_fn_generator('train_batch')
-    estimator.train(input_fn=curriculum_train_input_fn, hooks=model.hooks)
+    estimator.train(input_fn=curriculum_train_input_fn, hooks=None)
 
     # Evaluate the trained model.
     dev_input_fn = input_fn_generator('dev')

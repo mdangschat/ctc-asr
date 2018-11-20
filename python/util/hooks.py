@@ -412,8 +412,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
 
                 for statistic in self._gpu_statistics[gpu_id].keys():
                     # Log utilization information with INFO level.
-                    logging.info("%s: %s", name, '{}: {}'
-                                 .format(statistic, self._gpu_statistics[gpu_id][statistic]))
+                    logging.debug("%s: %s", name, '{}: {}'
+                                  .format(statistic, self._gpu_statistics[gpu_id][statistic]))
 
 
 # The following code has been inspired by <https://stackoverflow.com/a/45681782>:
@@ -481,9 +481,7 @@ class LoggerHook(tf.train.SessionRunHook):
             sec_per_batch = duration / float(FLAGS.log_frequency)
             batch_per_sec = float(FLAGS.log_frequency) / duration
 
-            print('{:%Y-%m-%d %H:%M:%S}: Epoch {:,d} (step={:,d}); loss={:.4f}; '
+            print('{:%Y-%m-%d %H:%M:%S}: (step={:,d}); loss={:.4f}; '
                   '{:.1f} examples/sec ({:.3f} sec/batch) ({:.2f} batch/sec)'
-                  .format(datetime.now(),
-                          global_step // (FLAGS.num_examples_train // FLAGS.batch_size - 1),
-                          global_step, loss_value, examples_per_sec,
+                  .format(datetime.now(), global_step, loss_value, examples_per_sec,
                           sec_per_batch, batch_per_sec))

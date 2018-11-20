@@ -8,6 +8,7 @@ import tensorflow.contrib as tfc
 
 from python.params import FLAGS, TF_FLOAT
 from python.util import tf_contrib, metrics
+from python.util.hooks import GPUStatisticsHook
 
 
 class CTCModel(object):
@@ -21,6 +22,7 @@ class CTCModel(object):
         self.train_op = None
         self.hooks = None
         self.summary_op = None
+        self.scaffold = None
 
     def model_fn(self, features, labels, mode):
         """
@@ -73,15 +75,14 @@ class CTCModel(object):
                                                epsilon=FLAGS.adam_epsilon)
             self.train_op = optimizer.minimize(loss=self.loss_op, global_step=global_step)
 
-            self.hooks = self.hooks_fn()
-
-            # Create scaffold for `EstimatorSpec`.
-            scaffold = tf.train.Scaffold(summary_op=self.summary_op)
+            # Add various hooks.
+            self.hooks_fn()
 
             return tf.estimator.EstimatorSpec(mode=mode,
                                               loss=self.loss_op,
                                               train_op=self.train_op,
-                                              scaffold=scaffold)
+                                              scaffold=self.scaffold,
+                                              training_hooks=self.hooks)
 
         # During evaluation.
         if mode == tf.estimator.ModeKeys.EVAL:
@@ -363,31 +364,22 @@ class CTCModel(object):
             List[tf.Tensor]: List containing TensorFlow hooks.
         """
 
-        tf.summary.scalar('test_debug', tf.constant(1337.))  # TODO Debug
-        # Summary hook.
-        self.summary_op = tf.summary.merge_all()
-        # file_writer = tf.summary.FileWriterCache.get(FLAGS.train_dir)
-        # summary_saver_hook = tf.train.SummarySaverHook(save_steps=FLAGS.log_frequency,
-        #                                                summary_writer=file_writer,
-        #                                                summary_op=self.summary_op)
-
         # GPU statistics hook.
-        # gpu_stats_hook = GPUStatisticsHook(
-        #     log_every_n_steps=FLAGS.log_frequency,
-        #     query_every_n_steps=FLAGS.gpu_hook_query_frequency,
-        #     average_n=FLAGS.gpu_hook_average_queries,
-        #     stats=['mem_util', 'gpu_util'],
-        #     summary_writer=file_writer,
-        #     suppress_stdout=False,
-        #     group_tag='gpu'
-        # )
+        gpu_stats_hook = GPUStatisticsHook(
+            log_every_n_steps=FLAGS.log_frequency,
+            query_every_n_steps=FLAGS.gpu_hook_query_frequency,
+            average_n=FLAGS.gpu_hook_average_queries,
+            stats=['mem_util', 'gpu_util'],
+            output_dir=FLAGS.train_dir,
+            suppress_stdout=False,
+            group_tag='gpu'
+        )
 
         # Session hooks.
         self.hooks = [
             # Monitors the loss tensor and stops training if loss is NaN.
             tf.train.NanTensorHook(self.loss_op),
-            # gpu_stats_hook,
-            # summary_saver_hook
+            gpu_stats_hook
         ]
 
         return self.hooks
