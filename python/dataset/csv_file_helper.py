@@ -65,6 +65,49 @@ def generate_csv(dataset_name, target, csv_data):
     return target_csv_path
 
 
+def merge_csv_files(csv_files, target):
+    """
+    Merge a list of CSV files into a single target CSV file.
+
+    Args:
+        csv_files (List[str]): List of paths to dataset CSV files.
+        target (str): 'test', 'dev', 'train'
+
+    Returns:
+        Tuple[str, int]: Path to the created CSV file and the number of examples in it.
+    """
+    if target not in ['test', 'dev', 'train']:
+        raise ValueError('Invalid target.')
+
+    buffer = []
+
+    # Read and merge files.
+    for csv_file in csv_files:
+        if not (os.path.exists(csv_file) and os.path.isfile(csv_file)):
+            raise ValueError('File does not exist: ', csv_file)
+
+        with open(csv_file, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+
+            # Serialize reader data and remove header.
+            lines = list(reader)[1:]
+
+            # Add CSV data to buffer.
+            buffer.extend(lines)
+
+    # Write data to target file.
+    target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
+    with open(target_file, 'w', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+        writer.writeheader()
+
+        writer.writerows(buffer)
+
+        print('Added {:,d} lines to: {}'.format(len(buffer), target_file))
+
+    return target_file
+
+
 def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     """
     Sort a train.csv like file by it's audio files sequence length.
@@ -86,6 +129,7 @@ def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
         List[int]:
             A List containing the boundary array.
     """
+    assert os.path.exists(csv_path) and os.path.isfile(csv_path)
 
     # Read train.csv file.
     with open(csv_path, 'r', encoding='utf-8') as f:

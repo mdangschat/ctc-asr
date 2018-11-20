@@ -29,13 +29,10 @@ Generated data format:
     https://catalog.ldc.upenn.edu/LDC93S1
 """
 
-import csv
 import json
-import os
 
 from python.dataset.common_voice_loader import common_voice_loader
-from python.dataset.config import CSV_DIR, CSV_DELIMITER, CSV_FIELDNAMES
-from python.dataset.csv_file_helper import sort_by_seq_len, get_corpus_length
+from python.dataset.csv_file_helper import sort_by_seq_len, get_corpus_length, merge_csv_files
 from python.dataset.libri_speech_loeader import libri_speech_loader
 from python.dataset.tatoeba_loader import tatoeba_loader
 from python.dataset.tedlium_loader import tedlium_loader
@@ -75,19 +72,19 @@ def generate_dataset(keep_archives=True, use_timit=True):
 
     # Assemble and merge CSV files.
     # Train
-    train_csv = __merge_csv_files(
+    train_csv = merge_csv_files(
         [cv_train, ls_train, tatoeba_train, ted_train, timit_train],
         'train'
     )
 
     # Test
-    test_csv = __merge_csv_files(
+    test_csv = merge_csv_files(
         [cv_test, ls_test],
         'test'
     )
 
     # Dev
-    dev_csv = __merge_csv_files(
+    dev_csv = merge_csv_files(
         [ls_dev],
         'dev'
     )
@@ -102,49 +99,6 @@ def generate_dataset(keep_archives=True, use_timit=True):
 
     # Write corpus metadata to JSON.
     store_corpus_json(train_len, test_len, dev_len, boundaries, train_total_length_seconds)
-
-
-def __merge_csv_files(csv_files, target):
-    """
-    Merge a list of CSV files into a single target CSV file.
-
-    Args:
-        csv_files (List[str]): List of paths to dataset CSV files.
-        target (str): 'test', 'dev', 'train'
-
-    Returns:
-        Tuple[str, int]: Path to the created CSV file and the number of examples in it.
-    """
-    if target not in ['test', 'dev', 'train']:
-        raise ValueError('Invalid target.')
-
-    buffer = []
-
-    # Read and merge files.
-    for csv_file in csv_files:
-        if not (os.path.exists(csv_file) and os.path.isfile(csv_file)):
-            raise ValueError('File does not exist: ', csv_file)
-
-        with open(csv_file, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
-
-            # Serialize reader data and remove header.
-            lines = list(reader)[1:]
-
-            # Add CSV data to buffer.
-            buffer.extend(lines)
-
-    # Write data to target file.
-    target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
-    with open(target_file, 'w', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
-        writer.writeheader()
-
-        writer.writerows(buffer)
-
-        print('Added {:,d} lines to: {}'.format(len(buffer), target_file))
-
-    return target_file, len(buffer)
 
 
 def store_corpus_json(train_size, test_size, dev_size, boundaries, train_length):
