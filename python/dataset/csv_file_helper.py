@@ -65,7 +65,7 @@ def generate_csv(dataset_name, target, csv_data):
     return target_csv_path
 
 
-def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
+def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     """
     Sort a train.csv like file by it's audio files sequence length.
     Additionally outputs longer than `max_length` are being discarded from the given CSV file.
@@ -83,8 +83,8 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
             Set to `0.` to keep everything.
 
     Returns:
-        Tuple[List[int], float]:
-            A tuple containing the boundary array and the total corpus length in seconds.
+        List[int]:
+            A List containing the boundary array.
     """
 
     # Read train.csv file.
@@ -118,9 +118,6 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     # Plot histogram of feature vector length distribution.
     __plot_sequence_lengths(lengths)
 
-    # Determine total corpus length in seconds.
-    total_length_seconds = sum(map(lambda x: float(x[CSV_HEADER_LENGTH]), csv_data))
-
     # Write CSV data back to file.
     storage.delete_file_if_exists(csv_path)
     with open(csv_path, 'w', encoding='utf-8') as f:
@@ -132,7 +129,32 @@ def sort_csv_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     with open(csv_path, 'r', encoding='utf-8') as f:
         print('Successfully sorted {} lines of {}'.format(len(f.readlines()), csv_path))
 
-        return buckets, total_length_seconds
+        return buckets
+
+
+def get_corpus_length(csv_path):
+    """
+    Count the number of data entries in CSV file.
+    Sum the length fields of every entry from a given CSV file.
+    The CSV file is assumed to contain a header.
+
+    Args:
+        csv_path (str): Path to CSV file.
+
+    Returns:
+        Tuple[int, float]: Number of data entries in CSV file and total length in seconds.
+    """
+    assert os.path.exists(csv_path) and os.path.isfile(csv_path)
+
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+
+        # Read all lines into memory and remove CSV header.
+        csv_data = [csv_entry for csv_entry in reader][1:]
+
+        total_length_seconds = sum(map(lambda x: float(x[CSV_HEADER_LENGTH]), csv_data))
+
+        return len(csv_data), total_length_seconds
 
 
 @pyplot_display
@@ -153,4 +175,4 @@ if __name__ == '__main__':
     _csv_path = os.path.join(CSV_DIR, 'train.csv')
 
     # Display dataset stats.
-    sort_csv_by_seq_len(_csv_path)
+    sort_by_seq_len(_csv_path)

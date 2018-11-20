@@ -35,7 +35,7 @@ import os
 
 from python.dataset.common_voice_loader import common_voice_loader
 from python.dataset.config import CSV_DIR, CSV_DELIMITER, CSV_FIELDNAMES
-from python.dataset.csv_file_helper import sort_csv_by_seq_len
+from python.dataset.csv_file_helper import sort_by_seq_len, get_corpus_length
 from python.dataset.libri_speech_loeader import libri_speech_loader
 from python.dataset.tatoeba_loader import tatoeba_loader
 from python.dataset.tedlium_loader import tedlium_loader
@@ -75,28 +75,33 @@ def generate_dataset(keep_archives=True, use_timit=True):
 
     # Assemble and merge CSV files.
     # Train
-    train_csv, train_len = __merge_csv_files(
+    train_csv = __merge_csv_files(
         [cv_train, ls_train, tatoeba_train, ted_train, timit_train],
         'train'
     )
 
     # Test
-    _, test_len = __merge_csv_files(
+    test_csv = __merge_csv_files(
         [cv_test, ls_test],
         'test'
     )
 
     # Dev
-    _, dev_len = __merge_csv_files(
+    dev_csv = __merge_csv_files(
         [ls_dev],
         'dev'
     )
 
     # Sort train.csv file (SortaGrad).
-    boundaries, train_len_seconds = sort_csv_by_seq_len(train_csv)
+    boundaries = sort_by_seq_len(train_csv)
+
+    # Determine number of data entries and length in seconds per corpus.
+    train_len, train_total_length_seconds = get_corpus_length(train_csv)
+    test_len, _ = get_corpus_length(test_csv)
+    dev_len, _ = get_corpus_length(dev_csv)
 
     # Write corpus metadata to JSON.
-    store_corpus_json(train_len, test_len, dev_len, boundaries, train_len_seconds)
+    store_corpus_json(train_len, test_len, dev_len, boundaries, train_total_length_seconds)
 
 
 def __merge_csv_files(csv_files, target):
