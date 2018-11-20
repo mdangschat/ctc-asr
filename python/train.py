@@ -56,22 +56,22 @@ def main(argv=None):
 
     # Train the model.
     curriculum_train_input_fn = input_fn_generator('train_batch')
-    estimator.train(input_fn=curriculum_train_input_fn, hooks=None, steps=None, max_steps=None)
+    estimator.train(input_fn=curriculum_train_input_fn, hooks=model.hooks)
 
     # Evaluate the trained model.
     dev_input_fn = input_fn_generator('dev')
-    evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None, steps=None)
+    evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None)
     tf.logging.info('Evaluation results of epoch {}: {}'.format(1, evaluation_result))
 
     # Train the model and evaluate after each epoch.
     for epoch in range(2, FLAGS.max_epochs + 1):
         # Train the model.
         train_input_fn = input_fn_generator('train_bucket')
-        estimator.train(input_fn=train_input_fn, hooks=None, steps=None, max_steps=None)
+        estimator.train(input_fn=train_input_fn, hooks=None)
 
         # Evaluate the trained model.
         dev_input_fn = input_fn_generator('dev')
-        evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None, steps=None)
+        evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None)
         tf.logging.info('Evaluation results of epoch {}: {}'.format(epoch, evaluation_result))
 
 
