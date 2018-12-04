@@ -118,7 +118,7 @@ def __input_generator(*args):
     csv_path = args[0]
     with open(csv_path, encoding='utf-8') as f:
         lines = f.readlines()
-        lines = lines[1:]  # Remove CSV header.
+        lines = lines[1: -1]  # Remove CSV header and final blank line.
 
         for line in lines:
             # CSV format is: [CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH]

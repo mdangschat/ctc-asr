@@ -53,6 +53,9 @@ class CTCModel:
         spectrogram_length = features['spectrogram_length']
         spectrogram = features['spectrogram']
 
+        tf.summary.scalar('spectrogram_length', spectrogram_length[0])
+        tf.summary.image('spectrogram', tf.expand_dims(spectrogram, 3))
+
         # Determine if this is a training run. This is used for dropout layers.
         training = (mode == tf.estimator.ModeKeys.TRAIN)
 
@@ -76,6 +79,24 @@ class CTCModel:
             # Add various hooks.
             self.hooks_fn()
 
+        # Code for training and evaluation.
+        label_plaintext = features['label_plaintext']
+
+        # CTC decode.
+        decoded, plaintext, plaintext_summary = self.decode_fn(logits,
+                                                               seq_length,
+                                                               label_plaintext)
+
+        tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
+
+        # Error metrics for decoded text.
+        eds, mean_ed, wers, wer = self.error_rates_fn(labels, label_plaintext,
+                                                      decoded, plaintext)
+
+        tf.summary.scalar('mean_edit_distance', mean_ed)
+        tf.summary.scalar('word_error_rate', wer)
+
+        if mode == tf.estimator.ModeKeys.TRAIN:
             return tf.estimator.EstimatorSpec(mode=mode,
                                               loss=self.loss_op,
                                               train_op=self.train_op,
@@ -83,27 +104,9 @@ class CTCModel:
 
         # During evaluation.
         if mode == tf.estimator.ModeKeys.EVAL:
-            label_plaintext = features['label_plaintext']
-
-            # CTC decode.
-            decoded, plaintext, plaintext_summary = self.decode_fn(logits,
-                                                                   seq_length,
-                                                                   label_plaintext)
-            tf.summary.text('decoded', decoded)
-            tf.summary.text('plaintext', plaintext)
-            tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
-
-            # Error metrics for decoded text.
-            eds, mean_ed, wers, wer = self.error_rates_fn(labels, label_plaintext,
-                                                          decoded, plaintext)
-
-            tf.summary.histogram('edit_distances', eds)
-            tf.summary.scalar('mean_edit_distance', mean_ed)
-            tf.summary.histogram('word_error_rates', wers)
-            tf.summary.scalar('word_error_rate', wer)
 
             eval_metrics_ops = {
-                'edit_distance': tf.metrics.mean(mean_ed, name='edit_distance'),
+                'mean_edit_distance': tf.metrics.mean(mean_ed, name='mean_edit_distance'),
                 'word_error_rate': tf.metrics.mean(wer, name='word_error_rate')
             }
 
