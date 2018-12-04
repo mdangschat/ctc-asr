@@ -14,6 +14,7 @@ from python.labels import ctoi
 from python.params import BASE_PATH, BOUNDARIES, NP_FLOAT, FLAGS
 
 NUM_FEATURES = 80  # Number of features to extract.
+WIN_LENGTH = 0.025  # Window length in seconds.
 WIN_STEP = 0.010  # The step between successive windows in seconds.
 
 
@@ -196,7 +197,7 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
                            .format(sr, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    win_len = 0.025  # Window length in ms.
+    win_len = WIN_LENGTH  # Window length in ms.
     win_step = WIN_STEP  # Number of milliseconds between successive frames.
     f_max = sr / 2.  # Maximum frequency (Nyquist rate).
     f_min = 64.  # Minimum frequency.

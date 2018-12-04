@@ -11,18 +11,16 @@ import os
 # noinspection PyUnresolvedReferences
 import random
 
-import numpy as np
-from scipy.io import wavfile
-import python_speech_features as psf
 import librosa as rosa
+import numpy as np
+import python_speech_features as psf
 from librosa import display
-from matplotlib import rc
 from matplotlib import pyplot as plt
+from matplotlib import rc
+from scipy.io import wavfile
 
-# noinspection PyUnresolvedReferences
-from python.load_sample import load_sample, WIN_STEP
+from python.input_functions import WIN_STEP, WIN_LENGTH
 from python.params import BASE_PATH
-
 
 rc('font', **{'family': 'serif',
               'serif': ['DejaVu Sans'],
@@ -151,8 +149,8 @@ def display_sample_info(file_path, label=''):
     (__sr, __y) = wavfile.read(file_path)
 
     num_features = 26
-    win_len = 0.025
-    win_step = 0.010
+    win_len = WIN_LENGTH
+    win_step = WIN_STEP
     __mel = psf.logfbank(signal=__y, samplerate=__sr, winlen=win_len,
                          winstep=win_step, nfilt=num_features, nfft=n_fft,
                          lowfreq=f_min, highfreq=f_max, preemph=0.97)
@@ -170,7 +168,7 @@ def display_sample_info(file_path, label=''):
     plt.figure(figsize=(5.2, 1.6))
     display.waveplot(y, sr=sr)
 
-    fig = plt.figure(figsize=(6, 4))
+    fig = plt.figure(figsize=(10, 4))
     plt.subplot(2, 1, 2)
     display.specshow(__mfcc, sr=__sr, x_axis='time', y_axis='mel', hop_length=win_step * __sr)
     # plt.set_cmap('magma')
@@ -199,7 +197,7 @@ def display_sample_info(file_path, label=''):
 
 
 if __name__ == '__main__':
-    _test_txt_path = os.path.join(BASE_PATH, 'data', 'train.txt')
+    _test_txt_path = os.path.join(BASE_PATH, 'data', 'train.csv')
 
     # Display specific sample info's.
     with open(_test_txt_path, 'r') as f:
@@ -210,5 +208,9 @@ if __name__ == '__main__':
         _wav_path, txt = _line.split(' ', 1)
         _wav_path = os.path.join(DATASETS_PATH, _wav_path)
         _txt = txt.strip()
+        # display_sample_info(_wav_path, label=_txt)
 
-        display_sample_info(_wav_path, label=_txt)
+    # I don't understand a word you just said
+    i_dont_understand_path = '/home/marc/Downloads/idontunderstandawordyoujustsaid.wav'
+    i_dont_understand_label = "I don't understand a word you just said."
+    display_sample_info(i_dont_understand_path, label=i_dont_understand_label)

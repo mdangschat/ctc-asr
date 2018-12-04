@@ -21,8 +21,6 @@ class CTCModel(object):
         self.loss_op = None
         self.train_op = None
         self.hooks = None
-        self.summary_op = None
-        self.scaffold = None
 
     def model_fn(self, features, labels, mode):
         """
@@ -81,7 +79,6 @@ class CTCModel(object):
             return tf.estimator.EstimatorSpec(mode=mode,
                                               loss=self.loss_op,
                                               train_op=self.train_op,
-                                              scaffold=self.scaffold,
                                               training_hooks=self.hooks)
 
         # During evaluation.
@@ -92,6 +89,8 @@ class CTCModel(object):
             decoded, plaintext, plaintext_summary = self.decode_fn(logits,
                                                                    seq_length,
                                                                    label_plaintext)
+            tf.summary.text('decoded', decoded)
+            tf.summary.text('plaintext', plaintext)
             tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
             # Error metrics for decoded text.
