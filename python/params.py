@@ -96,7 +96,7 @@ tf.flags.DEFINE_integer('sampling_rate', 16000,
                         "The sampling rate of the audio files (e.g. 2 * 8kHz).")
 
 # Logging.
-tf.flags.DEFINE_integer('log_frequency', 500,
+tf.flags.DEFINE_integer('log_frequency', 100,
                         "How often (every `log_frequency` steps) to log results.")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         "The maximum number of decoded and original text samples to report.")

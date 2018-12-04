@@ -180,7 +180,7 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
         raise ValueError('Requested feature normalization method {} is invalid.'
                          .format(feature_normalization))
 
-    if not isinstance(file_path, str):
+    if type(file_path) is not str:
         file_path = str(file_path, 'utf-8')
 
     if not os.path.isfile(file_path):
