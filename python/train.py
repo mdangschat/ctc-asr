@@ -8,7 +8,7 @@ import time
 
 import tensorflow as tf
 
-from input_functions import input_fn_generator
+from python.input_functions import input_fn_generator
 from python.model import CTCModel
 from python.params import FLAGS, get_parameters
 from python.util import storage
@@ -17,7 +17,7 @@ RANDOM_SEED = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 
 
 # noinspection PyUnusedLocal
-def main(argv=None):
+def main(_):
     """TensorFlow starting routine."""
 
     # Delete old model data if requested.

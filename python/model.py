@@ -11,7 +11,7 @@ from python.util import tf_contrib, metrics
 from python.util.hooks import GPUStatisticsHook
 
 
-class CTCModel(object):
+class CTCModel:
     """
     Container class for the ASR system's TensorFlow model.
     """
@@ -54,7 +54,7 @@ class CTCModel(object):
         spectrogram = features['spectrogram']
 
         # Determine if this is a training run. This is used for dropout layers.
-        training = mode == tf.estimator.ModeKeys.TRAIN
+        training = (mode == tf.estimator.ModeKeys.TRAIN)
 
         # Create the inference graph.
         logits, seq_length = self.inference_fn(spectrogram, spectrogram_length, training=training)
@@ -109,6 +109,8 @@ class CTCModel(object):
 
             return tf.estimator.EstimatorSpec(mode=mode, loss=self.loss_op,
                                               eval_metric_ops=eval_metrics_ops)
+
+        raise RuntimeError('Invalid mode.')
 
     @staticmethod
     def inference_fn(sequences, seq_length, training=True):

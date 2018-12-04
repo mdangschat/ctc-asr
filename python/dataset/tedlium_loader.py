@@ -216,8 +216,8 @@ def __write_part_to_wav(wav_data, path, start, end, sr=16000):
 def __seconds_to_sample(seconds, start=True, sr=16000):
     if start:
         return int(math.floor(seconds * sr))
-    else:
-        return int(math.ceil(seconds * sr))
+    # Else: not start
+    return int(math.ceil(seconds * sr))
 
 
 # Test download script.

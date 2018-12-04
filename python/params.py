@@ -15,7 +15,7 @@ BOUNDARIES = BOUNDARIES
 
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir',
-                       os.path.join(BASE_PATH, '../speech_checkpoints/3c4r2d_mfcc_lstm'),
+                       os.path.join(BASE_PATH, '../speech_checkpoints/test_run'),
                        "Directory where to write event logs and checkpoints.")
 tf.flags.DEFINE_integer('batch_size', 8,
                         "Number of samples within a batch.")
@@ -25,7 +25,7 @@ tf.flags.DEFINE_string('used_model', 'ds2',
                        ("Used inference model. Supported are 'ds1', and 'ds2'. "
                         "Also see `FLAGS.feature_drop_every_second_frame`."))
 
-tf.flags.DEFINE_integer('num_units_dense', 2048,
+tf.flags.DEFINE_integer('num_units_dense', 64,
                         "Number of units per dense layer.")
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       "Cutoff ReLU activations that exceed the cutoff.")
@@ -33,9 +33,9 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 4,
+tf.flags.DEFINE_integer('num_layers_rnn', 2,
                         "Number of stacked RNN cells.")
-tf.flags.DEFINE_integer('num_units_rnn', 2048,
+tf.flags.DEFINE_integer('num_units_rnn', 64,
                         "Number of hidden units in each of the RNN cells.")
 tf.flags.DEFINE_string('rnn_cell_type', 'rnn_relu',  # TODO: Implement this.
                        "Used RNN cell type. Supported are the RNN versions 'relu' and 'tanh',"
@@ -51,7 +51,7 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
 
 # Learning Rate.
-tf.flags.DEFINE_integer('max_epochs', 20,
+tf.flags.DEFINE_integer('max_epochs', 5,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-5,
                       "Initial learning rate.")
