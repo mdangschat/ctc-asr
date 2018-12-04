@@ -180,7 +180,7 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
         raise ValueError('Requested feature normalization method {} is invalid.'
                          .format(feature_normalization))
 
-    if type(file_path) is not str:
+    if not isinstance(file_path, str):
         file_path = str(file_path, 'utf-8')
 
     if not os.path.isfile(file_path):
@@ -307,22 +307,22 @@ def __feature_normalization(features, method):
     """
     if method == 'none':
         return features
-    elif method == 'local':
+    if method == 'local':
         return (features - np.mean(features, axis=0)) / np.std(features, axis=0)
-    elif method == 'local_scalar':
+    if method == 'local_scalar':
         # Option 'local' uses scalar values.
         return (features - np.mean(features)) / np.std(features)
-    else:
-        raise ValueError('Invalid normalization method.')
+
+    raise ValueError('Invalid normalization method.')
 
 
 # Create a dataset for testing purposes.
 if __name__ == '__main__':
-    next_element = input_fn_generator('train_bucket')
+    __NEXT_ELEMENT = input_fn_generator('train_bucket')
 
     with tf.Session() as session:
         # for example in range(FLAGS.num_examples_train):
         for example in range(5):
-            print('Dataset elements:', session.run(next_element))
+            print('Dataset elements:', session.run(__NEXT_ELEMENT))
 
     print('The End.')
