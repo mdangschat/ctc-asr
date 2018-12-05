@@ -3,6 +3,7 @@ Routines to load a corpus and perform the necessary pre processing on the audio 
 Contains helper methods to load audio files, too.
 """
 
+import csv
 import os
 
 import numpy as np
@@ -10,8 +11,10 @@ import python_speech_features as psf
 import tensorflow as tf
 from scipy.io import wavfile
 
+from python.dataset.config import CORPUS_DIR
+from python.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
 from python.labels import ctoi
-from python.params import BASE_PATH, BOUNDARIES, NP_FLOAT, FLAGS
+from python.params import BOUNDARIES, NP_FLOAT, FLAGS
 
 NUM_FEATURES = 80  # Number of features to extract.
 WIN_LENGTH = 0.025  # Window length in seconds.
@@ -35,7 +38,7 @@ def input_fn_generator(target):
                 Uses buckets. Examples are shuffled.
 
     Returns:
-        func: Input function pointer.
+        function: Input function pointer.
     """
     if target == 'train_bucket':
         csv_path = FLAGS.train_csv
@@ -57,7 +60,7 @@ def input_fn_generator(target):
         raise ValueError('Invalid target: "{}"'.format(target))
 
     def input_fn():
-        # L8ER: Try out the following two:
+        # L8ER: Try out the following two (not working as of TF v1.12):
         # https://www.tensorflow.org/api_docs/python/tf/data/experimental/latency_stats
         # https://www.tensorflow.org/api_docs/python/tf/data/experimental/StatsAggregator
 
@@ -78,8 +81,11 @@ def input_fn_generator(target):
                 args=[csv_path])
 
             if use_buckets:
-                # TODO: Increase shuffle buffer size to number of elements in dataset.
-                dataset = dataset.shuffle(16384)
+                # Set shuffle buffer to number of elements in dataset, to ensure optimal shuffling.
+                with open(csv_path, 'r', encoding='utf-8') as file_handle:
+                    number_examples = len(file_handle.readlines()[1:])
+                    print('DEBUG:', number_examples)
+                    dataset = dataset.shuffle(number_examples)
 
                 dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(
                     element_length_func=element_length_fn,
@@ -114,17 +120,16 @@ def input_fn_generator(target):
 
 
 def __input_generator(*args):
-    # TODO: Use CSV reader `csv.DictReader()`
-
     csv_path = args[0]
-    with open(csv_path, encoding='utf-8') as f:
-        lines = f.readlines()
-        lines = lines[1: -1]  # Remove CSV header and final blank line.
+    with open(csv_path, 'r', encoding='utf-8') as file_handle:
+        reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+        lines = list(reader)[1: -1]  # Remove CSV header and final blank line.
 
         for line in lines:
-            # CSV format is: [CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH]
-            path, label, _ = map(lambda s: s.strip(), line.split(';', 2))
-            path = os.path.join(BASE_PATH, 'data/corpus', path)
+            path = line[CSV_HEADER_PATH]
+            label = line[CSV_HEADER_LABEL]
+
+            path = os.path.join(CORPUS_DIR, path)
 
             spectrogram, spectrogram_length = load_sample(path)
 
@@ -187,27 +192,31 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
     if not os.path.isfile(file_path):
         raise ValueError('"{}" does not exist.'.format(file_path))
 
-    # Load the audio files sample rate (`sr`) and data (`y`).
-    (sr, y) = wavfile.read(file_path)
+    # Load the audio files sample rate and data.
+    (sampling_rate, audio_data) = wavfile.read(file_path)
 
-    if len(y) < 401:
-        raise RuntimeError('Sample length {:,d} to short: {}'.format(len(y), file_path))
+    if len(audio_data) < 401:
+        raise RuntimeError('Sample length {:,d} to short: {}'.format(len(audio_data), file_path))
 
-    if not sr == FLAGS.sampling_rate:
+    if not sampling_rate == FLAGS.sampling_rate:
         raise RuntimeError('Sampling rate is {:,d}, expected {:,d}.'
-                           .format(sr, FLAGS.sampling_rate))
+                           .format(sampling_rate, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
     win_len = WIN_LENGTH  # Window length in ms.
     win_step = WIN_STEP  # Number of milliseconds between successive frames.
-    f_max = sr / 2.  # Maximum frequency (Nyquist rate).
+    f_max = sampling_rate / 2.  # Maximum frequency (Nyquist rate).
     f_min = 64.  # Minimum frequency.
     n_fft = 1024  # Number of samples in a frame.
 
     if feature_type == 'mfcc':
-        sample = __mfcc(y, sr, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max)
+        sample = __mfcc(
+            audio_data, sampling_rate, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max
+        )
     elif feature_type == 'mel':
-        sample = __mel(y, sr, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max)
+        sample = __mel(
+            audio_data, sampling_rate, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max
+        )
     else:
         raise ValueError('Unsupported feature type')
 
@@ -228,13 +237,13 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
     return sample, sample_len
 
 
-def __mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
+def __mfcc(audio_data, sampling_rate, win_len, win_step, num_features, n_fft, f_min, f_max):
     """
     Convert a wav signal into Mel Frequency Cepstral Coefficients (MFCC).
 
     Args:
-        y (np.ndarray): Wav signal.
-        sr (int):  Sampling rate.
+        audio_data (np.ndarray): Wav signal.
+        sampling_rate (int):  Sampling rate.
         win_len (float): Window length in seconds.
         win_step (float): Window stride in seconds.
         num_features (int): Number of features to generate.
@@ -249,7 +258,7 @@ def __mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
         raise ValueError('num_features is not a multiple of 2.')
 
     # Compute MFCC features.
-    mfcc = psf.mfcc(signal=y, samplerate=sr, winlen=win_len, winstep=win_step,
+    mfcc = psf.mfcc(signal=audio_data, samplerate=sampling_rate, winlen=win_len, winstep=win_step,
                     numcep=num_features // 2, nfilt=num_features, nfft=n_fft,
                     lowfreq=f_min, highfreq=f_max,
                     preemph=0.97, ceplifter=22, appendEnergy=True)
@@ -261,13 +270,13 @@ def __mfcc(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
     return np.concatenate([mfcc, mfcc_delta], axis=1)
 
 
-def __mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
+def __mel(audio_data, sampling_rate, win_len, win_step, num_features, n_fft, f_min, f_max):
     """
     Convert a wav signal into a logarithmically scaled mel filterbank.
 
     Args:
-        y (np.ndarray): Wav signal.
-        sr (int):  Sampling rate.
+        audio_data (np.ndarray): Wav signal.
+        sampling_rate (int):  Sampling rate.
         win_len (float): Window length in seconds.
         win_step (float): Window stride in seconds.
         num_features (int): Number of features to generate.
@@ -278,7 +287,7 @@ def __mel(y, sr, win_len, win_step, num_features, n_fft, f_min, f_max):
     Returns:
         np.ndarray: Mel-filterbank. Shape: [time, num_features]
     """
-    mel = psf.logfbank(signal=y, samplerate=sr, winlen=win_len,
+    mel = psf.logfbank(signal=audio_data, samplerate=sampling_rate, winlen=win_len,
                        winstep=win_step, nfilt=num_features, nfft=n_fft,
                        lowfreq=f_min, highfreq=f_max, preemph=0.97)
     return mel
