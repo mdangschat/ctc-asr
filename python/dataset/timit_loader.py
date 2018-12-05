@@ -53,7 +53,7 @@ def __timit_loader(target):
     if not os.path.isdir(__TARGET_PATH):
         raise ValueError('"{}" is not a directory.'.format(__TARGET_PATH))
 
-    if target != 'test' and target != 'train':
+    if target not in ('test', 'train'):
         raise ValueError('Timit only supports "train" and "test" targets.')
 
     # Location of timit intern .txt file listings.
@@ -76,7 +76,7 @@ def __timit_loader(target):
 
         # Skip SAx.WAV files, since they are repeated by every speaker in the dataset.
         basename = os.path.basename(wav_path)
-        if 'SA1.WAV' == basename or 'SA2.WAV' == basename:
+        if basename in ('SA1.WAV', 'SA2.WAV'):
             continue
 
         with open(txt_path, 'r') as f:

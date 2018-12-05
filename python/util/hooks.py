@@ -113,10 +113,10 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
         nvml.nvmlInit()
 
         # Query the number of available GPUs.
-        self._deviceCount = nvml.nvmlDeviceGetCount()
+        self._device_count = nvml.nvmlDeviceGetCount()
 
         # Create a summary dict for each GPU.
-        for gpu_id in range(self._deviceCount):
+        for gpu_id in range(self._device_count):
             self._gpu_statistics[gpu_id] = self.__init_gpu_summaries()
 
     # def _set_steps_per_run(self, steps_per_run):
@@ -153,7 +153,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
 
         return summaries
 
-    def __query_mem(self, handle):
+    @staticmethod
+    def __query_mem(handle):
         """
         Query information on the memory of a GPU.
 
@@ -177,7 +178,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
 
         return summaries
 
-    def __query_util(self, handle):
+    @staticmethod
+    def __query_util(handle):
         """
         Query information on the utilization of a GPU.
 
@@ -216,7 +218,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
             self._summary_writer = summary_io.SummaryWriterCache.get(self._output_dir)
 
         # Get read access to the global step tensor.
-        self._global_step_tensor = training_util._get_or_create_global_step_read()  # pylint: disable=protected-access
+        # pylint: disable=protected-access
+        self._global_step_tensor = training_util._get_or_create_global_step_read()
         if self._global_step_tensor is None:
             raise RuntimeError("Global step should be created to use StepCounterHook.")
 
@@ -349,7 +352,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                 Global step tensor.
         """
         # Iterate the available GPUs.
-        for gpu_id in range(self._deviceCount):
+        for gpu_id in range(self._device_count):
             summaries = dict()
 
             # Acquire a GPU device handle.
@@ -390,7 +393,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                     if statistic in self._statistics_to_log:
                         values = self._gpu_statistics[gpu_id][statistic]
                         # Only Calculate and write average if there is data available.
-                        if len(values) > 0:
+                        if values:
                             avg_value = sum(values) / len(values)
                             avg_summary = Summary.Value(tag='{}/{}:{}'
                                                         .format(self._group_tag, gpu_id, statistic),

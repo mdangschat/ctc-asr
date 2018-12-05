@@ -34,10 +34,12 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
         return super(AdamOptimizerLogger, self)._apply_dense(grad, var)
 
 
-def conv_layers(sequences, filters=FLAGS.conv_filters,
+def conv_layers(sequences,
+                filters=FLAGS.conv_filters,
                 kernel_sizes=((11, 41), (11, 21), (11, 21)),
                 strides=((2, 2), (1, 2), (1, 2)),
-                kernel_initializer=tf.glorot_normal_initializer(), kernel_regularizer=None,
+                kernel_initializer=tf.glorot_normal_initializer(),
+                kernel_regularizer=None,
                 training=True):
     """
     Add 2D convolutional layers to the network's graph. New sequence length are being calculated.
@@ -91,7 +93,7 @@ def conv_layers(sequences, filters=FLAGS.conv_filters,
                          'the same number of elements.')
 
     output = sequences
-    for i, tmp in enumerate(zip(filters, kernel_sizes, strides)):
+    for tmp in zip(filters, kernel_sizes, strides):
         _filter, kernel_size, stride = tmp
 
         output = tf.layers.conv2d(inputs=output,
@@ -205,7 +207,7 @@ def variable_with_weight_decay(name, shape, stddev, weight_decay):
     var = variable_on_cpu(name, shape, initializer=initializer)
 
     if weight_decay is not None:
-        wd = tf.multiply(tf.nn.l2_loss(var), weight_decay, name='weight_loss')
-        tf.add_to_collection('losses', wd)
+        weight_decay = tf.multiply(tf.nn.l2_loss(var), weight_decay, name='weight_loss')
+        tf.add_to_collection('losses', weight_decay)
 
     return var

@@ -1,8 +1,9 @@
 """Calculate word based statistics for the train.txt file."""
 
 import os
-import numpy as np
 from collections import Counter
+
+import numpy as np
 
 from python.params import BASE_PATH
 

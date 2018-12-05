@@ -3,17 +3,16 @@ Print out a length distribution for used WAV files.
 """
 
 import os
-import sys
 import pickle
-
+import sys
 from multiprocessing import Pool, Lock, cpu_count
+
 import numpy as np
-from tqdm import tqdm
 from scipy.io import wavfile
+from tqdm import tqdm
 
-from python.util.matplotlib_helper import pyplot_display
 from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
-
+from python.util.matplotlib_helper import pyplot_display
 
 __DATASETS_PATH = '../datasets/speech_data'
 
@@ -43,7 +42,7 @@ def calculate_dataset_stats(txt_path, show_buckets=0):
             lock = Lock()
             with Pool(processes=cpu_count()) as pool:
                 for length, length_sec in tqdm(
-                    pool.imap_unordered(_stat_calculator, lines, chunksize=4),
+                        pool.imap_unordered(_stat_calculator, lines, chunksize=4),
                         desc='Reading audio samples', total=len(lines), file=sys.stdout,
                         unit='samples', dynamic_ncols=True):
                     lock.acquire()

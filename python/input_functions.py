@@ -78,6 +78,7 @@ def input_fn_generator(target):
                 args=[csv_path])
 
             if use_buckets:
+                # TODO: Increase shuffle buffer size to number of elements in dataset.
                 dataset = dataset.shuffle(16384)
 
                 dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(

@@ -35,7 +35,8 @@ def dense_to_text(decoded, originals):
     for d in decoded:
         decoded_strings.append(''.join([itoc(i) for i in d]))
 
-    if len(originals) > 0:
+    # if len(originals) > 0:
+    if originals:
         for o in originals:
             original_strings.append(''.join([c for c in o.decode('utf-8')]))
     else:

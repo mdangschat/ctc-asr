@@ -8,6 +8,12 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 
 def test_environment():
+    """
+    Print TensorFlow installation information (GPU focused).
+
+    Returns:
+        Nothing.
+    """
     print('TensorFlow version:', tf.VERSION)
     print('GPU device name:', tf.test.gpu_device_name())
     print('is GPU available:', tf.test.is_gpu_available())

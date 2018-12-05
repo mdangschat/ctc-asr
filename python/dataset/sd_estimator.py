@@ -3,16 +3,15 @@ Calculate mean and standard deviation for a given training txt file.
 """
 
 import os
-import sys
 import random
-
+import sys
 from multiprocessing import Pool, Lock, cpu_count
+
 import numpy as np
 from tqdm import tqdm
 
-from python.load_sample import load_sample
+from python.input_functions import load_sample
 from python.params import BASE_PATH
-
 
 __DATASETS_PATH = os.path.join(BASE_PATH, '../datasets/speech_data')
 __FEATURE_TYPE = 'mel'
@@ -32,15 +31,15 @@ def calculate_dataset_stats(txt_path):
     with open(txt_path, 'r') as f:
         lines = f.readlines()
         random.shuffle(lines)
-        lines = lines[: int(2.0e5)]      # To fit in RAM and not crash Numpy.
+        lines = lines[: int(2.0e5)]  # To fit in RAM and not crash Numpy.
 
         # Setup thread pool.
         lock = Lock()
-        features = []   # Output buffer.
+        features = []  # Output buffer.
 
         with Pool(processes=cpu_count()) as pool:
             for feature in tqdm(
-                pool.imap_unordered(__stat_calculator, lines, chunksize=4),
+                    pool.imap_unordered(__stat_calculator, lines, chunksize=4),
                     desc='Reading audio samples', total=len(lines), file=sys.stdout,
                     unit='samples', dynamic_ncols=True):
                 lock.acquire()

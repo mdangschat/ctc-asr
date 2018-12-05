@@ -125,7 +125,7 @@ def __libri_speech_loader_helper(args):
     dirs = args[1]
     files = args[2]
 
-    if len(dirs) != 0:
+    if not dirs:
         return None
 
     # Get list of `.trans.txt` files.

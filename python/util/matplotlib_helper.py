@@ -1,3 +1,7 @@
+"""
+Wrapper for matplotlib. Configures image output for GUI and no GUI systems.
+"""
+
 import os
 from distutils.spawn import find_executable
 

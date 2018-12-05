@@ -11,7 +11,7 @@ import os
 # noinspection PyUnresolvedReferences
 import random
 
-import librosa as rosa
+import librosa
 import numpy as np
 import python_speech_features as psf
 from librosa import display
@@ -47,7 +47,7 @@ def display_sample_info(file_path, label=''):
         raise ValueError('{} does not exist.'.format(file_path))
 
     # By default, all audio is mixed to mono and resampled to 22050 Hz at load time.
-    y, sr = rosa.load(file_path, sr=None, mono=True)
+    y, sr = librosa.load(file_path, sr=None, mono=True)
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
     hop_length = 200    # Number of samples between successive frames e.g. columns if a spectrogram.
@@ -60,7 +60,7 @@ def display_sample_info(file_path, label=''):
 
     # Create info string.
     num_samples = y.shape[0]
-    duration = rosa.get_duration(y=y, sr=sr)
+    duration = librosa.get_duration(y=y, sr=sr)
     info_str_format = 'Label: {}\nPath: {}\nDuration={:.3f}s with {:,d} Samples\n' \
                       'Sampling Rate={:,d} Hz\nMin, Max=[{:.2f}, {:.2f}]'
     info_str = info_str_format.format(label, file_path, duration, num_samples, sr,
@@ -75,7 +75,7 @@ def display_sample_info(file_path, label=''):
     plt.title('Monophonic')
 
     # Plot waveforms.
-    y_harm, y_perc = rosa.effects.hpss(y)
+    y_harm, y_perc = librosa.effects.hpss(y)
     plt.subplot(3, 1, 2)
     display.waveplot(y_harm, sr=sr, alpha=0.33)
     display.waveplot(y_perc, sr=sr, color='r', alpha=0.40)
@@ -88,18 +88,19 @@ def display_sample_info(file_path, label=''):
     plt.tight_layout()
 
     # Calculating MEL spectrogram and MFCC.
-    db_pow = np.abs(rosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=win_length)) ** 2
+    db_pow = np.abs(
+        librosa.stft(y=y, n_fft=n_fft, hop_length=hop_length, win_length=win_length)) ** 2
 
-    s_mel = rosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
-                                        fmax=f_max, fmin=f_min, n_mels=n_mels)
+    s_mel = librosa.feature.melspectrogram(S=db_pow, sr=sr, hop_length=hop_length,
+                                           fmax=f_max, fmin=f_min, n_mels=n_mels)
 
-    s_mel = rosa.power_to_db(s_mel, ref=np.max)
-    s_mfcc = rosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
+    s_mel = librosa.power_to_db(s_mel, ref=np.max)
+    s_mfcc = librosa.feature.mfcc(S=s_mel, sr=sr, n_mfcc=n_mfcc)
 
     # STFT (Short-time Fourier Transform)
     # https://librosa.github.io/librosa/generated/librosa.core.stft.html
     plt.figure(figsize=(12, 10))
-    db = rosa.amplitude_to_db(rosa.magphase(rosa.stft(y))[0], ref=np.max)
+    db = librosa.amplitude_to_db(librosa.magphase(librosa.stft(y))[0], ref=np.max)
     plt.subplot(3, 2, 1)
     display.specshow(db, sr=sr, x_axis='time', y_axis='linear', hop_length=hop_length)
     plt.colorbar(format='%+2.0f dB')
@@ -117,7 +118,7 @@ def display_sample_info(file_path, label=''):
 
     # # CQT (Constant-T Transform)
     # # https://librosa.github.io/librosa/generated/librosa.core.cqt.html
-    cqt = rosa.amplitude_to_db(rosa.magphase(rosa.cqt(y, sr=sr))[0], ref=np.max)
+    cqt = librosa.amplitude_to_db(librosa.magphase(librosa.cqt(y, sr=sr))[0], ref=np.max)
     # plt.subplot(3, 2, 3)
     # display.specshow(cqt, sr=sr, x_axis='time', y_axis='cqt_note', hop_length=hop_length)
     # plt.colorbar(format='%+2.0f dB')
