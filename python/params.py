@@ -1,5 +1,7 @@
 """
 Collection of hyper parameters, network layout, and reporting options.
+
+TODO: Update to trainable values for release.
 """
 
 import os
@@ -51,10 +53,11 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
 
 # Learning Rate.
-tf.flags.DEFINE_integer('max_epochs', 5,
+tf.flags.DEFINE_integer('max_epochs', 10,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-5,
                       "Initial learning rate.")
+# TODO: The following LR flags are (currently) no longer supported.
 tf.flags.DEFINE_float('learning_rate_decay_factor', 4 / 5,
                       "Learning rate decay factor.")
 tf.flags.DEFINE_integer('steps_per_decay', 75000,
@@ -99,7 +102,8 @@ tf.flags.DEFINE_integer('sampling_rate', 16000,
 tf.flags.DEFINE_integer('log_frequency', 100,
                         "How often (every `log_frequency` steps) to log results.")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
-                        "The maximum number of decoded and original text samples to report.")
+                        "The maximum number of decoded and original text samples to report in "
+                        "TensorBoard.")
 tf.flags.DEFINE_integer('gpu_hook_query_frequency', 5,
                         "How often (every `gpu_hook_query_frequency` steps) statistics are "
                         "queried from the GPUs.")
@@ -110,8 +114,6 @@ tf.flags.DEFINE_integer('gpu_hook_average_queries', 100,
 tf.flags.DEFINE_boolean('use_cudnn', True,
                         "Whether to use Nvidia cuDNN implementations or (`False`) the default "
                         "TensorFlow implementation.")
-# tf.flags.DEFINE_integer('num_threads', cpu_count(),     # TODO: `num_threads` still needed?
-#                         """Number of threads used to preload data.""")
 
 # Miscellaneous.
 tf.flags.DEFINE_boolean('delete', False,

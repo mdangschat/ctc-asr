@@ -1,4 +1,6 @@
-"""Calculate word based statistics for the train.txt file."""
+"""
+Calculate word based statistics for the train.csv file.
+"""
 
 import os
 from collections import Counter
@@ -72,7 +74,7 @@ def _plot_word_stats(labels):
 
 
 if __name__ == '__main__':
-    _txt_path = os.path.join(BASE_PATH, 'data', 'train.txt')
+    _txt_path = os.path.join(BASE_PATH, 'data', 'train.csv')
     print('Calculating statistics for {}'.format(_txt_path))
     _labels = _load_labels(_txt_path)
 

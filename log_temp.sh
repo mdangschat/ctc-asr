@@ -3,7 +3,7 @@
 LOG_TEMP_EVERY_SECOND=30
 LOG_TEMP_FILENAME="temp.log"
 
-while [ True ]
+while [[ True ]]
 do
     echo "========================================" >> ${LOG_TEMP_FILENAME}
     echo $(date) >> ${LOG_TEMP_FILENAME}

@@ -70,11 +70,6 @@ Note that runs marked with *Reduced Dataset* did not use the complete dataset.
 | `3c4r2d_mel_local_nosortagrad` | 16 | 80 Mel  | local |  2048 | 15 | 3c4r2d | 17.89 | 0.070 | 0.2025 | ReLU cells. No SortaGrad. |
 
 
-## Missing Runs
-| train_dir                      | BS | Input   | Norm. | Units | Ep | Layout | Loss  | MED   | WER    | Notes                     |
-|--------------------------------|---:|---------|-------|------:|---:|-------:|------:|------:|-------:|---------------------------|
-
-
 
 ### Confidence Intervall Runs
 | Run | ED    | WER   |

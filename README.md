@@ -1,8 +1,8 @@
 # End-to-End Speech Recognition System Using Connectionist Temporal Classification
 Automatic speech recognition (ASR) system implementation that utilizes the 
-[connectionist temporalclassification (CTC)](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.75.6306)
+[connectionist temporal classification (CTC)](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.75.6306)
 cost function.
-It is inspired by Baidu's
+It's inspired by Baidu's
 [Deep Speech: Scaling up end-to-end speech recognition](https://arxiv.org/abs/1412.5567)
 and
 [Deep Speech 2: End-to-End Speech Recognition in English and Mandarin](https://arxiv.org/abs/1512.02595)
@@ -24,46 +24,48 @@ language model.
 * [Datasets](#datasets)
 * [Training](#training)
 * [Evaluation](#evaluation)
-* [License](#license)
+* [License](LICENSE)
 
 
 ## Installation
-The system was tested on Arch Linux and Ubuntu 16.04, with Python version 3.5+ and the 1.9.0 version
-of [TensorFlow](https://www.tensorflow.org/). It is highly recommended to use TensorFlow with GPU
-support for training.
+The system was tested on Arch Linux and Ubuntu 16.04, with Python version 3.5+ and the 1.12.0 
+version of [TensorFlow](https://www.tensorflow.org/). It's highly recommended to use TensorFlow 
+with GPU support for training.
 
 
 ### Arch Linux
-```sh
+```shell
 # Install dependencies.
 sudo pacman -S sox python-tensorflow-opt-cuda tensorbaord
 
-# Install optional dependencies.
+# Install optional dependencies. LaTeX is only required to plot nice looking graphs.
 sudo pacman -S texlive-most
 
 # Clone reposetory and install Python depdendencies.
-git clone <URL>
+git clone https://github.com/mdangschat/ctc-asr.git
 cd speech
+# Setup optional virtual environment.
 pip install -r requirements.txt
 ```
 
 ### Ubuntu
 Be aware that the [requirements.txt](requirements.txt) lists `tensorflow` as dependency, if you
-install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it and install 
-`tensorflow-gpu` manually.
-Based on my experience it is worth the effort to 
+install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it as dependency
+and install `tensorflow-gpu` instead.
+Based on my experience it's worth the effort to 
 [build TensorFlow from source](https://www.tensorflow.org/install/source).
 
-```sh
+```shell
 # Install dependencies.
 sudo apt install python3-tk sox libsox-fmt-all
 
-# Install optional dependencies.
+# Install optional dependencies. LaTeX is only required to plot nice looking graphs.
 sudo apt install texlive
 
-# Clone reposetory and install Python depdendencies. Don't forget tensorflow-gpu.
-git clone <URL>
+# Clone reposetory and install Python depdendencies. Don't forget to use tensorflow-gpu.
+git clone https://github.com/mdangschat/ctc-asr.git
 cd speech
+# Setup optional virtual environment.
 pip3 install -r requirements.txt
 ```
 
@@ -86,7 +88,7 @@ individual datasets are not part of the repository and have to be acquired by ea
 The test dataset consists of all clean training subsets from those datasets.
 Only the LibriSpeech clean dev set is used as the validation/development set and the LibriSpeech
 and Common Voice clean test sets are used as testing dataset. 
-The ASR system works on 16 kHz mono `.wav` files.
+The ASR system works on 16 kHz mono WAV files.
 
 A helper that downloads the free corpora and prepares the data and creates the merged corpora can
 be found in [python/dataset/generate_dataset.py](python/dataset/generate_dataset.py).
@@ -132,25 +134,25 @@ data/
 ```
 
 
-### `train.txt` 906+ Hours
+### `train.csv` 1050+ Hours
 Examples shorter than 0.7 and longer than 17.0 seconds have been removed.
-Tedlium samples with labels shorter than 5 words have been removed.
-`train.txt` is sorted by feature sequence length in ascending order.
+TEDLIUM examples with labels shorter than 5 words have been removed.
+`train.csv` is sorted by feature sequence length in ascending order.
 
-* `commonvoice_train.txt`
-* `librispeech_train.txt`
-* `tatoeba_train.txt`
-* `tedlium_train.txt`
-* `timit_train.txt`
-
-
-### `dev.txt`
-* `librispeech_dev.txt`
+* `commonvoice_train.csv`
+* `librispeech_train.csv`
+* `tatoeba_train.csv`
+* `tedlium_train.csv`
+* `timit_train.csv`
 
 
-### `test.txt`
-* `commonvoice_test.txt`
-* `librispeech_test.txt`
+### `dev.csv`
+* `librispeech_dev.csv`
+
+
+### `test.csv`
+* `commonvoice_test.csv`
+* `librispeech_test.csv`
 
 
 ### Statistics
@@ -183,8 +185,9 @@ Please note that all commands are expected to be executed from the projects root
 The additional `--` before the actual flags begin is used to indicate the end of IPython flags.
 
 The training progress can be monitored using Tensorboard.
-To start Tensorboard use `tensorboard --logdir <checkpoint directory>`, it can then be viewed on
-[localhost:6006](http://localhost:6006).
+To start Tensorboard use `tensorboard --logdir <checkpoint_directory>`.
+By default it can then be viewed on [localhost:6006](http://localhost:6006).
+
 
 ## Evaluation
 Evaluate the current model by invoking `ipython python/evaluate.py`.
