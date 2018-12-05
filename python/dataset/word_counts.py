@@ -2,18 +2,20 @@
 Calculate word based statistics for the train.csv file.
 """
 
+import csv
 import os
 from collections import Counter
 
 import numpy as np
 
-from python.params import BASE_PATH
+from python.dataset.config import CSV_DIR, CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL
 
 
 def _load_labels(path):
-    with open(path, 'r') as f:
-        lines = f.readlines()
-        return [line.split(' ', 1)[1].strip() for line in lines]
+    with open(path, 'r', encoding='utf-8') as file_handle:
+        reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+        csv_entries = list(reader)[1: -1]
+        return [entry[CSV_HEADER_LABEL] for entry in csv_entries]
 
 
 def _plot_word_stats(labels):
@@ -74,8 +76,7 @@ def _plot_word_stats(labels):
 
 
 if __name__ == '__main__':
-    _txt_path = os.path.join(BASE_PATH, 'data', 'train.csv')
-    print('Calculating statistics for {}'.format(_txt_path))
-    _labels = _load_labels(_txt_path)
+    __CSV_PATH = os.path.join(CSV_DIR, 'train.csv')
+    print('Calculating statistics for {}'.format(__CSV_PATH))
 
-    _plot_word_stats(_labels)
+    _plot_word_stats(_load_labels(__CSV_PATH))

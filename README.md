@@ -156,25 +156,25 @@ TEDLIUM examples with labels shorter than 5 words have been removed.
 
 
 ### Statistics
-```
-/usr/bin/python3 -u /home/marc/workspace/speech/asr/dataset_util/word_counts.py
-Calculating statistics for /mnt/storage/workspace/speech/data/train.txt
+```console
+ipython python/dataset/word_counts.py 
+Calculating statistics for /home/gpuinstall/workspace/ctc-asr/data/train.csv
 Word based statistics:
-	total_words = 8,912,133
-    number_unique_words = 81,090
-	mean_sentence_length = 15.61 words
-	min_sentence_length = 1 words
-	max_sentence_length = 84 words
-	Most common words:  [('the', 461863), ('to', 270959), ('and', 246560), ('of', 220573), ('a', 198632), ('i', 171289), ('in', 135662), ('that', 130372), ('you', 127414), ('tom', 114623)]
-	27437 words occurred only 1 time; 37473 words occurred only 2 times; 50106 words occurred only 5 times; 58618 words occurred only 10 times.
+        total_words = 10,069,671
+        number_unique_words = 81,161
+        mean_sentence_length = 14.52 words
+        min_sentence_length = 1 words
+        max_sentence_length = 84 words
+        Most common words:  [('the', 551055), ('to', 306197), ('and', 272729), ('of', 243032), ('a', 223722), ('i', 192151), ('in', 149797), ('that', 146820), ('you', 144244), ('it', 118133)]
+        27416 words occurred only 1 time; 37,422 words occurred only 2 times; 49,939 words occurred only 5 times; 58,248 words occurred only 10 times.
 
 Character based statistics:
-	total_characters = 46,122,731
-	mean_label_length = 80.80 characters
-	min_label_length = 2 characters
-	max_label_length = 422 characters
-	Most common characters: [(' ', 8341279), ('e', 4631650), ('t', 3712085), ('o', 3082222), ('a', 2973836), ('i', 2629625), ('n', 2542519), ('s', 2332114), ('h', 2266656), ('r', 2067363), ('d', 1575679), ('l', 1504091), ('u', 1098686), ('m', 1047460), ('w', 928518), ('c', 900106), ('y', 856603), ('g', 783085), ('f', 764710), ('p', 633259), ('b', 563912), ('v', 377197), ('k', 342523), ('x', 56864), ('j', 54972), ('q', 32031), ('z', 23686)]
-	Most common characters: [' ', 'e', 't', 'o', 'a', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'g', 'f', 'p', 'b', 'v', 'k', 'x', 'j', 'q', 'z']
+        total_characters = 52,004,043
+        mean_label_length = 75.00 characters
+        min_label_length = 2 characters
+        max_label_length = 422 characters
+        Most common characters: [(' ', 9376326), ('e', 5264177), ('t', 4205041), ('o', 3451023), ('a', 3358945), ('i', 2944773), ('n', 2858788), ('s', 2624239), ('h', 2598897), ('r', 2316473), ('d', 1791668), ('l', 1686896), ('u', 1234080), ('m', 1176076), ('w', 1052166), ('c', 999590), ('y', 974918), ('g', 888446), ('f', 851710), ('p', 710252), ('b', 646150), ('v', 421126), ('k', 387714), ('x', 62547), ('j', 61048), ('q', 34558), ('z', 26416)]
+        Most common characters: [' ', 'e', 't', 'o', 'a', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'g', 'f', 'p', 'b', 'v', 'k', 'x', 'j', 'q', 'z']
 ```
 
 
