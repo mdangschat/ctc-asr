@@ -17,7 +17,7 @@ class CTCModel:
     """
 
     def __init__(self):
-        # Initialize member variables.
+        # Initialize attributes.
         self.loss_op = None
         self.train_op = None
         self.hooks = None
@@ -47,14 +47,8 @@ class CTCModel:
         Returns:
             `tf.estimator.EstimatorSpec`
         """
-        # Convert dense labels tensor into sparse tensor.
-        labels = tfc.layers.dense_to_sparse(labels)
-
         spectrogram_length = features['spectrogram_length']
         spectrogram = features['spectrogram']
-
-        tf.summary.scalar('spectrogram_length', spectrogram_length[0])
-        tf.summary.image('spectrogram', tf.expand_dims(spectrogram, 3))
 
         # Determine if this is a training run. This is used for dropout layers.
         training = (mode == tf.estimator.ModeKeys.TRAIN)
@@ -63,8 +57,23 @@ class CTCModel:
         logits, seq_length = self.inference_fn(spectrogram, spectrogram_length, training=training)
 
         if mode == tf.estimator.ModeKeys.PREDICT:
-            raise NotImplementedError('Prediction is not implemented.')
+            # CTC decode.
+            decoded, plaintext, _ = self.decode_fn(logits, seq_length, None)
 
+            prediction = {
+                'decoded': tf.sparse.to_dense(decoded),
+                'plaintext': plaintext
+            }
+
+            return tf.estimator.EstimatorSpec(mode=mode, predictions=prediction)
+
+        tf.summary.scalar('spectrogram_length', spectrogram_length[0])
+        tf.summary.image('spectrogram', tf.expand_dims(spectrogram, 3))
+
+        # Convert dense labels tensor into sparse tensor.
+        labels = tfc.layers.dense_to_sparse(labels)
+
+        # CTC loss operator.
         self.loss_op = self.loss_fn(logits, seq_length, labels)
 
         # During training.

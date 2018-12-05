@@ -16,7 +16,6 @@ from python.util import storage
 RANDOM_SEED = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 
 
-# noinspection PyUnusedLocal
 def main(_):
     """TensorFlow starting routine."""
 

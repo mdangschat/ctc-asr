@@ -1,21 +1,51 @@
 """
-Evaluate a trained ASR model.
+Transcribe a given audio file.
+
+L8ER: Add flag to specify the checkpoint file to use.
 """
+
+import os
 
 import tensorflow as tf
 
-from python.input_functions import input_fn_generator
+from python.dataset.config import CSV_DIR
+from python.input_functions import load_sample
 from python.model import CTCModel
 from python.params import FLAGS, get_parameters
 from python.util import storage
 
-# Evaluation specific flags.
-tf.flags.DEFINE_boolean('dev', False,
-                        "`True` if evaluation should use the dev set, `False` if it should use the"
-                        " test set.")
+# Inference specific flags.
+tf.flags.DEFINE_string('input',
+                       os.path.join(CSV_DIR, 'examples/idontunderstandawordyoujustsaid.wav'),
+                       "Path to the WAV file to transcribe.")
 
-# Which dataset TXT file to use for evaluation. 'test' or 'dev'.
-__EVALUATION_TARGET = 'dev' if FLAGS.dev else 'test'
+
+def predict_input_fn():
+    """
+    Generate a `tf.data.Dataset` containing the `FLAGS.input` file's spectrogram data.
+
+    Returns:
+        Dataset iterator.
+    """
+    dataset = tf.data.Dataset.from_generator(__predict_input_generator,
+                                             (tf.float32, tf.int32),
+                                             (tf.TensorShape([None, 80]), tf.TensorShape([]))
+                                             )
+
+    dataset = dataset.batch(1)
+    iterator = dataset.make_one_shot_iterator()
+    spectrogram, spectrogram_length = iterator.get_next()
+
+    features = {
+        'spectrogram': spectrogram,
+        'spectrogram_length': spectrogram_length,
+    }
+
+    return features, None
+
+
+def __predict_input_generator():
+    yield load_sample(FLAGS.input)
 
 
 def main(_):
@@ -51,14 +81,14 @@ def main(_):
         config=config
     )
 
-    # Evaluate the trained model.
-    dev_input_fn = input_fn_generator(__EVALUATION_TARGET)
-    evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None)
-    tf.logging.info('Evaluation results for this model: {}'.format(evaluation_result))
+    # Evaluate the given example.
+    prediction = estimator.predict(input_fn=predict_input_fn, hooks=None)
+    tf.logging.info('Inference results: {}'.format(list(prediction)))
 
 
 if __name__ == '__main__':
     # General TensorFlow setup.
+    tf.enable_eager_execution()
     tf.logging.set_verbosity(tf.logging.INFO)
 
     # Run training.
