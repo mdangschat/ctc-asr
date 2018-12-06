@@ -34,6 +34,37 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
         return super(AdamOptimizerLogger, self)._apply_dense(grad, var)
 
 
+def dense_layers(sequences, training, regularizer, initializer,
+                 num_layers=3, activation=tf.nn.relu):
+    """
+    Create a chain of dense (fully-connected) neural network layers.
+
+    Args:
+        sequences (tf.Tensor): Input sequences.
+        training (bool): Whether the mode is training or not.
+        regularizer: TF weight reqularizer.
+        initializer: TF weight initializer.
+        num_layers (int):
+        activation (function): TF activation function.
+
+    Returns:
+        tf.Tensor: Output tensor.
+    """
+
+    with tf.variable_scope('dense'):
+        output = sequences
+        for _ in range(num_layers):
+            output = tf.layers.dense(output, FLAGS.num_units_dense,
+                                     activation=activation,
+                                     kernel_initializer=initializer,
+                                     kernel_regularizer=regularizer)
+            output = tf.minimum(output, FLAGS.relu_cutoff)
+            output = tf.layers.dropout(output, rate=FLAGS.dense_dropout_rate, training=training)
+            # output = [batch_size, time, num_units_dense]
+
+        return output
+
+
 def conv_layers(sequences,
                 filters=FLAGS.conv_filters,
                 kernel_sizes=((11, 41), (11, 21), (11, 21)),

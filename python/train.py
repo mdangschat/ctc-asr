@@ -65,6 +65,9 @@ def main(_):
         train_input_fn = input_fn_generator('train_bucket')
         estimator.train(input_fn=train_input_fn, hooks=None)
 
+        # TODO: Possible replacement for evaluate every epoch:
+        # https://www.tensorflow.org/api_docs/python/tf/contrib/estimator/InMemoryEvaluatorHook
+
         # Evaluate the trained model.
         dev_input_fn = input_fn_generator('dev')
         evaluation_result = estimator.evaluate(input_fn=dev_input_fn, hooks=None)

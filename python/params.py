@@ -39,12 +39,13 @@ tf.flags.DEFINE_integer('num_layers_rnn', 2,
                         "Number of stacked RNN cells.")
 tf.flags.DEFINE_integer('num_units_rnn', 64,
                         "Number of hidden units in each of the RNN cells.")
-tf.flags.DEFINE_string('rnn_cell_type', 'rnn_relu',  # TODO: Implement this.
-                       "Used RNN cell type. Supported are the RNN versions 'relu' and 'tanh',"
-                       "as well as the 'lstm' and 'gru' cells")
+# TODO: This is currently only implemented for cudnn (`FLAGS.cudnn = True`).
+tf.flags.DEFINE_string('rnn_cell', 'rnn_relu',
+                       "Used RNN cell type. Supported are the RNN versions 'rnn_relu' and "
+                       "'rnn_tanh', as well as the 'lstm' and 'gru' cells")
 
 # Input features.
-tf.flags.DEFINE_string('feature_type', 'mfcc',
+tf.flags.DEFINE_string('feature_type', 'mel',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."
@@ -53,7 +54,7 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
 
 # Learning Rate.
-tf.flags.DEFINE_integer('max_epochs', 10,
+tf.flags.DEFINE_integer('max_epochs', 5,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-5,
                       "Initial learning rate.")
@@ -111,9 +112,9 @@ tf.flags.DEFINE_integer('gpu_hook_average_queries', 100,
                         "The number of queries to store for calculating average values.")
 
 # Performance.
-tf.flags.DEFINE_boolean('use_cudnn', True,
-                        "Whether to use Nvidia cuDNN implementations or (`False`) the default "
-                        "TensorFlow implementation.")
+tf.flags.DEFINE_boolean('cudnn', True,
+                        "Whether to use Nvidia cuDNN implementations or the default TensorFlow "
+                        "implementation.")
 
 # Miscellaneous.
 tf.flags.DEFINE_boolean('delete', False,
@@ -144,21 +145,21 @@ def get_parameters():
     Returns:
         str: Summary of training parameters.
     """
-    s = '\n\tLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
-        '\tGPU-Options (use_cudnn={});\n' \
-        '\tModel (used_model={}, beam_width={:,d})\n' \
-        '\tConv (conv_filters={}); Dense (num_units={:,d});\n' \
-        '\tRNN (num_units={:,d}, num_layers={:,d});\n' \
-        '\tTraining (batch_size={:,d}, max_epochs={:,d}, log_frequency={:,d});\n' \
-        '\tFeatures (type={}, normalization={}, skip_every_2nd_frame={});'
+    res = '\n\tLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
+          '\tGPU-Options (use_cudnn={});\n' \
+          '\tModel (used_model={}, beam_width={:,d})\n' \
+          '\tConv (conv_filters={}); Dense (num_units={:,d});\n' \
+          '\tRNN (num_units={:,d}, num_layers={:,d});\n' \
+          '\tTraining (batch_size={:,d}, max_epochs={:,d}, log_frequency={:,d});\n' \
+          '\tFeatures (type={}, normalization={}, skip_every_2nd_frame={});'
 
-    s = s.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
-                 FLAGS.use_cudnn,
-                 FLAGS.used_model, FLAGS.beam_width,
-                 FLAGS.conv_filters, FLAGS.num_units_dense,
-                 FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
-                 FLAGS.batch_size, FLAGS.max_epochs, FLAGS.log_frequency,
-                 FLAGS.feature_type, FLAGS.feature_normalization,
-                 FLAGS.features_drop_every_second_frame)
+    res = res.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
+                     FLAGS.use_cudnn,
+                     FLAGS.used_model, FLAGS.beam_width,
+                     FLAGS.conv_filters, FLAGS.num_units_dense,
+                     FLAGS.num_units_rnn, FLAGS.num_layers_rnn,
+                     FLAGS.batch_size, FLAGS.max_epochs, FLAGS.log_frequency,
+                     FLAGS.feature_type, FLAGS.feature_normalization,
+                     FLAGS.features_drop_every_second_frame)
 
-    return s
+    return res

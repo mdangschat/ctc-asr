@@ -113,7 +113,6 @@ class CTCModel:
 
         # During evaluation.
         if mode == tf.estimator.ModeKeys.EVAL:
-
             eval_metrics_ops = {
                 'mean_edit_distance': tf.metrics.mean(mean_ed, name='mean_edit_distance'),
                 'word_error_rate': tf.metrics.mean(wer, name='word_error_rate')
@@ -152,40 +151,11 @@ class CTCModel:
 
         if FLAGS.used_model == 'ds1':
             # Dense input layers.
-            # Dense1
-            with tf.variable_scope('dense1'):
-                # sequences = [batch_size, time, NUM_FEATURES]
-                dense1 = tf.layers.dense(sequences, FLAGS.num_units_dense,
-                                         activation=tf.nn.relu,
-                                         kernel_initializer=tf.glorot_normal_initializer(),
-                                         kernel_regularizer=regularizer)
-                dense1 = tf.minimum(dense1, FLAGS.relu_cutoff)
-                dense1 = tf.layers.dropout(dense1, rate=FLAGS.dense_dropout_rate, training=training)
-                # dense1 = [batch_size, time, num_units_dense]
-
-            # Dense2
-            with tf.variable_scope('dense2'):
-                dense2 = tf.layers.dense(dense1, FLAGS.num_units_dense,
-                                         activation=tf.nn.relu,
-                                         kernel_initializer=initializer,
-                                         kernel_regularizer=regularizer)
-                dense2 = tf.minimum(dense2, FLAGS.relu_cutoff)
-                dense2 = tf.layers.dropout(dense2, rate=FLAGS.dense_dropout_rate, training=training)
-                # dense2 = [batch_size, time, num_units_dense]
-
-            # Dense3
-            with tf.variable_scope('dense3'):
-                dense3 = tf.layers.dense(dense2, FLAGS.num_units_dense,
-                                         activation=tf.nn.relu,
-                                         kernel_initializer=initializer,
-                                         kernel_regularizer=regularizer)
-                dense3 = tf.minimum(dense3, FLAGS.relu_cutoff)
-                output3 = tf.layers.dropout(dense3, rate=FLAGS.dense_dropout_rate,
-                                            training=training)
-                # output3 = [batch_size, time, num_units_dense]
+            output3 = tf_contrib.dense_layers(sequences, training, regularizer, initializer)
+            # output3 = [batch_size, time, num_units_dense]
 
         elif FLAGS.used_model == 'ds2':
-            # Convolutional input layers.
+            # 2D convolutional input layers.
             with tf.variable_scope('conv'):
                 # sequences = [batch_size, time, NUM_INPUTS] => [batch_size, time, NUM_INPUTS, 1]
                 sequences = tf.expand_dims(sequences, 3)
@@ -199,7 +169,7 @@ class CTCModel:
         with tf.variable_scope('rnn'):
             dropout_rate = FLAGS.rnn_dropout_rate if training else 0.0
 
-            if not FLAGS.use_cudnn:
+            if not FLAGS.cudnn:  # Use TensorFlow RNNs.
                 # Create a stack of RNN cells.
                 fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_rnn,
                                                                     FLAGS.num_layers_rnn,
@@ -216,22 +186,33 @@ class CTCModel:
                 )
                 # rnn_output = [batch_size, time, num_units_rnn * 2]
 
-            else:  # FLAGS.use_cudnn
+            else:  # FLAGS.cudnn Use cuDNN RNNs.
                 # cuDNN RNNs only support time major inputs.
                 conv_output = tfc.rnn.transpose_batch_time(output3)
 
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNRelu
+                # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnLSTM
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnGRU
-                rnn = tfc.cudnn_rnn.CudnnLSTM(num_layers=FLAGS.num_layers_rnn,
-                                              num_units=FLAGS.num_units_rnn,
-                                              input_mode='linear_input',
-                                              direction='bidirectional',
-                                              dropout=dropout_rate,
-                                              seed=FLAGS.random_seed,
-                                              dtype=TF_FLOAT,
-                                              kernel_initializer=None,  # Glorot Uniform Initializer
-                                              bias_initializer=None)  # Constant 0.0 Initializer
+                supported_rnns = {
+                    'rnn_relu': tfc.cudnn_rnn.CudnnRNNRelu,
+                    'rnn_tanh': tfc.cudnn_rnn.CudnnRNNTanh,
+                    'gru': tfc.cudnn_rnn.CudnnGRU,
+                    'lstm': tfc.cudnn_rnn.CudnnLSTM
+                }
+                assert FLAGS.rnn_cell in supported_rnns
+
+                rnn = supported_rnns[FLAGS.rnn_cell](num_layers=FLAGS.num_layers_rnn,
+                                                     num_units=FLAGS.num_units_rnn,
+                                                     input_mode='linear_input',
+                                                     direction='bidirectional',
+                                                     dropout=dropout_rate,
+                                                     seed=FLAGS.random_seed,
+                                                     dtype=TF_FLOAT,
+                                                     # Glorot Uniform Initializer
+                                                     kernel_initializer=None,
+                                                     # Constant 0.0 Initializer
+                                                     bias_initializer=None)
 
                 rnn_output, _ = rnn(conv_output)
                 rnn_output = tfc.rnn.transpose_batch_time(rnn_output)

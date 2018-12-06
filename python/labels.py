@@ -2,7 +2,7 @@
 Convert characters (chr) to integer (int) labels and vice versa.
 
 REVIEW: index 0 bug, also see:
-<https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding>
+https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding
 
 `ctc_loss`_ maps labels from 0=<unused>, 1=<space>, 2=a, ..., 27=z, 28=<blank>
 
