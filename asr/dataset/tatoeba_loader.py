@@ -15,12 +15,12 @@ from multiprocessing import Pool, Lock, cpu_count
 from scipy.io import wavfile
 from tqdm import tqdm
 
-from python.dataset import download
-from python.dataset.config import CACHE_DIR, CORPUS_DIR, sox_commandline
-from python.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
-from python.dataset.csv_file_helper import generate_csv
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
-from python.util.storage import delete_file_if_exists
+from asr.dataset import download
+from asr.dataset.config import CACHE_DIR, CORPUS_DIR, sox_commandline
+from asr.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
+from asr.dataset.csv_file_helper import generate_csv
+from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from asr.util.storage import delete_file_if_exists
 
 # Path to the Taboeba dataset.
 __URL = 'https://downloads.tatoeba.org/audio/tatoeba_audio_eng.zip'

@@ -1,4 +1,9 @@
+# Ignore everything...
 *
+
+# ... but the following:
 !.gitignore
-!./cache
-!./corpus
+!examples/
+!examples/*
+!cache/
+!corpus/

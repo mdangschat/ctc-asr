@@ -4,8 +4,8 @@ Methods the calculate cost metrics.
 
 import numpy as np
 
-from python.labels import itoc
-from python.params import NP_FLOAT
+from asr.labels import itoc
+from asr.params import NP_FLOAT
 
 
 def dense_to_text(decoded, originals):

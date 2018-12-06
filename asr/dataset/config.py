@@ -6,7 +6,7 @@ Also reference `python/dataset/generate_dataset.py`.
 import os
 import re
 
-from python.params import BASE_PATH, FLAGS
+from asr.params import BASE_PATH, FLAGS
 
 CACHE_DIR = os.path.join(BASE_PATH, 'data/cache')
 CORPUS_DIR = os.path.join(BASE_PATH, 'data/corpus')

@@ -6,9 +6,9 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.contrib as tfc
 
-from python.params import FLAGS, TF_FLOAT
-from python.util import tf_contrib, metrics
-from python.util.hooks import GPUStatisticsHook
+from asr.params import FLAGS, TF_FLOAT
+from asr.util import tf_contrib, metrics
+from asr.util.hooks import GPUStatisticsHook
 
 
 class CTCModel:

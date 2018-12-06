@@ -11,10 +11,10 @@ import python_speech_features as psf
 import tensorflow as tf
 from scipy.io import wavfile
 
-from python.dataset.config import CORPUS_DIR
-from python.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
-from python.labels import ctoi
-from python.params import BOUNDARIES, NP_FLOAT, FLAGS
+from asr.dataset.config import CORPUS_DIR
+from asr.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
+from asr.labels import ctoi
+from asr.params import BOUNDARIES, NP_FLOAT, FLAGS
 
 NUM_FEATURES = 80  # Number of features to extract.
 WIN_LENGTH = 0.025  # Window length in seconds.

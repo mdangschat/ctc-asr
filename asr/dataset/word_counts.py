@@ -8,7 +8,7 @@ from collections import Counter
 
 import numpy as np
 
-from python.dataset.config import CSV_DIR, CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL
+from asr.dataset.config import CSV_DIR, CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL
 
 
 def _load_labels(path):

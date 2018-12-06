@@ -8,11 +8,11 @@ import os
 
 import tensorflow as tf
 
-from python.dataset.config import CSV_DIR
-from python.input_functions import load_sample
-from python.model import CTCModel
-from python.params import FLAGS, get_parameters
-from python.util import storage
+from asr.dataset.config import CSV_DIR
+from asr.input_functions import load_sample
+from asr.model import CTCModel
+from asr.params import FLAGS, get_parameters
+from asr.util import storage
 
 # Inference specific flags.
 tf.flags.DEFINE_string('input',

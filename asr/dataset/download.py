@@ -11,8 +11,8 @@ from urllib.parse import urlparse
 import requests
 from tqdm import tqdm
 
-from python.dataset.config import CACHE_DIR
-from python.util import storage
+from asr.dataset.config import CACHE_DIR
+from asr.util import storage
 
 
 def maybe_download_batch(urls, md5s, cache_archives=True):

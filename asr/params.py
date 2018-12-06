@@ -9,8 +9,8 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from python.labels import num_classes
-from python.util.params_helper import BASE_PATH, BOUNDARIES
+from asr.labels import num_classes
+from asr.util.params_helper import BASE_PATH, BOUNDARIES
 
 BASE_PATH = BASE_PATH
 BOUNDARIES = BOUNDARIES

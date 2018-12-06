@@ -72,7 +72,7 @@ pip3 install -r requirements.txt
 
 ## Configuration
 The network architecture and training parameters can be configured by adding the appropriate flags
-or by directly editing the [params.py](python/params.py) configuration file.
+or by directly editing the [params.py](asr/params.py) configuration file.
 
 
 ## Datasets
@@ -91,7 +91,7 @@ and Common Voice clean test sets are used as testing dataset.
 The ASR system works on 16 kHz mono WAV files.
 
 A helper that downloads the free corpora and prepares the data and creates the merged corpora can
-be found in [python/dataset/generate_dataset.py](python/dataset/generate_dataset.py).
+be found in [asr/dataset/generate_dataset.py](asr/dataset/generate_dataset.py).
 The file needs to be adjusted for the datasets that should be used, it further expects the TIMIT
 dataset to be present. 
 The following tree shows a possible folder structure for the data directory.
@@ -179,8 +179,8 @@ Character based statistics:
 
 
 ## Training
-Start training by invoking `ipython python/train.py`.
-Use `ipython python/train.py -- --delete` to start a clean run and remove the old checkpoints.
+Start training by invoking `ipython asr/train.py`.
+Use `ipython asr/train.py -- --delete` to start a clean run and remove the old checkpoints.
 Please note that all commands are expected to be executed from the projects root folder.
 The additional `--` before the actual flags begin is used to indicate the end of IPython flags.
 
@@ -190,8 +190,8 @@ By default it can then be viewed on [localhost:6006](http://localhost:6006).
 
 
 ## Evaluation
-Evaluate the current model by invoking `ipython python/evaluate.py`.
-Use `ipython python/evaluate.py -- --test` to run on the test dataset, instead of the development 
+Evaluate the current model by invoking `ipython asr/evaluate.py`.
+Use `ipython asr/evaluate.py -- --test` to run on the test dataset, instead of the development 
 set.
 
 

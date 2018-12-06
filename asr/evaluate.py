@@ -4,10 +4,10 @@ Evaluate a trained ASR model.
 
 import tensorflow as tf
 
-from python.input_functions import input_fn_generator
-from python.model import CTCModel
-from python.params import FLAGS, get_parameters
-from python.util import storage
+from asr.input_functions import input_fn_generator
+from asr.model import CTCModel
+from asr.params import FLAGS, get_parameters
+from asr.util import storage
 
 # Evaluation specific flags.
 tf.flags.DEFINE_boolean('dev', False,

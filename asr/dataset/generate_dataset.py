@@ -31,13 +31,13 @@ Generated data format:
 
 import json
 
-from python.dataset.common_voice_loader import common_voice_loader
-from python.dataset.csv_file_helper import sort_by_seq_len, get_corpus_length, merge_csv_files
-from python.dataset.libri_speech_loeader import libri_speech_loader
-from python.dataset.tatoeba_loader import tatoeba_loader
-from python.dataset.tedlium_loader import tedlium_loader
-from python.dataset.timit_loader import timit_loader
-from python.util.params_helper import CORPUS_JSON_PATH
+from asr.dataset.common_voice_loader import common_voice_loader
+from asr.dataset.csv_file_helper import sort_by_seq_len, get_corpus_length, merge_csv_files
+from asr.dataset.libri_speech_loeader import libri_speech_loader
+from asr.dataset.tatoeba_loader import tatoeba_loader
+from asr.dataset.tedlium_loader import tedlium_loader
+from asr.dataset.timit_loader import timit_loader
+from asr.util.params_helper import CORPUS_JSON_PATH
 
 
 def generate_dataset(keep_archives=True, use_timit=True):

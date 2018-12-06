@@ -8,10 +8,10 @@ import time
 
 import tensorflow as tf
 
-from python.input_functions import input_fn_generator
-from python.model import CTCModel
-from python.params import FLAGS, get_parameters
-from python.util import storage
+from asr.input_functions import input_fn_generator
+from asr.model import CTCModel
+from asr.params import FLAGS, get_parameters
+from asr.util import storage
 
 RANDOM_SEED = FLAGS.random_seed if FLAGS.random_seed != 0 else int(time.time())
 

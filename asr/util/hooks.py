@@ -11,7 +11,7 @@ from tensorflow.core.framework.summary_pb2 import Summary
 from tensorflow.python.platform import tf_logging as logging
 from tensorflow.python.training import summary_io, training_util, session_run_hook
 
-from python.params import FLAGS
+from asr.params import FLAGS
 
 
 class GPUStatisticsHook(tf.train.SessionRunHook):

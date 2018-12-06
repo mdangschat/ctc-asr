@@ -11,8 +11,8 @@ import numpy as np
 from scipy.io import wavfile
 from tqdm import tqdm
 
-from python.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
-from python.util.matplotlib_helper import pyplot_display
+from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
+from asr.util.matplotlib_helper import pyplot_display
 
 __DATASETS_PATH = '../datasets/speech_data'
 
