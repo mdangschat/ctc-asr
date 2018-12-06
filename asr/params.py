@@ -1,7 +1,5 @@
 """
 Collection of hyper parameters, network layout, and reporting options.
-
-TODO: Update to trainable values for release.
 """
 
 import os
@@ -17,9 +15,9 @@ BOUNDARIES = BOUNDARIES
 
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir',
-                       os.path.join(BASE_PATH, '../speech_checkpoints/test_run'),
+                       os.path.join(BASE_PATH, '../speech_checkpoints/3c4r_rnnrelu'),
                        "Directory where to write event logs and checkpoints.")
-tf.flags.DEFINE_integer('batch_size', 8,
+tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
 
 # Layer and activation options.
@@ -27,7 +25,7 @@ tf.flags.DEFINE_string('used_model', 'ds2',
                        ("Used inference model. Supported are 'ds1', and 'ds2'. "
                         "Also see `FLAGS.feature_drop_every_second_frame`."))
 
-tf.flags.DEFINE_integer('num_units_dense', 64,
+tf.flags.DEFINE_integer('num_units_dense', 2048,
                         "Number of units per dense layer.")
 tf.flags.DEFINE_float('relu_cutoff', 20.0,
                       "Cutoff ReLU activations that exceed the cutoff.")
@@ -35,9 +33,9 @@ tf.flags.DEFINE_float('relu_cutoff', 20.0,
 tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
                               "Number of filters for each convolutional layer.")
 
-tf.flags.DEFINE_integer('num_layers_rnn', 2,
+tf.flags.DEFINE_integer('num_layers_rnn', 4,
                         "Number of stacked RNN cells.")
-tf.flags.DEFINE_integer('num_units_rnn', 64,
+tf.flags.DEFINE_integer('num_units_rnn', 1024,
                         "Number of hidden units in each of the RNN cells.")
 # TODO: This is currently only implemented for cudnn (`FLAGS.cudnn = True`).
 tf.flags.DEFINE_string('rnn_cell', 'rnn_relu',
@@ -54,7 +52,7 @@ tf.flags.DEFINE_boolean('features_drop_every_second_frame', False,
                         "[Deep Speech 1] like dropping of every 2nd input time frame.")
 
 # Learning Rate.
-tf.flags.DEFINE_integer('max_epochs', 5,
+tf.flags.DEFINE_integer('max_epochs', 15,
                         "Number of epochs to run. [Deep Speech 1] uses about 20 epochs.")
 tf.flags.DEFINE_float('learning_rate', 1e-5,
                       "Initial learning rate.")
@@ -75,7 +73,7 @@ tf.flags.DEFINE_float('adam_epsilon', 1e-8,
                       "Adam optimizer epsilon.")
 
 # CTC decoder.
-tf.flags.DEFINE_integer('beam_width', 256,
+tf.flags.DEFINE_integer('beam_width', 1024,
                         "Beam width used in the CTC `beam_search_decoder`.")
 
 # Dropout.
@@ -100,7 +98,7 @@ tf.flags.DEFINE_integer('sampling_rate', 16000,
                         "The sampling rate of the audio files (e.g. 2 * 8kHz).")
 
 # Logging.
-tf.flags.DEFINE_integer('log_frequency', 100,
+tf.flags.DEFINE_integer('log_frequency', 200,
                         "How often (every `log_frequency` steps) to log results.")
 tf.flags.DEFINE_integer('num_samples_to_report', 4,
                         "The maximum number of decoded and original text samples to report in "
@@ -146,7 +144,7 @@ def get_parameters():
         str: Summary of training parameters.
     """
     res = '\n\tLearning Rate (lr={}, steps_per_decay={:,d}, decay_factor={});\n' \
-          '\tGPU-Options (use_cudnn={});\n' \
+          '\tGPU-Options (cudnn={});\n' \
           '\tModel (used_model={}, beam_width={:,d})\n' \
           '\tConv (conv_filters={}); Dense (num_units={:,d});\n' \
           '\tRNN (num_units={:,d}, num_layers={:,d});\n' \
@@ -154,7 +152,7 @@ def get_parameters():
           '\tFeatures (type={}, normalization={}, skip_every_2nd_frame={});'
 
     res = res.format(FLAGS.learning_rate, FLAGS.steps_per_decay, FLAGS.learning_rate_decay_factor,
-                     FLAGS.use_cudnn,
+                     FLAGS.cudnn,
                      FLAGS.used_model, FLAGS.beam_width,
                      FLAGS.conv_filters, FLAGS.num_units_dense,
                      FLAGS.num_units_rnn, FLAGS.num_layers_rnn,

@@ -84,7 +84,6 @@ def input_fn_generator(target):
                 # Set shuffle buffer to number of elements in dataset, to ensure optimal shuffling.
                 with open(csv_path, 'r', encoding='utf-8') as file_handle:
                     number_examples = len(file_handle.readlines()[1:])
-                    print('DEBUG:', number_examples)
                     dataset = dataset.shuffle(number_examples)
 
                 dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(

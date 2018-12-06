@@ -36,10 +36,7 @@ def main(_):
         session_config=tf.ConfigProto(
             log_device_placement=FLAGS.log_device_placement,
             gpu_options=tf.GPUOptions(allow_growth=FLAGS.allow_vram_growth)
-        ),
-        keep_checkpoint_max=5,
-        log_step_count_steps=FLAGS.log_frequency,
-        train_distribute=None
+        )
     )
 
     model = CTCModel()
