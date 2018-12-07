@@ -56,8 +56,8 @@ def generate_csv(dataset_name, target, csv_data):
     storage.delete_file_if_exists(target_csv_path)
 
     # Write data to the file.
-    with open(target_csv_path, 'w', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+    with open(target_csv_path, 'w', encoding='utf-8') as file_handle:
+        writer = csv.DictWriter(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
         writer.writeheader()
 
         writer.writerows(csv_data)
@@ -86,8 +86,8 @@ def merge_csv_files(csv_files, target):
         if not (os.path.exists(csv_file) and os.path.isfile(csv_file)):
             raise ValueError('File does not exist: ', csv_file)
 
-        with open(csv_file, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+        with open(csv_file, 'r', encoding='utf-8') as file_handle:
+            reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
 
             # Serialize reader data and remove header.
             lines = list(reader)[1:]
@@ -97,8 +97,8 @@ def merge_csv_files(csv_files, target):
 
     # Write data to target file.
     target_file = os.path.join(CSV_DIR, '{}.csv'.format(target))
-    with open(target_file, 'w', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+    with open(target_file, 'w', encoding='utf-8') as file_handle:
+        writer = csv.DictWriter(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
         writer.writeheader()
 
         writer.writerows(buffer)
@@ -132,8 +132,8 @@ def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
     assert os.path.exists(csv_path) and os.path.isfile(csv_path)
 
     # Read train.csv file.
-    with open(csv_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+    with open(csv_path, 'r', encoding='utf-8') as file_handle:
+        reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
 
         # Read all lines into memory and remove CSV header.
         csv_data = [csv_entry for csv_entry in reader][1:]
@@ -164,14 +164,14 @@ def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
 
     # Write CSV data back to file.
     storage.delete_file_if_exists(csv_path)
-    with open(csv_path, 'w', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+    with open(csv_path, 'w', encoding='utf-8') as file_handle:
+        writer = csv.DictWriter(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
         writer.writeheader()
 
         writer.writerows(csv_data)
 
-    with open(csv_path, 'r', encoding='utf-8') as f:
-        print('Successfully sorted {} lines of {}'.format(len(f.readlines()), csv_path))
+    with open(csv_path, 'r', encoding='utf-8') as file_handle:
+        print('Successfully sorted {} lines of {}'.format(len(file_handle.readlines()), csv_path))
 
         return buckets
 
@@ -190,8 +190,8 @@ def get_corpus_length(csv_path):
     """
     assert os.path.exists(csv_path) and os.path.isfile(csv_path)
 
-    with open(csv_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+    with open(csv_path, 'r', encoding='utf-8') as file_handle:
+        reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
 
         # Read all lines into memory and remove CSV header.
         csv_data = [csv_entry for csv_entry in reader][1:]
@@ -216,7 +216,7 @@ def __plot_sequence_lengths(plt, lengths):
 
 if __name__ == '__main__':
     # Path to `train.csv` file.
-    _csv_path = os.path.join(CSV_DIR, 'train.csv')
+    __CSV_PATH = os.path.join(CSV_DIR, 'train.csv')
 
     # Display dataset stats.
-    sort_by_seq_len(_csv_path)
+    sort_by_seq_len(__CSV_PATH)

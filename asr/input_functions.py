@@ -215,19 +215,17 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
                            .format(sampling_rate, FLAGS.sampling_rate))
 
     # At 16000 Hz, 512 samples ~= 32ms. At 16000 Hz, 200 samples = 12ms. 16 samples = 1ms @ 16kHz.
-    win_len = WIN_LENGTH  # Window length in ms.
-    win_step = WIN_STEP  # Number of milliseconds between successive frames.
     f_max = sampling_rate / 2.  # Maximum frequency (Nyquist rate).
     f_min = 64.  # Minimum frequency.
     n_fft = 1024  # Number of samples in a frame.
 
     if feature_type == 'mfcc':
         sample = __mfcc(
-            audio_data, sampling_rate, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max
+            audio_data, sampling_rate, WIN_LENGTH, WIN_STEP, NUM_FEATURES, n_fft, f_min, f_max
         )
     elif feature_type == 'mel':
         sample = __mel(
-            audio_data, sampling_rate, win_len, win_step, NUM_FEATURES, n_fft, f_min, f_max
+            audio_data, sampling_rate, WIN_LENGTH, WIN_STEP, NUM_FEATURES, n_fft, f_min, f_max
         )
     else:
         raise ValueError('Unsupported feature type')
@@ -335,7 +333,6 @@ def __feature_normalization(features, method):
     if method == 'local_scalar':
         # Option 'local' uses scalar values.
         return (features - np.mean(features)) / np.std(features)
-
     raise ValueError('Invalid normalization method.')
 
 

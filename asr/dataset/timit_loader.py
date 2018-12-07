@@ -56,20 +56,19 @@ def __timit_loader(target):
     if target not in ('test', 'train'):
         raise ValueError('Timit only supports "train" and "test" targets.')
 
-    # Location of timit intern .txt file listings.
-    train_txt_path = os.path.join(__TARGET_PATH, 'train_all.txt')
-    test_txt_path = os.path.join(__TARGET_PATH, 'test_all.txt')
+    # Select target. Location of TIMIT intern .txt file listings.
+    if target == 'train':
+        master_txt_path = os.path.join(__TARGET_PATH, 'train_all.txt')
+    else:
+        master_txt_path = os.path.join(__TARGET_PATH, 'test_all.txt')
 
-    # Select target.
-    master_txt_path = train_txt_path if target == 'train' else test_txt_path
     if not os.path.isfile(master_txt_path):
         raise ValueError('"{}" is not a file.'.format(master_txt_path))
 
-    with open(master_txt_path, 'r') as f:
-        master_data = f.readlines()
+    with open(master_txt_path, 'r') as file_handle:
+        master_data = file_handle.readlines()
 
     output = []
-
     for line in master_data:
         wav_path, txt_path, _, _ = line.split(',')
         txt_path = os.path.join(__TARGET_PATH, txt_path)
@@ -79,8 +78,8 @@ def __timit_loader(target):
         if basename in ('SA1.WAV', 'SA2.WAV'):
             continue
 
-        with open(txt_path, 'r') as f:
-            txt = f.readlines()
+        with open(txt_path, 'r') as file_handle:
+            txt = file_handle.readlines()
             assert len(txt) == 1, 'Text file contains to many lines. ({})'.format(txt_path)
             txt = txt[0].split(' ', 2)[2]
 
@@ -88,8 +87,8 @@ def __timit_loader(target):
             wav_path = os.path.join(__TARGET_PATH, wav_path)
 
             # Validate that the example length is within boundaries.
-            (sr, y) = wavfile.read(wav_path)
-            length_sec = len(y) / sr
+            (sampling_rate, audio_data) = wavfile.read(wav_path)
+            length_sec = len(audio_data) / sampling_rate
             if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
                 continue
 

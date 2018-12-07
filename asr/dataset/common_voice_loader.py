@@ -157,8 +157,8 @@ def __common_voice_loader_helper(line):
                 assert os.path.isfile(wav_path)
 
                 # Validate that the example length is within boundaries.
-                (sr, y) = wavfile.read(wav_path)
-                length_sec = len(y) / sr
+                (sampling_rate, audio_data) = wavfile.read(wav_path)
+                length_sec = len(audio_data) / sampling_rate
                 if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
                     return None
 

@@ -139,8 +139,8 @@ def __tedlium_loader_helper(args):
         return None
 
     stm_file_path = os.path.join(target_folder, 'stm', stm_file)
-    with open(stm_file_path, 'r') as f:
-        lines = f.readlines()
+    with open(stm_file_path, 'r') as file_handle:
+        lines = file_handle.readlines()
 
         sph_path = os.path.join(__SOURCE_PATH, target_folder, 'sph', '{}.sph'
                                 .format(os.path.splitext(stm_file)[0]))
@@ -179,8 +179,8 @@ def __tedlium_loader_helper(args):
             __write_part_to_wav(wav_data, part_path, start_time, end_time)
 
             # Validate that the example length is within boundaries.
-            (sr, y) = wavfile.read(part_path)
-            length_sec = len(y) / sr
+            (sampling_rate, audio_data) = wavfile.read(part_path)
+            length_sec = len(audio_data) / sampling_rate
             if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
                 continue
 
@@ -201,23 +201,23 @@ def __tedlium_loader_helper(args):
         return output
 
 
-def __write_part_to_wav(wav_data, path, start, end, sr=16000):
-    assert 0. <= start < (len(wav_data) / sr)
-    assert start < end <= (len(wav_data) / sr)
+def __write_part_to_wav(wav_data, path, start, end, sampling_rate=16000):
+    assert 0. <= start < (len(wav_data) / sampling_rate)
+    assert start < end <= (len(wav_data) / sampling_rate)
 
     # print('Saving {:12,d}({:6.2f}s) to {:12,d}({:6.2f}s) at: {}'
     #       .format(seconds_to_sample(start), start, seconds_to_sample(end), end, path))
 
     delete_file_if_exists(path)
-    wavfile.write(path, sr, wav_data[__seconds_to_sample(start, True):
-                                     __seconds_to_sample(end, False)])
+    wavfile.write(path, sampling_rate, wav_data[__seconds_to_sample(start, True):
+                                                __seconds_to_sample(end, False)])
 
 
-def __seconds_to_sample(seconds, start=True, sr=16000):
+def __seconds_to_sample(seconds, start=True, sampling_rate=16000):
     if start:
-        return int(math.floor(seconds * sr))
+        return int(math.floor(seconds * sampling_rate))
     # Else: not start
-    return int(math.ceil(seconds * sr))
+    return int(math.ceil(seconds * sampling_rate))
 
 
 # Test download script.

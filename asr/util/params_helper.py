@@ -13,12 +13,12 @@ CORPUS_JSON_PATH = os.path.join(BASE_PATH, 'data/corpus.json')
 
 if os.path.exists(CORPUS_JSON_PATH):
     with open(CORPUS_JSON_PATH, 'r') as f:
-        json_data = json.load(f)
+        JSON_DATA = json.load(f)
 
-        TRAIN_SIZE = json_data['train_size']
-        TEST_SIZE = json_data['test_size']
-        DEV_SIZE = json_data['dev_size']
-        BOUNDARIES = json_data['boundaries']
+        TRAIN_SIZE = JSON_DATA['train_size']
+        TEST_SIZE = JSON_DATA['test_size']
+        DEV_SIZE = JSON_DATA['dev_size']
+        BOUNDARIES = JSON_DATA['boundaries']
 else:
     print('WARN: No "corpus.json" file present.')
     TRAIN_SIZE = TEST_SIZE = DEV_SIZE = -1

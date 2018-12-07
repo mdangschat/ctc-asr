@@ -65,10 +65,10 @@ def delete_file_if_exists(path):
             try:
                 os.remove(path)
                 break
-            except (OSError, ValueError) as e:
+            except (OSError, ValueError) as exception:
                 print('WARN: Error deleting ({}/5) file: {}'.format(i, path))
                 if i == 4:
-                    raise RuntimeError(path) from e
+                    raise RuntimeError(path) from exception
                 time.sleep(1)
 
 
@@ -88,8 +88,8 @@ def delete_directory_if_exists(path):
         # Doesn't state which errors are possible.
         try:
             shutil.rmtree(path)
-        except OSError as e:
-            raise e
+        except OSError as exception:
+            raise exception
 
 
 def maybe_delete_checkpoints(path, delete):
@@ -116,27 +116,6 @@ def maybe_delete_checkpoints(path, delete):
         tf.gfile.MakeDirs(path)
 
 
-def maybe_read_global_step(checkpoint_path):
-    """
-    Tries to recover the global step value from saved checkpoints.
-
-    Args:
-        checkpoint_path (str): Path to the checkpoint directory.
-
-    Returns:
-        int: Global step if one could be loaded, else -1.
-    """
-    if not os.path.exists(checkpoint_path):
-        return -1
-
-    checkpoint = tf.train.get_checkpoint_state(checkpoint_path)
-
-    if checkpoint is None:
-        return -1
-
-    return int(os.path.basename(checkpoint.model_checkpoint_path).split('-')[1])
-
-
 def md5(file_path):
     """
     Calculate the md5 checksum of files that do not fit in memory.
@@ -148,8 +127,8 @@ def md5(file_path):
         str: md5 checksum.
     """
     hash_md5 = hashlib.md5()
-    with open(file_path, 'rb') as f:
-        for chunk in iter(lambda: f.read(4096), b''):
+    with open(file_path, 'rb') as file_handle:
+        for chunk in iter(lambda: file_handle.read(4096), b''):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
@@ -167,11 +146,11 @@ def tar_extract_all(tar_path, target_path):
     """
     assert os.path.exists(target_path) and os.path.isdir(target_path), 'target_path does not exist.'
     with tarfile.open(tar_path, 'r') as tar:
-        for f in tar:
+        for file_ in tar:
             try:
-                tar.extract(f, path=target_path)
+                tar.extract(file_, path=target_path)
             except IOError:
-                os.remove(os.path.join(target_path, f.name))
-                tar.extract(f, path=target_path)
+                os.remove(os.path.join(target_path, file_.name))
+                tar.extract(file_, path=target_path)
             finally:
-                os.chmod(os.path.join(target_path, f.name), f.mode)
+                os.chmod(os.path.join(target_path, file_.name), file_.mode)

@@ -21,13 +21,13 @@ from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 # L8ER: Add the `other` datasets as well and see if they improve the results.
 # Path to the LibriSpeech ASR dataset.
-__URLs = [
+__URLS = [
     'http://www.openslr.org/resources/12/dev-clean.tar.gz',
     'http://www.openslr.org/resources/12/test-clean.tar.gz',
     'http://www.openslr.org/resources/12/train-clean-100.tar.gz',
     'http://www.openslr.org/resources/12/train-clean-360.tar.gz'
 ]
-__MD5s = [
+__MD5S = [
     '42e2234ba48799c1f50f24a7926300a1',
     '32fa31d27d2e1cad72775fee3f4849a9',
     '2a93770f6d5c6c964bc36631d331a522',
@@ -52,7 +52,7 @@ def libri_speech_loader(keep_archive):
     """
 
     # Download and extract the dataset if necessary.
-    download.maybe_download_batch(__URLs, md5s=__MD5s, cache_archives=keep_archive)
+    download.maybe_download_batch(__URLS, md5s=__MD5S, cache_archives=keep_archive)
     if not os.path.isdir(__SOURCE_PATH):
         raise ValueError('"{}" is not a directory.'.format(__SOURCE_PATH))
 
@@ -135,10 +135,9 @@ def __libri_speech_loader_helper(args):
 
     # Absolute path.
     trans_txt_path = os.path.join(root, trans_txt_files[0])
-
     # Load `.trans.txt` contents.
-    with open(trans_txt_path, 'r') as f:
-        lines = f.readlines()
+    with open(trans_txt_path, 'r') as file_handle:
+        lines = file_handle.readlines()
 
     # Sanitize lines.
     lines = [line.lower().strip().split(' ', 1) for line in lines]
@@ -157,8 +156,8 @@ def __libri_speech_loader_helper(args):
         assert os.path.isfile(wav_path), '{} not found.'.format(wav_path)
 
         # Validate that the example length is within boundaries.
-        (sr, y) = wavfile.read(wav_path)
-        length_sec = len(y) / sr
+        (sampling_rate, audio_data) = wavfile.read(wav_path)
+        length_sec = len(audio_data) / sampling_rate
         if not MIN_EXAMPLE_LENGTH <= length_sec <= MAX_EXAMPLE_LENGTH:
             continue
 

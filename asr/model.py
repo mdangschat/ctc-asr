@@ -50,11 +50,9 @@ class CTCModel:
         spectrogram_length = features['spectrogram_length']
         spectrogram = features['spectrogram']
 
-        # Determine if this is a training run. This is used for dropout layers.
-        training = (mode == tf.estimator.ModeKeys.TRAIN)
-
         # Create the inference graph.
-        logits, seq_length = self.inference_fn(spectrogram, spectrogram_length, training=training)
+        logits, seq_length = self.inference_fn(
+            spectrogram, spectrogram_length, training=(mode == tf.estimator.ModeKeys.TRAIN))
 
         if mode == tf.estimator.ModeKeys.PREDICT:
             # CTC decode.
@@ -99,8 +97,7 @@ class CTCModel:
         tf.summary.text('decoded_text', plaintext_summary[:, : FLAGS.num_samples_to_report])
 
         # Error metrics for decoded text.
-        eds, mean_ed, wers, wer = self.error_rates_fn(labels, label_plaintext,
-                                                      decoded, plaintext)
+        _, mean_ed, _, wer = self.error_rates_fn(labels, label_plaintext, decoded, plaintext)
 
         tf.summary.scalar('mean_edit_distance', mean_ed)
         tf.summary.scalar('word_error_rate', wer)
@@ -167,16 +164,16 @@ class CTCModel:
 
         # RNN layers.
         with tf.variable_scope('rnn'):
-            dropout_rate = FLAGS.rnn_dropout_rate if training else 0.0
+            rnn_dropout_rate = FLAGS.rnn_dropout_rate if training else 0.0
 
             if not FLAGS.cudnn:  # Use TensorFlow RNNs.
                 # Create a stack of RNN cells.
                 fw_cells, bw_cells = tf_contrib.bidirectional_cells(FLAGS.num_units_rnn,
                                                                     FLAGS.num_layers_rnn,
-                                                                    dropout=dropout_rate)
+                                                                    dropout=rnn_dropout_rate)
 
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/stack_bidirectional_dynamic_rnn
-                rnn_output, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(
+                output_rnn, _, _ = tfc.rnn.stack_bidirectional_dynamic_rnn(
                     fw_cells, bw_cells,
                     inputs=output3,
                     dtype=TF_FLOAT,
@@ -184,11 +181,11 @@ class CTCModel:
                     parallel_iterations=64,
                     time_major=False
                 )
-                # rnn_output = [batch_size, time, num_units_rnn * 2]
+                # output_rnn = [batch_size, time, num_units_rnn * 2]
 
             else:  # FLAGS.cudnn Use cuDNN RNNs.
                 # cuDNN RNNs only support time major inputs.
-                conv_output = tfc.rnn.transpose_batch_time(output3)
+                output3 = tfc.rnn.transpose_batch_time(output3)
 
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNRelu
                 # https://www.tensorflow.org/api_docs/python/tf/contrib/cudnn_rnn/CudnnRNNTanh
@@ -206,7 +203,7 @@ class CTCModel:
                                                      num_units=FLAGS.num_units_rnn,
                                                      input_mode='linear_input',
                                                      direction='bidirectional',
-                                                     dropout=dropout_rate,
+                                                     dropout=rnn_dropout_rate,
                                                      seed=FLAGS.random_seed,
                                                      dtype=TF_FLOAT,
                                                      # Glorot Uniform Initializer
@@ -214,13 +211,13 @@ class CTCModel:
                                                      # Constant 0.0 Initializer
                                                      bias_initializer=None)
 
-                rnn_output, _ = rnn(conv_output)
-                rnn_output = tfc.rnn.transpose_batch_time(rnn_output)
-                # rnn_output = [batch_size, time, num_units_rnn * 2]
+                output_rnn, _ = rnn(output3)
+                output_rnn = tfc.rnn.transpose_batch_time(output_rnn)
+                # output_rnn = [batch_size, time, num_units_rnn * 2]
 
         # Dense4
         with tf.variable_scope('dense4'):
-            dense4 = tf.layers.dense(rnn_output, FLAGS.num_units_dense,
+            dense4 = tf.layers.dense(output_rnn, FLAGS.num_units_dense,
                                      activation=tf.nn.relu,
                                      kernel_initializer=initializer,
                                      kernel_regularizer=regularizer)

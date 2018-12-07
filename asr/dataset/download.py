@@ -113,31 +113,31 @@ def download_with_progress(url, storage_path):
         Nothing.
     """
 
-    r = requests.get(url, stream=True)
-    content_length = int(r.headers.get('content-length'))
+    request = requests.get(url, stream=True)
+    content_length = int(request.headers.get('content-length'))
     chunk_size = 1024
 
     print('Starting to download "{}" ({:.3f} GiB) to: {}'
           .format(url, content_length / (1024 ** 3), storage_path), flush=True)
 
-    with open(storage_path, 'wb') as f:
+    with open(storage_path, 'wb') as file_handle:
         pbar = tqdm(total=content_length, unit='iB', unit_scale=True, unit_divisor=1024,
                     file=sys.stdout)
-        for chunk in r.iter_content(chunk_size=chunk_size):
+        for chunk in request.iter_content(chunk_size=chunk_size):
             if chunk:  # Filter out keep-alive chunks.
                 pbar.update(len(chunk))
-                f.write(chunk)
+                file_handle.write(chunk)
 
-        f.flush()
+        file_handle.flush()
         pbar.close()
     print('Download finished.')
 
 
 # For testing purposes.
 if __name__ == '__main__':
-    cv_tar = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
+    __TAR_ARCHIVE = 'https://common-voice-data-download.s3.amazonaws.com/cv_corpus_v1.tar.gz'
 
-    maybe_download(cv_tar, cache_archive=True)
+    maybe_download(__TAR_ARCHIVE, cache_archive=True)
 
     print('Dummy pre-processing here...')
 

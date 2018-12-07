@@ -115,7 +115,7 @@ def store_corpus_json(train_size, test_size, dev_size, boundaries, train_length)
     Returns:
         Nothing.
     """
-    with open(CORPUS_JSON_PATH, 'w', encoding='utf-8') as f:
+    with open(CORPUS_JSON_PATH, 'w', encoding='utf-8') as file_handle:
         data = {
             'train_size': train_size,
             'test_size': test_size,
@@ -123,7 +123,7 @@ def store_corpus_json(train_size, test_size, dev_size, boundaries, train_length)
             'boundaries': boundaries,
             'train_length': train_length
         }
-        json.dump(data, f, indent=2)
+        json.dump(data, file_handle, indent=2)
 
 
 # Generate data.

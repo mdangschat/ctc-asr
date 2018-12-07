@@ -1,5 +1,7 @@
 """
 Print out a length distribution for used WAV files.
+
+TODO: This module is not updated to the current TXT to CSV changes.
 """
 
 import os
@@ -35,8 +37,8 @@ def calculate_dataset_stats(txt_path, show_buckets=0):
         sample_lengths_sec = []  # Output buffer.
 
         # Read train.txt file.
-        with open(txt_path, 'r') as f:
-            lines = f.readlines()
+        with open(txt_path, 'r') as file_handle:
+            lines = file_handle.readlines()
 
             # Setup threadpool.
             lock = Lock()
@@ -95,11 +97,11 @@ def _stat_calculator(line):
     if not os.path.isfile(wav_path):
         raise ValueError('"{}" does not exist.'.format(wav_path))
 
-    # Load the audio files sample rate (`sr`) and data (`y`).
-    (sr, y) = wavfile.read(wav_path)
+    # Load the audio files sample rate and data.
+    (sampling_rate, audio_data) = wavfile.read(wav_path)
 
-    length = len(y)
-    length_sec = length / sr
+    length = len(audio_data)
+    length_sec = length / sampling_rate
 
     if length_sec < MIN_EXAMPLE_LENGTH:
         print('WARN: Too short example found: ', line, length_sec)
@@ -150,8 +152,8 @@ def _plot_wav_lengths(plt, sample_lengths_sec, buckets=None):
 
 
 if __name__ == '__main__':
-    # Path to `train.txt` test
-    _txt_path = os.path.join('./data', 'dev.txt')
+    # Path to `train.csv` test
+    __CSV_PATH = os.path.join('./data', 'train.csv')
 
     # Display dataset stats.
-    calculate_dataset_stats(_txt_path, show_buckets=0)
+    calculate_dataset_stats(__CSV_PATH, show_buckets=0)
