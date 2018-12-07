@@ -1,11 +1,12 @@
-numpy                       >= 1.14.0
+tensorflow                  >= 1.12.0
+# tensorflow-gpu              >= 1.12.0
+numpy                       >= 1.15.0
+scipy                       >= 1.1.0
 matplotlib                  >= 2.2.0
-tqdm                        >= 4.23.0
+tqdm                        >= 4.28.0
 python_speech_features      >= 0.6
-scipy                       >= 1.0.1
-gitpython                   >= 2.1.9
-requests                    >= 2.20
-ipython                     >= 6.2.1
-tensorflow                  >= 1.9.0
+gitpython                   >= 2.1.11
+requests                    >= 2.20.0
+ipython                     >= 6.5.0
 nvidia-ml-py3               >= 7.352.0
-librosa
+librosa                     >= 0.6.2
