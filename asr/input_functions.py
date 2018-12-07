@@ -120,11 +120,11 @@ def input_fn_generator(target):
 
 
 def __input_generator(*args):
-    assert len(args) == 2, '__input_generator() arguments are `str, bool`'
-    csv_path = args[0]
-    shuffle = args[1]
-    assert isinstance(csv_path, str)
-    assert isinstance(shuffle, bool)
+    assert len(args) == 2, '__input_generator() arguments are a path and shuffle boolean.'
+    assert isinstance(args[0], bytes)
+    assert isinstance(args[1], np.bool_)
+    csv_path = str(args[0], 'utf-8')
+    shuffle = bool(args[1])
 
     with open(csv_path, 'r', encoding='utf-8') as file_handle:
         reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
