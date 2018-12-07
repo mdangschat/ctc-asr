@@ -34,7 +34,7 @@ with GPU support for training.
 
 
 ### Arch Linux
-```shell
+```console
 # Install dependencies.
 sudo pacman -S sox python-tensorflow-opt-cuda tensorbaord
 
@@ -57,7 +57,7 @@ and install `tensorflow-gpu` instead.
 Based on my experience it's worth the effort to 
 [build TensorFlow from source](https://www.tensorflow.org/install/source).
 
-```shell
+```console
 # Install dependencies.
 sudo apt install python3-tk sox libsox-fmt-all
 
@@ -160,7 +160,7 @@ TEDLIUM examples with labels shorter than 5 words have been removed.
 
 
 ### Statistics
-```console
+```
 ipython python/dataset/word_counts.py 
 Calculating statistics for /home/gpuinstall/workspace/ctc-asr/data/train.csv
 Word based statistics:
