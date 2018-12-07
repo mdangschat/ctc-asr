@@ -5,6 +5,7 @@ Contains helper methods to load audio files, too.
 
 import csv
 import os
+import random
 
 import numpy as np
 import python_speech_features as psf
@@ -78,13 +79,13 @@ def input_fn_generator(target):
                 (tf.float32, tf.int32, tf.int32, tf.string),
                 (tf.TensorShape([None, 80]), tf.TensorShape([]),
                  tf.TensorShape([None]), tf.TensorShape([])),
-                args=[csv_path])
+                args=[csv_path, use_buckets])
 
             if use_buckets:
-                # Set shuffle buffer to number of elements in dataset, to ensure optimal shuffling.
-                with open(csv_path, 'r', encoding='utf-8') as file_handle:
-                    number_examples = len(file_handle.readlines()[1:])
-                    dataset = dataset.shuffle(number_examples)
+                # Set shuffle buffer to an arbitrary size to ensure good enough shuffling.
+                # At the moment, most shuffling is done by the `__input_generator` function.
+                # Also see: https://stackoverflow.com/a/47025850/2785397
+                dataset = dataset.shuffle(FLAGS.shuffle_buffer_size)
 
                 dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(
                     element_length_func=element_length_fn,
@@ -119,10 +120,19 @@ def input_fn_generator(target):
 
 
 def __input_generator(*args):
+    assert len(args) == 2, '__input_generator() arguments are `str, bool`'
     csv_path = args[0]
+    shuffle = args[1]
+    assert isinstance(csv_path, str)
+    assert isinstance(shuffle, bool)
+
     with open(csv_path, 'r', encoding='utf-8') as file_handle:
         reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
         lines = list(reader)[1: -1]  # Remove CSV header and final blank line.
+
+        # Shuffle the CSV lines.
+        if shuffle:
+            random.shuffle(lines)
 
         for line in lines:
             path = line[CSV_HEADER_PATH]

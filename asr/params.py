@@ -10,9 +10,6 @@ import tensorflow as tf
 from asr.labels import num_classes
 from asr.util.params_helper import BASE_PATH, BOUNDARIES
 
-BASE_PATH = BASE_PATH
-BOUNDARIES = BOUNDARIES
-
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir',
                        os.path.join(BASE_PATH, '../speech_checkpoints/3c4r_rnnrelu'),
@@ -113,6 +110,9 @@ tf.flags.DEFINE_integer('gpu_hook_average_queries', 100,
 tf.flags.DEFINE_boolean('cudnn', True,
                         "Whether to use Nvidia cuDNN implementations or the default TensorFlow "
                         "implementation.")
+tf.flags.DEFINE_integer('shuffle_buffer_size', 2 ** 14,
+                        "Number of elements the dataset shuffle buffer should hold. "
+                        "This can consume a large amount of memory.")
 
 # Miscellaneous.
 tf.flags.DEFINE_boolean('delete', False,
@@ -122,10 +122,12 @@ tf.flags.DEFINE_integer('random_seed', 0,
 tf.flags.DEFINE_boolean('log_device_placement', False,
                         "Whether to log device placement.")
 tf.flags.DEFINE_boolean('allow_vram_growth', True,
-                        "Allow TensorFlow to allocate VRAM as needed, as opposed to allocating the "
-                        "whole VRAM at program start.")
+                        "Allow TensorFlow to allocate VRAM as needed, "
+                        "as opposed to allocating the whole VRAM at program start.")
 
 # Export names.
+BASE_PATH = BASE_PATH
+BOUNDARIES = BOUNDARIES
 TF_FLOAT = tf.float32  # ctc_* functions don't support float64. See #13
 NP_FLOAT = np.float32  # ctc_* functions don't support float64. See #13
 
