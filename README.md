@@ -44,6 +44,8 @@ sudo pacman -S texlive-most
 # Clone reposetory and install Python depdendencies.
 git clone https://github.com/mdangschat/ctc-asr.git
 cd speech
+git checkout <release_tag>
+
 # Setup optional virtual environment.
 pip install -r requirements.txt
 ```
@@ -65,6 +67,8 @@ sudo apt install texlive
 # Clone reposetory and install Python depdendencies. Don't forget to use tensorflow-gpu.
 git clone https://github.com/mdangschat/ctc-asr.git
 cd speech
+git checkout <release_tag>
+
 # Setup optional virtual environment.
 pip3 install -r requirements.txt
 ```
