@@ -17,9 +17,9 @@ from asr.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, 
 from asr.labels import ctoi
 from asr.params import BOUNDARIES, NP_FLOAT, FLAGS
 
-NUM_FEATURES = 80  # Number of features to extract.
 WIN_LENGTH = 0.025  # Window length in seconds.
 WIN_STEP = 0.010  # The step between successive windows in seconds.
+NUM_FEATURES = 80  # Number of features to extract.
 
 
 def input_fn_generator(target):
@@ -134,14 +134,17 @@ def __input_generator(*args):
         if shuffle:
             random.shuffle(lines)
 
+        # Read the CSV lines and extract spectrogram and label for each line.
         for line in lines:
             path = line[CSV_HEADER_PATH]
             label = line[CSV_HEADER_LABEL]
 
             path = os.path.join(CORPUS_DIR, path)
 
+            # Convert the WAV file into
             spectrogram, spectrogram_length = load_sample(path)
 
+            # Convert character sequence label to integer sequence.
             label_encoded = [ctoi(c) for c in label]
 
             yield spectrogram, spectrogram_length, label_encoded, label
@@ -234,6 +237,7 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
 
     # Drop every 2nd time frame, if requested.
     if FLAGS.features_drop_every_second_frame:
+        # [time, NUM_FEATURES] => [time // 2, NUM_FEATURES]
         sample = sample[:: 2, :]
 
     # Get length of the sample.
