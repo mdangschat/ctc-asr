@@ -183,8 +183,8 @@ Character based statistics:
 
 
 ## Training
-Start training by invoking `ipython asr/train.py`.
-Use `ipython asr/train.py -- --delete` to start a clean run and remove the old checkpoints.
+Start training by invoking `asr/train.py`.
+Use `asr/train.py -- --delete` to start a clean run and remove the old checkpoints.
 Please note that all commands are expected to be executed from the projects root folder.
 The additional `--` before the actual flags begin is used to indicate the end of IPython flags.
 
@@ -194,9 +194,14 @@ By default it can then be viewed on [localhost:6006](http://localhost:6006).
 
 
 ## Evaluation
-Evaluate the current model by invoking `ipython asr/evaluate.py`.
-Use `ipython asr/evaluate.py -- --test` to run on the test dataset, instead of the development 
-set.
+Evaluate the current model by invoking `asr/evaluate.py`.
+Use `asr/evaluate.py -- --dev` to run on the development dataset, instead of the test set.
+
+
+## Prediction
+To evaluate a given 16 kHz, mono WAV file use `asr/predict.py --input <wav_path>`.
+Using `asr/predict.py` without `--input` flag evaluates the provided example file
+(["I don't understand a word you just said."](data/examples/idontunderstandawordyoujustsaid.wav)).
 
 
 <!--
