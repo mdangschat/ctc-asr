@@ -8,7 +8,7 @@ import re
 
 from asr.dataset.config import CSV_HEADER_LABEL, CSV_HEADER_LENGTH, CSV_FIELDNAMES
 from asr.dataset.config import LABEL_WHITELIST_PATTERN, CSV_DIR, CSV_DELIMITER
-from asr.input_functions import WIN_STEP
+from asr.params import WIN_STEP
 from asr.util import storage
 from asr.util.matplotlib_helper import pyplot_display
 

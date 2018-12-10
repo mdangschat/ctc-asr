@@ -138,6 +138,11 @@ NP_FLOAT = np.float32  # ctc_* functions don't support float64. See #13
 MIN_EXAMPLE_LENGTH = 0.7
 MAX_EXAMPLE_LENGTH = 17.0
 
+# Feature extraction parameters.
+WIN_LENGTH = 0.025  # Window length in seconds.
+WIN_STEP = 0.010  # The step between successive windows in seconds.
+NUM_FEATURES = 80  # Number of features to extract.
+
 FLAGS = tf.flags.FLAGS
 
 

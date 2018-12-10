@@ -16,11 +16,7 @@ from asr.dataset.config import CORPUS_DIR
 from asr.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
 from asr.dataset.csv_file_helper import get_bucket_boundaries
 from asr.labels import ctoi
-from asr.params import NP_FLOAT, FLAGS
-
-WIN_LENGTH = 0.025  # Window length in seconds.
-WIN_STEP = 0.010  # The step between successive windows in seconds.
-NUM_FEATURES = 80  # Number of features to extract.
+from asr.params import NP_FLOAT, WIN_LENGTH, WIN_STEP, NUM_FEATURES, FLAGS
 
 
 def input_fn_generator(target):
