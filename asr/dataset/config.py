@@ -1,6 +1,6 @@
 """
 Configuration file for dataset creation.
-Also reference `python/dataset/generate_dataset.py`.
+Also reference `asr/dataset/generate_dataset.py`.
 """
 
 import os
@@ -24,6 +24,9 @@ CSV_FIELDNAMES = [CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH]
 
 # (Whitelist) RegEX filter pattern for valid characters.
 LABEL_WHITELIST_PATTERN = re.compile(r'[^a-z ]+')
+
+# Path to `corpus.json` file, that contains information about the dataset.
+CORPUS_JSON_PATH = os.path.join(BASE_PATH, 'data/corpus.json')
 
 
 def sox_commandline(input_path, target_path):

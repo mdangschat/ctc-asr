@@ -8,7 +8,9 @@ import numpy as np
 import tensorflow as tf
 
 from asr.labels import num_classes
-from asr.util.params_helper import BASE_PATH, BOUNDARIES
+
+# Path to git root.
+BASE_PATH = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../'))
 
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir',
@@ -32,7 +34,7 @@ tf.flags.DEFINE_multi_integer('conv_filters', [32, 32, 96],
 
 tf.flags.DEFINE_integer('num_layers_rnn', 4,
                         "Number of stacked RNN cells.")
-tf.flags.DEFINE_integer('num_units_rnn', 1024,
+tf.flags.DEFINE_integer('num_units_rnn', 1536,
                         "Number of hidden units in each of the RNN cells.")
 # TODO: This is currently only implemented for cudnn (`FLAGS.cudnn = True`).
 tf.flags.DEFINE_string('rnn_cell', 'rnn_relu',
@@ -89,10 +91,21 @@ tf.flags.DEFINE_string('test_csv', os.path.join(BASE_PATH, 'data/test.csv'),
 tf.flags.DEFINE_string('dev_csv', os.path.join(BASE_PATH, 'data/dev.csv'),
                        "Path to the `dev.txt` file.")
 
+tf.flags.DEFINE_integer('num_buckets', 96,
+                        "The maximum number of buckets to use for bucketing.")
+
 tf.flags.DEFINE_integer('num_classes', num_classes(),
                         "Number of classes. Contains the additional CTC <blank> label.")
 tf.flags.DEFINE_integer('sampling_rate', 16000,
                         "The sampling rate of the audio files (e.g. 2 * 8kHz).")
+
+# Performance.
+tf.flags.DEFINE_boolean('cudnn', True,
+                        "Whether to use Nvidia cuDNN implementations or the default TensorFlow "
+                        "implementation.")
+tf.flags.DEFINE_integer('shuffle_buffer_size', 2 ** 14,
+                        "Number of elements the dataset shuffle buffer should hold. "
+                        "This can consume a large amount of memory.")
 
 # Logging.
 tf.flags.DEFINE_integer('log_frequency', 200,
@@ -106,14 +119,6 @@ tf.flags.DEFINE_integer('gpu_hook_query_frequency', 5,
 tf.flags.DEFINE_integer('gpu_hook_average_queries', 100,
                         "The number of queries to store for calculating average values.")
 
-# Performance.
-tf.flags.DEFINE_boolean('cudnn', True,
-                        "Whether to use Nvidia cuDNN implementations or the default TensorFlow "
-                        "implementation.")
-tf.flags.DEFINE_integer('shuffle_buffer_size', 2 ** 14,
-                        "Number of elements the dataset shuffle buffer should hold. "
-                        "This can consume a large amount of memory.")
-
 # Miscellaneous.
 tf.flags.DEFINE_boolean('delete', False,
                         "Whether to delete old checkpoints, or resume training.")
@@ -126,8 +131,6 @@ tf.flags.DEFINE_boolean('allow_vram_growth', True,
                         "as opposed to allocating the whole VRAM at program start.")
 
 # Export names.
-BASE_PATH = BASE_PATH
-BOUNDARIES = BOUNDARIES
 TF_FLOAT = tf.float32  # ctc_* functions don't support float64. See #13
 NP_FLOAT = np.float32  # ctc_* functions don't support float64. See #13
 
