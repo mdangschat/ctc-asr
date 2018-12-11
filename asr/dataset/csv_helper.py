@@ -198,7 +198,7 @@ def get_bucket_boundaries(csv_path, num_buckets):
 
     with open(csv_path, 'r', encoding='utf-8') as file_handle:
         reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
-        csv_data = [csv_entry for csv_entry in reader][:1]
+        csv_data = [csv_entry for csv_entry in reader][1:]
 
         # Calculate optimal bucket sizes.
         lengths = [int(float(d[CSV_HEADER_LENGTH]) / WIN_STEP) for d in csv_data]

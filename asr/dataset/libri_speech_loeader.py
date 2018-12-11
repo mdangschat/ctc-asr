@@ -16,7 +16,7 @@ from tqdm import tqdm
 from asr.dataset import download
 from asr.dataset.config import CACHE_DIR, CORPUS_DIR, sox_commandline
 from asr.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
-from asr.dataset.csv_file_helper import generate_csv
+from asr.dataset.csv_helper import generate_csv
 from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 # L8ER: Add the `other` datasets as well and see if they improve the results.

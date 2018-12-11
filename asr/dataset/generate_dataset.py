@@ -33,7 +33,7 @@ import json
 
 from asr.dataset.common_voice_loader import common_voice_loader
 from asr.dataset.config import CORPUS_JSON_PATH
-from asr.dataset.csv_file_helper import sort_by_seq_len, get_corpus_length, merge_csv_files
+from asr.dataset.csv_helper import sort_by_seq_len, get_corpus_length, merge_csv_files
 from asr.dataset.libri_speech_loeader import libri_speech_loader
 from asr.dataset.tatoeba_loader import tatoeba_loader
 from asr.dataset.tedlium_loader import tedlium_loader

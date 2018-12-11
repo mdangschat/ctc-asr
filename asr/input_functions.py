@@ -14,7 +14,7 @@ from scipy.io import wavfile
 
 from asr.dataset.config import CORPUS_DIR
 from asr.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
-from asr.dataset.csv_file_helper import get_bucket_boundaries
+from asr.dataset.csv_helper import get_bucket_boundaries
 from asr.labels import ctoi
 from asr.params import NP_FLOAT, WIN_LENGTH, WIN_STEP, NUM_FEATURES, FLAGS
 

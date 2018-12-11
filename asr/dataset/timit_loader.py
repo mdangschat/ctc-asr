@@ -11,7 +11,7 @@ from scipy.io import wavfile
 
 from asr.dataset.config import CORPUS_DIR
 from asr.dataset.config import CSV_HEADER_PATH, CSV_HEADER_LABEL, CSV_HEADER_LENGTH
-from asr.dataset.csv_file_helper import generate_csv
+from asr.dataset.csv_helper import generate_csv
 from asr.params import MIN_EXAMPLE_LENGTH, MAX_EXAMPLE_LENGTH
 
 # Path to the TIMIT dataset.
