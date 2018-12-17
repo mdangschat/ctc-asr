@@ -14,7 +14,7 @@ BASE_PATH = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__fil
 
 # Constants describing the training process.
 tf.flags.DEFINE_string('train_dir',
-                       os.path.join(BASE_PATH, '../speech_checkpoints/3c4r_rnnrelu'),
+                       os.path.join(BASE_PATH, '../speech_checkpoints/3c4r_lstm_mfcc'),
                        "Directory where to write event logs and checkpoints.")
 tf.flags.DEFINE_integer('batch_size', 16,
                         "Number of samples within a batch.")
@@ -42,7 +42,7 @@ tf.flags.DEFINE_string('rnn_cell', 'rnn_relu',
                        "'rnn_tanh', as well as the 'lstm' and 'gru' cells")
 
 # Input features.
-tf.flags.DEFINE_string('feature_type', 'mel',
+tf.flags.DEFINE_string('feature_type', 'mfcc',
                        "Type of input features. Supported types are: 'mel' and 'mfcc'.")
 tf.flags.DEFINE_string('feature_normalization', 'local',
                        ("Type of normalization applied to input features."

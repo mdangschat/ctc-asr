@@ -11,8 +11,7 @@ import tensorflow as tf
 from asr.dataset.config import CSV_DIR
 from asr.input_functions import load_sample
 from asr.model import CTCModel
-from asr.params import FLAGS, get_parameters
-from asr.util import storage
+from asr.params import FLAGS
 
 # Inference specific flags.
 tf.flags.DEFINE_string('input',
@@ -50,14 +49,6 @@ def __predict_input_generator():
 
 def main(_):
     """TensorFlow evaluation starting routine."""
-
-    # Delete old model data if requested.
-    storage.maybe_delete_checkpoints(FLAGS.train_dir, FLAGS.delete)
-
-    # Logging information about the run.
-    print('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}\nParameters: {}'
-          .format(tf.VERSION, storage.git_latest_tag(), storage.git_branch(),
-                  storage.git_revision_hash(), get_parameters()))
 
     # Setup TensorFlow run configuration and hooks.
     config = tf.estimator.RunConfig(
