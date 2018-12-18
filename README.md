@@ -21,7 +21,7 @@ language model.
   * [Arch Linux](#arch-linux)
   * [Ubuntu](#ubuntu)
 * [Configuration](#configuration)
-* [Datasets](#datasets)
+* [Corpus](#corpus)
 * [Training](#training)
 * [Evaluation](#evaluation)
 * [License](LICENSE)
@@ -51,9 +51,9 @@ pip install -r requirements.txt
 ```
 
 ### Ubuntu
-Be aware that the [requirements.txt](requirements.txt) lists `tensorflow` as dependency, if you
-install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it as dependency
-and install `tensorflow-gpu` instead.
+Be aware that the [`requirements.txt`](requirements.txt) file lists `tensorflow` as dependency, 
+if you install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it as 
+dependency and install `tensorflow-gpu` instead.
 Based on my experience it's worth the effort to 
 [build TensorFlow from source](https://www.tensorflow.org/install/source).
 
@@ -76,12 +76,12 @@ pip3 install -r requirements.txt
 
 ## Configuration
 The network architecture and training parameters can be configured by adding the appropriate flags
-or by directly editing the [params.py](asr/params.py) configuration file.
+or by directly editing the [`asr/params.py`](asr/params.py) configuration file.
 
 
-## Datasets
+## Corpus
 The following datasets were used for training and are listed in the `data` directory, however, the
-individual datasets are not part of the repository and have to be acquired by each user.
+individual datasets are not part of this repository and have to be acquired by each user.
 
 * [Common Voice](https://voice.mozilla.org/en/new) (v1)
 * [LibriSpeech ASR Corpus](http://www.openslr.org/12/)
@@ -95,9 +95,12 @@ and Common Voice clean test sets are used as testing dataset.
 The ASR system works on 16 kHz mono WAV files.
 
 A helper that downloads the free corpora and prepares the data and creates the merged corpora can
-be found in [asr/dataset/generate_dataset.py](asr/dataset/generate_dataset.py).
-The file needs to be adjusted for the datasets that should be used, it further expects the TIMIT
-dataset to be present. 
+be found in [`asr/dataset/generate_dataset.py`](asr/dataset/generate_dataset.py).
+The file needs to be adjusted for the datasets that should be used.
+It further expects the TIMIT dataset to be present in the `data/corpus/TIMIT` directory.
+If TIMIT should not be part of the training corpus, there is a flag to disable it in the
+[`generate_dataset.py`](asr/dataset/generate_dataset.py).
+
 The following tree shows a possible folder structure for the data directory.
 
 ```
@@ -190,7 +193,7 @@ The additional `--` before the actual flags begin is used to indicate the end of
 
 The training progress can be monitored using Tensorboard.
 To start Tensorboard use `tensorboard --logdir <checkpoint_directory>`.
-By default it can then be viewed on [localhost:6006](http://localhost:6006).
+By default it can then be accessed via [localhost:6006](http://localhost:6006).
 
 
 ## Evaluation
@@ -201,7 +204,7 @@ Use `asr/evaluate.py -- --dev` to run on the development dataset, instead of the
 ## Prediction
 To evaluate a given 16 kHz, mono WAV file use `asr/predict.py --input <wav_path>`.
 Using `asr/predict.py` without `--input` flag evaluates the provided example file
-(["I don't understand a word you just said."](data/examples/idontunderstandawordyoujustsaid.wav)).
+("[I don't understand a word you just said.](data/examples/idontunderstandawordyoujustsaid.wav)").
 
 
 <!--
