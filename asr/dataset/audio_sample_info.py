@@ -19,8 +19,7 @@ from matplotlib import pyplot as plt
 from matplotlib import rc
 from scipy.io import wavfile
 
-from asr.input_functions import WIN_STEP, WIN_LENGTH
-from asr.params import BASE_PATH
+from asr.params import BASE_PATH, WIN_STEP, WIN_LENGTH
 
 rc('font', **{'family': 'serif',
               'serif': ['DejaVu Sans'],
