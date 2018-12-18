@@ -97,7 +97,7 @@ The ASR system works on 16 kHz mono WAV files.
 A helper that downloads the free corpora and prepares the data and creates the merged corpora can
 be found in [`asr/dataset/generate_dataset.py`](asr/dataset/generate_dataset.py).
 The file needs to be adjusted for the datasets that should be used.
-It further expects the TIMIT dataset to be present in the `data/corpus/TIMIT` directory.
+It further expects the TIMIT dataset to be present in the `data/corpus/timit/TIMIT` directory.
 If TIMIT should not be part of the training corpus, there is a flag to disable it in the
 [`generate_dataset.py`](asr/dataset/generate_dataset.py).
 
