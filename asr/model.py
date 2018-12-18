@@ -99,8 +99,8 @@ class CTCModel:
         # Error metrics for decoded text.
         _, mean_ed, _, wer = self.error_rates_fn(labels, label_plaintext, decoded, plaintext)
 
-        tf.summary.scalar('mean_edit_distance', mean_ed)
-        tf.summary.scalar('word_error_rate', wer)
+        tf.summary.scalar('mean_edit_distance', mean_ed, family='Metrics')
+        tf.summary.scalar('word_error_rate', wer, family='Metrics')
 
         if mode == tf.estimator.ModeKeys.TRAIN:
             return tf.estimator.EstimatorSpec(mode=mode,
@@ -118,6 +118,7 @@ class CTCModel:
             return tf.estimator.EstimatorSpec(mode=mode, loss=self.loss_op,
                                               eval_metric_ops=eval_metrics_ops)
 
+        # This should never be reached.
         raise RuntimeError('Invalid mode.')
 
     @staticmethod
@@ -266,7 +267,7 @@ class CTCModel:
 
         # Average CTC loss.
         mean_loss = tf.reduce_mean(total_loss)
-        tf.summary.scalar('loss', mean_loss)
+        tf.summary.scalar('loss', mean_loss, family='Metrics')
         return mean_loss
 
     @staticmethod
