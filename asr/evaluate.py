@@ -6,8 +6,7 @@ import tensorflow as tf
 
 from asr.input_functions import input_fn_generator
 from asr.model import CTCModel
-from asr.params import FLAGS, get_parameters
-from asr.util import storage
+from asr.params import FLAGS
 
 # Evaluation specific flags.
 tf.flags.DEFINE_boolean('dev', False,
@@ -20,14 +19,6 @@ __EVALUATION_TARGET = 'dev' if FLAGS.dev else 'test'
 
 def main(_):
     """TensorFlow evaluation starting routine."""
-
-    # Delete old model data if requested.
-    storage.maybe_delete_checkpoints(FLAGS.train_dir, FLAGS.delete)
-
-    # Logging information about the run.
-    print('TensorFlow-Version: {}; Tag-Version: {}; Branch: {}; Commit: {}\nParameters: {}'
-          .format(tf.VERSION, storage.git_latest_tag(), storage.git_branch(),
-                  storage.git_revision_hash(), get_parameters()))
 
     # Setup TensorFlow run configuration and hooks.
     config = tf.estimator.RunConfig(

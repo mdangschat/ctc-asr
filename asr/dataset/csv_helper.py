@@ -8,7 +8,7 @@ import re
 
 from asr.dataset.config import CSV_HEADER_LABEL, CSV_HEADER_LENGTH, CSV_FIELDNAMES
 from asr.dataset.config import LABEL_WHITELIST_PATTERN, CSV_DIR, CSV_DELIMITER
-from asr.input_functions import WIN_STEP
+from asr.params import WIN_STEP
 from asr.util import storage
 from asr.util.matplotlib_helper import pyplot_display
 
@@ -108,7 +108,7 @@ def merge_csv_files(csv_files, target):
     return target_file
 
 
-def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
+def sort_by_seq_len(csv_path, max_length=17.0):
     """
     Sort a train.csv like file by it's audio files sequence length.
     Additionally outputs longer than `max_length` are being discarded from the given CSV file.
@@ -118,16 +118,12 @@ def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
         csv_path (str):
             Path to the `train.csv`.
 
-        num_buckets (int):
-            Number ob buckets to split the input into.
-
         max_length (float):
             Positive float. Maximum length in seconds for a feature vector to keep.
             Set to `0.` to keep everything.
 
     Returns:
-        List[int]:
-            A List containing the boundary array.
+        Nothing.
     """
     assert os.path.exists(csv_path) and os.path.isfile(csv_path)
 
@@ -148,20 +144,6 @@ def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
         print('Removed {:,d} examples because they are too long.'
               .format(number_of_entries - len(csv_data)))
 
-    # Calculate optimal bucket sizes.
-    lengths = [int(float(d[CSV_HEADER_LENGTH]) / WIN_STEP) for d in csv_data]
-    step = len(lengths) // num_buckets
-
-    buckets = set()
-    for i in range(step, len(lengths), step):
-        buckets.add(lengths[i])
-    buckets = list(buckets)
-    buckets.sort()
-    print('Suggested buckets: ', buckets)
-
-    # Plot histogram of feature vector length distribution.
-    __plot_sequence_lengths(lengths)
-
     # Write CSV data back to file.
     storage.delete_file_if_exists(csv_path)
     with open(csv_path, 'w', encoding='utf-8') as file_handle:
@@ -172,8 +154,6 @@ def sort_by_seq_len(csv_path, num_buckets=64, max_length=17.0):
 
     with open(csv_path, 'r', encoding='utf-8') as file_handle:
         print('Successfully sorted {} lines of {}'.format(len(file_handle.readlines()), csv_path))
-
-        return buckets
 
 
 def get_corpus_length(csv_path):
@@ -199,6 +179,38 @@ def get_corpus_length(csv_path):
         total_length_seconds = sum(map(lambda x: float(x[CSV_HEADER_LENGTH]), csv_data))
 
         return len(csv_data), total_length_seconds
+
+
+def get_bucket_boundaries(csv_path, num_buckets):
+    """
+    Generate a list of bucket boundaries, based on the example length in the CSV file.
+    The boundaries are chose based on the distribution of example lengths, to allow each bucket
+    to fill up at the same rate. This produces at max `num_buckets`.
+
+    Args:
+        csv_path (str): Path to the CSV file. E.g. '../data/train.csv'.
+        num_buckets (int): The maximum amount of buckets to create.
+
+    Returns:
+        List[int]: List containing bucket boundaries.
+    """
+    assert os.path.exists(csv_path) and os.path.isfile(csv_path)
+
+    with open(csv_path, 'r', encoding='utf-8') as file_handle:
+        reader = csv.DictReader(file_handle, delimiter=CSV_DELIMITER, fieldnames=CSV_FIELDNAMES)
+        csv_data = [csv_entry for csv_entry in reader][1:]
+
+        # Calculate optimal bucket sizes.
+        lengths = [int(float(d[CSV_HEADER_LENGTH]) / WIN_STEP) for d in csv_data]
+        step = len(lengths) // num_buckets
+
+        buckets = set()
+        for i in range(step, len(lengths), step):
+            buckets.add(lengths[i])
+        buckets = list(buckets)
+        buckets.sort()
+
+        return buckets
 
 
 @pyplot_display

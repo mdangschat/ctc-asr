@@ -14,12 +14,9 @@ from scipy.io import wavfile
 
 from asr.dataset.config import CORPUS_DIR
 from asr.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
+from asr.dataset.csv_helper import get_bucket_boundaries
 from asr.labels import ctoi
-from asr.params import BOUNDARIES, NP_FLOAT, FLAGS
-
-WIN_LENGTH = 0.025  # Window length in seconds.
-WIN_STEP = 0.010  # The step between successive windows in seconds.
-NUM_FEATURES = 80  # Number of features to extract.
+from asr.params import NP_FLOAT, WIN_LENGTH, WIN_STEP, NUM_FEATURES, FLAGS
 
 
 def input_fn_generator(target):
@@ -60,6 +57,11 @@ def input_fn_generator(target):
     else:
         raise ValueError('Invalid target: "{}"'.format(target))
 
+    # Read bucket boundaries from CSV file.
+    if use_buckets:
+        bucket_boundaries = get_bucket_boundaries(csv_path, FLAGS.num_buckets)
+        tf.logging.info('Using {} buckets for the {} set.'.format(len(bucket_boundaries), target))
+
     def input_fn():
         # L8ER: Try out the following two (not working as of TF v1.12):
         # https://www.tensorflow.org/api_docs/python/tf/data/experimental/latency_stats
@@ -87,12 +89,15 @@ def input_fn_generator(target):
                 # Also see: https://stackoverflow.com/a/47025850/2785397
                 dataset = dataset.shuffle(FLAGS.shuffle_buffer_size)
 
-                dataset = dataset.apply(tf.data.experimental.bucket_by_sequence_length(
-                    element_length_func=element_length_fn,
-                    bucket_boundaries=BOUNDARIES,
-                    bucket_batch_sizes=[FLAGS.batch_size] * (len(BOUNDARIES) + 1),
-                    pad_to_bucket_boundary=False,
-                    no_padding=False))
+                dataset = dataset.apply(
+                    tf.data.experimental.bucket_by_sequence_length(
+                        element_length_func=element_length_fn,
+                        bucket_boundaries=bucket_boundaries,
+                        bucket_batch_sizes=[FLAGS.batch_size] * (len(bucket_boundaries) + 1),
+                        pad_to_bucket_boundary=False,  # False => pad to longest example in batch
+                        no_padding=False
+                    )
+                )
 
             else:
                 dataset = dataset.padded_batch(batch_size=FLAGS.batch_size,
