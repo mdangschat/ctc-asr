@@ -11,6 +11,7 @@ from asr.labels import num_classes
 from asr.util.params_helper import BASE_PATH, BOUNDARIES
 
 # Constants describing the training process.
+# Note that the default `train_dir` is outside of the project directory.
 tf.flags.DEFINE_string('train_dir',
                        os.path.join(BASE_PATH, '../speech_checkpoints/3c4r_rnnrelu'),
                        "Directory where to write event logs and checkpoints.")
