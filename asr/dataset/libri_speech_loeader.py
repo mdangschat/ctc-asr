@@ -61,10 +61,12 @@ def libri_speech_loader(keep_archive):
         {
             'name': 'train',
             'folders': ['train-clean-100', 'train-clean-360']
-        }, {
+        },
+        {
             'name': 'test',
             'folders': ['test-clean']
-        }, {
+        },
+        {
             'name': 'dev',
             'folders': ['dev-clean']
         }
@@ -125,13 +127,14 @@ def __libri_speech_loader_helper(args):
     dirs = args[1]
     files = args[2]
 
-    if not dirs:
+    # If this isn't a leaf node (there are still sub-folders).
+    if dirs:
         return None
 
     # Get list of `.trans.txt` files.
     trans_txt_files = [f for f in files if f.endswith('.trans.txt')]
     # Verify that a `*.trans.txt` file exists.
-    assert len(trans_txt_files) == 1, 'No .tans.txt file found: {}'.format(trans_txt_files)
+    assert len(trans_txt_files) == 1, 'No *.tans.txt file found: {}'.format(trans_txt_files)
 
     # Absolute path.
     trans_txt_path = os.path.join(root, trans_txt_files[0])
@@ -139,8 +142,8 @@ def __libri_speech_loader_helper(args):
     with open(trans_txt_path, 'r') as file_handle:
         lines = file_handle.readlines()
 
-    # Sanitize lines.
-    lines = [line.lower().strip().split(' ', 1) for line in lines]
+        # Sanitize lines.
+        lines = [line.lower().strip().split(' ', 1) for line in lines]
 
     buffer = []
     for file_id, label in lines:
