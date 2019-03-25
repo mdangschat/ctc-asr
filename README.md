@@ -17,14 +17,31 @@ language model.
 
 
 ## Contents
+<!-- TOC_START -->
+
+* [Contents](#contents)
 * [Installation](#installation)
   * [Arch Linux](#arch-linux)
+* [Install dependencies.](#install-dependencies)
+* [Install optional dependencies. LaTeX is only required to plot nice looking graphs.](#install-optional-dependencies-latex-is-only-required-to-plot-nice-looking-graphs)
+* [Clone reposetory and install Python depdendencies.](#clone-reposetory-and-install-python-depdendencies)
+* [Setup optional virtual environment.](#setup-optional-virtual-environment)
   * [Ubuntu](#ubuntu)
+* [Install dependencies.](#install-dependencies)
+* [Install optional dependencies. LaTeX is only required to plot nice looking graphs.](#install-optional-dependencies-latex-is-only-required-to-plot-nice-looking-graphs)
+* [Clone reposetory and install Python depdendencies. Don't forget to use tensorflow-gpu.](#clone-reposetory-and-install-python-depdendencies-dont-forget-to-use-tensorflow-gpu)
+* [Setup optional virtual environment.](#setup-optional-virtual-environment)
 * [Configuration](#configuration)
 * [Corpus](#corpus)
+  * [`train.csv` 1050+ Hours](#traincsv-1050-hours)
+  * [`dev.csv`](#devcsv)
+  * [`test.csv`](#testcsv)
+  * [Statistics](#statistics)
 * [Training](#training)
 * [Evaluation](#evaluation)
-* [License](LICENSE)
+* [Prediction](#prediction)
+
+<!-- TOC_END -->
 
 
 ## Installation
@@ -206,7 +223,3 @@ To evaluate a given 16 kHz, mono WAV file use `asr/predict.py --input <wav_path>
 Using `asr/predict.py` without `--input` flag evaluates the provided example file
 ("[I don't understand a word you just said.](data/examples/idontunderstandawordyoujustsaid.wav)").
 
-
-<!--
-# vim: ts=2:sw=2:et:
--->
