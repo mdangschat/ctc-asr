@@ -14,14 +14,29 @@ language model.
 
 ## Contents
 <!-- TOC_START -->
+
+* [Contents](#contents)
 * [Installation](#installation)
   * [Arch Linux](#arch-linux)
+* [Install dependencies.](#install-dependencies)
+* [Install optional dependencies. LaTeX is only required to plot nice looking graphs.](#install-optional-dependencies-latex-is-only-required-to-plot-nice-looking-graphs)
+* [Clone reposetory and install Python depdendencies.](#clone-reposetory-and-install-python-depdendencies)
+* [Setup optional virtual environment.](#setup-optional-virtual-environment)
   * [Ubuntu](#ubuntu)
+* [Install dependencies.](#install-dependencies)
+* [Install optional dependencies. LaTeX is only required to plot nice looking graphs.](#install-optional-dependencies-latex-is-only-required-to-plot-nice-looking-graphs)
+* [Clone reposetory and install Python depdendencies. Don't forget to use tensorflow-gpu.](#clone-reposetory-and-install-python-depdendencies-dont-forget-to-use-tensorflow-gpu)
+* [Setup optional virtual environment.](#setup-optional-virtual-environment)
 * [Configuration](#configuration)
 * [Corpus](#corpus)
-* [Training](#training)
-* [Evaluation](#evaluation)
-* [License](LICENSE)
+  * [CSV](#csv)
+  * [Free Speech Corpora](#free-speech-corpora)
+  * [Corpus Statistics](#corpus-statistics)
+* [Usage](#usage)
+  * [Training](#training)
+  * [Evaluation](#evaluation)
+  * [Prediction](#prediction)
+
 <!-- TOC_END -->
 
 ![Deep Speech 1 and 2 network architectures](images/network-architectures.png)
@@ -188,7 +203,3 @@ Use `asr/evaluate.py -- --dev` to run on the development dataset, instead of the
 ### Prediction
 To evaluate a given 16 kHz, mono WAV file use `asr/predict.py --input <wav_path>`.
 
-
-<!--
-# vim: ts=2:sw=2:et:
--->
