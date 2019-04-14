@@ -1,6 +1,4 @@
-"""
-Utility and helper methods for TensorFlow speech learning.
-"""
+"""Utility and helper methods for TensorFlow speech learning."""
 
 import tensorflow as tf
 
@@ -8,8 +6,7 @@ from asr.params import FLAGS, TF_FLOAT
 
 
 class AdamOptimizerLogger(tf.train.AdamOptimizer):
-    """
-    Modified `AdamOptimizer`_ that logs it's learning rate and step.
+    """Modified `AdamOptimizer`_ that logs it's learning rate and step.
 
     .. _AdamOptimizer:
         https://www.tensorflow.org/api_docs/python/tf/train/AdamOptimizer
@@ -36,8 +33,7 @@ class AdamOptimizerLogger(tf.train.AdamOptimizer):
 
 def dense_layers(sequences, training, regularizer, initializer,
                  num_layers=3, activation=tf.nn.relu):
-    """
-    Create a chain of dense (fully-connected) neural network layers.
+    """Create a chain of dense (fully-connected) neural network layers.
 
     Args:
         sequences (tf.Tensor): Input sequences.
@@ -72,8 +68,7 @@ def conv_layers(sequences,
                 kernel_initializer=tf.glorot_normal_initializer(),
                 kernel_regularizer=None,
                 training=True):
-    """
-    Add 2D convolutional layers to the network's graph. New sequence length are being calculated.
+    """Add 2D convolutional layers to the network's graph. New sequence length are being calculated.
 
     Convolutional layer output shapes:
     Conv 'VALID' output width (W) is calculated by:
@@ -152,8 +147,7 @@ def conv_layers(sequences,
 
 
 def bidirectional_cells(num_units, num_layers, dropout=1.0):
-    """
-    Create two lists of forward and backward cells that can be used to build a BDLSTM stack.
+    """Create two lists of forward and backward cells that can be used to build a BDLSTM stack.
 
     Args:
         num_units (int): Number of units within the RNN cell.
@@ -173,8 +167,7 @@ def bidirectional_cells(num_units, num_layers, dropout=1.0):
 
 
 def create_cell(num_units, keep_prob=1.0):
-    """
-    Create a RNN cell with added dropout wrapper.
+    """Create a RNN cell with added dropout wrapper.
 
     Args:
         num_units (int): Number of units within the RNN cell.
@@ -202,8 +195,7 @@ def create_cell(num_units, keep_prob=1.0):
 
 
 def variable_on_cpu(name, shape, initializer):
-    """
-    Helper to create a variable stored on CPU memory.
+    """Helper to create a variable stored on CPU memory.
 
     Args:
         name (str): Name of the variable.
@@ -218,8 +210,7 @@ def variable_on_cpu(name, shape, initializer):
 
 
 def variable_with_weight_decay(name, shape, stddev, weight_decay):
-    """
-    Helper to create an initialized variable with weight decay.
+    """Helper to create an initialized variable with weight decay.
 
     Note that the variable is initialized with a truncated normal distribution.
     A weight decay is added only if one is specified.

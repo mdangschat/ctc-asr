@@ -12,9 +12,7 @@ from asr.util.hooks import GPUStatisticsHook
 
 
 class CTCModel:
-    """
-    Container class for the ASR system's TensorFlow model.
-    """
+    """Container class for the ASR system's TensorFlow model."""
 
     def __init__(self):
         # Initialize attributes.
@@ -23,7 +21,8 @@ class CTCModel:
         self.hooks = None
 
     def model_fn(self, features, labels, mode):
-        """
+        """Create model graph and return a configured estimator.
+
         Model function that constructs the model's graph and returns the configured
         `tf.estimator.EstimatorSpec`.
 
@@ -123,8 +122,8 @@ class CTCModel:
 
     @staticmethod
     def inference_fn(sequences, seq_length, training=True):
-        """
-        Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
+        """Build a TensorFlow inference graph according to the selected model in `FLAGS.used_model`.
+
         Supports the default [Deep Speech 1] model ('ds1') and an [Deep Speech 2] inspired
         implementation ('ds2').
 
@@ -238,8 +237,7 @@ class CTCModel:
 
     @staticmethod
     def loss_fn(logits, seq_length, labels):
-        """
-        Calculate the networks CTC loss.
+        """Calculate the networks CTC loss.
 
         Args:
             logits (tf.Tensor):
@@ -272,8 +270,7 @@ class CTCModel:
 
     @staticmethod
     def decode_fn(logits, seq_len, originals=None):
-        """
-        Decode a given inference (`logits`) and convert it to plaintext.
+        """Decode a given inference (`logits`) and convert it to plaintext.
 
         Args:
             logits (tf.Tensor):
@@ -313,8 +310,7 @@ class CTCModel:
 
     @staticmethod
     def error_rates_fn(labels, originals, decoded, decoded_texts):
-        """
-        Calculate edit distance and word error rate.
+        """Calculate edit distance and word error rate.
 
         Args:
             labels (tf.SparseTensor or tf.Tensor):
@@ -349,8 +345,7 @@ class CTCModel:
         return edit_distances, mean_edit_distance, wers, wer
 
     def hooks_fn(self):
-        """
-        Produce and configure session hooks.
+        """Produce and configure session hooks.
 
         Returns:
             List[tf.Tensor]: List containing TensorFlow hooks.

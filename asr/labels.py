@@ -1,5 +1,4 @@
-"""
-Convert characters (chr) to integer (int) labels and vice versa.
+"""Convert characters (chr) to integer (int) labels and vice versa.
 
 REVIEW: index 0 bug, also see:
 https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding
@@ -20,8 +19,7 @@ if not __CTOI or not __ITOC:
 
 
 def ctoi(char):
-    """
-    Convert character label to integer.
+    """Convert character label to integer.
 
     Args:
         char (char): Character label.
@@ -38,8 +36,7 @@ def ctoi(char):
 
 
 def itoc(integer):
-    """
-    Convert integer label to character.
+    """Convert integer label to character.
 
     Args:
         integer (int): Integer label.
@@ -54,8 +51,7 @@ def itoc(integer):
 
 
 def num_classes():
-    """
-    Return number of different classes, +1 for the <blank> label.
+    """Return number of different classes, +1 for the <blank> label.
 
     Returns:
         int: Number of labels +1.

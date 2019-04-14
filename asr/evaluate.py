@@ -1,6 +1,4 @@
-"""
-Evaluate a trained ASR model.
-"""
+"""Evaluate a trained ASR model."""
 
 import tensorflow as tf
 
