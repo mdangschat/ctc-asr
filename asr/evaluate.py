@@ -8,8 +8,8 @@ from asr.params import FLAGS
 
 # Evaluation specific flags.
 tf.flags.DEFINE_boolean('dev', False,
-                        "`True` if evaluation should use the dev set, `False` if it should use the"
-                        " test set.")
+                        "`True` if evaluation should use the dev set, "
+                        "`False` if it should use the test set.")
 
 # Which dataset TXT file to use for evaluation. 'test' or 'dev'.
 __EVALUATION_TARGET = 'dev' if FLAGS.dev else 'test'

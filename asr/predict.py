@@ -1,27 +1,21 @@
-"""
-Transcribe a given audio file.
+"""Transcribe a given audio file.
 
 L8ER: Add flag to specify the checkpoint file to use.
 """
 
-import os
-
 import tensorflow as tf
 
-from asr.dataset.config import CSV_DIR
 from asr.input_functions import load_sample
 from asr.model import CTCModel
 from asr.params import FLAGS
 
 # Inference specific flags.
-tf.flags.DEFINE_string('input',
-                       os.path.join(CSV_DIR, 'examples/idontunderstandawordyoujustsaid.wav'),
+tf.flags.DEFINE_string('input', 'examples/idontunderstandawordyoujustsaid.wav',
                        "Path to the WAV file to transcribe.")
 
 
 def predict_input_fn():
-    """
-    Generate a `tf.data.Dataset` containing the `FLAGS.input` file's spectrogram data.
+    """Generate a `tf.data.Dataset` containing the `FLAGS.input` file's spectrogram data.
 
     Returns:
         Dataset iterator.
