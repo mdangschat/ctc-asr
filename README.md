@@ -11,12 +11,9 @@ The system is trained on a combined corpus, containing 900+ hours.
 It achieves a word error rate (WER) of 12.6% on the test dataset, without the use of an external
 language model.
 
-![Deep Speech 1 and 2 network architectures](images/network-architectures.png)
-
-(a) shows the Deep Speech (1) model and (b) a version of the Deep Speech 2 model architecture. 
-
 
 ## Contents
+<!-- TOC_START -->
 * [Installation](#installation)
   * [Arch Linux](#arch-linux)
   * [Ubuntu](#ubuntu)
@@ -25,6 +22,11 @@ language model.
 * [Training](#training)
 * [Evaluation](#evaluation)
 * [License](LICENSE)
+<!-- TOC_END -->
+
+![Deep Speech 1 and 2 network architectures](images/network-architectures.png)
+
+(a) shows the Deep Speech (1) model and (b) a version of the Deep Speech 2 model architecture. 
 
 
 ## Installation
@@ -34,7 +36,7 @@ with GPU support for training.
 
 
 ### Arch Linux
-```console
+```terminal
 # Install dependencies.
 sudo pacman -S sox python-tensorflow-opt-cuda tensorbaord
 
@@ -50,14 +52,14 @@ git checkout <release_tag>
 pip install -r requirements.txt
 ```
 
+
 ### Ubuntu
 Be aware that the [`requirements.txt`](requirements.txt) file lists `tensorflow` as dependency, 
 if you install TensorFlow through [pip](https://pypi.org/project/pip/) consider removing it as 
 dependency and install `tensorflow-gpu` instead.
-Based on my experience it's worth the effort to 
-[build TensorFlow from source](https://www.tensorflow.org/install/source).
+It could also be worth it to [build TensorFlow from source](https://www.tensorflow.org/install/source).
 
-```console
+```terminal
 # Install dependencies.
 sudo apt install python3-tk sox libsox-fmt-all
 
@@ -77,93 +79,74 @@ pip3 install -r requirements.txt
 ## Configuration
 The network architecture and training parameters can be configured by adding the appropriate flags
 or by directly editing the [`asr/params.py`](asr/params.py) configuration file.
+The default configuration requires quite a lot of VRAM, consider reducing the number of units per
+layer (`num_units_dense`, `num_units_rnn`) and the amount of RNN layers (`num_layers_rnn`).
 
 
 ## Corpus
-The following datasets were used for training and are listed in the `data` directory, however, the
-individual datasets are not part of this repository and have to be acquired by each user.
+There is list of some [free speech corpora](#free-speech-corpora) at the end of this section.
+However, the corpus is not part of this repository and has to be acquired by each user.
+For a quick start there is the [speech-corpus-dl](https://github.com/mdangschat/speech-corpus-dl) 
+helper, that downloads a few free corpora, prepares the data and creates a merged corpus.
 
+All audio files have to be 16 kHz, mono, WAV files.
+For my trainings, I removed examples shorter than 0.7 and longer than 17.0 seconds.
+Additionally, TEDLIUM examples with labels of fewer than 5 words have also been removed.
+
+The following tree shows a possible structure for the required directories:
+```terminal
+./ctc-asr
+├── asr
+    ├── [...]
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── testruns.md
+./ctc-asr-checkpoints
+└── 3c2r2d-rnn
+    ├── [...]
+./speech-corpus
+├── cache
+├── corpus
+│   ├── cvv2
+│   ├── LibriSpeech
+│   ├── tatoeba_audio_eng
+│   └── TEDLIUM_release2
+├── corpus.json
+├── dev.csv
+├── test.csv
+└── train.csv
+```
+Assuming that this repository is cloned into `some/folder/ctc-asr`, then by default
+the CSV files are expected to be in `some/folder/speech-corpus` and the audio files in
+`some/folder/speech-corpus/corpus`.
+TensorFlow checkpoints are written into `some/folder/ctc-asr-checkpoints`.
+Both folders (`ctc-asr-checkpoints` and `speech-corpus`) must exist, they can be changed
+in the [asr/params.py](asr/params.py) file.
+
+
+### CSV
+The CSV files (e.g. train.csv) have the following format:
+```csv
+path;label;length
+relative/path/to/example;lower case transcription without puntuation;3.14159265359
+[...]
+```
+Where `path` is the relative WAV path from the `DATA_DIR/corpus/` directory (String).
+By default, `label` is the lower case transcription without punctuation (String).
+Finally, `length` is the audio length in seconds (Float).
+
+
+### Free Speech Corpora
 * [Common Voice](https://voice.mozilla.org/en/new) (v1)
 * [LibriSpeech ASR Corpus](http://www.openslr.org/12/)
 * [Tatoeba](https://tatoeba.org/eng/)
 * [TED-Lium](http://www.openslr.org/19/) (v2)
 * [TIMIT](https://catalog.ldc.upenn.edu/LDC93S1)
 
-The test dataset consists of all clean training subsets from those datasets.
-Only the LibriSpeech clean dev set is used as the validation/development set and the LibriSpeech
-and Common Voice clean test sets are used as testing dataset. 
-The ASR system works on 16 kHz mono WAV files.
 
-A helper that downloads the free corpora and prepares the data and creates the merged corpora can
-be found in [`asr/dataset/generate_dataset.py`](asr/dataset/generate_dataset.py).
-The file needs to be adjusted for the datasets that should be used.
-It further expects the TIMIT dataset to be present in the `data/corpus/timit/TIMIT` directory.
-If TIMIT should not be part of the training corpus, there is a flag to disable it in the
-[`generate_dataset.py`](asr/dataset/generate_dataset.py).
-
-The following tree shows a possible folder structure for the data directory.
-
-```
-data/
-├── cache
-│   ├── cv_corpus_v1.tar.gz
-│   ├── dev-clean.tar.gz
-│   ├── .gitignore
-│   ├── tatoeba_audio_eng.zip
-│   ├── TEDLIUM_release2.tar.gz
-│   ├── test-clean.tar.gz
-│   ├── train-clean-100.tar.gz
-│   └── train-clean-360.tar.gz
-├── commonvoice_dev.txt
-├── commonvoice_test.txt
-├── commonvoice_train.txt
-├── corpus
-│   ├── cv_corpus_v1
-│   ├── .gitignore
-│   ├── LibriSpeech
-│   ├── tatoeba_audio_eng
-│   ├── TEDLIUM_release2
-│   └── timit
-├── corpus.json
-├── dev.txt
-├── .gitignore
-├── librispeech_dev.txt
-├── librispeech_test.txt
-├── librispeech_train.txt
-├── tatoeba_train.txt
-├── tedlium_dev.txt
-├── tedlium_test.txt
-├── tedlium_train.txt
-├── test.txt
-├── timit_test.txt
-├── timit_train.txt
-└── train.txt
-```
-
-
-### `train.csv` 1050+ Hours
-Examples shorter than 0.7 and longer than 17.0 seconds have been removed.
-TEDLIUM examples with labels shorter than 5 words have been removed.
-`train.csv` is sorted by feature sequence length in ascending order.
-
-* `commonvoice_train.csv`
-* `librispeech_train.csv`
-* `tatoeba_train.csv`
-* `tedlium_train.csv`
-* `timit_train.csv`
-
-
-### `dev.csv`
-* `librispeech_dev.csv`
-
-
-### `test.csv`
-* `commonvoice_test.csv`
-* `librispeech_test.csv`
-
-
-### Statistics
-```
+### Corpus Statistics
+```terminal
 ipython python/dataset/word_counts.py 
 Calculating statistics for /home/gpuinstall/workspace/ctc-asr/data/train.csv
 Word based statistics:
@@ -185,7 +168,8 @@ Character based statistics:
 ```
 
 
-## Training
+## Usage
+### Training
 Start training by invoking `asr/train.py`.
 Use `asr/train.py -- --delete` to start a clean run and remove the old checkpoints.
 Please note that all commands are expected to be executed from the projects root folder.
@@ -196,12 +180,12 @@ To start Tensorboard use `tensorboard --logdir <checkpoint_directory>`.
 By default it can then be accessed via [localhost:6006](http://localhost:6006).
 
 
-## Evaluation
+### Evaluation
 Evaluate the current model by invoking `asr/evaluate.py`.
 Use `asr/evaluate.py -- --dev` to run on the development dataset, instead of the test set.
 
 
-## Prediction
+### Prediction
 To evaluate a given 16 kHz, mono WAV file use `asr/predict.py --input <wav_path>`.
 Using `asr/predict.py` without `--input` flag evaluates the provided example file
 ("[I don't understand a word you just said.](data/examples/idontunderstandawordyoujustsaid.wav)").
