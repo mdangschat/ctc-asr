@@ -187,8 +187,6 @@ Use `asr/evaluate.py -- --dev` to run on the development dataset, instead of the
 
 ### Prediction
 To evaluate a given 16 kHz, mono WAV file use `asr/predict.py --input <wav_path>`.
-Using `asr/predict.py` without `--input` flag evaluates the provided example file
-("[I don't understand a word you just said.](data/examples/idontunderstandawordyoujustsaid.wav)").
 
 
 <!--
