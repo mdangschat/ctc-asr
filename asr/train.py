@@ -1,7 +1,7 @@
-"""
-Train the ASR model.
+"""Train the ASR model.
 
-Tested with Python 3.5, 3.6 and 3.7. No Python 2 compatibility is being provided.
+Tested with Python 3.5, 3.6 and 3.7.
+No Python 2 compatibility is being provided.
 """
 
 import time

@@ -1,9 +1,0 @@
-# Ignore everything...
-*
-
-# ... but the following:
-!.gitignore
-!examples/
-!examples/*
-!cache/
-!corpus/

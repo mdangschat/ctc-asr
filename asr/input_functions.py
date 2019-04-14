@@ -1,6 +1,6 @@
-"""
-Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
-Contains helper methods to load audio files, too.
+"""Routines to load a corpus and perform the necessary pre processing on the audio files and labels.
+
+This contains helper methods to load audio files, too.
 """
 
 import csv
@@ -12,16 +12,14 @@ import python_speech_features as psf
 import tensorflow as tf
 from scipy.io import wavfile
 
-from asr.dataset.config import CORPUS_DIR
-from asr.dataset.config import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
-from asr.dataset.csv_helper import get_bucket_boundaries
 from asr.labels import ctoi
+from asr.params import CSV_DELIMITER, CSV_FIELDNAMES, CSV_HEADER_LABEL, CSV_HEADER_PATH
 from asr.params import NP_FLOAT, WIN_LENGTH, WIN_STEP, NUM_FEATURES, FLAGS
+from asr.util.csv_helper import get_bucket_boundaries
 
 
 def input_fn_generator(target):
-    """
-    Generate the `input_fn` for the TensorFlow estimator.
+    """Generate the `input_fn` for the TensorFlow estimator.
 
     Args:
         target (str): The type of input, this affects the used CSV file, batching method and epochs.
@@ -144,7 +142,7 @@ def __input_generator(*args):
             path = line[CSV_HEADER_PATH]
             label = line[CSV_HEADER_LABEL]
 
-            path = os.path.join(CORPUS_DIR, path)
+            path = os.path.join(FLAGS.corpus_dir, path)
 
             # Convert the WAV file into
             spectrogram, spectrogram_length = load_sample(path)
@@ -156,8 +154,7 @@ def __input_generator(*args):
 
 
 def load_sample(file_path, feature_type=None, feature_normalization=None):
-    """
-    Loads the wave file and converts it into feature vectors.
+    """Loads the wave file and converts it into feature vectors.
 
     Args:
         file_path (str or bytes):
@@ -254,8 +251,7 @@ def load_sample(file_path, feature_type=None, feature_normalization=None):
 
 
 def __mfcc(audio_data, sampling_rate, win_len, win_step, num_features, n_fft, f_min, f_max):
-    """
-    Convert a wav signal into Mel Frequency Cepstral Coefficients (MFCC).
+    """Convert a wav signal into Mel Frequency Cepstral Coefficients (MFCC).
 
     Args:
         audio_data (np.ndarray): Wav signal.
@@ -287,8 +283,7 @@ def __mfcc(audio_data, sampling_rate, win_len, win_step, num_features, n_fft, f_
 
 
 def __mel(audio_data, sampling_rate, win_len, win_step, num_features, n_fft, f_min, f_max):
-    """
-    Convert a wav signal into a logarithmically scaled mel filterbank.
+    """Convert a wav signal into a logarithmically scaled mel filterbank.
 
     Args:
         audio_data (np.ndarray): Wav signal.
@@ -310,8 +305,7 @@ def __mel(audio_data, sampling_rate, win_len, win_step, num_features, n_fft, f_m
 
 
 def __feature_normalization(features, method):
-    """
-    Normalize the given feature vector `y`, with the stated normalization `method`.
+    """Normalize the given feature vector `y`, with the stated normalization `method`.
 
     Args:
         features (np.ndarray):

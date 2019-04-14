@@ -1,6 +1,4 @@
-"""
-Collection of TensorFlow hooks.
-"""
+"""Collection of TensorFlow hooks."""
 
 import time
 from datetime import datetime
@@ -15,9 +13,7 @@ from asr.params import FLAGS
 
 
 class GPUStatisticsHook(tf.train.SessionRunHook):
-    """
-    A session hook that log GPU statistics to tensorboard and to the log stream.
-    """
+    """A session hook that log GPU statistics to tensorboard and to the log stream."""
 
     def __init__(self,
                  log_every_n_steps=None,
@@ -30,8 +26,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                  average_n=1,
                  suppress_stdout=False,
                  group_tag='gpu'):
-        """
-        Create an instance of `GPUStatisticsHook`.
+        """Create an instance of `GPUStatisticsHook`.
 
         Arguments:
             log_every_n_steps (int):
@@ -124,8 +119,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
 
     @staticmethod
     def __statistic_keys():
-        """
-        Get the keys for all statistics that the hook can query.
+        """Get the keys for all statistics that the hook can query.
 
         Returns:
             list:
@@ -180,8 +174,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
 
     @staticmethod
     def __query_util(handle):
-        """
-        Query information on the utilization of a GPU.
+        """Query information on the utilization of a GPU.
 
         Arguments:
             handle:
@@ -206,7 +199,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
         return summaries
 
     def begin(self):
-        """
+        """Called once before graph finalization.
+
         Is called once before the default graph in the active tensorflow session is
         finalized and the training has starts.
         The hook can modify the graph by adding new operations to it.
@@ -224,8 +218,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
             raise RuntimeError("Global step should be created to use StepCounterHook.")
 
     def end(self, session):
-        """
-        Called at the end of a session.
+        """Called at the end of a session.
 
         Arguments:
             session (tf.Session):
@@ -236,8 +229,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
         nvml.nvmlShutdown()
 
     def before_run(self, run_context):
-        """
-        Is called once before each call to session.run (training iteration in general).
+        """Is called once before each call to session.run (training iteration in general).
+
         At this point the graph is finalized and you can not add ops.
 
         Arguments:
@@ -266,8 +259,8 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
         return session_run_hook.SessionRunArgs(fetches=fetches)
 
     def after_run(self, run_context, run_values):
-        """
-        Is called once after each call to session.run (training iteration in general).
+        """Is called once after each call to session.run (training iteration in general).
+
         At this point the graph is finalized and you can not add ops.
 
         Arguments:
@@ -340,8 +333,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
         self._last_global_step = stale_global_step
 
     def _update_statistics(self, elapsed_steps, elapsed_time, global_step):
-        """
-        Collect and store all summary values.
+        """Collect and store all summary values.
 
         Arguments:
             elapsed_steps (int):
@@ -371,8 +363,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
                         self._gpu_statistics[gpu_id][k][-self._average_n:] + [summaries[k]]
 
     def _log_statistics(self, elapsed_steps, elapsed_time, global_step):
-        """
-        Collect and store all summary values.
+        """Collect and store all summary values.
 
         Arguments:
             elapsed_steps (int):
@@ -421,9 +412,7 @@ class GPUStatisticsHook(tf.train.SessionRunHook):
 
 # The following code has been inspired by <https://stackoverflow.com/a/45681782>:
 class TraceHook(tf.train.SessionRunHook):
-    """
-    Hook to perform Traces every N steps.
-    """
+    """Hook to perform Traces every N steps."""
 
     def __init__(self, file_writer, log_frequency, trace_level=tf.RunOptions.FULL_TRACE):
         self._trace = log_frequency == 1
@@ -455,9 +444,7 @@ class TraceHook(tf.train.SessionRunHook):
 
 
 class LoggerHook(tf.train.SessionRunHook):
-    """
-    Log loss and runtime.
-    """
+    """Log loss and runtime."""
 
     def __init__(self, loss_op):
         self.loss_op = loss_op
