@@ -1,16 +1,20 @@
 """Generate the table of contents and insert it at the top of `README.md`.
 
+
 This script always assumes that the first heading is the document title
 and does NOT include it in the table of contents.
 It is assumed that only the first heading is H1 (#) and that all
 subsequent headings are at least H2 (##).
 
 Add the following to your `README.md` file (in the same folder):
+
 [...]
+
 ## Contents
 <!-- TOC_START -->
 
 <!-- TOC_END -->
+
 [...]
 """
 
