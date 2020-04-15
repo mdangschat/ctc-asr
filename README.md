@@ -86,7 +86,7 @@ pip3 install -r requirements.txt
 ## Configuration
 The network architecture and training parameters can be configured by adding the appropriate flags
 or by directly editing the [`asr/params.py`](asr/params.py) configuration file.
-The default configuration requires quite a lot of VRAM, consider reducing the number of units per
+The default configuration requires quite a lot of VRAM (about 16 GB), consider reducing the number of units per
 layer (`num_units_dense`, `num_units_rnn`) and the amount of RNN layers (`num_layers_rnn`).
 
 
